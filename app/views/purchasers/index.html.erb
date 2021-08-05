@@ -1,28 +1,48 @@
-<p id="notice"><%= notice %></p>
+<div class="card p-4">
+  <h1>
+    All Purchasers
+  </h1>
+</div>
 
-<h1>Purchasers</h1>
-<%= link_to 'New Purchaser', new_purchaser_path %>
+<br>
+<%= render 'purchasers/new_purchaser_modal', purchaser: Purchaser.new %>
+<br>
+<%= render 'vendors/new_vendor_modal', vendor: Vendor.new %>
+<br>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @purchasers.each do |purchaser| %>
+<div class="card p-2">
+  <table>
+    <thead>
       <tr>
-        <td><%= purchaser.name %></td>
-        <td class="pl-4">
-          <%= link_to 'Show', purchaser %> |
-          <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
-          <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>
-        </td>
+        <th>Name</th>
+        <th>Purchaser Options</th>
+
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @purchasers.each do |purchaser| %>
+
+        <tr class="">
+
+          <td class="pb-10">
+            Purchaser Name: <%= purchaser.name %>
+            Purchaser ID: <%= purchaser.id %>
+          <br>
+            Creator Name: <%= purchaser.user.name %>
+            Creator ID: <%= purchaser.user.id %>
+          </td>
+
+          <td class="pl-4 pb-4">
+            <%= link_to 'Show', purchaser %> |
+            <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
+            <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <br>

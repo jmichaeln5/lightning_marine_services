@@ -1,14 +1,23 @@
-<p id="notice"><%= notice %></p>
+<div class="card p-4">
+  <h1>
+     Purchaser: <%= @purchaser.name %>
+  </h1>
 
-<p>
-  <strong>Name:</strong>
-  <%= @purchaser.name %>
-</p>
+  <p>
+    <strong>Owner:</strong>
+    <%= @purchaser.user.name %>
+  </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @purchaser.user_id %>
-</p>
+  <%= link_to 'Edit Purchaser', edit_purchaser_url(@purchaser) %>
 
-<%= link_to 'Edit', edit_purchaser_url(@purchaser) %> |
-<%= link_to 'Back', :back %>
+</div>
+
+<br>
+<%#= link_to 'Add Vendor', new_purchaser_vendor_path(@purchaser), class:"btn btn-block btn-outline-primary" %>
+<%= render 'vendors/new_purchaser_vendor_modal', vendor: Vendor.new, purchaser_id: @purchaser.id %>
+
+<br>
+
+<%#= render 'vendors/index', @vendors: Vendor.all.where(purchaser_id: @purchaser.id) %>
+
+<%= render partial: "vendors/purchaser_vendors", locals: {vendors: Vendor.all.where(purchaser_id: @purchaser.id)} %>

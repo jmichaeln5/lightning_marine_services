@@ -7,8 +7,11 @@
 User
 Purchaser
 Vendor
+
+PurchaserVendors (Join Table)
+
 Order
-OrderContent
+OrderContent (Join Table)
 
 ###########################################################################
 ###########################################################################

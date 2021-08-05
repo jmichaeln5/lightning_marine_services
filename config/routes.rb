@@ -21,10 +21,13 @@ Rails.application.routes.draw do
 
   resources :users
   resources :purchasers
+  # resources :vendors
 
-  # resources :users do
-  #   resources :purchasers, shallow: true
-  # end
+  resources :purchasers do
+    resources :vendors
+  end
+  resources :vendors
+
 
 
 
