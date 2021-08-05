@@ -4,7 +4,7 @@ class PurchasersController < ApplicationController
 
   # GET /purchasers or /purchasers.json
   def index
-    @purchasers = Purchaser.all
+    @purchasers = Purchaser.all.order("created_at DESC")
   end
 
   # GET /purchasers/1 or /purchasers/1.json

@@ -1,6 +1,6 @@
 class Vendor < ApplicationRecord
-  belongs_to :user
-  belongs_to :purchaser
+  has_many :orders
+  has_many :purchasers, through: :orders
 
   validates :name, presence: true, uniqueness: true
 end

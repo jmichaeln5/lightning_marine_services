@@ -10,17 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_05_053322) do
+ActiveRecord::Schema.define(version: 2021_08_05_133442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "purchasers", force: :cascade do |t|
-    t.string "name"
-    t.bigint "user_id", null: false
+  create_table "order_contents", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.integer "box"
+    t.integer "crate"
+    t.integer "pallet"
+    t.integer "other"
+    t.text "other_description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_purchasers_on_user_id"
+    t.index ["order_id"], name: "index_order_contents_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "purchaser_id", null: false
+    t.bigint "vendor_id", null: false
+    t.string "dept"
+    t.integer "po_number"
+    t.datetime "date_recieved"
+    t.string "courrier"
+    t.datetime "date_delivered"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchaser_id"], name: "index_orders_on_purchaser_id"
+    t.index ["vendor_id"], name: "index_orders_on_vendor_id"
+  end
+
+  create_table "purchasers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -53,15 +77,11 @@ ActiveRecord::Schema.define(version: 2021_08_05_053322) do
 
   create_table "vendors", force: :cascade do |t|
     t.string "name"
-    t.bigint "user_id", null: false
-    t.bigint "purchaser_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["purchaser_id"], name: "index_vendors_on_purchaser_id"
-    t.index ["user_id"], name: "index_vendors_on_user_id"
   end
 
-  add_foreign_key "purchasers", "users"
-  add_foreign_key "vendors", "purchasers"
-  add_foreign_key "vendors", "users"
+  add_foreign_key "order_contents", "orders"
+  add_foreign_key "orders", "purchasers"
+  add_foreign_key "orders", "vendors"
 end

@@ -4,7 +4,7 @@ class VendorsController < ApplicationController
 
   # GET /vendors or /vendors.json
   def index
-    @vendors = Vendor.all
+    @vendors = Vendor.all.order("created_at DESC")
   end
 
   # GET /vendors/1 or /vendors/1.json

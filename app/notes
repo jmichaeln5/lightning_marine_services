@@ -4,14 +4,33 @@
 ###########################################################################
 ###########################################################################
 
-User
-Purchaser
-Vendor
 
-PurchaserVendors (Join Table)
+User  *
 
-Order
-OrderContent (Join Table)
+
+
+Purchaser  *
+
+    rails g model Purchaser name
+
+
+
+Vendor  *
+
+    rails g model Vendor name
+
+
+Order (Join Table)  *
+
+    rails g model Order purchaser:references vendor:references
+
+
+
+
+OrderContent (Join Table)  *
+
+    rails g model OrderContent box:integer, crate:integer, pallet:integer, other:integer, other_description:text, order:references
+
 
 ###########################################################################
 ###########################################################################
@@ -19,75 +38,115 @@ OrderContent (Join Table)
 ###########################################################################
 ###########################################################################
 
-User
-  has_many :purchasers
-  has_many :vendors
-  has_many :orders
-  has_many :order_contents, through :orders
 
-Purchaser
-  belongs_to :user
-  has_many :vendors
-  has_many :orders
-  has_many :order_contents, through :orders
+User  *
 
-Vendor
-  belongs_to :user
-  has_many :orders
-  has_many :order_contents, through :orders
 
-Order
-  belongs_to :user
+
+Purchaser *
+
+    class Purchaser < ActiveRecord::Base
+      has_many :orders
+      has_many :vendors, through: :orders
+    end
+
+
+
+Vendor  *
+
+    class Vendor < ApplicationRecord
+      has_many :orders
+      has_many :purchasers, through: :orders
+    end
+
+
+
+
+Order *
+
+    class Order < ActiveRecord::Base
+      belongs_to :vendor
+      belongs_to :purchaser
+      has_many :order_contents
+    end
+
+
+
+OrderContent  *
+
+    class OrderContent < ActiveRecord::Base
+      belongs_to :order
+    end
+
+
+###########################################################################
+###########################################################################
+*** Forum Post Notes ***
+###########################################################################
+###########################################################################
+
+
+
+rails g model Project programmer:references client:references
+
+
+# app/model/programmer.rb
+class Programmer < ActiveRecord::Base
+  has_many :projects
+  has_many :clients, through: :projects
+end
+
+# app/model/client.rb
+class Client < ActiveRecord::Base
+  has_many :projects
+  has_many :programmers, through: :projects
+end
+
+# app/model/project.rb
+class Projects < ActiveRecord::Base
+  belongs_to :programmer
+  belongs_to :client
+end
+
+
+
+
+(ORDER: Join Table)
+
+rails g model Order purchaser:references vendor:references
+
+class Purchaser < ActiveRecord::Base
+  has_many :orders
+  has_many :vendors, through: :orders
+end
+
+class Vendor < ApplicationRecord
+  has_many :orders
+  has_many :purchasers, through: :orders
+end
+
+class Order < ActiveRecord::Base
   belongs_to :vendor
   belongs_to :purchaser
-  #has_one :order_content
+end
+
+
+AFTER:
+
+rails g model OrderContent order:references
+
+
+class Order < ActiveRecord::Base
+  belongs_to :vendor
+  belongs_to :purchaser
   has_many :order_contents
-
-OrderContent
-  belongs_to :order
-
-###########################################################################
-###########################################################################
-*** Model Attributes ***
-###########################################################################
-###########################################################################
-
-User
-  (roles: viewer, editor, admin, super_admin)
-
-Purchaser
-  (name, user_id)
-
-Vendor
-  (name, user_id, purchaser_id)
-
-Order
-  (user_id, vendor_id, purchaser_id, po_number, date_received, courrier, date_delivered)
-
-OrderContent
-  (order_id, content => {boxes, crates, pallets, other:string}, amount)
-
+end
 
 ###########################################################################
 ###########################################################################
 ***  ***
 ###########################################################################
 ###########################################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ###########################################################################
