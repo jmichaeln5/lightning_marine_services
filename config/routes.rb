@@ -18,6 +18,16 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
+
   resources :users
+  resources :purchasers
+
+  # resources :users do
+  #   resources :purchasers, shallow: true
+  # end
+
+
+
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
