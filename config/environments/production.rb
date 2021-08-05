@@ -43,6 +43,24 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
+  # Devise ***
+ config.action_mailer.default_url_options = { :host => "friendfund.herokuapp.com" }
+ #Mailers
+ config.action_mailer.delivery_method = :sendmail
+ config.action_mailer.perform_deliveries = true
+ config.action_mailer.raise_delivery_errors = false
+ config.action_mailer.default_options = {from: 'friendfundapp@gmail.com'}
+
+ config.action_mailer.delivery_method = :smtp
+ config.action_mailer.smtp_settings = {
+   address:              'smtp.gmail.com',
+   port:                 587,
+   domain:               'friendfund.herokuapp.com',
+   user_name:            "friendfundapp@gmail.com",
+   password:             "newpass42069",
+   authentication:       'plain',
+   enable_starttls_auto: true
+}
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
@@ -58,7 +76,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "devise_login_template_production"
+  # config.active_job.queue_name_prefix = "lightning_marine_services_production"
 
   config.action_mailer.perform_caching = false
 
