@@ -1,0 +1,215 @@
+###########################################################################
+###########################################################################
+*** Models/Tables ***
+###########################################################################
+###########################################################################
+
+
+User  *
+
+
+
+Purchaser  *
+
+    rails g model Purchaser name
+
+
+
+Vendor  *
+
+    rails g model Vendor name
+
+
+Order (Join Table)  *
+
+    rails g model Order purchaser:references vendor:references
+
+
+
+
+Detail  *
+
+    rails g model Detail box:integer, crate:integer, pallet:integer, other:integer, other_description:text, order:references
+
+
+###########################################################################
+###########################################################################
+*** Associations ***
+###########################################################################
+###########################################################################
+
+
+User  *
+
+
+
+Purchaser *
+
+    class Purchaser < ActiveRecord::Base
+      has_many :orders
+      has_many :vendors, through: :orders
+    end
+
+
+
+Vendor  *
+
+    class Vendor < ApplicationRecord
+      has_many :orders
+      has_many :purchasers, through: :orders
+    end
+
+
+
+
+Order *
+
+    class Order < ActiveRecord::Base
+      belongs_to :vendor
+      belongs_to :purchaser
+      has_one :detail
+    end
+
+
+
+Detail  *
+
+    class Detail < ActiveRecord::Base
+      belongs_to :order
+    end
+
+
+###########################################################################
+###########################################################################
+*** Forum Post Notes ***
+###########################################################################
+###########################################################################
+
+
+
+rails g model Project programmer:references client:references
+
+
+# app/model/programmer.rb
+class Programmer < ActiveRecord::Base
+  has_many :projects
+  has_many :clients, through: :projects
+end
+
+# app/model/client.rb
+class Client < ActiveRecord::Base
+  has_many :projects
+  has_many :programmers, through: :projects
+end
+
+# app/model/project.rb
+class Projects < ActiveRecord::Base
+  belongs_to :programmer
+  belongs_to :client
+end
+
+
+
+
+(ORDER: Join Table)
+
+rails g model Order purchaser:references vendor:references
+
+class Purchaser < ActiveRecord::Base
+  has_many :orders
+  has_many :vendors, through: :orders
+end
+
+class Vendor < ApplicationRecord
+  has_many :orders
+  has_many :purchasers, through: :orders
+end
+
+class Order < ActiveRecord::Base
+  belongs_to :vendor
+  belongs_to :purchaser
+end
+
+
+AFTER:
+
+rails g model Detail order:references
+
+
+class Order < ActiveRecord::Base
+  belongs_to :vendor
+  belongs_to :purchaser
+  has_one :detail
+end
+
+###########################################################################
+###########################################################################
+*** Create Random Data ***
+###########################################################################
+###########################################################################
+
+      * (Purchasers) Create Random *
+
+10.times do
+    # purchaser = Purchaser.create(name: Faker::Book.title)
+    purchaser = Purchaser.create(name: Faker::Company.name )
+    puts " "
+    puts "*"*20
+    puts "#{purchaser} created."
+    puts "*"*20
+    puts "#{purchaser.inspect}"
+    puts "*"*20
+    puts " "
+end
+
+
+      * (Vendors) Create Random *
+
+5.times do
+  # vendor = Vendor.create(name: Faker::Book.title)
+  vendor = Vendor.create(name: Faker::Company.name )
+    puts " "
+    puts "*"*20
+    puts "#{vendor} created."
+    puts "*"*20
+    puts "#{vendor.inspect}"
+    puts "*"*20
+    puts " "
+end
+
+      * (Orders) Create Random *
+
+5.times do
+  order = Order.create( purchaser_id: Purchaser.all.ids.sample, vendor_id: Vendor.all.ids.sample, po_number: Faker::Company.sic_code, date_recieved: Faker::Date.between(from: '2021-01-23', to: '2021-09-25'), courrier: ['Fedex', 'UPS', 'USPS', 'DHL'].sample)
+    puts " "
+    puts "*"*20
+    puts "#{order} created."
+    puts "*"*20
+    puts "#{order.inspect}"
+    puts "*"*20
+    puts " "
+end
+
+
+
+* (Orders WITH DETAIL) Create Random *
+
+5.times do
+order = Order.create( purchaser_id: Purchaser.all.ids.sample, vendor_id: Vendor.all.ids.sample, po_number: Faker::Company.sic_code, date_recieved: Faker::Date.between(from: '2021-01-23', to: '2021-09-25'), courrier: ['Fedex', 'UPS', 'USPS', 'DHL'].sample)
+puts " "
+puts "*"*20
+puts "#{order} created."
+puts "*"*20
+puts "#{order.inspect}"
+puts "*"*20
+puts " "
+end
+
+
+
+
+###########################################################################
+###########################################################################
+***  ***
+###########################################################################
+###########################################################################

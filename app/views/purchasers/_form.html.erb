@@ -1,0 +1,28 @@
+<%= form_with(model: purchaser) do |form| %>
+  <% if purchaser.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(purchaser.errors.count, "error") %> prohibited this purchaser from being saved:</h2>
+
+      <ul>
+        <% purchaser.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <br>
+  <div class="field">
+    <p class="text-3xl">New Ship's Name</p>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+  <br>
+  <div class="p-2">
+    <div class="actions btn btn-outline-primary">
+      <%= button_tag(type: 'submit') do %>
+        Add New Ship
+      <% end %>
+    </div>
+  </div>
+
+  <% end %>

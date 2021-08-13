@@ -1,0 +1,56 @@
+
+<%= @order.inspect%>
+<br>
+<br>
+<%= @order_contents.inspect%>
+
+
+<br>
+<br>
+
+
+<td class="pb-10 px-2">
+  <%= @order.purchaser.name %>
+</td>
+<br>
+
+<td class="pb-10 px-2">
+  <%= @order.vendor.name %>
+</td>
+<br>
+
+<td class="pb-10 px-2">
+  <%= @order.dept %>
+</td>
+<br>
+
+
+<td class="pb-10 px-2">
+  <%= @order.po_number %>
+</td>
+<br>
+
+
+<td class="pb-10 px-2">
+  <%= @order.courrier %>
+</td>
+<br>
+
+
+<td class="pb-10 px-2">
+  <%= @order.date_recieved %>
+</td>
+<br>
+
+
+<td class="pb-10 px-2">
+  <%= @order.date_delivered %>
+</td>
+<br>
+
+
+
+
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>

@@ -1,0 +1,45 @@
+<div class="card p-4">
+  <h1>
+    All Ships
+  </h1>
+</div>
+
+<br>
+<%= render 'purchasers/new_purchaser_modal', purchaser: Purchaser.new %>
+<br>
+<%= link_to 'Add Order (root_path)(non functional)', root_path, class:"btn btn-block btn-outline-primary" %>
+<br>
+
+<div class="card p-2">
+  <table>
+    <thead>
+      <tr>
+        <th class="py-2">Ship</th>
+        <th colspan="4"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @purchasers.each do |purchaser| %>
+
+        <tr class="">
+
+            <td class="py-2">
+              Ship Name: <%= purchaser.name %>
+              Ship ID: <%= purchaser.id %>
+            </td>
+
+            <td class="">
+              <%= link_to 'Show', purchaser %> |
+              <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
+              <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+
+        </tr>
+
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br>

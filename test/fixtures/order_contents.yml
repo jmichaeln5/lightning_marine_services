@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  box: 1
+  crate: 1
+  pallet: 1
+  other: 1
+  other_description: MyText
+  order: one
+
+two:
+  box: 1
+  crate: 1
+  pallet: 1
+  other: 1
+  other_description: MyText
+  order: two

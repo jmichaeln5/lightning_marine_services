@@ -2,13 +2,6 @@
 
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
-  puts "SessionsController"
-  puts "*"*2000
-  puts "SessionsController"
-  puts "SessionsController"
-  puts "SessionsController"
-  puts "*"*2000
-  puts "SessionsController"
 
   # GET /resource/sign_in
   # def new

@@ -1,0 +1,155 @@
+<br>
+<%#= link_to 'Add Order (root_path)(non functional)', root_path, class:"btn btn-block btn-outline-primary" %>
+
+
+<div class="px-3">
+  <div class="grid grid-cols-6 gap-9">
+
+  <div class="col-start-1 col-end-2">
+    <p> Ship </p>
+  </div>
+
+
+  <div class="col-start-2 col-end-3">
+    <p> Ship </p>
+  </div>
+
+
+  <div class="col-start-3 col-end-4">
+    <p> Ship </p>
+  </div>
+
+
+  <div class="col-start-4 col-end-5">
+    <p> Ship </p>
+  </div>
+
+
+    <div class="col-start-6 col-end-7">
+      <p> Ship </p>
+    </div>
+
+    <div class="col-start-8 col-end-9">
+      <p> Ship </p>
+    </div>
+
+    <div class="col-start-8 col-end-9">
+      <p> Ship </p>
+    </div>
+
+    <div class="col-start-8 col-end-9">
+      <p> Ship </p>
+    </div>
+
+    <div class="col-start-8 col-end-9">
+      <p> Ship </p>
+    </div>
+
+
+    <!-- <div class="col-start-7 col-end-8 pt-2">
+      <span class="text-center px-1">
+      <%#= link_to "mark as read", mark_as_read_path(notification), method: :post, class:"text-gray-500 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-xs font-medium"  %>
+      </span>
+    </div> -->
+
+
+  </div>
+</div>
+
+
+<br>
+<div class="card p-2">
+  <table>
+    <thead>
+      <tr>
+
+        <th> Ship </th>
+
+        <th> Vendor </th>
+
+        <th> Dept</th>
+
+        <th> PO# </th>
+
+        <th> Date Recieved </th>
+
+        <th> Contents </th>
+
+        <th> Courrier </th>
+
+        <th> Date Delivered </th>
+
+        <th colspan=""></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @orders.each do |order| %>
+
+        <tr class="">
+
+          <td class="pb-10 px-2">
+            <%= order.purchaser.name %>
+          </td>
+
+          <td class="pb-10 px-2">
+            <%= order.vendor.name %>
+          </td>
+
+          <td class="pb-10 px-2">
+            <%= order.dept ||= "n/a" %>
+          </td>
+
+          <td class="pb-10 px-2">
+            <%= order.po_number ||= "n/a" %>
+          </td>
+
+          <td class="pb-10 px-2">
+            <%= order.date_recieved.try(:strftime,"%m/%d/%Y") %>
+          </td>
+
+          <td>
+          </td>
+          <% order.contents.each do |order_content| %>
+            <td class="pb-10 px-2">
+
+
+
+              <% if order_content.present? %>
+              <%= "Boxes: #{order_content.box}" if order_content.box.present? %>
+              <%= "Crates: #{order_content.crate}" if order_content.crate.present? %>
+              <%= "Pallets: #{order_content.pallet}" if order_content.pallet.present? %>
+              <%= "Other: #{order_content.other}" if order_content.other.present?%>
+              <%= "Other Description: #{order_content.other_description}" if order_content.other_description.present?%>
+              <br>
+              <% else %>
+
+              <% end %>
+
+
+            </td>
+          <% end %>
+
+          <td class="pb-10 px-2">
+            <%= order.courrier ||= "n/a" %>
+          </td>
+
+          <td class="pb-10 px-2">
+            <%= "#{order.date_delivered.try(:strftime,"%m/%d/%Y").to_s ||= "n/a"}" %>
+          </td>
+
+          <td class="pl-4 pb-4 px-2">
+            <%= link_to 'Show', order %> |
+            <%= link_to 'Edit', edit_order_path(order) %> |
+            <%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+<%#= link_to 'New Vendor', new_vendor_path %>
+<!-- Modal Pop Up to select/add Purchaser -->

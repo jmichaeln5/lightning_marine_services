@@ -1,0 +1,16 @@
+<div class="card p-4">
+  <h1>
+    Vendor: <%= @vendor.name %>
+  <h1>
+</div>
+
+<br>
+<%= link_to 'Add Order (root_path)(non functional)', root_path, class:"btn btn-block btn-outline-primary" %>
+<br>
+<p>
+  <strong>Name:</strong>
+  <%= @vendor.name %>
+</p>
+
+<%= link_to 'Edit', edit_vendor_path(@vendor) %> |
+<%= link_to 'Back', :back %>

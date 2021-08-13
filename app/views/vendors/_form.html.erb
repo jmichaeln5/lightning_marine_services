@@ -1,0 +1,29 @@
+<%= form_with(model: vendor) do |form| %>
+  <% if vendor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(vendor.errors.count, "error") %> prohibited this vendor from being saved:</h2>
+
+      <ul>
+        <% vendor.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <br>
+  <div class="field">
+    <p class="text-3xl">New Vendor's Name</p>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <br>
+  <div class="p-2">
+    <div class="actions btn btn-outline-primary">
+      <%= button_tag(type: 'submit') do %>
+        Add New Vendor
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

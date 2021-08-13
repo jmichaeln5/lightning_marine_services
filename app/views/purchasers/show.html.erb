@@ -1,0 +1,16 @@
+<div class="card p-4">
+  <h1>
+     Ship: <%= @purchaser.name %>
+  </h1>
+
+  <%= link_to 'Edit Ship', edit_purchaser_url(@purchaser) %>
+
+</div>
+
+<br>
+<%= render 'vendors/new_purchaser_vendor_modal', vendor: Vendor.new %>
+<br>
+
+<%#= render 'vendors/index', @vendors: Vendor.all.where(purchaser_id: @purchaser.id) %>
+
+<%#= render partial: "vendors/purchaser_vendors", locals: {vendors: Vendor.all.where(purchaser_id: @purchaser.id)} %>
