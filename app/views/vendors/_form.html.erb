@@ -13,18 +13,8 @@
 
   <br>
   <div class="field">
-    <p class="text-3xl">New Vendor Name</p>
-    <%= form.text_field :name,class: "form-control" %>
-  </div>
-
-  <div class="field">
-    <%= form.hidden_field :user_id, value: current_user.id %>
-  </div>
-
-<br>
-  <div class="field">
-    <p class="text-3xl">Select Purchaser</p>
-    <%= form.select :purchaser_id, Purchaser.all.order(:id).collect { |purchaser| [ purchaser.name, purchaser.id ] }, {}, {class: "form-control"} %>
+    <p class="text-3xl">New Vendor's Name</p>
+    <%= form.text_field :name, class: "form-control" %>
   </div>
 
   <br>

@@ -11,18 +11,16 @@
     </div>
   <% end %>
 
-<br>
+  <br>
   <div class="field">
-    <p class="text-3xl">New Purchaser Name</p>
+    <p class="text-3xl">New Ship's Name</p>
     <%= form.text_field :name, class: "form-control" %>
   </div>
-
-  <%= form.hidden_field :user_id, value: current_user.id %>
   <br>
   <div class="p-2">
     <div class="actions btn btn-outline-primary">
       <%= button_tag(type: 'submit') do %>
-        Add New Purchaser
+        Add New Ship
       <% end %>
     </div>
   </div>

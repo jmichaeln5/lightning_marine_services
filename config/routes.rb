@@ -21,14 +21,29 @@ Rails.application.routes.draw do
 
   resources :users
   resources :purchasers
-  # resources :vendors
-
-  resources :purchasers do
-    resources :vendors
-  end
   resources :vendors
+  resources :orders
+  resources :order_contents
+
+  # resources :orders do
+  #   # resources :details, only: [:index, :new, :create]
+  #   # resources :detail, only: [:index, :new, :create]
+  #   resources :detail
+  # end
+  # # resources :details, only: [:show, :update, :destroy]
+  # resources :detail, only: [:show, :update, :destroy]
 
 
+  # resources :details, :controllers => {
+  #   :registrations => 'users/registrations',
+  #   :sessions => 'users/sessions',
+  #   :passwords => 'users/passwords',
+  #   :confirmations => 'users/confirmations'
+  #  }
+
+  # resources :orders do
+  #   resources :details, shallow: true
+  # end
 
 
 

@@ -1,6 +1,6 @@
 <div class="card p-4">
   <h1>
-    Vendor: <%= @vendor.name %>  
+    Vendor: <%= @vendor.name %>
   <h1>
 </div>
 
@@ -12,15 +12,5 @@
   <%= @vendor.name %>
 </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @vendor.user_id %>
-</p>
-
-<p>
-  <strong>Purchaser:</strong>
-  <%= @vendor.purchaser_id %>
-</p>
-
 <%= link_to 'Edit', edit_vendor_path(@vendor) %> |
-<%= link_to 'Back', vendors_path %>
+<%= link_to 'Back', :back %>
