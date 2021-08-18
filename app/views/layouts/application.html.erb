@@ -20,20 +20,41 @@
   </head>
 
   <body class="bg-indigo-100">
-    <%=render "layouts/nav"%>
+    <%= render "layouts/nav"%>
     <div class="h-screen">
       <!-- <div class=" bg-gray-100 container py-10 text-center"> -->
       <div class=" text-center">
-          <div class="msg-container text-center">
-            <% if notice || alert %>
-            <span class="notice text-green-700 text-2xl"><%= notice %></span>
-            <span class="alert text-red-700 text-2xl"><%= alert %></span>
-            <% end %>
-          </div>
           <div class="px-2 ">
             <div class="container bg-gray-100 p-4">
-            <%= yield %>
-          </div>
+
+              <% if notice || alert %>
+                <div class="msg-container text-center p-4">
+                    <span class="notice text-green-700 text-2xl"><%= notice %></span>
+                    <span class="alert text-red-700 text-2xl"><%= alert %></span>
+                </div>
+              <% end %>
+
+              <%= render "layouts/tabs" if user_signed_in? %>
+
+
+
+              <div class="card p-4 -mt-2">
+                <h1>
+                    <%= yield(:title) %>
+                    <h1><%= current_page? %></h1>
+                    <h1><%= current_page %></h1>
+                    <h1><%= controller_name %></h1>
+                    <h1><%= current_action %></h1>
+
+                    <% if current_action == 'show' %>
+                    <%=  render 'layouts/edit_modal' %>
+                    <% end  %>
+                </h1>
+              </div>
+              <br>
+
+              <%= yield %>
+            </div>
 
           </div>
       </div>

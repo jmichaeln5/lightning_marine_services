@@ -1,14 +1,8 @@
-<div class="card p-4">
-  <h1>
-    All Orders
-  </h1>
-</div>
-<br>
+<% content_for :title, 'All Orders' %>
 
-<%#= render 'orders/new_order_modal' %>
+<%= render 'orders/new_order_modal' %>
 
-<%#= render partial: "orders/form", locals: { order: Order.new } %>
-<%= link_to 'Create New Order', new_order_path, class:'btn btn-outline-primary btn-block' %>
+<%#= link_to 'Create New Order', new_order_path, class:'btn btn-outline-primary btn-block' %>
 
 <br>
 
@@ -18,32 +12,27 @@
   <table>
     <thead>
       <tr>
-
+        <th>  </th>
         <th> Ship </th>
-
         <th> Vendor </th>
-
         <th> PO# </th>
-
         <th> Date Recieved </th>
-
         <th> Courrier </th>
-
         <th> Date Delivered </th>
-
         <th> Contents </th>
-
         <th colspan="3"></th>
       </tr>
     </thead>
 
     <tbody>
-      <% order_count = 0 %>
       <% @orders.each do |order| %>
 
         <tr class="">
-
           <!-- <span class="border border-2 border-green pb-20"> -->
+            <td class="pb-10 px-2">
+              <%= order.id %>
+            </td>
+
             <td class="pb-10 px-2">
               <%= order.purchaser.name %>
             </td>
@@ -69,27 +58,27 @@
             </td>
 
             <td class="pb-10 px-2">
-              <% order.order_contents.each do |content|%>
-                box  <%= content.box ||= "n/a" %>
+              <% if order.order_content.present? %>
+
+                Boxes: <%= order.order_content.box ||= "n/a" %>
                 <br>
-                crate  <%= content.crate ||= "n/a" %>
+                Crates: <%= order.order_content.crate ||= "n/a" %>
                 <br>
-                pallet  <%= content.pallet ||= "n/a" %>
+                Pallets: <%= order.order_content.pallet ||= "n/a" %>
                 <br>
-                other  <%= content.other ||= "n/a" %>
+                Other: <%= order.order_content.other ||= "n/a" %>
                 <br>
-                other_description: hidden  <%#= content.other_description ||= "n/a" %>
+                Other Description: HIDDEN<%#= order.order_content.other_description ||= "n/a" %>
+
               <% end %>
             </td>
-
 
             <td class="pl-4 pb-4 px-2">
               <%= link_to 'Show', order %> |
               <%= link_to 'Edit', edit_order_path(order) %> |
               <%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
-          <!-- </span> -->
-
+            
         </tr>
       <% end %>
     </tbody>
