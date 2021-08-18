@@ -1,8 +1,4 @@
-<div class="card p-4">
-  <h1>
-    Vendor: <%= @vendor.name %>
-  <h1>
-</div>
+<%= content_for :title, "Vendor: #{@vendor.name}"%>
 
 <br>
 <%= link_to 'Add Order (root_path)(non functional)', root_path, class:"btn btn-block btn-outline-primary" %>

@@ -13,15 +13,14 @@
 
   <br>
   <div class="field">
-    <p class="text-3xl">New Vendor's Name</p>
-    <%= form.text_field :name, class: "form-control" %>
+    <%= form.text_field :name, placeholder:'Vendor Name' ,class: "form-control" %>
   </div>
 
   <br>
   <div class="p-2">
     <div class="actions btn btn-outline-primary">
       <%= button_tag(type: 'submit') do %>
-        Add New Vendor
+        Save
       <% end %>
     </div>
   </div>

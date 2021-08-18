@@ -24,7 +24,7 @@ class PurchasersController < ApplicationController
     @purchaser = Purchaser.new(purchaser_params)
     if @purchaser.save
       # Notification.create(recipient: @purchaser.receiver, actor: @purchaser.requestor, action:'test_action', notifiable: @purchaser )
-      redirect_to request.referrer, notice: "Purchaser created successfully."
+      redirect_to request.referrer, notice: "Ship created successfully."
     else
       redirect_to request.referrer
       @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
@@ -34,7 +34,7 @@ class PurchasersController < ApplicationController
   # PATCH/PUT /purchasers/1 or /purchasers/1.json
   def update
     if @purchaser.update(purchaser_params)
-      redirect_to request.referrer, notice: "Purchaser updated successfully."
+      redirect_to request.referrer, notice: "Ship updated successfully."
     else
       redirect_to request.referrer
       @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
@@ -45,7 +45,7 @@ class PurchasersController < ApplicationController
   def destroy
     @purchaser.destroy
     respond_to do |format|
-      format.html { redirect_to purchasers_url, notice: "Purchaser was successfully destroyed." }
+      format.html { redirect_to purchasers_url, notice: "Ship deleted successfully." }
       format.json { head :no_content }
     end
   end

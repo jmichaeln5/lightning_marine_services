@@ -1,0 +1,19 @@
+<ul class="nav nav-tabs">
+
+    <li class="nav-link <%= class_names(active: controller_name == 'dashboard') %>">
+      <%= link_to "Dashboard", dashboard_path %>
+    </li>
+
+    <li class="nav-link  <%= class_names(active: controller_name == 'orders') %>">
+      <%= link_to "Orders", orders_path %>
+    </li>
+
+    <li class="nav-link  <%= class_names(active: controller_name == 'purchasers') %>">
+      <%= link_to "Ships", purchasers_path %>
+    </li>
+
+    <li class="nav-link  <%= class_names(active: controller_name == 'vendors') %>">
+      <%= link_to "Vendors", vendors_path %>
+    </li>
+    
+</ul>
