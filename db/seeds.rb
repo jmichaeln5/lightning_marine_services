@@ -5,6 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+def is_nil_and_zero(data)
+   data.blank? || data == 0
+end
+
 5.times do
   purchaser = Purchaser.create(name: Faker::Book.title.to_s)
 end
@@ -88,7 +93,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
   end
 end
 
-10.times do
+rand(3..10).times do
     # purchaser = Purchaser.create(name: Faker::Book.title)
     purchaser = Purchaser.create(name: Faker::Company.name )
     puts " "
@@ -100,7 +105,23 @@ end
     puts " "
 end
 
-5.times do
+puts " "
+puts " "
+puts "*"*20
+puts "*"*20
+puts "*"*20
+puts " "
+puts "#{Purchaser.all.count} Purchasers(Ships) created."
+puts " "
+puts "*"*20
+puts "*"*20
+puts "*"*20
+puts " "
+puts " "
+
+
+
+rand(1..15).times do
   # vendor = Vendor.create(name: Faker::Book.title)
   vendor = Vendor.create(name: Faker::Company.name )
     puts " "
@@ -112,15 +133,51 @@ end
     puts " "
 end
 
-5.times do
-  order = Order.create( purchaser_id: Purchaser.all.ids.sample, vendor_id: Vendor.all.ids.sample, po_number: Faker::Company.sic_code, date_recieved: Faker::Date.between(from: '2021-01-23', to: '2021-09-25'), courrier: ['Fedex', 'UPS', 'USPS', 'DHL'].sample)
-    puts " "
-    puts "*"*20
-    puts "#{order} created."
-    puts "*"*20
-    puts "#{order.inspect}"
-    puts "*"*20
-    puts " "
+puts " "
+puts " "
+puts "*"*20
+puts "*"*20
+puts "*"*20
+puts " "
+puts "#{Vendor.all.count} Vendors created."
+puts " "
+puts "*"*20
+puts "*"*20
+puts "*"*20
+puts " "
+puts " "
+
+
+rand(60..100).times do
+  order_id = is_nil_and_zero(Order.last) ? 1 : (Order.last.id + 1)
+  order = Order.new
+
+  params =  {order: {"id"=> "#{order_id}", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..10)}", "other_description"=>""}}}
+
+  order.update params[:order]
+
+  puts " "
+  puts "*"*20
+  puts "#{order} created."
+  puts "*"*20
+  puts "#{order.inspect}"
+  puts "#{order.order_content.inspect}"
+  puts "*"*20
+  puts " "
 end
+
+puts " "
+puts " "
+puts "*"*20
+puts "*"*20
+puts "*"*20
+puts " "
+puts "#{Order.all.count} Orders created."
+puts " "
+puts "*"*20
+puts "*"*20
+puts "*"*20
+puts " "
+puts " "
 
 ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }

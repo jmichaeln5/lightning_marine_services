@@ -9,6 +9,7 @@ class VendorsController < ApplicationController
 
   # GET /vendors/1 or /vendors/1.json
   def show
+    @orders = Order.all.where(vendor_id: @vendor.id).order("created_at DESC")
   end
 
   # GET /vendors/new

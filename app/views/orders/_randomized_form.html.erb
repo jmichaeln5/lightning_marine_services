@@ -5,8 +5,6 @@
     <%= f.select :purchaser_id, Purchaser.all.shuffle.collect  { |ship| [ ship.name, ship.id ] }, {}, {class: "form-control"} %>
   </div>
 
-
-
   <div class="field pb-2">
     <p class="text-3xl"> Vendor </p>
     <%= f.select :vendor_id, Vendor.all.shuffle.collect  { |vendor| [ vendor.name, vendor.id ] }, {}, {class: "form-control"} %>
@@ -35,7 +33,6 @@
       <p class="text-2xl"> Date Recieved </p>
       <%= f.date_field :date_recieved, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
     </div>
-
 
     <div class="field pb-2">
       <p class="text-2xl"> Date Delivered </p>
@@ -73,6 +70,5 @@
       <% end %>
     </div>
   </div>
-
 
 <% end %>

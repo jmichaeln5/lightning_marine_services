@@ -7,8 +7,10 @@
   <table>
     <thead>
       <tr>
+        <th class=""></th>
         <th class="py-2">Ship</th>
-        <th colspan="4"></th>
+        <th class="py-2">Orders</th>
+        <th class=""></th>
       </tr>
     </thead>
 
@@ -17,12 +19,19 @@
 
         <tr class="">
 
-            <td class="py-2">
-              Ship Name: <%= purchaser.name %>
-              Ship ID: <%= purchaser.id %>
+          <td class="pb-4 py-2">
+             <%= purchaser.id %>
             </td>
 
-            <td class="">
+            <td class="pb-4 py-2">
+             <%= purchaser.name %>
+            </td>
+
+            <td class="pb-4 py-2">
+              <%= link_to "#{purchaser.orders.count}", purchaser %>
+            </td>
+
+            <td class="pb-4 py-2">
               <%= link_to 'Show', purchaser %> |
               <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
               <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>
