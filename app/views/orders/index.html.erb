@@ -1,4 +1,4 @@
-<% content_for :title, 'All Orders' %>
+<% content_for :title, "All #{@orders.count} Orders" %>
 
 <%= render 'orders/new_order_modal' %>
 
@@ -8,11 +8,11 @@
 
 <%#= render 'orders/index' %>
 
-<div class="card p-2">
+<div class="card p-4">
   <table>
     <thead>
       <tr>
-        <th>  </th>
+        <th> OrderID</th>
         <th> Ship </th>
         <th> Vendor </th>
         <th> PO# </th>
@@ -20,7 +20,6 @@
         <th> Courrier </th>
         <th> Date Delivered </th>
         <th> Contents </th>
-        <th colspan="3"></th>
       </tr>
     </thead>
 
@@ -29,35 +28,35 @@
 
         <tr class="">
           <!-- <span class="border border-2 border-green pb-20"> -->
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <%= order.id %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <%= order.po_number ||= "n/a" %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <%= order.courrier ||= "n/a" %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-10">
               <% if order.order_content.present? %>
 
                 <%= link_to(order_path(order)) do %>
@@ -79,11 +78,6 @@
               <% end %>
             </td>
 
-            <td class="pl-4 pb-4 px-2">
-              <%= link_to 'Show', order %> |
-              <%= link_to 'Edit', edit_order_path(order) %> |
-              <%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
 
         </tr>
       <% end %>
