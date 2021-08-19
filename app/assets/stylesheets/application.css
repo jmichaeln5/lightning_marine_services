@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+  /* font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; */
+  /* font-family:  sans-serif; */
+	/* font-weight: 350; */
+}

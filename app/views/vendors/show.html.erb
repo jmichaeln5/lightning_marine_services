@@ -1,14 +1,6 @@
 <% content_for :title, "Vendor: #{@vendor.name}" %>
 <% content_for :order_number, "#{@orders.count} Orders" %>
 
-<br>
-<%= link_to 'Edit Vendor', edit_vendor_url(@vendor) %>
-<br>
-
-<br>
-<%= link_to 'Add Order', '#', class:"btn btn-outline-primary btn-block" %>
-<br>
-
 <div class="card p-2">
   <table>
     <thead>

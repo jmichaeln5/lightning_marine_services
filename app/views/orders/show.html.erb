@@ -1,14 +1,8 @@
 <% content_for :title, "Ship: #{@order.purchaser.name}" %>
 <% content_for :order_number, "Order: #{@order.id}" %>
 
-<br>
-<%= link_to 'Edit Order', edit_order_url(@order) %>
-<br>
-
-<br>
 <%= link_to 'Add Order', '#', class:"btn btn-outline-primary btn-block" %>
 <br>
-
 <div class="card p-2">
   <table>
     <thead>
