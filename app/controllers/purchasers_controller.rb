@@ -9,6 +9,7 @@ class PurchasersController < ApplicationController
 
   # GET /purchasers/1 or /purchasers/1.json
   def show
+    @orders = Order.all.where(purchaser_id: @purchaser.id).order("created_at DESC")
   end
 
   # GET /purchasers/new

@@ -38,15 +38,22 @@
 
               <div class="card p-4 -mt-2">
                 <h1>
-                    <%= yield(:title) %>
-                    <h1><%= current_page? %></h1>
+                    <!-- <h1><%= current_page? %></h1>
                     <h1><%= current_page %></h1>
                     <h1><%= controller_name %></h1>
-                    <h1><%= current_action %></h1>
-
+                    <h1><%= current_action %></h1> -->
+                    <%= yield(:title) %>
+                    
                     <% if current_action == 'show' %>
-                    <%=  render 'layouts/edit_modal' %>
+                        <br>
+                        <% if current_controller == 'orders' %>
+                          <%= yield(:order_number) %>
+                          <br>
+                        <% end  %>
+                        <%=  render 'layouts/edit_modal' %>
                     <% end  %>
+
+
                 </h1>
               </div>
               <br>
