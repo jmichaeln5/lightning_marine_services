@@ -1,4 +1,4 @@
-<% content_for :title, 'All Vendors' %>
+<% content_for :title, "All #{@vendors.count} Vendors" %>
 
 <%= render 'vendors/new_vendor_modal', vendor: Vendor.new %>
 <br>
@@ -6,7 +6,7 @@
   <table>
     <thead>
       <tr>
-        <th class=""></th>
+        <th class="">Vendor ID</th>
         <th class="py-2">Vendor</th>
         <th class="py-2">Orders</th>
         <th class=""></th>
@@ -26,7 +26,7 @@
 
 
           <td class="pb-4 py-2">
-            Vendor Name: <%= vendor.name %>
+            <%= vendor.name %>
           </td>
 
 

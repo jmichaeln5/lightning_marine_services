@@ -1,4 +1,4 @@
-<% content_for :title, 'All Ships' %>
+<% content_for :title, "All #{@purchasers.count} Ships" %>
 
 <%= render 'purchasers/new_purchaser_modal', purchaser: Purchaser.new %>
 <br>
@@ -7,7 +7,7 @@
   <table>
     <thead>
       <tr>
-        <th class=""></th>
+        <th class="">Ship ID</th>
         <th class="py-2">Ship</th>
         <th class="py-2">Orders</th>
         <th class=""></th>
