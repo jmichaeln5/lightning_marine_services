@@ -55,11 +55,8 @@
   <h1> Order Contents</h1>
 
   <%#= render 'orders/order_contents_form', contents: @contents%>
-
-  <%#= f.fields_for :order_contents do |p| %>
-  <%#= f.fields_for @order.order_contents.build do |p| %>
-  <%#= f.fields_for @order.order_contents.build do |p| %>
-  <%= f.fields_for :order_content, @order.order_content do |p| %>
+    <%= f.fields_for :order_content, @order.order_content do |p| %>
+    <%#= f.fields_for :order_content, @order.order_content.build do |p| %>
 
     <div class="field pb-2">
       <%= p.label'Boxes', class:"text-2xl" %>
