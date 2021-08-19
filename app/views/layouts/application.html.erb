@@ -21,11 +21,13 @@
 
   <body class="bg-indigo-100">
     <%= render "layouts/nav"%>
+
+    <div class="container">
     <div class="h-screen">
       <!-- <div class=" bg-gray-100 container py-10 text-center"> -->
       <div class=" text-center">
-          <div class="px-2 ">
-            <div class="container bg-gray-100 p-4">
+          <div class="">
+            <div class="px-4 bg-gray-100 ">
 
               <% if notice || alert %>
                 <div class="msg-container text-center p-4">
@@ -33,36 +35,40 @@
                     <span class="alert text-red-700 text-2xl"><%= alert %></span>
                 </div>
               <% end %>
-
+              <br>
               <%= render "layouts/tabs" if user_signed_in? %>
 
-              <div class="card p-4 -mt-2">
-                <h1>
+              <div class="card p-4 -mt-4">
                     <!-- <h1><%= current_page? %></h1>
                     <h1><%= current_page %></h1>
                     <h1><%= controller_name %></h1>
                     <h1><%= current_action %></h1> -->
+                  <div class="text-5xl">
                     <%= yield(:title) %>
-                    <% if current_action == 'show' %>
-                        <br>
-                        <% if current_controller == 'orders' %>
-                          <%= yield(:order_number) %>
-                          <br>
-                        <% end  %>
+                  </div>
+                   <% if current_action == 'show' %>
+                          <%# if current_controller == 'orders' %>
+                            <% if @orders != false %>
+                              <div class="text-5xl">
+                                <%= yield(:order_number) %>
+                              </div>
+
+                            <% end  %>
+                          <%# end  %>
                         <%=  render 'layouts/edit_modal' %>
                     <% end  %>
-
-
                 </h1>
               </div>
               <br>
-
+              <!-- App -->
               <%= yield %>
+              <br>
             </div>
 
           </div>
       </div>
   </div>
+</div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

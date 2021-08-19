@@ -10,14 +10,6 @@ def is_nil_and_zero(data)
    data.blank? || data == 0
 end
 
-5.times do
-  purchaser = Purchaser.create(name: Faker::Book.title.to_s)
-end
-
-5.times do
-  vendor = Vendor.create(name: Faker::Book.title.to_s)
-end
-
 
 if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count < 5) )
 # if (User.all.count < 1) && (User.all.count < 5)
@@ -71,7 +63,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
   puts "*"*20
   puts " "
 
-  (3..5).each do |id|
+  (3..20).each do |id|
       user = User.new(
           id: id,
           first_name: 'User',
@@ -93,9 +85,9 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
   end
 end
 
-rand(3..10).times do
+rand(15..30).times do
     # purchaser = Purchaser.create(name: Faker::Book.title)
-    purchaser = Purchaser.create(name: Faker::Company.name )
+    purchaser = Purchaser.create(name: Faker::Company.unique.name )
     puts " "
     puts "*"*20
     puts "#{purchaser} created."
@@ -121,9 +113,9 @@ puts " "
 
 
 
-rand(1..15).times do
+rand(7..15).times do
   # vendor = Vendor.create(name: Faker::Book.title)
-  vendor = Vendor.create(name: Faker::Company.name )
+  vendor = Vendor.create(name: Faker::Company.unique.name )
     puts " "
     puts "*"*20
     puts "#{vendor} created."
@@ -148,11 +140,11 @@ puts " "
 puts " "
 
 
-rand(60..100).times do
+rand(80..150).times do
   order_id = is_nil_and_zero(Order.last) ? 1 : (Order.last.id + 1)
   order = Order.new
 
-  params =  {order: {"id"=> "#{order_id}", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..10)}", "other_description"=>""}}}
+  params =  {order: {"id"=> "#{order_id}", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..5)}", "other_description"=>""}}}
 
   order.update params[:order]
 

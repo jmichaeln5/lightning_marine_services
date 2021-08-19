@@ -23,29 +23,6 @@ Rails.application.routes.draw do
   resources :purchasers
   resources :vendors
   resources :orders
-  resources :order_contents
-
-  # resources :orders do
-  #   # resources :details, only: [:index, :new, :create]
-  #   # resources :detail, only: [:index, :new, :create]
-  #   resources :detail
-  # end
-  # # resources :details, only: [:show, :update, :destroy]
-  # resources :detail, only: [:show, :update, :destroy]
-
-
-  # resources :details, :controllers => {
-  #   :registrations => 'users/registrations',
-  #   :sessions => 'users/sessions',
-  #   :passwords => 'users/passwords',
-  #   :confirmations => 'users/confirmations'
-  #  }
-
-  # resources :orders do
-  #   resources :details, shallow: true
-  # end
-
-
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

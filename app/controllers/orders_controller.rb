@@ -29,9 +29,6 @@ class OrdersController < ApplicationController
     @order.build_order_content if @order.order_content.nil?
   end
 
-
-
-
   def create
     @order = Order.new order_params
     if @order.save
@@ -42,20 +39,7 @@ class OrdersController < ApplicationController
     end
   end
 
-
-
-
-
-
   def update
-    # byebug
-
-    # order_content = OrderContent.find(params[:id])
-    # @order = Order.find(params[:id])
-
-    # @order.check_attributes=(@order.attributes)
-    # @order.check_attributes=(@order.order_content.attributes)
-    # byebug
     @order = Order.find(params[:id])
     if @order.update(order_params)
       redirect_to request.referrer, notice: "Order Updated Successfully."
@@ -64,32 +48,6 @@ class OrdersController < ApplicationController
       @order.errors.full_messages.each.map {|message| flash[:alert] = message }
     end
   end
-
-
-
-
-
-
-  # # PATCH/PUT /orders/1 or /orders/1.json
-  # def update
-  #   # byebug
-  #   # order_content = OrderContent.find(params[:id])
-  #   # @order = Order.find(params[:id])
-  #   # @order.check_attributes=(@order.attributes)
-  #   # @order.check_attributes=(@order.order_content.attributes)
-  #   # byebug
-  #   @order = Order.find(params[:id])
-  #   # @order_content = @order.order_content
-  #   respond_to do |format|
-  #     if @order.update_attributes(update_order_params)
-  #       format.html { redirect_to @order, notice: "Order was successfully updated." }
-  #       format.json { render :show, status: :ok, location: @order }
-  #     else
-  #       format.html { render :edit, status: :unprocessable_entity }
-  #       format.json { render json: @order.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
 
   # DELETE /orders/1 or /orders/1.json
   def destroy
@@ -107,22 +65,8 @@ class OrdersController < ApplicationController
       @order_content = @order.order_content
     end
 
-    # Only allow a list of trusted parameters through.
-    # def order_params
-    #   params.require(:order).permit( :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content_attributes: [ :order_id, :box, :crate, :pallet, :other, :other_description])
-    # end
-    #
-
     def order_params
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
     end
 
-
-    # def update_order_params
-    #   params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content_attributes: [:id, :order_id, :box, :crate, :pallet, :other, :other_description])
-    # end
-
-    # def order_content_params
-    #   params.require(:order).permit(:purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content: [:order_id, :box, :crate, :pallet, :other, :other_description])
-    # end
 end

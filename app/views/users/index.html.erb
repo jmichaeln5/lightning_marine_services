@@ -1,3 +1,6 @@
+<% content_for :title, "All #{@users.count} Users" %>
+
+
 Users Index
 
 <%= render partial: "user", collection: @users %>

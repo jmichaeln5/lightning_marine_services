@@ -1,4 +1,5 @@
 <% content_for :title, "Ship: #{@purchaser.name}" %>
+<% content_for :order_number, "#{@orders.count} Orders" %>
 
 <br>
 <%= link_to 'Edit Ship', edit_purchaser_url(@purchaser) %>
