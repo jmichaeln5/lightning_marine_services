@@ -1,13 +1,13 @@
 <% content_for :title, "All #{@vendors.count} Vendors" %>
 
-<div class="card p-2">
+<div class="card p-4">
   <table>
     <thead>
       <tr>
-        <th class="">Vendor ID</th>
+        <th class="py-2">Vendor ID</th>
         <th class="py-2">Vendor</th>
         <th class="py-2">Orders</th>
-        <th class=""></th>
+        <!-- <th class=""></th> -->
         <!-- <th colspan="3"></th> -->
       </tr>
     </thead>
@@ -32,11 +32,11 @@
            <%= link_to "#{vendor.orders.count}", vendor %>
           </td>
 
-          <td class="pb-4 py-2">
+          <!-- <td class="pb-4 py-2">
             <%= link_to 'Show', vendor %> |
             <%= link_to 'Edit', edit_vendor_path(vendor) %> |
             <%= link_to 'Destroy', vendor, method: :delete, data: { confirm: 'Are you sure?' } %>
-          </td>
+          </td> -->
         </tr>
       <% end %>
     </tbody>

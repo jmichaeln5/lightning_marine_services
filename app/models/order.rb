@@ -2,7 +2,7 @@ class Order < ApplicationRecord
   belongs_to :purchaser
   belongs_to :vendor
 
-  has_one :order_content
+  has_one :order_content, dependent: :destroy
 
   accepts_nested_attributes_for :order_content
 

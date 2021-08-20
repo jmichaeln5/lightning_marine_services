@@ -20,7 +20,6 @@
       <% @orders.each do |order| %>
 
         <tr class="">
-          <!-- <span class="border border-2 border-green pb-20"> -->
             <td class="pb-10 px-2">
               <%= order.id %>
             </td>
@@ -65,12 +64,6 @@
 
                 <% end %>
               <% end %>
-            </td>
-
-            <td class="pl-4 pb-4 px-2">
-              <%= link_to 'Show', order %> |
-              <%= link_to 'Edit', edit_order_path(order) %> |
-              <%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %>
             </td>
 
         </tr>

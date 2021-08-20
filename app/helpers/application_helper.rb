@@ -25,4 +25,22 @@ module ApplicationHelper
     ['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? current_controller
   end
 
+  def show_create_order_on_purchaser_and_order?
+    if ((current_page == 'purchasers#show' ) || (current_page == 'vendors#show'))
+      true
+    else
+      nil
+    end
+  end
+
+  def get_resource_instance(controller_name)
+    if (main_functionality_controller? == true) && (action_name == 'show')
+      # return controller_name.capitalize.singularize.find(params[:id])
+      klass = Object.const_get "#{controller_name.singularize.capitalize}"
+      klass.find(params[:id])
+    end
+  end
+
+
+
 end

@@ -25,67 +25,59 @@
     <div class="container">
       <div class="h-screen">
         <div class=" text-center">
-            <div class="">
-              <div class="px-4 bg-gray-100 ">
+              <div class="p-4 bg-gray-100 ">
 
-                <% if notice || alert %>
-                  <div class="msg-container text-center p-4">
-                    <span class="notice text-green-700 text-2xl"><%= notice %></span>
-                    <span class="alert text-red-700 text-2xl"><%= alert %></span>
+                <%= render "layouts/flash_messages" %>
+
+                <% if user_signed_in? %>
+
+                  <%= render "layouts/tabs" %>
+                  <!-- Header Card -->
+                  <div class="card p-4 -mt-4">
+
+                    <div class="text-4xl">
+                      <%= yield(:title) %>
+                    </div>
+
+                    <% if @orders != false %>
+                      <div class="text-4xl">
+                        <%= yield(:order_number) %>
+                      </div>
+                    <% end  %>
+
+                    <!-- For edit resource on #show Controller Actions  -->
+                    <%= render 'layouts/edit_toggle' %>
                   </div>
+
+                  <!-- For new resource on #index Controller Actions  -->
+                  <%= render 'layouts/new_modal' %>
+
+                  <!-- For new Order on #show Controller Actions  -->
+                  <%= render 'shared/new_order_on_show_modal' %>
+
                 <% end %>
 
-                <br>
-                <%= render "layouts/tabs" if user_signed_in? %>
-
-                <div class="card p-4 -mt-4">
-                  <div class="text-5xl">
-                    <%= yield(:title) %>
-                  </div>
-
-                  <% if @orders != false %>
-                    <div class="text-4xl">
-                      <%= yield(:order_number) %>
-                    </div>
-                  <% end  %>
-
-                  <%= render 'layouts/edit_toggle' %>
-                </div>
-
-                <%= render 'layouts/new_modal' %>
-                <br>
-
-
-
-                <!-- <div class="card p-4" style="width: 100%; height:20%">
-                  <p class="text-2xl"> current_page <span class="text-xl"> <%= current_page %> </span> </p>
-                  <p class="text-2xl"> main_functionality_controller? <span class="text-xl"> <%= main_functionality_controller? %> </span> </p>
-                  <p class="text-2xl"> controller_name <span class="text-xl"> <%= controller_name %> </span> </p>
-                  <p class="text-2xl"> current_controller <span class="text-xl"> <%= current_controller %> </span> </p>
-                  <p class="text-2xl"> current_action <span class="text-xl"> <%= current_action %> </span> </p>
-                </div> -->
-
-                <!-- App -->
-                <!-- App -->
                 <!-- App -->
                 <%= yield %>
                 <br>
               </div>
 
-            </div>
         </div>
       </div>
     </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
     <script type="text/javascript">
 
       setTimeout(function(){
-        $('.msg-container').fadeOut().remove();
+        $('.notice-msg-container').fadeOut().remove();
       }, 3000);
 
-      // $(".msg-container").delay(4000).fadeOut().remove();
+      setTimeout(function(){
+        $('.alert-msg-container').fadeOut().remove();
+      }, 10000);
 
     </script>
   </body>

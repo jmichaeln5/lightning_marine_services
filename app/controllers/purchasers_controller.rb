@@ -11,6 +11,9 @@ class PurchasersController < ApplicationController
   # GET /purchasers/1 or /purchasers/1.json
   def show
     @orders = Order.all.where(purchaser_id: @purchaser.id).order("created_at DESC")
+    @order = Order.new
+    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+
   end
 
   # GET /purchasers/new
@@ -25,7 +28,6 @@ class PurchasersController < ApplicationController
   def create
     @purchaser = Purchaser.new(purchaser_params)
     if @purchaser.save
-      # Notification.create(recipient: @purchaser.receiver, actor: @purchaser.requestor, action:'test_action', notifiable: @purchaser )
       redirect_to request.referrer, notice: "Ship created successfully."
     else
       redirect_to request.referrer
@@ -45,10 +47,11 @@ class PurchasersController < ApplicationController
 
   # DELETE /purchasers/1 or /purchasers/1.json
   def destroy
-    @purchaser.destroy
-    respond_to do |format|
-      format.html { redirect_to purchasers_url, notice: "Ship deleted successfully." }
-      format.json { head :no_content }
+    if @purchaser.destroy
+      redirect_to dashboard_path, notice: "#{@purchaser.name}(Ship) deleted successfully."
+    else
+      redirect_to request.referrer
+      @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
     end
   end
 

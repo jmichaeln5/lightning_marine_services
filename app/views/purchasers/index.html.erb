@@ -1,13 +1,13 @@
 <% content_for :title, "All #{@purchasers.count} Ships" %>
 
-<div class="card p-2">
+<div class="card p-4">
   <table>
     <thead>
       <tr>
         <th class="">Ship ID</th>
         <th class="py-2">Ship</th>
         <th class="py-2">Orders</th>
-        <th class=""></th>
+        <!-- <th class=""></th> -->
       </tr>
     </thead>
 
@@ -15,24 +15,24 @@
       <% @purchasers.each do |purchaser| %>
 
         <tr class="">
-
-          <td class="pb-4 py-2">
-             <%= purchaser.id %>
+            <td class="pb-4 py-2">
+              <%= purchaser.id %>
             </td>
 
             <td class="pb-4 py-2">
              <%= purchaser.name %>
             </td>
 
+
             <td class="pb-4 py-2">
               <%= link_to "#{purchaser.orders.count}", purchaser %>
             </td>
 
-            <td class="pb-4 py-2">
+            <!-- <td class="pb-4 py-2">
               <%= link_to 'Show', purchaser %> |
               <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
               <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
+            </td> -->
 
         </tr>
 

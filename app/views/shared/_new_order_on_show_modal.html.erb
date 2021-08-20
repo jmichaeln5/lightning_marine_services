@@ -1,0 +1,43 @@
+<%# if  (main_functionality_controller?) && (current_action == 'show') %>
+<% if (show_create_order_on_purchaser_and_order? == true)%>
+  <div class="py-4">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#newOrderModalforVendorOrShip">
+      Add New Order ( shared/new_order_on_show_modal )
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="newOrderModalforVendorOrShip" tabindex="-1" role="dialog" aria-labelledby="newOrderModalforVendorOrShipLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="newOrderModalforVendorOrShipLabel">
+            Add Order
+          </h5>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="text-4xl font-semibold">
+            Add New Order
+          </div>
+          <hr>
+          <%= render partial: "orders/form" %>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<% end  %>

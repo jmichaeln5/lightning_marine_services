@@ -8,11 +8,12 @@ class OrdersController < ApplicationController
     @orders = Order.all.order("created_at DESC")
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    # order_content = OrderContent.new
   end
 
   # GET /orders/1 or /orders/1.json
   def show
+    @new_order = Order.new
+    @new_order_content = @new_order != nil ? @new_order.build_order_content : OrderContent.new
   end
 
   # GET /orders/new
@@ -24,15 +25,15 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
-    # byebug
     @order = Order.find(params[:id])
     @order.build_order_content if @order.order_content.nil?
   end
 
   def create
+
     @order = Order.new order_params
     if @order.save
-      redirect_to request.referrer, notice: "Order Created Successfully."
+      redirect_to order_path(@order), notice: "Order Created Successfully."
     else
       redirect_to request.referrer
       @order.errors.full_messages.each.map {|message| flash[:alert] = message }
@@ -53,7 +54,7 @@ class OrdersController < ApplicationController
   def destroy
     @order.destroy
     respond_to do |format|
-      format.html { redirect_to orders_url, notice: "Order was successfully destroyed." }
+      format.html { redirect_to orders_url, notice: "Order deleted successfully." }
       format.json { head :no_content }
     end
   end
