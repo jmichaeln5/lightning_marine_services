@@ -1,6 +1,4 @@
 <% if (main_functionality_controller? == true) && (current_action == 'show') %>
-
-
   <div class="container p-2">
     <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
       <%= "Edit #{current_controller.capitalize.singularize}" %>
@@ -16,10 +14,7 @@
       </div>
       <hr>
 
-      <%#= get_resource_instance(controller_name).inspect %>
-
       <% form_path = "#{controller_name}/form".to_s %>
-
       <%= render form_path %>
 
       <div class="container">
@@ -27,21 +22,8 @@
         <span class="pt-4">
           <%= link_to 'Delete', get_resource_instance(controller_name), method: :delete, data: { confirm: "Are you sure you want to delete this #{current_controller.singularize}? Once deleted this cannot be undone." }, class:'btn btn-sm btn-outline-danger' %>
         </span>
-
       </div>
-
-
-
-      <%# case current_controller %>
-      <%# when 'purchasers' %>
-        <%#= render "purchasers/form", purchaser: @purchaser %>
-      <%# when 'vendors' %>
-        <%#= render "vendors/form", vendor: @vendor %>
-      <%# when 'orders' %>
-        <%#= render "orders/form", order: @order %>
-      <%# end %>
 
     </div>
   </div>
-
 <% end %>

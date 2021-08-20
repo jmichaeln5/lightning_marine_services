@@ -22,43 +22,44 @@
   <body class="bg-indigo-100 ">
     <%= render "layouts/nav"%>
 
-    <div class="container">
+    <div class="">
       <div class="h-screen">
         <div class=" text-center">
-              <div class="p-4 bg-gray-100 ">
+              <div class="">
 
                 <%= render "layouts/flash_messages" %>
 
                 <% if user_signed_in? %>
+                  <div class="container pt-20">
 
-                  <%= render "layouts/tabs" %>
-                  <!-- Header Card -->
-                  <div class="card p-4 -mt-4">
-
-                    <div class="text-4xl">
-                      <%= yield(:title) %>
-                    </div>
-
-                    <% if @orders != false %>
-                      <div class="text-4xl">
-                        <%= yield(:order_number) %>
+                      <%= render "layouts/tabs" %>
+                      <!-- Header Card -->
+                      <div class="card p-4 -mt-4">
+                        <div class="text-4xl">
+                          <%= yield(:title) %>
+                        </div>
+                        <!-- Order ID/Count -->
+                        <% if @orders != false %>
+                          <div class="text-4xl">
+                            <%= yield(:order_number) %>
+                          </div>
+                        <% end  %>
+                        <!-- For edit resource on #show Controller Actions  -->
+                        <%= render 'layouts/edit_toggle' %>
                       </div>
-                    <% end  %>
-
-                    <!-- For edit resource on #show Controller Actions  -->
-                    <%= render 'layouts/edit_toggle' %>
+                      <!-- For new resource on #index Controller Actions  -->
+                      <%= render 'layouts/new_modal' %>
+                      <!-- For new Order on #show Controller Actions  -->
+                      <%= render 'shared/new_order_on_show_modal' %>
                   </div>
-
-                  <!-- For new resource on #index Controller Actions  -->
-                  <%= render 'layouts/new_modal' %>
-
-                  <!-- For new Order on #show Controller Actions  -->
-                  <%= render 'shared/new_order_on_show_modal' %>
 
                 <% end %>
 
                 <!-- App -->
-                <%= yield %>
+                <div class="container">
+                  <%= yield %>
+
+                </div>
                 <br>
               </div>
 

@@ -13,7 +13,6 @@ module ApplicationHelper
   end
 
   def current_controller
-    # current_page = "#{controller_name}"
     controller_name == 'purchasers' ? 'ships' : "#{controller_name}"
   end
 
@@ -33,14 +32,12 @@ module ApplicationHelper
     end
   end
 
+  # Used in app/views/layouts/_edit_toggle.html.erb to get Model Instance on #show action
   def get_resource_instance(controller_name)
     if (main_functionality_controller? == true) && (action_name == 'show')
-      # return controller_name.capitalize.singularize.find(params[:id])
       klass = Object.const_get "#{controller_name.singularize.capitalize}"
       klass.find(params[:id])
     end
   end
-
-
 
 end
