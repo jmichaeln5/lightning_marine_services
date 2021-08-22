@@ -1,13 +1,18 @@
 <% if (main_functionality_controller? == true) && (current_action == 'show') %>
   <div class="container p-2">
-    <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseEditToggle" aria-expanded="false" aria-controls="collapseEditToggle">
       <%= "Edit #{current_controller.capitalize.singularize}" %>
     </button>
   </div>
 
-  <div class="collapse multi-collapse" id="collapseExample">
+  <div class="collapse " id="collapseEditToggle">
     <br>
     <div class="card card-body">
+      <div class="">
+        <button class="btn btn-outline-secondary float-right" type="button" data-toggle="collapse" data-target="#collapseEditToggle" aria-expanded="false" aria-controls="collapseEditToggle">
+          x
+        </button>
+      </div>
       <div class="text-4xl font-semibold">
         Edit <%= "#{current_controller.capitalize.singularize}" %>
         <%= "Name" unless current_controller == 'orders' %>

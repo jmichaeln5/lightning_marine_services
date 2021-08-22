@@ -63,7 +63,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
   puts "*"*20
   puts " "
 
-  (3..20).each do |id|
+  (3..5).each do |id|
       user = User.new(
           id: id,
           first_name: 'User',
@@ -140,23 +140,58 @@ puts " "
 puts " "
 
 
-rand(80..150).times do
-  order_id = is_nil_and_zero(Order.last) ? 1 : (Order.last.id + 1)
-  order = Order.new
+if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.count < 5) )
+  @order = Order.new
 
-  params =  {order: {"id"=> "#{order_id}", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..5)}", "other_description"=>""}}}
+  params =  {order: {"id"=> "1", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..5)}", "other_description"=>""}}}
 
-  order.update params[:order]
+  @order.update(params[:order])
+  @order.save
 
-  puts " "
-  puts "*"*20
-  puts "#{order} created."
-  puts "*"*20
-  puts "#{order.inspect}"
-  puts "#{order.order_content.inspect}"
-  puts "*"*20
-  puts " "
+  random_order_count = rand(80..150)
+
+  (2..random_order_count).each do |id|
+  # rand(80..150).times do
+    order = Order.new(
+      id: id,
+      purchaser_id: "#{Purchaser.all.ids.sample}",
+      vendor_id: "#{Vendor.all.ids.sample}",
+      dept:"",
+      po_number: "#{Faker::Company.sic_code}",
+      courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
+      date_recieved:"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}"
+    )
+
+    order.build_order_content(
+      id: id,
+      order_id: id,
+      box: "#{rand(0..29)}",
+      crate:"#{rand(0..25)}",
+      pallet:"#{rand(0..10)}",
+      other:"#{rand(0..5)}",
+    )
+
+    order.save
+
+    # byebug
+
+    puts " "
+    puts "*"*20
+    puts "#{order} created."
+    puts "*"*20
+    puts "#{order.inspect}"
+    puts "#{order.order_content.inspect}"
+    puts "*"*20
+    puts " "
+
+    # puts "#{order_id}"
+
+  end
+
+
 end
+
+
 
 puts " "
 puts " "

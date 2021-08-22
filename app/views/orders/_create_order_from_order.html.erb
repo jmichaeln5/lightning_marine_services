@@ -1,5 +1,4 @@
-<%= form_for @new_order, url: {action: "create"}, params: { test_params: "testing"} do |f| %>
-<%#= form_for @new_order do |f| %>
+<%= form_for @new_order, url: {action: "create"} do |f| %>
   <div class="field">
     <p class="text-3xl"> Ship </p>
     <% if @purchaser.present? %>
@@ -67,7 +66,6 @@
       <%= p.label 'Other', class:"text-2xl" %>
       <%= p.number_field :other, class: 'form-control' %>
     </div>
-
 
     <div class="field pb-2">
       <%= p.label 'Description', class:"text-2xl" %>

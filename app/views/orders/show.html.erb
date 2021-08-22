@@ -1,5 +1,9 @@
-<% content_for :title, "Ship: #{@order.purchaser.name}" %>
-<% content_for :order_number, "Order: #{@order.id}" %>
+<% content_for :title do %>
+  Ship: <%= link_to "#{@order.purchaser.name}", purchaser_path(@order.purchaser)  %>
+<% end %>
+
+
+<% content_for :order_number, "Order ID: #{@order.id}" %>
 
 <div class="card p-2">
   <table>

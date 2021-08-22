@@ -35,6 +35,7 @@ class OrdersController < ApplicationController
     if @order.save
       redirect_to order_path(@order), notice: "Order Created Successfully."
     else
+      # byebug
       redirect_to request.referrer
       @order.errors.full_messages.each.map {|message| flash[:alert] = message }
     end

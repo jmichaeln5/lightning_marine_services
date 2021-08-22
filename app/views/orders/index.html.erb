@@ -1,19 +1,17 @@
 <% content_for :title, "All #{@orders.count} Orders" %>
 
 <div class="card p-4">
-  <table>
+  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
-        <th> OrderID</th>
-        <th> Ship </th>
-        <th> Vendor </th>
-        <th> PO# </th>
-        <th> Date Recieved </th>
-        <th> Courrier </th>
-        <th> Date Delivered </th>
-        <th> Contents </th>
-        <th colspan="1"></th>
-
+        <th class="py-2"> OrderID</th>
+        <th class="py-2"> Ship </th>
+        <th class="py-2"> Vendor </th>
+        <th class="py-2"> PO# </th>
+        <th class="py-2"> Date Recieved </th>
+        <th class="py-2"> Courrier </th>
+        <th class="py-2"> Date Delivered </th>
+        <th class="py-2"> Contents </th>
       </tr>
     </thead>
 
@@ -39,7 +37,7 @@
             </td>
 
             <td class="pb-10">
-              <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
+              <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
             </td>
 
             <td class="pb-10">

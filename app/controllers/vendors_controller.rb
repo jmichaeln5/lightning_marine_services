@@ -6,6 +6,9 @@ class VendorsController < ApplicationController
   def index
     @vendors = Vendor.all.order("created_at DESC")
     @vendor = Vendor.new
+    @orders = Order.all
+    @orders.where(vendor_id: @vendors.ids)
+
   end
 
   # GET /vendors/1 or /vendors/1.json

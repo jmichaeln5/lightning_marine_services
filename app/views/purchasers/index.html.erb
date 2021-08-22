@@ -1,10 +1,10 @@
 <% content_for :title, "All #{@purchasers.count} Ships" %>
 
 <div class="card p-4">
-  <table>
+  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
-        <th class="">Ship ID</th>
+        <th class="py-2">Ship ID</th>
         <th class="py-2">Ship</th>
         <th class="py-2">Orders</th>
         <!-- <th class=""></th> -->
@@ -15,20 +15,20 @@
       <% @purchasers.each do |purchaser| %>
 
         <tr class="">
-            <td class="pb-4 py-2">
+            <td class="py-4">
               <%= purchaser.id %>
             </td>
 
-            <td class="pb-4 py-2">
+            <td class="py-4">
              <%= purchaser.name %>
             </td>
 
 
-            <td class="pb-4 py-2">
+            <td class="py-4">
               <%= link_to "#{purchaser.orders.count}", purchaser %>
             </td>
 
-            <!-- <td class="pb-4 py-2">
+            <!-- <td class="py-4">
               <%= link_to 'Show', purchaser %> |
               <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
               <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>

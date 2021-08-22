@@ -30,7 +30,7 @@
                 <%= render "layouts/flash_messages" %>
 
                 <% if user_signed_in? %>
-                  <div class="container pt-20">
+                  <div class="container pt-4">
 
                       <%= render "layouts/tabs" %>
                       <!-- Header Card -->
@@ -54,15 +54,28 @@
                   </div>
 
                 <% end %>
-
+                <!-- App -->
+                <!-- App -->
                 <!-- App -->
                 <div class="container">
-                  <%= yield %>
+                  <% if (main_functionality_controller? == true) %>
+                  <%#= render 'layouts/tab_table_options' %>
+                  <%= render 'shared/index_table' if current_action == 'index' %>
+                  <%= render 'shared/show_table' if show_create_order_on_purchaser_and_vendor? %>
 
+                  <% end  %>
+                  <%= yield unless (show_create_order_on_purchaser_and_vendor?) || (index_action_purchaser_and_vendor?) %>
+                  <%#= yield unless view_on_main_functionality_controllers? %>
                 </div>
-                <br>
-              </div>
 
+
+                <% if (main_functionality_controller? == true) %>
+                  <div class="p-2">
+                    <%= link_to "Back", :back, class:"btn btn-primary" %>
+                  </div>
+                <% end  %>
+
+              </div>
         </div>
       </div>
     </div>

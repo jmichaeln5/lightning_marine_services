@@ -6,6 +6,8 @@ class PurchasersController < ApplicationController
   def index
     @purchasers = Purchaser.all.order("created_at DESC")
     @purchaser = Purchaser.new
+    @orders = Order.all
+    @orders.where(purchaser_id: @purchasers.ids)
   end
 
   # GET /purchasers/1 or /purchasers/1.json

@@ -1,7 +1,7 @@
 <% content_for :title, "All #{@vendors.count} Vendors" %>
 
 <div class="card p-4">
-  <table>
+  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
         <th class="py-2">Vendor ID</th>
@@ -13,26 +13,24 @@
     </thead>
 
     <tbody>
-      <% vendor_count = 0 %>
       <% @vendors.each do |vendor| %>
-
         <tr class="">
 
-          <td class="pb-4 py-2">
+          <td class="py-4">
             <%= vendor.id %>
           </td>
 
 
-          <td class="pb-4 py-2">
+          <td class="py-4">
             <%= vendor.name %>
           </td>
 
 
-          <td class="pb-4 py-2">
+          <td class="py-4">
            <%= link_to "#{vendor.orders.count}", vendor %>
           </td>
 
-          <!-- <td class="pb-4 py-2">
+          <!-- <td class="py-4">
             <%= link_to 'Show', vendor %> |
             <%= link_to 'Edit', edit_vendor_path(vendor) %> |
             <%= link_to 'Destroy', vendor, method: :delete, data: { confirm: 'Are you sure?' } %>
