@@ -33,7 +33,9 @@ class PurchasersController < ApplicationController
       redirect_to request.referrer, notice: "Ship created successfully."
     else
       redirect_to request.referrer
-      @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @purchaser.errors.each do |error|
+        flash[:alert] = @purchaser.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -43,7 +45,9 @@ class PurchasersController < ApplicationController
       redirect_to request.referrer, notice: "Ship updated successfully."
     else
       redirect_to request.referrer
-      @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @purchaser.errors.each do |error|
+        flash[:alert] = @purchaser.errors.full_messages.map {|message| message}
+      end
     end
   end
 

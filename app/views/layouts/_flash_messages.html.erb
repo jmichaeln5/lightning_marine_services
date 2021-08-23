@@ -1,11 +1,16 @@
 <% if notice %>
   <div class="notice-msg-container alert alert-success text-center p-4">
-    <span class="notice text-green-700 text-2xl"><%= notice %></span>
+    <span class="notice text-green-700 text-2xl">
+      <%= flash[:notice].count > 1 ? flash[:notice].to_sentence : flash[:notice][0].humanize %>
+    </span>
   </div>
 <% end %>
 
+
 <% if alert %>
   <div class="alert-msg-container alert alert-danger text-center p-4">
-    <span class="alert text-red-700 text-2xl"><%= alert %></span>
+    <span class="alert text-red-700 text-2xl">
+      <%= flash[:alert].count > 1 ? flash[:alert].to_sentence : flash[:alert][0].humanize %>
+    </span>
   </div>
 <% end %>

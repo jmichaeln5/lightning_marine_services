@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  # before_action :set_order, only: %i[ show edit update destroy ]
   before_action :set_order, only: %i[ show destroy ]
+  # before_action :load_modules, only: %i[ create update ]
 
   # GET /orders or /orders.json
   def index
@@ -30,14 +30,14 @@ class OrdersController < ApplicationController
   end
 
   def create
-
     @order = Order.new order_params
     if @order.save
       redirect_to order_path(@order), notice: "Order Created Successfully."
     else
-      # byebug
       redirect_to request.referrer
-      @order.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @order.errors.each do |error|
+        flash[:alert] = @order.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -47,7 +47,9 @@ class OrdersController < ApplicationController
       redirect_to request.referrer, notice: "Order Updated Successfully."
     else
       redirect_to request.referrer
-      @order.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @order.errors.each do |error|
+        flash[:alert] = @order.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -70,5 +72,9 @@ class OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
     end
+
+    # def load_modules
+    #   autoload :DisplayAllErrors, "display_all_errors.rb"
+    # end
 
 end

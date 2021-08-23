@@ -1,4 +1,5 @@
 class Order < ApplicationRecord
+
   belongs_to :purchaser
   belongs_to :vendor
 
@@ -6,7 +7,7 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :order_content
 
-  validates :purchaser_id, :vendor_id, :po_number, :courrier, presence: true
+  validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
   # validates_associated :order_content, presence: true
 
   before_create :order_content_exists?
@@ -18,9 +19,9 @@ class Order < ApplicationRecord
 
 
       # byebug
-      # COMMENT OUT UNLESS BEFORE PUSH!!!
-      # COMMENT OUT UNLESS BEFORE PUSH!!!
-      # COMMENT OUT UNLESS BEFORE PUSH!!!
+      # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+      # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+      # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
       if Rails.env.development? != true
       #   self.errors.add(:base, "Unable to create, order is missing content.") unless self.id < 20
       #   throw(:abort) unless self.id < 20

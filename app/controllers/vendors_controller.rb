@@ -34,7 +34,9 @@ class VendorsController < ApplicationController
       redirect_to request.referrer, notice: "Vendor created successfully."
     else
       redirect_to request.referrer
-      @vendor.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @vendor.errors.each do |error|
+        flash[:alert] = @vendor.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -44,7 +46,9 @@ class VendorsController < ApplicationController
       redirect_to request.referrer, notice: "Vendor updated successfully."
     else
       redirect_to request.referrer
-      @vendor.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @vendor.errors.each do |error|
+        flash[:alert] = @vendor.errors.full_messages.map {|message| message}
+      end
     end
   end
 
