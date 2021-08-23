@@ -36,7 +36,9 @@
   <% content_for :orders_index_ths do %>
     <% attribute_names_arr.each do |resource_attr_name| %>
         <% if  resource_attr_name == 'id' %>
-          <th class="py-8 px-2"> <%= "#{resource} #{resource_attr_name.humanize.upcase}" %>  </th>
+          <th class="py-8 px-2">
+            <%= "#{resource_attr_name.humanize.upcase}" %>
+          </th>
         <% else %>
           <th class="py-8 px-2"> <%= "#{resource_attr_name.humanize}" %> </th>
         <% end %>
@@ -103,16 +105,13 @@
                 <%= resource.send(resource_attr_name).try(:strftime,"%m/%d/%Y") if  resource_attr_name == 'date_recieved' || 'date_delivered'   %>
 
 
-                <%= link_to "#{resource.send(resource_attr_name)}", (resource) if resource_attr_name == 'name' %>
+                <%#= link_to "#{resource.send(resource_attr_name)}", (resource) if resource_attr_name == 'name' %>
 
+                <%= link_to "#{resource.send(resource_attr_name)}", (resource) if resource_attr_name == 'name' %>
 
                 <%= link_to "#{resource.purchaser.name}", (resource.purchaser) if resource_attr_name == 'purchaser_id' %>
 
                 <%= link_to "#{resource.vendor.name}", (resource.vendor) if resource_attr_name == 'vendor_id' %>
-
-
-
-
 
                 <% if  resource_attr_name == 'orders' && resource.send(resource_attr_name).count.present? %>
 

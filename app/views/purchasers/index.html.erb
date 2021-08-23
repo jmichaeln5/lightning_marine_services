@@ -1,4 +1,4 @@
-<% content_for :title, "All #{@purchasers.count} Ships" %>
+<!-- <% content_for :title, "All #{@purchasers.count} Ships" %>
 
 <div class="card p-4">
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
@@ -7,7 +7,6 @@
         <th class="py-2">Ship ID</th>
         <th class="py-2">Ship</th>
         <th class="py-2">Orders</th>
-        <!-- <th class=""></th> -->
       </tr>
     </thead>
 
@@ -23,17 +22,9 @@
              <%= purchaser.name %>
             </td>
 
-
             <td class="py-4">
               <%= link_to "#{purchaser.orders.count}", purchaser %>
             </td>
-
-            <!-- <td class="py-4">
-              <%= link_to 'Show', purchaser %> |
-              <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
-              <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td> -->
-
         </tr>
 
       <% end %>
@@ -41,4 +32,4 @@
   </table>
 </div>
 
-<br>
+<br> -->
