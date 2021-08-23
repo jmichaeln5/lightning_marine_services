@@ -1,16 +1,12 @@
-<% content_for :title, "All #{@purchasers.count} Ships" %>
+<!-- <% content_for :title, "All #{@purchasers.count} Ships" %>
 
-<%= render 'purchasers/new_purchaser_modal', purchaser: Purchaser.new %>
-<br>
-
-<div class="card p-2">
-  <table>
+<div class="card p-4">
+  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
       <tr>
-        <th class="">Ship ID</th>
+        <th class="py-2">Ship ID</th>
         <th class="py-2">Ship</th>
         <th class="py-2">Orders</th>
-        <th class=""></th>
       </tr>
     </thead>
 
@@ -18,25 +14,17 @@
       <% @purchasers.each do |purchaser| %>
 
         <tr class="">
-
-          <td class="pb-4 py-2">
-             <%= purchaser.id %>
+            <td class="py-4">
+              <%= purchaser.id %>
             </td>
 
-            <td class="pb-4 py-2">
+            <td class="py-4">
              <%= purchaser.name %>
             </td>
 
-            <td class="pb-4 py-2">
+            <td class="py-4">
               <%= link_to "#{purchaser.orders.count}", purchaser %>
             </td>
-
-            <td class="pb-4 py-2">
-              <%= link_to 'Show', purchaser %> |
-              <%= link_to 'Edit', edit_purchaser_path(purchaser) %> |
-              <%= link_to 'Destroy', purchaser, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-
         </tr>
 
       <% end %>
@@ -44,4 +32,4 @@
   </table>
 </div>
 
-<br>
+<br> -->

@@ -24,5 +24,7 @@ Rails.application.routes.draw do
   resources :vendors
   resources :orders
 
+  # post '/orders/:order_id/create_order_from_order', to: 'orders#create', as: 'create_order_from_order_path'
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

@@ -1,4 +1,4 @@
-<%= form_for @order do |f| %>
+<%= form_for @new_order, url: {action: "create"} do |f| %>
   <div class="field">
     <p class="text-3xl"> Ship </p>
     <% if @purchaser.present? %>
@@ -27,21 +27,16 @@
     <div class="field pb-2">
       <p class="text-2xl"> PO# </p>
       <%= f.number_field :po_number, class: "form-control" %>
-      <%#= f.number_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
     </div>
-
 
     <div class="field pb-2">
       <p class="text-2xl"> Courrier </p>
       <%= f.text_field :courrier, class: "form-control" %>
-      <%#= f.text_field :courrier, value: ['Fedex', 'UPS', 'USPS', 'DHL'].sample, class: "form-control" %>
     </div>
-
 
     <div class="field pb-2">
       <p class="text-2xl"> Date Recieved </p>
       <%= f.date_field :date_recieved, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
-      <%#= f.date_field :date_recieved, as: :date, value: Faker::Date.between(from: '2021-01-23', to: '2021-09-25'), class: 'form-control'  %>
     </div>
 
 
@@ -53,9 +48,7 @@
 
   <p class="text-4xl font-semibold p-2"> Order Contents </p>
 
-  <%#= render 'orders/order_contents_form', contents: @contents%>
-    <%= f.fields_for :order_content, @order.order_content do |p| %>
-    <%#= f.fields_for :order_content, @order.order_content.build do |p| %>
+    <%= f.fields_for :order_content, @new_order.order_content do |p| %>
 
     <div class="field pb-2">
       <%= p.label'Boxes', class:"text-2xl" %>
@@ -73,7 +66,6 @@
       <%= p.label 'Other', class:"text-2xl" %>
       <%= p.number_field :other, class: 'form-control' %>
     </div>
-
 
     <div class="field pb-2">
       <%= p.label 'Description', class:"text-2xl" %>

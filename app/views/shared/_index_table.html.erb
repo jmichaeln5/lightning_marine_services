@@ -1,0 +1,164 @@
+<%# content_for :title, "All #{@vendors.count} Vendors" %>
+<%# content_for :title, "All #{@purchasers.count} Ships" %>
+<%# content_for :title, "All #{@orders.count} Orders" %>
+
+
+<% resource = get_resource(controller_name) %>
+
+<% resource %>
+
+<% current_page %>
+
+<% attribute_names_arr = [] %>
+
+<% resource.attribute_names.map {|resource_attr_name| attribute_names_arr << resource_attr_name unless (resource_attr_name == ("created_at")) || ( resource_attr_name == "updated_at") }%>
+
+<% attribute_names_arr << "order_content" if current_page == 'orders#index' %>
+<% attribute_names_arr << "orders" if controller_name != 'orders' %>
+
+<!-- attribute_names_arr.include? ("order_content") -->
+
+<%#= class_names(active: attribute_names_arr.include? ("order_content")) %>    <!-- Inside " " for class  -->
+
+<%# instance_variable_get("@#{resource}s")} %>
+
+<%# case current_page  %>
+<%# when 'orders#index'  %>
+  <%#= yield(:orders_index_ths) %>
+<%# when 'orders#show'  %>
+  <%#= yield(:orders_show_ths) %>
+<%# end %>
+
+
+<% case current_page  %>
+<% when 'orders#index'  %>
+  <!-- Orders Index th -->
+  <% content_for :orders_index_ths do %>
+    <% attribute_names_arr.each do |resource_attr_name| %>
+        <% if  resource_attr_name == 'id' %>
+          <th class="py-8 px-2">
+            <%= "#{resource_attr_name.humanize.upcase}" %>
+          </th>
+        <% else %>
+          <th class="py-8 px-2"> <%= "#{resource_attr_name.humanize}" %> </th>
+        <% end %>
+    <% end %>
+  <% end %>
+<% when 'purchasers#index'  %>
+    <!-- Purchaser Index -->
+    <% content_for :purchasers_index_ths do %>
+      <% attribute_names_arr.each do |resource_attr_name| %>
+          <% if  resource_attr_name == 'id' %>
+            <th class="py-8 px-2">
+              <%= "Ship #{resource_attr_name.humanize.upcase}" %>
+            </th>
+          <% else %>
+            <th class="py-8 px-2">
+              <%= "#{resource_attr_name.humanize}" %>
+            </th>
+          <% end %>
+      <% end %>
+    <% end %>
+    <% when 'vendors#index'  %>
+      <!-- Orders Index th -->
+      <% content_for :vendors_index_ths do %>
+        <% attribute_names_arr.each do |resource_attr_name| %>
+            <% if  resource_attr_name == 'id' %>
+            <th class="py-8 px-2">
+              <%= "#{resource} #{resource_attr_name.humanize.upcase}" %>
+            </th>
+            <% else %>
+            <th class="py-8 px-2">
+              <%= "#{resource_attr_name.humanize}" %>
+            </th>
+            <% end %>
+        <% end %>
+      <% end %>
+<% end %>
+
+<div class="card">
+  <table class=" py-8 table-striped" data-sort-name="name" >
+    <thead>
+
+      <tr class=" align-middle">
+        <!-- Orders Index -->
+        <%= yield(:orders_index_ths) if current_page == 'orders#index' %>
+        <!-- Purchaser Index -->
+        <%= yield(:purchasers_index_ths) if current_page == 'purchasers#index' %>
+        <!-- Purchaser Index -->
+        <%= yield(:vendors_index_ths) if current_page == 'vendors#index' %>
+      </tr>
+
+
+    </thead>
+
+    <tbody>
+      <% instance_variable_get("@#{controller_name}").each do |resource| %>
+
+        <tr class="">
+          <% attribute_names_arr.each do |resource_attr_name| %>
+
+            <td class="align-middle py-8 font-light">
+
+                <%= resource.send(resource_attr_name) unless (resource_attr_name ==  'order_content')  || (resource_attr_name == 'date_recieved') || (resource_attr_name ==  'date_delivered') || (resource_attr_name ==  'purchaser_id') || (resource_attr_name ==  'vendor_id') || (resource_attr_name ==  'orders') || (resource_attr_name ==  'name')  %>
+
+                <%= resource.send(resource_attr_name).try(:strftime,"%m/%d/%Y") if  resource_attr_name == 'date_recieved' || 'date_delivered'   %>
+
+
+                <%#= link_to "#{resource.send(resource_attr_name)}", (resource) if resource_attr_name == 'name' %>
+
+                <%= link_to "#{resource.send(resource_attr_name)}", (resource) if resource_attr_name == 'name' %>
+
+                <%= link_to "#{resource.purchaser.name}", (resource.purchaser) if resource_attr_name == 'purchaser_id' %>
+
+                <%= link_to "#{resource.vendor.name}", (resource.vendor) if resource_attr_name == 'vendor_id' %>
+
+                <% if  resource_attr_name == 'orders' && resource.send(resource_attr_name).count.present? %>
+
+                <%= link_to "#{resource.send(resource_attr_name).count}", resource  if resource_attr_name == 'orders' %>
+                <% end %>
+
+                  <% if resource_attr_name == 'order_content' %>
+                    <%= link_to(order_path(resource)) do %>
+
+                      Boxes: <%= resource.order_content.box ||= "n/a" %>
+                      <br>
+                      Crates: <%= resource.order_content.crate ||= "n/a" %>
+                      <br>
+                      Pallets: <%= resource.order_content.pallet ||= "n/a" %>
+                      <br>
+                      Other: <%= resource.order_content.other ||= "n/a" %>
+
+
+
+                      <% if is_nil_and_zero(resource.order_content.other) == false %>
+                        <br>
+                        <%= link_to "Description #{resource.order_content.other_description}", order_path(resource)  %>
+                      <% end %>
+
+                    <% end %>
+                  <% end %>
+
+
+
+
+
+              <%#= "#{resource.order_content}" if resource_attr_name == 'order_content'   %>
+
+              <%#= resource.order_content if resource_attr_name == 'order_content'   %>
+
+
+              <%#= resource.inspect if resource_attr_name == 'order_content'   %>
+
+              <%#= resource.send(resource_attr_name).inspect if resource_attr_name == 'order_content'   %>
+
+
+            </td>
+
+          <% end %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

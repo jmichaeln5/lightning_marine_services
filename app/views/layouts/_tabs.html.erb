@@ -1,19 +1,17 @@
 <ul class="nav nav-tabs pb-2">
-
-    <li class="nav-link pb-1 z-10 hover:bg-white focus:outline-none  <%= class_names(active: controller_name == 'dashboard') %>">
+    <li class="nav-link pb-1 z-10 hover:bg-blue-100 focus:outline-none  <%= class_names(active: controller_name == 'dashboard') %>">
       <%= link_to "Dashboard", dashboard_path %>
     </li>
 
-    <li class="nav-link pb-1 z-10 hover:bg-white focus:outline-none <%= class_names(active: controller_name == 'orders') %>">
+    <li class="nav-link pb-1 z-10 hover:bg-blue-100 focus:outline-none <%= class_names(active: controller_name == 'orders') %>">
       <%= link_to "Orders", orders_path %>
     </li>
 
-    <li class="nav-link pb-1 z-10 hover:bg-white focus:outline-none <%= class_names(active: controller_name == 'purchasers') %>">
+    <li class="nav-link pb-1 z-10 hover:bg-blue-100 focus:outline-none <%= class_names(active: controller_name == 'purchasers') %>">
       <%= link_to "Ships", purchasers_path %>
     </li>
 
-    <li class="nav-link pb-1 z-10 hover:bg-white focus:outline-none <%= class_names(active: controller_name == 'vendors') %>">
+    <li class="nav-link pb-1 z-10 hover:bg-blue-100 focus:outline-none <%= class_names(active: controller_name == 'vendors') %>">
       <%= link_to "Vendors", vendors_path %>
     </li>
-
 </ul>

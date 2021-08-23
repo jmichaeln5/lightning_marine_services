@@ -1,0 +1,34 @@
+<% if (main_functionality_controller? == true) && (current_action == 'show') %>
+  <div class="container p-2">
+    <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseEditToggle" aria-expanded="false" aria-controls="collapseEditToggle">
+      <%= "Edit #{current_controller.capitalize.singularize}" %>
+    </button>
+  </div>
+
+  <div class="collapse " id="collapseEditToggle">
+    <br>
+    <div class="card card-body">
+      <div class="">
+        <button class="btn btn-outline-secondary float-right" type="button" data-toggle="collapse" data-target="#collapseEditToggle" aria-expanded="false" aria-controls="collapseEditToggle">
+          x
+        </button>
+      </div>
+      <div class="text-4xl font-semibold">
+        Edit <%= "#{current_controller.capitalize.singularize}" %>
+        <%= "Name" unless current_controller == 'orders' %>
+      </div>
+      <hr>
+
+      <% form_path = "#{controller_name}/form".to_s %>
+      <%= render form_path %>
+
+      <div class="container">
+        <br>
+        <span class="pt-4">
+          <%= link_to 'Delete', get_resource_instance(controller_name), method: :delete, data: { confirm: "Are you sure you want to delete this #{current_controller.singularize}? Once deleted this cannot be undone." }, class:'btn btn-sm btn-outline-danger' %>
+        </span>
+      </div>
+
+    </div>
+  </div>
+<% end %>
