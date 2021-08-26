@@ -148,7 +148,8 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
   @order.update(params[:order])
   @order.save
 
-  random_order_count = rand(80..150)
+  # random_order_count = rand(80..150)
+  random_order_count = rand(5..20)
 
   (2..random_order_count).each do |id|
   # rand(80..150).times do

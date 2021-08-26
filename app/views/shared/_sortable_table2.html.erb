@@ -1,0 +1,93 @@
+
+<% resource = get_resource(controller_name) %>
+
+<!-- <br> -->
+  <%#= th_attr_names_arr %>
+<!-- <br> -->
+
+<%#= render partial: "exports/export_csv_button", locals:{resource: get_resource(controller_name)}  %>
+
+<div class="card">
+  <table class=" table-striped" >
+    <thead>
+      <tr class=" align-middle">
+
+        <%= TableLogic.th_attr_names_arr %>
+
+        <!-- Table Heads -->
+
+
+        <% TableLogic.th_attr_names_arr.each do |resource_attr_name| %>
+              <th class="py-8">
+                <%#= "#{resource_attr_name.humanize.upcase}" %>
+
+
+                <%#= link_to "#{resource_attr_name.humanize.upcase}", :sort => resource_attr_name %>
+
+                <%= link_to "#{resource_attr_name.humanize.upcase}", :sort => orders_path(order: resource_attr_name) %>
+
+
+                <%#= sortable resource_attr_name, resource_attr_name.humanize.upcase %>
+
+                <%#= sortable resource_attr_name, resource_attr_name %>
+              </th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% instance_variable_get("@#{controller_name}").each do |resource| %>
+
+        <tr class="">
+
+          <% TableLogic.th_attr_names_arr.each do |resource_attr_name| %>
+
+            <td class="py-8 align-middle font-light">
+
+                <%#= resource.send(resource_attr_name) unless (resource_attr_name ==  'order_content')  || (resource_attr_name == 'date_recieved') || (resource_attr_name ==  'date_delivered') || (resource_attr_name ==  'purchaser_id') || (resource_attr_name ==  'vendor_id') || (resource_attr_name ==  'orders') || (resource_attr_name ==  'name')  %>
+
+                <% display_alternate_value_arr = ['order_content', 'date_recieved', 'date_delivered', 'purchaser_id', 'vendor_id', 'orders'] %>
+                <!-- Display if not in display_alternate_value_arr -->
+                <% if display_alternate_value_arr.include?(resource_attr_name) == false %>
+                  <%= resource.send(resource_attr_name) %>
+                <% end %>
+
+                <%= resource.send(resource_attr_name).try(:strftime,"%m/%d/%Y") if  resource_attr_name == 'date_recieved' || 'date_delivered'   %>
+
+                <%= link_to "#{resource.send(resource_attr_name)}", (resource) if resource_attr_name == 'name' %>
+
+                <%= link_to "#{resource.purchaser.name}", (resource.purchaser) if resource_attr_name == 'purchaser_id' %>
+
+                <%= link_to "#{resource.vendor.name}", (resource.vendor) if resource_attr_name == 'vendor_id' %>
+
+                <% if resource_attr_name == 'orders' && resource.send(resource_attr_name).count.present? %>
+                  <%= link_to "#{resource.send(resource_attr_name).count}", resource  if resource_attr_name == 'orders' %>
+                <% end %>
+
+                  <% if resource_attr_name == 'order_content' %>
+                    <%= link_to(order_path(resource)) do %>
+
+                      Boxes: <%= resource.order_content.box ||= "n/a" %>
+                      <br>
+                      Crates: <%= resource.order_content.crate ||= "n/a" %>
+                      <br>
+                      Pallets: <%= resource.order_content.pallet ||= "n/a" %>
+                      <br>
+                      Other: <%= resource.order_content.other ||= "n/a" %>
+
+                      <% if is_nil_and_zero(resource.order_content.other) == false %>
+                        <br>
+                        <%= link_to "Description #{resource.order_content.other_description}", order_path(resource)  %>
+                      <% end %>
+
+                    <% end %>
+                  <% end %>
+            </td>
+
+          <% end %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -6,11 +6,12 @@
   </div>
 <% end %>
 
-<% if alert %>
+<% if flash[:alert] %>
   <div class="alert-msg-container alert alert-danger text-center p-4">
     <span class="alert text-red-700 text-2xl">
-      <%#= flash[:alert].count > 1 ? flash[:alert].to_sentence : flash[:alert][0].humanize %>
-      <%= flash[:alert].count > 1 ? flash[:alert].to_sentence : flash[:alert][0].humanize %>
+
+      <%= flash[:alert].class == String ? flash[:alert].humanize : flash[:alert].to_sentence   %>
+
     </span>
   </div>
 <% end %>

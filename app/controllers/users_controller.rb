@@ -4,6 +4,16 @@ class UsersController < ApplicationController
   def index
     @users = User.all.order("created_at ASC")
     users = User.all.order("created_at ASC")
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"user-list\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+
+
   end
 
   # GET /users/1 or /users/1.json
