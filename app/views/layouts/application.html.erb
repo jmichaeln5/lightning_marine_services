@@ -59,14 +59,26 @@
                 <!-- App -->
                 <div class="container">
                   <% if (main_functionality_controller? == true) %>
-                  <%= render 'layouts/tab_table_options' %>
+                  <%#= render 'layouts/tab_table_options' %>
+
                   <%#= render 'shared/index_table' if current_action == 'index' %>
+
                   <%#= render 'shared/sortable_table' if current_action == 'index' %>
+
                   <%#= render 'shared/sortable_table2' if current_action == 'index' %>
+
                   <%= render 'shared/show_table' if show_create_order_on_purchaser_and_vendor? %>
+                  
                   <% end  %>
 
-                  <%= yield unless (show_create_order_on_purchaser_and_vendor?) || (index_action_purchaser_and_vendor?) %>
+
+                  <%= yield unless (show_create_order_on_purchaser_and_vendor?) %>
+
+
+
+                  <%#= yield unless (show_create_order_on_purchaser_and_vendor?) || (index_action_purchaser_and_vendor?) %>
+
+
                   <%#= yield unless view_on_main_functionality_controllers? %>
                 </div>
 

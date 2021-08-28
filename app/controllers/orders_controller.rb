@@ -6,12 +6,21 @@ class OrdersController < ApplicationController
 
   # GET /orders or /orders.json
   def index
-    # @orders = Order.order(params[:sort] + " " + params[:direction])
-    @orders = Order.order( sort_column + " " + sort_direction )
+    if sort_column == 'id'
+      @orders = Order.order( sort_column + " " + sort_direction )
+    elsif sort_column == 'purchaser_name'
+      # byebug
+      @orders = Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+    elsif sort_column == 'vendor_name'
+      # byebug
+      @orders = Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
+    else
+      @orders = Order.all.order("created_at DESC")
+    end
+
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    # @purchasers = Order.joins(:purchaser).pluck(:name).sort
-    # @vendors = Order.joins(:vendor).pluck(:name).sort
+    # @purchasers = Order.order( sort_column + " " + sort_direction )
 
     # respond_to do |format|
     #   format.html
@@ -92,14 +101,24 @@ class OrdersController < ApplicationController
       autoload :TableLogic, "table_logic.rb"
     end
 
-    def sort_column
-      # params[:sort] || "id"
-      Order.column_names.include?(params[:sort]) ? params[:sort] : 'id'
+    def sort_column(order_attr = nil)
+      if params[:order_attr] == 'id'
+        return 'id'
+      elsif params[:order_attr] == 'purchaser_name'
+        # byebug
+        return 'purchaser_name'
+      elsif params[:order_attr] == 'vendor_name'
+        # byebug
+        return 'vendor_name'
+      end
     end
 
     def sort_direction
-      # params[:direction] || "desc"
-      %w[desc asc].include?(params[:direction]) ? params[:direction] : 'desc'
+      if params[:order_attr] && params[:sort_direction] == 'DESC'
+        'ASC'
+      else
+        "DESC"
+      end
     end
 
 end

@@ -1,9 +1,37 @@
 <% content_for :title, "All #{@orders.count} Orders" %>
 
+<!-- <br>
+<%= th_attr_names_arr %>
+<br>
+
+<br>
+  <br>
+  sort_direction
+  <br>
+  <%= sort_direction %>
+<br>
+
+
+sort_column
+<br>
+<%= sort_column %>
+<br>
+
+
+
+<br>
+ @orders.map {|o| o.id}
+  <br>
+ <%= @orders.map {|o| o.id} %>
+<br> -->
+
+
+
+
 <div class="card p-4">
   <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
     <thead>
-      <tr class=" align-middle">
+      <tr class="">
         <!-- <th class="py-8"> OrderID</th>
         <th class="py-8"> Ship </th>
         <th class="py-8"> Vendor </th>
@@ -13,40 +41,30 @@
         <th class="py-8"> Date Delivered </th>
         <th class="py-8"> Contents </th> -->
 
+        <!-- ################################## -->
 
-        <!-- FOR: First THs in Orders#index -->
-        <!-- <th class="py-8"> <%= link_to "OrderID", :sort => "id" %> </th>
-        <th class="py-8"> <%= link_to "Ship", :sort => "purchaser_id" %> </th>
-        <th class="py-8"> <%= link_to "Vendor", :sort => "vendor_id" %> </th>
-        <th class="py-8"> <%= link_to "PONumber", :sort => "po_number" %> </th>
-        <th class="py-8"> <%= link_to "DateRecieved", :sort => "date_recieved" %> </th>
-        <th class="py-8"> <%= link_to "Courrier", :sort => "courrier" %> </th>
-        <th class="py-8"> <%= link_to "DateDelivered", :sort => "date_delivered" %> </th>
-        <th class="py-8"> <%= link_to "Contents", :sort => "contents" %> </th> -->
+        <!-- <th class="py-8 "> <%= sortable "id",  "Order ID" %> </th> -->
 
-        <!-- Params -->
-        <!-- orders?sort=id -->
-        <!-- orders?sort=purchaser -->
-        <!-- orders?sort=vendor -->
-        <!-- orders?sort=po_number -->
-        <!-- orders?sort=date_recieved -->
-        <!-- orders?sort=courrier -->
-        <!-- orders?sort=date_delivered -->
-        <!-- orders?sort=contents -->
+        <th class="py-8"> <%= link_to "OrderID", orders_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
+
+        <th class="py-8"> <%= link_to "Purchaser Name", orders_path(order_attr: 'purchaser_name', sort_direction: sort_direction) %> </th>
+
+        <th class="py-8"> <%= link_to "Vendor Name", orders_path(order_attr: 'vendor_name', sort_direction: sort_direction) %> </th>
 
 
-        <th class="py-8 pretty"> <%= sortable "id", "ID" %> </th>
-        <th class="py-8 pretty"> <%= sortable "purchaser_id", "Ship" %> </th>
-        <th class="py-8 pretty"> <%= sortable "vendor_id" %> </th>
-        <th class="py-8 pretty"> <%= sortable "po_number" %> </th>
-        <th class="py-8 pretty"> <%= sortable "date_recieved" %> </th>
-        <th class="py-8 pretty"> <%= sortable "courrier" %> </th>
-        <th class="py-8 pretty"> <%= sortable "date_delivered" %> </th>
-        <th class="py-8 pretty"> <%= sortable "id", "Content"  %> </th>
+        <!-- <th class="py-8 "> <%#= sortable "po_number" %> </th> -->
+        <th class="py-8 "> <%= sortable "po_number" %> </th>
+
+
+        <th class="py-8 "> <%= sortable "date_recieved" %> </th>
+        <th class="py-8 "> <%= sortable "courrier" %> </th>
+        <th class="py-8 "> <%= sortable "date_delivered" %> </th>
 
 
 
+        <th class="py-8 "> <%= sortable "id", "Content"  %> </th>
 
+        <!-- ################################## -->
 
         <!-- <%# TableLogic.th_attr_names_arr.each do |resource_attr_name| %>
           <th class="py-8">
@@ -80,14 +98,18 @@
             </td>
 
             <td class="py-8 align-middle font-light">
-              <%= "purchaser_id: #{order.purchaser_id}" %>
+              <!-- <%= "purchaser_id: #{order.purchaser_id}" %>
               <br>
+              <%= "#{order.purchaser.name[0]}" %>
+              <br> -->
               <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
             </td>
 
             <td class="py-8 align-middle font-light">
-              <%= "vendor_id: #{order.vendor_id}" %>
+              <!-- <%= "vendor_id: #{order.vendor_id}" %>
               <br>
+              <%= "#{order.vendor.name[0]}" %>
+              <br> -->
               <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
             </td>
 

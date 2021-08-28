@@ -23,6 +23,10 @@ class Order < ApplicationRecord
       end
   end
 
+  def vendor_names
+
+  end
+
   private
 
   def order_content_exists?
