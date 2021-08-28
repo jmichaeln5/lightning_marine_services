@@ -1,0 +1,5 @@
+<%- headers = resource.attribute_names -%>
+<%= CSV.generate_line headers %>
+<%- @users.each do |user| -%>
+<%= CSV.generate_line([resource.class.to_s, resource.id]) -%>
+<%- end -%>

@@ -1,13 +1,31 @@
 class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_vendor, only: %i[ show edit update destroy ]
+  helper_method :sort_column, :sort_direction
 
   # GET /vendors or /vendors.json
   def index
-    @vendors = Vendor.all.order("created_at DESC")
+    # @vendors = Vendor.all.order("created_at DESC")
     @vendor = Vendor.new
     @orders = Order.all
-    @orders.where(vendor_id: @vendors.ids)
+    # @orders.where(vendor_id: @vendors.ids)
+
+    if sort_column == 'id'
+      @vendors = Vendor.order( sort_column + " " + sort_direction )
+    elsif sort_column == 'vendor_name'
+      @vendors = Vendor.reorder("name" + " " + sort_direction)
+    elsif sort_column == 'order_amount'
+      @most_to_least_orders = Vendor.all.sort {|a,b| b.orders.length <=> a.orders.length}
+
+      if params[:sort_direction] == 'ASC'
+        @vendors = @most_to_least_orders
+      elsif params[:sort_direction] == 'DESC'
+        @vendors = @most_to_least_orders.reverse
+      end
+
+    else
+      @vendors = Vendor.all.order("created_at DESC")
+    end
 
   end
 
@@ -34,7 +52,9 @@ class VendorsController < ApplicationController
       redirect_to request.referrer, notice: "Vendor created successfully."
     else
       redirect_to request.referrer
-      @vendor.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @vendor.errors.each do |error|
+        flash[:alert] = @vendor.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -44,7 +64,9 @@ class VendorsController < ApplicationController
       redirect_to request.referrer, notice: "Vendor updated successfully."
     else
       redirect_to request.referrer
-      @vendor.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @vendor.errors.each do |error|
+        flash[:alert] = @vendor.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -67,4 +89,28 @@ class VendorsController < ApplicationController
     def vendor_params
       params.require(:vendor).permit(:name)
     end
+
+    def load_modules
+      autoload :TableLogic, "table_logic.rb"
+    end
+
+    def sort_column(order_attr = nil)
+      if params[:order_attr] == 'id'
+        return 'id'
+      elsif params[:order_attr] == 'order_amount'
+        return 'order_amount'
+      elsif params[:order_attr] == 'vendor_name'
+        return 'vendor_name'
+      end
+    end
+
+    def sort_direction
+      if params[:order_attr] && params[:sort_direction] == 'DESC'
+        'ASC'
+      else
+        "DESC"
+      end
+    end
+
+
 end

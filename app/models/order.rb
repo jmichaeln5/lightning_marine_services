@@ -1,4 +1,5 @@
 class Order < ApplicationRecord
+
   belongs_to :purchaser
   belongs_to :vendor
 
@@ -6,31 +7,46 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :order_content
 
-  validates :purchaser_id, :vendor_id, :po_number, :courrier, presence: true
-  # validates_associated :order_content, presence: true
+  validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
 
-  before_create :order_content_exists?
+  before_save :order_content_exists?
+
+  def self.to_csv
+      attributes = %w{id po_number date_recieved}
+
+      CSV.generate(headers: true) do |csv|
+        csv << attributes
+
+        all.each do |contact|
+          csv << attributes.map{ |attr| contact.send(attr) }
+        end
+      end
+  end
+
+  def vendor_names
+
+  end
 
   private
 
   def order_content_exists?
-    if order_content.presence != true
+    order_content = self.order_content
+    order_content_attr_to_count = ["box", "crate", "pallet", "other"]
+    content_amount = 0
 
+    order_content_attr_to_count.each do |attr|
+      add_content_amount = order_content.send(attr).to_i
+      content_amount = content_amount + add_content_amount
+    end
 
-      # byebug
-      # COMMENT OUT UNLESS BEFORE PUSH!!!
-      # COMMENT OUT UNLESS BEFORE PUSH!!!
-      # COMMENT OUT UNLESS BEFORE PUSH!!!
-      if Rails.env.development? != true
-      #   self.errors.add(:base, "Unable to create, order is missing content.") unless self.id < 20
-      #   throw(:abort) unless self.id < 20
-      # else
-        self.errors.add(:base, "Unable to create, order is missing content.")
+    # if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+      if content_amount < 1
+        self.errors.add(:base, "Order is missing content.")
         throw(:abort)
       end
-
-    end
+    # end
   end
+
 
 
 end

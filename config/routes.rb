@@ -17,12 +17,18 @@ Rails.application.routes.draw do
   end
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
+  get '/exports', to: 'exports#index', as: 'export_csv'
+  # get '/exports', to: 'exports#index', as: 'export_csv'
+  get '/exports/sample_page', to: 'exports#sample_page', as: 'export_sample_page'
 
 
   resources :users
   resources :purchasers
   resources :vendors
   resources :orders
+
+  # get '/orders/:id/export_csv', to: 'orders#export_csv' , as: 'export_csv'
+
 
   # post '/orders/:order_id/create_order_from_order', to: 'orders#create', as: 'create_order_from_order_path'
 

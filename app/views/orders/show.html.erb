@@ -2,7 +2,6 @@
   Ship: <%= link_to "#{@order.purchaser.name}", purchaser_path(@order.purchaser)  %>
 <% end %>
 
-
 <% content_for :order_number, "Order ID: #{@order.id}" %>
 
 <div class="card p-2">

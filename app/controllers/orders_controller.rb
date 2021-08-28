@@ -1,13 +1,35 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  # before_action :set_order, only: %i[ show edit update destroy ]
   before_action :set_order, only: %i[ show destroy ]
+  before_action :load_modules, only: %i[ index ]
+  helper_method :sort_column, :sort_direction
 
   # GET /orders or /orders.json
   def index
-    @orders = Order.all.order("created_at DESC")
+    if sort_column == 'id'
+      @orders = Order.order( sort_column + " " + sort_direction )
+    elsif sort_column == 'purchaser_name'
+      # byebug
+      @orders = Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+    elsif sort_column == 'vendor_name'
+      # byebug
+      @orders = Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
+    else
+      @orders = Order.all.order("created_at DESC")
+    end
+
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+    # @purchasers = Order.order( sort_column + " " + sort_direction )
+
+    # respond_to do |format|
+    #   format.html
+    #   format.csv do
+    #     headers['Content-Disposition'] = "attachment; filename=\"orders-list\""
+    #     headers['Content-Type'] ||= 'text/csv'
+    #   end
+    # end
+    #
   end
 
   # GET /orders/1 or /orders/1.json
@@ -30,14 +52,16 @@ class OrdersController < ApplicationController
   end
 
   def create
-
     @order = Order.new order_params
+    @order_content = @order.order_content
+    # byebug
     if @order.save
       redirect_to order_path(@order), notice: "Order Created Successfully."
     else
-      # byebug
       redirect_to request.referrer
-      @order.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @order.errors.each do |error|
+        flash[:alert] = @order.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -47,7 +71,9 @@ class OrdersController < ApplicationController
       redirect_to request.referrer, notice: "Order Updated Successfully."
     else
       redirect_to request.referrer
-      @order.errors.full_messages.each.map {|message| flash[:alert] = message }
+      @order.errors.each do |error|
+        flash[:alert] = @order.errors.full_messages.map {|message| message}
+      end
     end
   end
 
@@ -69,6 +95,30 @@ class OrdersController < ApplicationController
 
     def order_params
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
+    end
+
+    def load_modules
+      autoload :TableLogic, "table_logic.rb"
+    end
+
+    def sort_column(order_attr = nil)
+      if params[:order_attr] == 'id'
+        return 'id'
+      elsif params[:order_attr] == 'purchaser_name'
+        # byebug
+        return 'purchaser_name'
+      elsif params[:order_attr] == 'vendor_name'
+        # byebug
+        return 'vendor_name'
+      end
+    end
+
+    def sort_direction
+      if params[:order_attr] && params[:sort_direction] == 'DESC'
+        'ASC'
+      else
+        "DESC"
+      end
     end
 
 end

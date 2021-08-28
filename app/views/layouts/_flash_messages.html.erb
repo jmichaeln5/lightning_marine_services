@@ -1,11 +1,17 @@
 <% if notice %>
   <div class="notice-msg-container alert alert-success text-center p-4">
-    <span class="notice text-green-700 text-2xl"><%= notice %></span>
+    <span class="notice text-green-700 text-2xl">
+      <%= flash[:notice] %>
+    </span>
   </div>
 <% end %>
 
-<% if alert %>
+<% if flash[:alert] %>
   <div class="alert-msg-container alert alert-danger text-center p-4">
-    <span class="alert text-red-700 text-2xl"><%= alert %></span>
+    <span class="alert text-red-700 text-2xl">
+
+      <%= flash[:alert].class == String ? flash[:alert].humanize : flash[:alert].to_sentence   %>
+
+    </span>
   </div>
 <% end %>

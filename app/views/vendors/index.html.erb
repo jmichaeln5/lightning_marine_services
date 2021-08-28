@@ -1,12 +1,19 @@
-<!-- <% content_for :title, "All #{@vendors.count} Vendors" %>
+<% content_for :title, "All #{@vendors.count} Vendors" %>
 
 <div class="card p-4">
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <table class=" table table-striped">
     <thead>
       <tr>
-        <th class="py-2">Vendor ID</th>
+        <!-- <th class="py-2">Vendor ID</th>
         <th class="py-2">Vendor</th>
-        <th class="py-2">Orders</th>
+        <th class="py-2">Orders</th> -->
+
+        <th class="py-8"> <%= link_to "Vendor ID", vendors_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
+
+        <th class="py-8"> <%= link_to "Vendor Name", vendors_path(order_attr: 'vendor_name', sort_direction: sort_direction) %> </th>
+
+        <th class="py-8"> <%= link_to "Orders", vendors_path(order_attr: 'order_amount', sort_direction: sort_direction) %> </th>
+
       </tr>
     </thead>
 
@@ -29,4 +36,4 @@
       <% end %>
     </tbody>
   </table>
-</div> -->
+</div>
