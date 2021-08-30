@@ -6,19 +6,56 @@ class OrdersController < ApplicationController
 
   # GET /orders or /orders.json
   def index
+
+    @orders_per_page = 5
+
     if sort_column == 'id'
+      # byebug
       @orders = Order.order( sort_column + " " + sort_direction )
+      # byebug
     elsif sort_column == 'purchaser_name'
       @orders = Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+
     elsif sort_column == 'vendor_name'
       @orders = Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
     else
       @orders = Order.all.order("created_at DESC")
     end
 
+
+    #   # http://localhost:3000/orders?page=2?order_attr=id&sort_direction=DESC
+
+    @fetch_uri = request.request_uri
+
+    # @get_page = params.fetch(:page, 0).to_i
+    @page_number = params.fetch(:page, 0).to_i
+
+
+    @page = @get_page + @fetch_uri
+
+
+    # @page = params.fetch(:page, byebug).to_i
+    @set_page = @page_number * @orders_per_page
+
+
+    if request.original_fullpath.include? "order_attr" || "sort_direction"
+      @page_number = params.fetch(:page, 0).to_i
+    else
+      @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
+    end
+
+    @current_page_number = params.fetch(:page, 0)
+    @total_pages = Order.all.count.to_i / @orders_per_page
+
+
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    # @purchasers = Order.order( sort_column + " " + sort_direction )
+
+
+
+
+
+
 
     # respond_to do |format|
     #   format.html
