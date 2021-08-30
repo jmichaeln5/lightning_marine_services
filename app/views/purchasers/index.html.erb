@@ -1,17 +1,14 @@
 <% content_for :title, "All #{@purchasers.count} Ships" %>
 
-<div class="card p-4">
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
         <!-- <th class="py-2">Ship ID</th>
         <th class="py-2">Ship</th>
         <th class="py-2">Orders</th> -->
+        <th class="py-8"> <%= link_to "ShipID", purchasers_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
 
-
-        <th class="py-8"> <%= link_to "Ship ID", purchasers_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
-
-        <th class="py-8"> <%= link_to "Ship Name", purchasers_path(order_attr: 'purchaser_name', sort_direction: sort_direction) %> </th>
+        <th class="py-8"> <%= link_to "Name", purchasers_path(order_attr: 'purchaser_name', sort_direction: sort_direction) %> </th>
 
         <th class="py-8"> <%= link_to "Orders", purchasers_path(order_attr: 'order_amount', sort_direction: sort_direction) %> </th>
 
@@ -21,16 +18,16 @@
     <tbody>
       <% @purchasers.each do |purchaser| %>
 
-        <tr class="">
-            <td class="py-4">
+      <tr class="">
+            <td class="py-8 align-middle font-light">
               <%= purchaser.id %>
             </td>
 
-            <td class="py-4">
-             <%= purchaser.name %>
+            <td class="py-8 align-middle font-light">
+             <%= link_to "#{purchaser.name}", purchaser_path(purchaser)  %>
             </td>
 
-            <td class="py-4">
+            <td class="py-8 align-middle font-light">
               <%= link_to "#{purchaser.orders.count}", purchaser %>
             </td>
         </tr>
@@ -38,6 +35,5 @@
       <% end %>
     </tbody>
   </table>
-</div>
 
 <br>

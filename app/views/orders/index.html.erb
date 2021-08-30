@@ -28,10 +28,9 @@ sort_column
 
 
 
-<div class="card p-4">
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <table class="bg-white table table-striped border border-2">
     <thead>
-      <tr class="">
+      <tr>
         <!-- <th class="py-8"> OrderID</th>
         <th class="py-8"> Ship </th>
         <th class="py-8"> Vendor </th>
@@ -41,30 +40,27 @@ sort_column
         <th class="py-8"> Date Delivered </th>
         <th class="py-8"> Contents </th> -->
 
-        <!-- ################################## -->
 
-        <!-- <th class="py-8 "> <%= sortable "id",  "Order ID" %> </th> -->
+        <th class="py-8"> <%= link_to "Order ID", orders_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
 
-        <th class="py-8"> <%= link_to "OrderID", orders_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
-
-        <th class="py-8"> <%= link_to "Purchaser Name", orders_path(order_attr: 'purchaser_name', sort_direction: sort_direction) %> </th>
+        <th class="py-8"> <%= link_to "Ship Name", orders_path(order_attr: 'purchaser_name', sort_direction: sort_direction) %> </th>
 
         <th class="py-8"> <%= link_to "Vendor Name", orders_path(order_attr: 'vendor_name', sort_direction: sort_direction) %> </th>
 
+        <!-- <th class="py-8 "> <%= link_to "po_number", sort_direction: sort_direction %> </th> -->
 
-        <!-- <th class="py-8 "> <%#= sortable "po_number" %> </th> -->
-        <th class="py-8 "> <%= sortable "po_number" %> </th>
-
-
-        <th class="py-8 "> <%= sortable "date_recieved" %> </th>
-        <th class="py-8 "> <%= sortable "courrier" %> </th>
-        <th class="py-8 "> <%= sortable "date_delivered" %> </th>
-
+        <th class="py-8"> PO# </th>
+        <th class="py-8"> Date Recieved </th>
+        <th class="py-8"> Courrier </th>
+        <th class="py-8"> Date Delivered </th>
+        <th class="py-8"> Contents </th>
 
 
-        <th class="py-8 "> <%= sortable "id", "Content"  %> </th>
-
-        <!-- ################################## -->
+        <!-- <th class="py-8 "> <%#= sortable "po_number" %> </th>
+        <th class="py-8 "> <%#= sortable "date_recieved" %> </th>
+        <th class="py-8 "> <%#= sortable "courrier" %> </th>
+        <th class="py-8 "> <%#= sortable "date_delivered" %> </th>
+        <th class="py-8 "> <%#= sortable "id", "Content"  %> </th> -->
 
         <!-- <%# TableLogic.th_attr_names_arr.each do |resource_attr_name| %>
           <th class="py-8">
@@ -74,7 +70,6 @@ sort_column
 
           </th>
         <%# end %> -->
-
 
 
       </tr>
@@ -157,4 +152,3 @@ sort_column
 
     </tbody>
   </table>
-</div>

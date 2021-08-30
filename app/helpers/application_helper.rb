@@ -95,13 +95,14 @@ module ApplicationHelper
   ##################################
   ##################################
 
-
-  def sortable(column, title = nil)
-    title ||= column.titleize
-    direction = column == params[:sort] && params[:direction] == "asc" ? "desc" : "asc"
-    # link_to title, :sort => column
-    link_to title, :sort => column, :direction => direction
+  def sortable(order_attr, title = nil)
+    title ||= order_attr.titleize
+    sort_direction = order_attr == params[:order_attr] && params[:sort_direction] == "asc" ? "desc" : "asc"
+    # byebug
+    # link_to title, :order => column
+    link_to title, :order => order_attr, :sort_direction => sort_direction
   end
+
 
   def sortable_by_name(column, title = nil)
   end

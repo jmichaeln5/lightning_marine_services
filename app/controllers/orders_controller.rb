@@ -9,10 +9,8 @@ class OrdersController < ApplicationController
     if sort_column == 'id'
       @orders = Order.order( sort_column + " " + sort_direction )
     elsif sort_column == 'purchaser_name'
-      # byebug
       @orders = Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
     elsif sort_column == 'vendor_name'
-      # byebug
       @orders = Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
     else
       @orders = Order.all.order("created_at DESC")
@@ -105,10 +103,8 @@ class OrdersController < ApplicationController
       if params[:order_attr] == 'id'
         return 'id'
       elsif params[:order_attr] == 'purchaser_name'
-        # byebug
         return 'purchaser_name'
       elsif params[:order_attr] == 'vendor_name'
-        # byebug
         return 'vendor_name'
       end
     end

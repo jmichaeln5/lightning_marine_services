@@ -1,16 +1,15 @@
 <% content_for :title, "All #{@vendors.count} Vendors" %>
 
-<div class="card p-4">
-  <table class=" table table-striped">
+  <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
         <!-- <th class="py-2">Vendor ID</th>
         <th class="py-2">Vendor</th>
         <th class="py-2">Orders</th> -->
 
-        <th class="py-8"> <%= link_to "Vendor ID", vendors_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
+        <th class="py-8"> <%= link_to "VendorID", vendors_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
 
-        <th class="py-8"> <%= link_to "Vendor Name", vendors_path(order_attr: 'vendor_name', sort_direction: sort_direction) %> </th>
+        <th class="py-8"> <%= link_to "Name", vendors_path(order_attr: 'vendor_name', sort_direction: sort_direction) %> </th>
 
         <th class="py-8"> <%= link_to "Orders", vendors_path(order_attr: 'order_amount', sort_direction: sort_direction) %> </th>
 
@@ -21,19 +20,18 @@
       <% @vendors.each do |vendor| %>
         <tr class="">
 
-          <td class="py-4">
+          <td class="py-8 align-middle font-light">
             <%= vendor.id %>
           </td>
 
-          <td class="py-4">
-            <%= vendor.name %>
+          <td class="py-8 align-middle font-light">
+            <%= link_to "#{vendor.name}", vendor %>
           </td>
 
-          <td class="py-4">
+          <td class="py-8 align-middle font-light">
            <%= link_to "#{vendor.orders.count}", vendor %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-</div>

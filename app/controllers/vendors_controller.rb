@@ -5,11 +5,8 @@ class VendorsController < ApplicationController
 
   # GET /vendors or /vendors.json
   def index
-    # @vendors = Vendor.all.order("created_at DESC")
     @vendor = Vendor.new
     @orders = Order.all
-    # @orders.where(vendor_id: @vendors.ids)
-
     if sort_column == 'id'
       @vendors = Vendor.order( sort_column + " " + sort_direction )
     elsif sort_column == 'vendor_name'
