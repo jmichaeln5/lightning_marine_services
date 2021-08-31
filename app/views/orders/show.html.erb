@@ -1,5 +1,6 @@
 <% content_for :title do %>
-  Ship: <%= link_to "#{@order.purchaser.name}", purchaser_path(@order.purchaser)  %>
+  Ship: <%= link_to "#{@order.purchaser.name.possessive}", purchaser_path(@order.purchaser)  %> Order
+
 <% end %>
 
 <% content_for :order_number, "Order ID: #{@order.id}" %>

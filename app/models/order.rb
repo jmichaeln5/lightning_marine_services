@@ -8,6 +8,7 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :order_content
 
   validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
+  validates :po_number, uniqueness: true
 
   before_save :order_content_exists?
 
@@ -21,10 +22,6 @@ class Order < ApplicationRecord
           csv << attributes.map{ |attr| contact.send(attr) }
         end
       end
-  end
-
-  def vendor_names
-
   end
 
   private
