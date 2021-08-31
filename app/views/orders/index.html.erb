@@ -1,4 +1,4 @@
-<% content_for :title, "All #{@orders.count} Orders" %>
+<% content_for :title, "All #{Order.all.count} Orders" %>
 
 <!-- <br>
 <%= th_attr_names_arr %>
@@ -22,7 +22,7 @@ sort_column
 <br>
  @orders.map {|o| o.id}
   <br>
- <%= @orders.map {|o| o.id} %>
+ <%#= @orders.map {|o| o.id} %>
 <br> -->
 
 
@@ -78,7 +78,7 @@ sort_column
     <tbody>
 
 
-      <% @orders.each do |order| %>
+      <% @paginated_orders.each do |order| %>
       <tr>
             <!-- <%# TableLogic.th_attr_names_arr.each do |resource_attr_name| %>
               <td class="py-8 align-middle font-light">
@@ -152,3 +152,33 @@ sort_column
 
     </tbody>
   </table>
+
+  <div class="">
+    <div class="">
+      <%= render "shared/pagination_buttons" %>
+    </div>
+  </div>
+
+
+
+  <div class="py-4">
+    <p class="p-4">
+      Total Pages = <%= @total_pages %>
+      <br>
+      Current Page = <%= @current_page_number %>
+      <br>
+      @page.to_i = <%= @page.to_i %>
+    </p>
+  </div>
+
+
+
+
+  <!-- <%# @current_page_number = params.fetch(:page, 0) %>
+  <%#= link_to "Previous Page", orders_path(page: @page - 1) if @current_page_number.to_i > 0 %>
+  |
+  <%#= link_to "Next Page", orders_path(page: @page + 1) if @current_page_number.to_i < @total_pages.to_i  %> -->
+
+
+  <!-- http://localhost:3000/orders/?page=2 -->
+  <!-- /orders/?page=2 -->
