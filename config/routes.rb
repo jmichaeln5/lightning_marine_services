@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :users
+      resources :order_contents
+      resources :orders
+      resources :purchasers
+      resources :vendors
+
+      root to: "users#index"
+    end
   root 'pages#home'
   get 'pages/about'
 
