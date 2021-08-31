@@ -70,7 +70,7 @@ class VendorsController < ApplicationController
   # DELETE /vendors/1 or /vendors/1.json
   def destroy
     if @vendor.destroy
-      redirect_to dashboard_path, notice: "#{@vendor.name}(Vendor) deleted successfully."
+      redirect_to orders_path, notice: "#{@vendor.name}(Vendor) deleted successfully."
     else
       redirect_to request.referrer
       @vendor.errors.full_messages.each.map {|message| flash[:alert] = message }

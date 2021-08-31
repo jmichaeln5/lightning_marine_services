@@ -16,7 +16,6 @@ Rails.application.routes.draw do
     delete 'signout', to: 'users/sessions#destroy'
   end
 
-  get '/dashboard', to: 'dashboard#show', as: 'dashboard'
   get '/exports', to: 'exports#index', as: 'export_csv'
   # get '/exports', to: 'exports#index', as: 'export_csv'
   get '/exports/sample_page', to: 'exports#sample_page', as: 'export_sample_page'

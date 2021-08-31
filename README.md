@@ -14,6 +14,6 @@
 
 - class ApplicationController < ActionController::Base
 -  def after_sign_in_path_for(resource)
--    dashboard_path #Your path here
+-    orders_path #Your path here
 -  end
 - end
