@@ -29,6 +29,8 @@ class UserDashboard < Administrate::BaseDashboard
     unconfirmed_email: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    password: PasswordField,
+    password_confirmation: PasswordField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -45,6 +47,31 @@ class UserDashboard < Administrate::BaseDashboard
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
+  # ###      Original SHOW_PAGE_ATTRIBUTES ***
+  # SHOW_PAGE_ATTRIBUTES = %i[
+  #   id
+  #   first_name
+  #   last_name
+  #   phone_number
+  #   email
+  #   username
+  #   encrypted_password
+  #   reset_password_token
+  #   reset_password_sent_at
+  #   remember_created_at
+  #   sign_in_count
+  #   current_sign_in_at
+  #   last_sign_in_at
+  #   current_sign_in_ip
+  #   last_sign_in_ip
+  #   confirmation_token
+  #   confirmed_at
+  #   confirmation_sent_at
+  #   unconfirmed_email
+  #   created_at
+  #   updated_at
+  # ].freeze
+
   SHOW_PAGE_ATTRIBUTES = %i[
     id
     first_name
@@ -52,44 +79,48 @@ class UserDashboard < Administrate::BaseDashboard
     phone_number
     email
     username
-    encrypted_password
-    reset_password_token
-    reset_password_sent_at
-    remember_created_at
     sign_in_count
     current_sign_in_at
     last_sign_in_at
-    current_sign_in_ip
-    last_sign_in_ip
-    confirmation_token
-    confirmed_at
-    confirmation_sent_at
-    unconfirmed_email
-    created_at
-    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
+  # ###      Original FORM_ATTRIBUTES ***
+  # FORM_ATTRIBUTES = %i[
+  #   first_name
+  #   last_name
+  #   phone_number
+  #   email
+  #   username
+  #   encrypted_password
+  #   reset_password_token
+  #   reset_password_sent_at
+  #   remember_created_at
+  #   sign_in_count
+  #   current_sign_in_at
+  #   last_sign_in_at
+  #   current_sign_in_ip
+  #   last_sign_in_ip
+  #   confirmation_token
+  #   confirmed_at
+  #   confirmation_sent_at
+  #   unconfirmed_email
+  # ].freeze
+
   FORM_ATTRIBUTES = %i[
     first_name
     last_name
     phone_number
     email
     username
-    encrypted_password
-    reset_password_token
-    reset_password_sent_at
-    remember_created_at
+    password
+    password_confirmation
     sign_in_count
     current_sign_in_at
     last_sign_in_at
-    current_sign_in_ip
-    last_sign_in_ip
-    confirmation_token
     confirmed_at
-    confirmation_sent_at
     unconfirmed_email
   ].freeze
 
