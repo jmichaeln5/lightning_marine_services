@@ -25,13 +25,12 @@ class OrdersController < ApplicationController
 
     #   # http://localhost:3000/orders?page=2?order_attr=id&sort_direction=DESC
 
-    @fetch_uri = request.request_uri
 
-    # @get_page = params.fetch(:page, 0).to_i
+    @get_page = params.fetch(:page, 0).to_i
     @page_number = params.fetch(:page, 0).to_i
 
 
-    @page = @get_page + @fetch_uri
+    @page = @get_page
 
 
     # @page = params.fetch(:page, byebug).to_i
