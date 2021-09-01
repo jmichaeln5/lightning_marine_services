@@ -117,10 +117,6 @@ class UserDashboard < Administrate::BaseDashboard
     username
     password
     password_confirmation
-    sign_in_count
-    current_sign_in_at
-    last_sign_in_at
-    confirmed_at
     unconfirmed_email
   ].freeze
 
