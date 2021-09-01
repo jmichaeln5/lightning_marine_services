@@ -40,7 +40,10 @@
                         <div class=" d-flex justify-content-end">
                           <div class=" object-right-top">
                             <div class="">
-                              <%= link_to 'Admin Dashboard', admin_users_path, class:"p-6" if current_user == User.first %>
+                              <span class="p-6">
+                                <%= link_to 'Admin Dashboard', admin_users_path if current_user == User.first %>
+
+                              </span>
                             </div>
 
                           </div>
