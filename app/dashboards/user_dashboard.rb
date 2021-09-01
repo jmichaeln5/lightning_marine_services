@@ -117,7 +117,6 @@ class UserDashboard < Administrate::BaseDashboard
     username
     password
     password_confirmation
-    unconfirmed_email
   ].freeze
 
   # COLLECTION_FILTERS
