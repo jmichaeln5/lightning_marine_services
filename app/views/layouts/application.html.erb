@@ -35,7 +35,18 @@
                       <%= render "layouts/tabs" %>
                       <!-- Header Card -->
                       <div class="card p-4 -mt-4">
-                        <div class="text-4xl">
+
+
+                        <div class=" d-flex justify-content-end">
+                          <div class=" object-right-top">
+                            <div class="">
+                              <%= link_to 'Admin Dashboard', admin_users_path, class:"p-6" if current_user == User.first %>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div class="text-4xl pb-4">
                           <%= yield(:title) %>
                         </div>
                         <!-- Order ID/Count -->

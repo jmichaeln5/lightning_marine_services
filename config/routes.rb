@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   namespace :admin do
       resources :users
-
       root to: "users#index"
     end
+
   root 'pages#home'
   get 'pages/about'
 
@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get 'sign_in', to: 'users/sessions#new'
     delete 'signout', to: 'users/sessions#destroy'
   end
+
+  get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
   get '/exports', to: 'exports#index', as: 'export_csv'
   # get '/exports', to: 'exports#index', as: 'export_csv'

@@ -72,7 +72,7 @@ class PurchasersController < ApplicationController
   # DELETE /purchasers/1 or /purchasers/1.json
   def destroy
     if @purchaser.destroy
-      redirect_to orders_path, notice: "#{@purchaser.name}(Ship) deleted successfully."
+      redirect_to dashboard_path, notice: "#{@purchaser.name}(Ship) deleted successfully."
     else
       redirect_to request.referrer
       @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }

@@ -1,2 +1,11 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<% content_for :title do %>
+
+  <% if user_signed_in? %>
+    <% content_for :title, "Pages#Home" %>
+    <br>
+    Welcome <%= current_user.name %>
+  <% else %>
+    <% content_for :title, "Pages#Home" if !user_signed_in? %>
+  <% end %>
+
+<% end %>
