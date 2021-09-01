@@ -2,14 +2,6 @@
 
 class Users::UnlocksController < Devise::UnlocksController
 
-  puts "UnlocksController"
-  puts "*"*2000
-  puts "UnlocksController"
-  puts "UnlocksController"
-  puts "UnlocksController"
-  puts "*"*2000
-  puts "UnlocksController"
-
   # GET /resource/unlock/new
   # def new
   #   super

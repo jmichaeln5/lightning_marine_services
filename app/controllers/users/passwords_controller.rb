@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
-  puts "PasswordsController"
-  puts "*"*2000
-  puts "PasswordsController"
-  puts "PasswordsController"
-  puts "PasswordsController"
-  puts "*"*2000
-  puts "PasswordsController"
-
-
   # GET /resource/password/new
   def new
     super

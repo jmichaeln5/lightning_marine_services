@@ -6,8 +6,7 @@ class User < ApplicationRecord
 
   has_person_name
 
-  validates :first_name, presence: true, length: { minimum: 2, maximum: 30 }
-  validates :last_name, presence: true, length: { minimum: 2, maximum: 30 }
+  validates :first_name, :last_name, :phone_number, :email, presence: true, length: { minimum: 2, maximum: 30 }
 
   # def self.to_csv
   #   attributes = %w{id email name}
@@ -24,5 +23,6 @@ class User < ApplicationRecord
   def name
     "#{first_name} #{last_name}"
   end
+
 
 end

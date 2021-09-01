@@ -62,3 +62,4 @@ gem 'devise', '~> 4.2'
 gem 'name_of_person'
 gem 'faker', '~> 2.18'
 gem 'possessive', '~> 1.0s', '>= 1.0.1'
+gem "administrate"

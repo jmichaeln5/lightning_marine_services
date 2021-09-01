@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :users
+      root to: "users#index"
+    end
+
   root 'pages#home'
   get 'pages/about'
 
@@ -17,6 +22,7 @@ Rails.application.routes.draw do
   end
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
+
   get '/exports', to: 'exports#index', as: 'export_csv'
   # get '/exports', to: 'exports#index', as: 'export_csv'
   get '/exports/sample_page', to: 'exports#sample_page', as: 'export_sample_page'
@@ -27,10 +33,7 @@ Rails.application.routes.draw do
   resources :vendors
   resources :orders
 
-  # get '/orders/:id/export_csv', to: 'orders#export_csv' , as: 'export_csv'
-
-
-  # post '/orders/:order_id/create_order_from_order', to: 'orders#create', as: 'create_order_from_order_path'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  match '*path' => redirect('/'), :via => [:get, :post]
 end
