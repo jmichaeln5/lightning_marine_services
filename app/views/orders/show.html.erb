@@ -1,12 +1,13 @@
 <% content_for :title do %>
   Ship: <%= link_to "#{@order.purchaser.name.possessive}", purchaser_path(@order.purchaser)  %> Order
-
 <% end %>
 
 <% content_for :order_number, "Order ID: #{@order.id}" %>
 
 <div class="card p-2">
   <table>
+    <div class="pt-4">
+
     <thead>
       <tr>
         <th>  </th>
@@ -20,34 +21,36 @@
       </tr>
     </thead>
 
+  </div>
+
     <tbody>
 
         <tr class="">
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= @order.id %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= link_to "#{@order.vendor.name}", vendor_path(@order.vendor) %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= @order.po_number ||= "n/a" %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%=  @order.date_recieved ? @order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= @order.courrier ||= "n/a" %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%=  @order.date_delivered ? @order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <% if @order.order_content.present? %>
                   Boxes: <%= @order.order_content.box ||= "n/a" %>
                   <br>
@@ -57,21 +60,87 @@
                   <br>
                   <% if is_nil_and_zero(@order.order_content.other) == false %>
                      <%= "Other: #{@order.order_content.other}" %>
-                    <br>
-                    <%= "Description: #{@order.order_content.other_description}" %>
                   <% end %>
               <% end %>
             </td>
 
-            <!-- <td class="pl-4 pb-4 px-2">
-              <%= link_to 'Edit', edit_order_path(@order) %>
-              <br>
-              <%= link_to 'Destroy', @order, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td> -->
-
         </tr>
     </tbody>
   </table>
-</div>
 
+  <div class="px-4">
+    <div class="pb-2 px-2 font-bold">
+      Description
+    </div>
+    <td class="pb-4 px-2">
+      <% if @order.order_content.present? %>
+          <% if is_nil_and_zero(@order.order_content.other_description) == false %>
+            <%= "Description: #{@order.order_content.other_description}" %>
+          <% end %>
+      <% end %>
+    </td>
+  </div>
+
+
+  <% if @order.images.count > 1 %>
+    <div class="p-4">
+
+      <div class="d-flex max-h-full max-w-full">
+
+
+
+        <% @order.images.in_groups_of(3).each do |group| %>
+          <div class="row ">
+
+
+              <% group.each do |image| %>
+                <!-- <div class="col-md border-2 border-indigo-300"> -->
+                <div class="col-md">
+                  <div class="p-2 justify-content-between">
+                    <% if image %>
+                      <%= link_to image_tag(image.variant(resize: "300x300")), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"}, class:" inline-block align-middle" %>
+                    <% end %>
+                  </div>
+                </div>
+
+
+                <% if image %>
+                    <div class="modal fade bd-image-modal-<%= "#{image.blob_id}"%>-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                          <div class="modal-header mb-12">
+                            <h5 class="modal-title"> Photo <%= image.blob_id %> </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+
+                          <div class="modal-body">
+                            <div class="inline-block justify-content-center">
+                              <%= image_tag(image) %>
+                            </div>
+
+                            <div class="m-4">
+                              <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"btn btn-outline-success" %>
+                            </div>
+
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                <% end %>
+              <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+</div>
 <br>

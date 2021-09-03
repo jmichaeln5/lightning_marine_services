@@ -69,6 +69,7 @@ class OrdersController < ApplicationController
   # GET /orders/1 or /orders/1.json
   def show
     @new_order = Order.new
+    order ||= @order
     @new_order_content = @new_order != nil ? @new_order.build_order_content : OrderContent.new
   end
 
@@ -128,7 +129,7 @@ class OrdersController < ApplicationController
     end
 
     def order_params
-      params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
+      params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
     end
 
     def load_modules

@@ -19,36 +19,61 @@
 
   <div class="container p-2">
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Dept. </p>
       <%= f.text_field :dept, class: "form-control" %>
     </div>
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> PO# </p>
       <%= f.text_field :po_number, class: "form-control" %>
       <%#= f.text_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
     </div>
 
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Courrier </p>
       <%= f.text_field :courrier, class: "form-control" %>
       <%#= f.text_field :courrier, value: ['Fedex', 'UPS', 'USPS', 'DHL'].sample, class: "form-control" %>
     </div>
 
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Date Recieved </p>
       <%= f.date_field :date_recieved, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
       <%#= f.date_field :date_recieved, as: :date, value: Faker::Date.between(from: '2021-01-23', to: '2021-09-25'), class: 'form-control'  %>
     </div>
 
-
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Date Delivered </p>
       <%= f.date_field :date_delivered, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
     </div>
+
+    <div class="field pb-2 pt-2">
+      <p class="text-2xl"> <%= f.label "Image(s)" %> </p>
+      <%# byebug%>
+      <%= f.file_field :images, multiple: true, class: 'form-control' %>
+    </div>
+
+    <% if @order.images.any? %>
+
+      <% @order.images.each do |image| %>
+          <span>
+            <%= ActiveStorage::Attachment.find(image.id) %>
+            <%= image_tag(image.variant(resize: "200x200"))%>
+          </span>
+      <% end %>
+
+      <% if @order.images.each do |image| %>
+        <%= f.hidden_field :images, multiple: true, value: image.signed_id %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+
+
+
+
   </div>
 
   <p class="text-4xl font-semibold p-2"> Order Contents </p>
@@ -79,6 +104,7 @@
       <%= p.label 'Description', class:"text-2xl" %>
       <%= p.text_area :other_description,rows: 3, class: 'form-control' %>
     </div>
+
   <% end %>
 
   <br>

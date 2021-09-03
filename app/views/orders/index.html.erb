@@ -138,8 +138,8 @@ sort_column
 
                   <% if is_nil_and_zero(order.order_content.other) == false %>
                      <%= "Other: #{order.order_content.other}" %>
-                    <br>
-                    <%= "Description: #{order.order_content.other_description}" %>
+                     <br>
+                     <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
                   <% end %>
 
                 <% end %>
