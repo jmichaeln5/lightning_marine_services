@@ -68,79 +68,83 @@
     </tbody>
   </table>
 
+
+  <% if @order.order_content.other_description.present? %>
   <div class="px-4">
     <div class="pb-2 px-2 font-bold">
       Description
     </div>
+
     <td class="pb-4 px-2">
-      <% if @order.order_content.present? %>
-          <% if is_nil_and_zero(@order.order_content.other_description) == false %>
-            <%= "Description: #{@order.order_content.other_description}" %>
-          <% end %>
-      <% end %>
+      <%= "Description: #{@order.order_content.other_description}" %>
     </td>
   </div>
 
-
-  <% if @order.images.count > 1 %>
-    <div class="p-4">
-
-      <div class="d-flex max-h-full max-w-full">
-
-
-
-        <% @order.images.in_groups_of(3).each do |group| %>
-          <div class="row ">
-
-
-              <% group.each do |image| %>
-                <!-- <div class="col-md border-2 border-indigo-300"> -->
-                <div class="col-md">
-                  <div class="p-2 justify-content-between">
-                    <% if image %>
-                      <%= link_to image_tag(image.variant(resize: "300x300")), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"}, class:" inline-block align-middle" %>
-                    <% end %>
-                  </div>
-                </div>
-
-
-                <% if image %>
-                    <div class="modal fade bd-image-modal-<%= "#{image.blob_id}"%>-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-
-                          <div class="modal-header mb-12">
-                            <h5 class="modal-title"> Photo <%= image.blob_id %> </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-
-                          <div class="modal-body">
-                            <div class="inline-block justify-content-center">
-                              <%= image_tag(image) %>
-                            </div>
-
-                            <div class="m-4">
-                              <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"btn btn-outline-success" %>
-                            </div>
-
-                          </div>
-
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                <% end %>
-              <% end %>
-          </div>
-        <% end %>
-      </div>
-    </div>
   <% end %>
 
-</div>
+
+    <% if @order.images.present? %>
+
+      <div>
+        <div class="px-4 pb-4">
+
+
+
+
+
+
+          <div class="pb-2 px-2 font-bold">
+            <%= @order.images.count > 0 ? "#{@order.images.count} Order Photos" : "#{@order.images.count} Order Photo" %>
+          </div>
+
+
+        <div class="grid grid-cols-3 gap-3">
+
+          <% @order.images.reverse.each do |image| %>
+
+                  <%= link_to image_tag(image.variant(resize: "300x300")), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"}, class:"p-1" %>
+
+
+                <!-- Modal -->
+                <div class="modal fade bd-image-modal-<%= "#{image.blob_id}"%>-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                      <div class="modal-header mb-12">
+                        <h5 class="modal-title"> Photo <%= image.blob_id %> </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="px-4">
+                        <div class="inline-block justify-content-center ">
+                          <%= image_tag image, class:"object-fit" %>
+                        </div>
+                        <div class="m-4">
+                          <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"btn btn-outline-success" %>
+                        </div>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+          <% end %>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+      <% end %>
+
+  </div>
 <br>

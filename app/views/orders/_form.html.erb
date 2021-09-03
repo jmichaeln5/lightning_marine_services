@@ -55,20 +55,32 @@
       <%= f.file_field :images, multiple: true, class: 'form-control' %>
     </div>
 
-    <% if @order.images.any? %>
+    <% if @order.images.each do |image| %>
+      <%= f.hidden_field :images, multiple: true, value: image.signed_id %>
 
-      <% @order.images.each do |image| %>
-          <span>
-            <%= ActiveStorage::Attachment.find(image.id) %>
-            <%= image_tag(image.variant(resize: "200x200"))%>
-          </span>
+      <div class="border p-3 mt-4">
+        <div class="p-3">
+          <div class="row justify-between">
+
+            <div class="align-middle">
+              <%= image_tag(image.variant(resize: "300x300"))%>
+            </div>
+
+            <div class=" align-middle p-2">
+              <%#= ActiveStorage::Attachment.find(image.id) %>
+              <br>
+
+
+                <%= link_to 'Remove',  order_attachment_destroy_attachment_path(@order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400" %>
+
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
       <% end %>
-
-      <% if @order.images.each do |image| %>
-        <%= f.hidden_field :images, multiple: true, value: image.signed_id %>
-        <% end %>
-      <% end %>
-
     <% end %>
 
 

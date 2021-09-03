@@ -33,6 +33,15 @@ Rails.application.routes.draw do
   resources :vendors
   resources :orders
 
+  resources :orders do
+    resources :attachments do
+      delete :destroy_attachment
+    end
+  end
+
+  # get: '/attachments/:id/destroy_attachment/:id', to: 'attachments_controller#destroy_attachment', as: 'destroy_attachment'
+
+  # delete: '/attachments/:id/destroy_attachment/:id', to: 'attachments_controller#destroy_attachment', as: 'destroy_attachment'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 

@@ -121,6 +121,14 @@ class OrdersController < ApplicationController
     end
   end
 
+  def destroy_attachment
+    # byebug
+    # image = ActiveStorage::Attachment.find(params[:id])
+    image.purge
+    redirect_to request.referrer, notice: "Image deleted successfully."
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
