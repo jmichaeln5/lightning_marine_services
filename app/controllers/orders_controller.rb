@@ -69,6 +69,7 @@ class OrdersController < ApplicationController
   # GET /orders/1 or /orders/1.json
   def show
     @new_order = Order.new
+    order ||= @order
     @new_order_content = @new_order != nil ? @new_order.build_order_content : OrderContent.new
   end
 
@@ -120,6 +121,14 @@ class OrdersController < ApplicationController
     end
   end
 
+  def destroy_attachment
+    # byebug
+    # image = ActiveStorage::Attachment.find(params[:id])
+    image.purge
+    redirect_to request.referrer, notice: "Image deleted successfully."
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
@@ -128,7 +137,7 @@ class OrdersController < ApplicationController
     end
 
     def order_params
-      params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
+      params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
     end
 
     def load_modules
