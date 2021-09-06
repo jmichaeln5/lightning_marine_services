@@ -88,21 +88,16 @@
       <div>
         <div class="p-4">
 
-
-
-
-
-
           <div class="pb-2 px-2 font-bold">
             <%= @order.images.count > 0 ? "#{@order.images.count} Order Photos" : "#{@order.images.count} Order Photo" %>
           </div>
 
 
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-3 gap-3 border  ">
 
           <% @order.images.reverse.each do |image| %>
 
-                  <%= link_to image_tag(image.variant(resize: "300x300")), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"}, class:"p-1" %>
+                  <%= link_to image_tag(image.variant(resize: "300x300")), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"}, class:"p-2 align-middle" %>
 
 
                 <!-- Modal -->

@@ -46,6 +46,7 @@ class OrdersController < ApplicationController
     @current_page_number = params.fetch(:page, 0)
     @total_pages = Order.all.count.to_i / @orders_per_page
 
+    @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
