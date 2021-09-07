@@ -50,7 +50,7 @@
     </div>
 
     <div class="field pb-2 pt-2">
-      <p class="text-2xl"> <%= f.label "Image(s)" %> </p>
+      <p class="text-2xl"> <%= f.label "Upload(s)" %> </p>
       <%# byebug%>
       <%= f.file_field :images, multiple: true, class: 'form-control' %>
     </div>
@@ -63,15 +63,38 @@
           <div class="row justify-between">
 
             <div class="align-middle">
-              <%= image_tag(image.variant(resize: "300x300"))%>
+
+              <% if image.image?  %>
+                <%= image_tag(image.variant(resize: "300x300")) %>
+              <% elsif image.blob.content_type == "video/mp4" %>
+
+                <!-- <div style="width: 300px;"> -->
+                <div class="max-w-xs">
+                  <%= video_tag rails_blob_path(image), controls: true %>
+                </div>
+
+                <% else %>
+                <div class="max-w-xs bg-red-200" >
+                    <p class="p-12">
+                      <span class="float-left text-red-400 max-w-xs" style="">
+                        Content Unavailable
+                      </span>
+                    </p>
+                    <br>
+                  </div>
+
+
+
+              <% end %>
+
             </div>
 
-            <div class=" align-middle p-2">
+            <div class=" p-2">
               <%#= ActiveStorage::Attachment.find(image.id) %>
               <br>
 
 
-                <%= link_to 'Remove',  order_attachment_destroy_attachment_path(@order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400" %>
+                <%= link_to 'Remove',  order_attachment_destroy_attachment_path(@order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400 align-middle" %>
 
 
             </div>

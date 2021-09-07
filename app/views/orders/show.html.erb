@@ -82,57 +82,58 @@
 
   <% end %>
 
-
-    <% if @order.images.present? %>
-
       <div>
         <div class="p-4">
-
-
-
-
-
-
           <div class="pb-2 px-2 font-bold">
-            <%= @order.images.count > 0 ? "#{@order.images.count} Order Photos" : "#{@order.images.count} Order Photo" %>
+            <%= pluralize(@order.images.count, 'Upload') %>
           </div>
 
-
-        <div class="grid grid-cols-3 gap-3">
-
+        <div class="grid grid-cols-3 gap-3 border">
+          <% upload_count = 1 %>
           <% @order.images.reverse.each do |image| %>
 
-                  <%= link_to image_tag(image.variant(resize: "300x300")), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"}, class:"p-1" %>
+            <% if image.image? %>
+              <div class="max-w-xs align-middle p-4 bg-gray-200" >
+                <%= link_to image_tag(image), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"} %>
+              </div>
+            <% elsif image.blob.content_type == "video/mp4" %>
+              <div class="max-w-xs align-middle p-4 bg-gray-200">
+                <%= video_tag rails_blob_path(image), controls: true %>
+              </div>
+            <% end %>
 
+            <!-- Modal -->
+            <div class="modal fade bd-image-modal-<%= "#{image.blob_id}"%>-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
 
-                <!-- Modal -->
-                <div class="modal fade bd-image-modal-<%= "#{image.blob_id}"%>-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                  <div class="modal-header mb-12">
+                    <h5 class="modal-title"> Upload #<%= upload_count %> </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
 
-                      <div class="modal-header mb-12">
-                        <h5 class="modal-title"> Photo <%= image.blob_id %> </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-
-                      <div class="px-4">
-                        <div class="inline-block justify-content-center ">
-                          <%= image_tag image, class:"object-fit" %>
-                        </div>
-                        <div class="m-4">
-                          <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"btn btn-outline-success" %>
-                        </div>
-                      </div>
-
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      </div>
-
+                  <div class="px-4">
+                    <div class="inline-block justify-content-center ">
+                      <%= image_tag image, class:"object-fit" if image.variable?  %>
+                    </div>
+                    <div class="m-4">
+                      <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"btn btn-outline-success" if image.variable? %>
                     </div>
                   </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+
                 </div>
+              </div>
+            </div>
+
+            <% upload_count += 1 %>
+
+
           <% end %>
 
         </div>
@@ -143,8 +144,6 @@
 
     </div>
 
-
-      <% end %>
 
   </div>
 <br>

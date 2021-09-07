@@ -15,15 +15,15 @@ class AttachmentsController < ApplicationController
   def destroy_attachment
     # byebug
     image = ActiveStorage::Attachment.find(params[:attachment_id])
-    image.purge
-    redirect_to request.referrer, notice: "Image deleted successfully."
+    image.purge_later
+    redirect_to request.referrer, notice: "Attachment deleted successfully."
   end
 
 
   # def destroy
   #   byebug
   #   image = ActiveStorage::Attachment.find(params[:id])
-  #   image.purge
+  #   image.purge_later
   #   redirect_to request.referrer, notice: "Image deleted successfully."
   # end
 

@@ -36,7 +36,6 @@ class OrdersController < ApplicationController
     # @page = params.fetch(:page, byebug).to_i
     @set_page = @page_number * @orders_per_page
 
-
     if request.original_fullpath.include? "order_attr" || "sort_direction"
       @page_number = params.fetch(:page, 0).to_i
     else
@@ -46,6 +45,7 @@ class OrdersController < ApplicationController
     @current_page_number = params.fetch(:page, 0)
     @total_pages = Order.all.count.to_i / @orders_per_page
 
+    @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
