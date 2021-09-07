@@ -36,7 +36,6 @@ class OrdersController < ApplicationController
     # @page = params.fetch(:page, byebug).to_i
     @set_page = @page_number * @orders_per_page
 
-
     if request.original_fullpath.include? "order_attr" || "sort_direction"
       @page_number = params.fetch(:page, 0).to_i
     else
