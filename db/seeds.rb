@@ -38,6 +38,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
       password: '123456',
       password_confirmation: "123456"
   )
+  sample_user.add_role "staff"
   sample_user.skip_confirmation!
   sample_user.save
 

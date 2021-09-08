@@ -50,11 +50,6 @@
           <%= link_to 'Vendors', vendors_path, class:'nav-link' %>
         </li>
 
-        <!-- <li class="nav-item">
-          <%#= link_to 'Admin', admin_users_path, class:'nav-link' if current_user == User.first %>
-          <%#= link_to 'Admin Dashboard', admin_users_path, class:'nav-link' if current_user %>
-        </li> -->
-
       <% end %>
     </ul>
 
@@ -73,9 +68,7 @@
         <li class="nav-item">
           <%= link_to 'sign in', sign_in_path, class:'nav-link' if !user_signed_in?%>
         </li>
-        <li class="nav-item">
-          <%= link_to 'sign up', sign_up_path, class:'nav-link' if !user_signed_in?%>
-        </li>
+
       </ul>
     </div>
   </div>

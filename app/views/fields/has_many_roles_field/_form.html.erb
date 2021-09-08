@@ -40,11 +40,12 @@
   <%= f.select :roles, options_for_select( Role.all.order(:name).collect  { |role| [ role.name, role.id ] }, field.selected_options ), {}, multiple: true, class:'form-control' %>
 
   Current Role(s):
-
-  <% User.find(params[:id]).roles.each do |role| %>
-    <span>
-      <%= role.name.to_s[0..-1].capitalize  %>
-    </span>
+  <% if params[:id].present? %>
+    <% User.find(params[:id]).roles.each do |role| %>
+      <span>
+        <%= role.name.to_s[0..-1].capitalize  %>
+      </span>
+    <% end %>
   <% end %>
 
   <div class="btn-space">
