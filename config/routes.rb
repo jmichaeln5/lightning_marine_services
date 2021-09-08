@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
-      resources :users
+      resources :users, except: [:new] 
       resources :roles, only: [:index, :show]
       root to: "users#index"
     end
