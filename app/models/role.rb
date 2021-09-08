@@ -5,13 +5,12 @@ class Role < ApplicationRecord
              :polymorphic => true,
              :optional => true
 
-
   validates :resource_type,
             :inclusion => { :in => Rolify.resource_types },
             :allow_nil => true
 
   validates :name,
-          inclusion: { in: ["admin", "normal", "staff"] },
+          inclusion: { in: ["admin", "normal", "staff", "customer"] },
           uniqueness: true
 
   scopify

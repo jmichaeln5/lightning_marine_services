@@ -13,7 +13,7 @@ class User < ApplicationRecord
   # validates :roles, presence: true
   def set_default_role
     if self.roles.any? == false
-      self.add_role(:normal) 
+      self.add_role(:customer) 
     end
   end
 

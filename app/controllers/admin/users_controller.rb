@@ -1,6 +1,7 @@
 module Admin
   class UsersController < Admin::ApplicationController
-      before_action :remove_password_params_if_blank, only: [:update]
+    before_action :remove_password_params_if_blank, only: [:update]
+    before_action :update_role, only: [:update]
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
@@ -9,11 +10,24 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
-    #
     def remove_password_params_if_blank
       if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
         params[:user].delete(:password)
         params[:user].delete(:password_confirmation)
+      end
+    end
+
+    def update_role
+      @user = User.where(email: params[:user][:email]).first
+      @user.roles = [] # Clears all User roles
+      params[:user][:roles].each do |role|
+        if (role.empty? != false) == false
+          @updated_role = Role.find(role.to_i)
+          # if ((@user.has_role? @updated_role.name.to_sym) == false)
+          #   @user.add_role @updated_role.name.to_sym
+          # end
+          @user.add_role @updated_role.name.to_sym if ((@user.has_role? @updated_role.name.to_sym) == false)
+        end
       end
     end
 
