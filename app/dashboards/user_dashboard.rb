@@ -30,7 +30,8 @@ class UserDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     password: PasswordField,
-    password_confirmation: PasswordField
+    password_confirmation: PasswordField,
+    roles: HasManyRolesField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -43,6 +44,7 @@ class UserDashboard < Administrate::BaseDashboard
     first_name
     last_name
     phone_number
+    roles
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -79,6 +81,7 @@ class UserDashboard < Administrate::BaseDashboard
     phone_number
     email
     username
+    roles
     sign_in_count
     current_sign_in_at
     last_sign_in_at
@@ -117,6 +120,7 @@ class UserDashboard < Administrate::BaseDashboard
     username
     password
     password_confirmation
+    roles
   ].freeze
 
   # COLLECTION_FILTERS

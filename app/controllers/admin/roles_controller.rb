@@ -1,6 +1,5 @@
 module Admin
-  class UsersController < Admin::ApplicationController
-      before_action :remove_password_params_if_blank, only: [:update]
+  class RolesController < Admin::ApplicationController
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
@@ -8,14 +7,6 @@ module Admin
     #   super
     #   send_foo_updated_email(requested_resource)
     # end
-
-    #
-    def remove_password_params_if_blank
-      if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
-        params[:user].delete(:password)
-        params[:user].delete(:password_confirmation)
-      end
-    end
 
     # Override this method to specify custom lookup behavior.
     # This will be used to set the resource for the `show`, `edit`, and `update`

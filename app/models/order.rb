@@ -38,12 +38,12 @@ class Order < ApplicationRecord
       content_amount = content_amount + add_content_amount
     end
 
-    # if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+    if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
       if content_amount < 1
         self.errors.add(:base, "Order is missing content.")
         throw(:abort)
       end
-    # end
+    end
   end
 
 

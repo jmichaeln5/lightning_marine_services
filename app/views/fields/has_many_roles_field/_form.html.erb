@@ -1,0 +1,19 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute, field.attribute %>
+  <br>
+  Current Role(s):
+  <br>
+  <%= User.find(params[:id]).roles.map {|r| r.name} %>
+</div>
+
+
+
+
+<div class="field-unit__field">
+  <%= f.select(field.attribute, nil, {}, multiple: true) do %>
+  <%#= options_for_select(field.associated_resource_options, field.selected_options) %>
+
+  <%= options_for_select([["admin", "admin"], ["normal", "normal"], ["staff", "staff"]])%>
+
+  <% end %>
+</div>

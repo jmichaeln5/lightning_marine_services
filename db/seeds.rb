@@ -23,7 +23,9 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
       password: '123456',
       password_confirmation: "123456"
   )
+  admin_user.add_role "admin"
   admin_user.skip_confirmation!
+
   admin_user.save
 
   sample_user = User.new(
