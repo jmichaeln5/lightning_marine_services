@@ -40,7 +40,7 @@
                           <div class=" object-right-top">
                             <div class="">
                               <span class="m-6">
-                                <%= link_to 'Admin Dashboard', admin_users_path if current_user == User.first %>
+                                <%= link_to 'Admin Dashboard', admin_users_path if current_user.has_role? :admin %>
                               </span>
                             </div>
                           </div>
