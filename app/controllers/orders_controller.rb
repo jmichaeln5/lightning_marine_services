@@ -8,23 +8,21 @@ class OrdersController < ApplicationController
   def index
 
     @orders_per_page = 5
-
+    @archived_orders = Order.archived.order("created_at DESC")
     if sort_column == 'id'
       # byebug
-      @orders = Order.order( sort_column + " " + sort_direction )
+      @orders = Order.unarchived.order( sort_column + " " + sort_direction )
       # byebug
     elsif sort_column == 'purchaser_name'
-      @orders = Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+      @orders = Order.unarchived.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
 
     elsif sort_column == 'vendor_name'
-      @orders = Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
+      @orders = Order.unarchived.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
     else
-      @orders = Order.all.order("created_at DESC")
+      @orders = Order.unarchived.all.order("created_at DESC")
     end
 
-
     #   # http://localhost:3000/orders?page=2?order_attr=id&sort_direction=DESC
-
 
     @get_page = params.fetch(:page, 0).to_i
     @page_number = params.fetch(:page, 0).to_i
@@ -47,15 +45,12 @@ class OrdersController < ApplicationController
 
     @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
 
+    #################
+    ### # Form Instance Vars
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
-
-
-
-
-
-
+    ### # Export to CSV
     # respond_to do |format|
     #   format.html
     #   format.csv do
@@ -63,7 +58,12 @@ class OrdersController < ApplicationController
     #     headers['Content-Type'] ||= 'text/csv'
     #   end
     # end
-    #
+    #################
+  end
+
+  def archived_index
+    @archived_orders = Order.archived.order("created_at DESC")
+    @orders = Order.all
   end
 
   # GET /orders/1 or /orders/1.json
