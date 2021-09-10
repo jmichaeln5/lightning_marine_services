@@ -1,4 +1,11 @@
-<% content_for :title, "All #{Order.all.count} Orders" %>
+<% content_for :title, "#{Order.all.count} Orders" %>
+
+<% content_for :subtitle do %>
+    <%= "#{Order.unarchived.all.count}" %>
+    <%= link_to "Archieved", archived_orders_path %>
+    Orders
+<% end %>
+
 
 <!-- <br>
 <%= th_attr_names_arr %>

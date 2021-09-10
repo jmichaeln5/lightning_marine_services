@@ -48,6 +48,14 @@
 
                         <div class="text-4xl pb-4">
                           <%= yield(:title) %>
+
+                          <div class="text-3xl">
+                            <%= yield(:subtitle) %>
+                          </div>
+
+                          <div class="text-2xl">
+                            <%= yield(:subtitle_two) %>
+                          </div>
                         </div>
                         <!-- Order ID/Count -->
                         <% if @orders != false %>

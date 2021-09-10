@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  scope :unarchived, -> { where('archived != ?', true) }
+  scope :archived, -> { where('archived != ?', false) }
 
   belongs_to :purchaser
   belongs_to :vendor
@@ -13,9 +15,12 @@ class Order < ApplicationRecord
   validates :po_number, uniqueness: true
 
   before_save :order_content_exists?
+  before_save :archive_on_delivery
+
+  # scope :archived, where('archived_on != ?', nil)
 
   def self.to_csv
-      attributes = %w{id po_number date_recieved}
+      attributes = %w{ id po_number date_recieved }
 
       CSV.generate(headers: true) do |csv|
         csv << attributes
@@ -37,6 +42,11 @@ class Order < ApplicationRecord
       add_content_amount = order_content.send(attr).to_i
       content_amount = content_amount + add_content_amount
     end
+
+  def archive_on_delivery
+    # byebug
+    self.archived = true if self.date_delivered.present?
+  end
 
     if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
       if content_amount < 1
