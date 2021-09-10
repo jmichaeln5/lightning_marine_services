@@ -1,12 +1,54 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_order, only: %i[ show destroy ]
-  before_action :load_modules, only: %i[ index ]
-  helper_method :sort_column, :sort_direction
+  before_action :load_modules, only: %i[ all_orders, index ]
+  helper_method :sort_direction
+
+  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+  # helper_method :sort_column, :sort_direction
+  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+
+
+
+  # ####################################
+  # ####################################
+  # ####################################
+
+  def all_orders
+
+    sort_column = params[:sort_column] ||= nil
+
+    if sort_column == 'id'
+      @orders = SortTableLogic.sort_resource_by_id(sort_direction)
+
+    elsif sort_column == 'purchaser_id'
+      @orders = SortTableLogic.sort_resource_by_purchaser_name(sort_direction)
+
+    elsif sort_column == 'vendor_id'
+      @orders = SortTableLogic.sort_resource_by_vendor_name(sort_direction)
+
+    elsif sort_column == 'po_number'
+      @orders = SortTableLogic.sort_resource_by_po_number(sort_direction)
+
+    else
+      @orders = Order.all.order("created_at DESC")
+    end
+
+  end
+
+  # ####################################
+  # ####################################
+  # ####################################
+
+
+
 
   # GET /orders or /orders.json
   def index
-
     @orders_per_page = 5
     @archived_orders = Order.archived.order("created_at DESC")
     if sort_column == 'id'
@@ -141,25 +183,28 @@ class OrdersController < ApplicationController
     end
 
     def load_modules
-      autoload :TableLogic, "table_logic.rb"
+      # autoload :TableLogic, "table_logic.rb"
+      autoload :SortTableLogic, "sort_table_logic.rb"
     end
 
-    def sort_column(order_attr = nil)
-      if params[:order_attr] == 'id'
-        return 'id'
-      elsif params[:order_attr] == 'purchaser_name'
-        return 'purchaser_name'
-      elsif params[:order_attr] == 'vendor_name'
-        return 'vendor_name'
-      end
-    end
 
-    def sort_direction
-      if params[:order_attr] && params[:sort_direction] == 'DESC'
-        'ASC'
-      else
-        "DESC"
-      end
+# # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+# # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+# # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
+    # def sort_column(order_attr = nil)
+    #   if params[:order_attr] == 'id'
+    #     return 'id'
+    #   elsif params[:order_attr] == 'purchaser_name'
+    #     return 'purchaser_name'
+    #   elsif params[:order_attr] == 'vendor_name'
+    #     return 'vendor_name'
+    #   end
+    # end
+    #
+    def sort_direction(order_attr = nil)
+      order_attr = params[:order_attr]
+
+      sort_direction = order_attr == params[:order_attr] && params[:sort_direction] == "asc" ? "desc" : "asc"
     end
 
 end

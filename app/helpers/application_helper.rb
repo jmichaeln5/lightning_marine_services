@@ -48,11 +48,11 @@ module ApplicationHelper
     end
   end
 
-  def get_resource(controller_name)
-    if (main_functionality_controller? == true)
-      klass = Object.const_get "#{controller_name.singularize.capitalize}"
-    end
-  end
+  # def get_resource(controller_name)
+  #   if (main_functionality_controller? == true)
+  #     klass = Object.const_get "#{controller_name.singularize.capitalize}"
+  #   end
+  # end
 
   # Used in app/views/layouts/_edit_toggle.html.erb to get Model Instance on #show action (reason for instansiatied class to be found by params[:id] )
   def get_resource_instance(controller_name)

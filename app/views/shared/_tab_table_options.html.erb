@@ -3,11 +3,17 @@
 
   <div class="card">
 
-    <div class="card-header" id="tableOptions">
+    <div class="card-header">
       <h2 class="mb-0">
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTableOptions" aria-expanded="false" aria-controls="collapseTableOptions">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTableOptions" aria-expanded="false" aria-controls="collapseTableOptions" id="tableOptions">
           Table Options
         </button>
+
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions" id="adminOptions">
+          Admin Options
+        </button>
+
+
       </h2>
     </div>
 
@@ -17,6 +23,8 @@
       Sort
       <br>
       Download
+      <br>
+      <%= link_to "All Orders", all_orders_path %>
 
 
       </div>
@@ -25,15 +33,16 @@
   </div>
 
 
+
   <div class="card">
 
-    <div class="card-header" id="adminOptions">
+    <!-- <div class="card-header" id="adminOptions">
       <h2 class="mb-0">
         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions">
           Admin Options
         </button>
       </h2>
-    </div>
+    </div> -->
 
     <div id="collapseAdminOptions" class="collapse" aria-labelledby="adminOptions" data-parent="#aboveTableAccordionOptions">
       <div class="card-body">
