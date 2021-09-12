@@ -1,31 +1,29 @@
 <% content_for :title, "All Orders" %>
 
-<br>
-<br>
+<!-- For new resource on #index Controller Actions  -->
+<%= render 'shared/new_modal' %>
 
   <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
-        <!-- in orders helper -->
+        <!-- sortable_orders_ths in orders helper -->
         <% sortable_orders_ths.each do |resource_attr_name| %>
           <th class="">
             <%= link_to "#{resource_attr_name.to_s.humanize}", all_orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
           </th>
         <% end %>
-
-        <!-- in orders helper -->
+        <!-- sortable_orders_ths in orders helper -->
         <% non_sortable_orders_ths.each do |resource_attr_name| %>
           <th class="">
             <%= "#{resource_attr_name.to_s.humanize}" %>
           </th>
         <% end %>
-
       </tr>
     </thead>
     <tbody>
 
       <% @orders.each do |order| %>
-      <tr>
+        <tr>
             <td class=" align-middle font-light">
               <%= order.id %>
             </td>
@@ -72,9 +70,8 @@
                 <% end %>
               <% end %>
             </td>
-
+        </tr>
       <% end %>
-    </tr>
 
     </tbody>
   </table>

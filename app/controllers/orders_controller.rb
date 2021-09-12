@@ -7,6 +7,9 @@ class OrdersController < ApplicationController
 
   def all_orders
     @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
+
+    @order = Order.new
+    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
 
   # GET /orders or /orders.json
@@ -25,8 +28,10 @@ class OrdersController < ApplicationController
     @page = @get_page
     @set_page = @page_number * @orders_per_page
 
+
     if request.original_fullpath.include? "order_attr" || "sort_direction"
       @page_number = params.fetch(:page, 0).to_i
+      @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
     else
       @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
     end
@@ -34,9 +39,7 @@ class OrdersController < ApplicationController
     @current_page_number = params.fetch(:page, 0)
     @total_pages = Order.all.count.to_i / @orders_per_page
 
-
-
-    @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
+    # @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
 
     #################
     ### # Form Instance Vars
@@ -133,12 +136,13 @@ class OrdersController < ApplicationController
     end
 
     def load_modules
-      # autoload :SortTableLogic, "sort_logic/sort_table_logic.rb"
       autoload :OrdersSortTableLogic, "sort_logic/orders_sort_table_logic.rb"
     end
 
     def sort_option(sort_option = nil)
-      sort_option = params[:sort_option] ||= nil
+      # sort_option = params[:sort_option] ||= nil
+      sort_option = params[:sort_option] ||= nil unless params[:sort_option] == 'ship'
+      sort_option = params[:sort_option] == 'ship' ? 'purchaser_id' : params[:sort_option]
     end
 
     def sort_direction(sort_direction = nil)

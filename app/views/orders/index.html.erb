@@ -6,34 +6,27 @@
     Orders
 <% end %>
 
+<!-- For new resource on #index Controller Actions  -->
+<%= render 'shared/new_modal' %>
+
 <%#= render partial: "exports/export_csv_button", locals:{resource: get_resource(controller_name)}  %>
 
   <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
 
-        <!-- <th class="py-8"> OrderID</th>
-        <th class="py-8"> Ship </th>
-        <th class="py-8"> Vendor </th>
-        <th class="py-8"> PO# </th>
-        <th class="py-8"> Date Recieved </th>
-        <th class="py-8"> Courrier </th>
-        <th class="py-8"> Date Delivered </th>
-        <th class="py-8"> Contents </th> -->
-
-
-        <th class="py-8"> <%= link_to "Order ID", orders_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
-
-        <th class="py-8"> <%= link_to "Ship Name", orders_path(order_attr: 'purchaser_name', sort_direction: sort_direction) %> </th>
-
-        <th class="py-8"> <%= link_to "Vendor Name", orders_path(order_attr: 'vendor_name', sort_direction: sort_direction) %> </th>
-
-        <th class="py-8"> PO# </th>
-        <th class="py-8"> Date Recieved </th>
-        <th class="py-8"> Courrier </th>
-        <th class="py-8"> Date Delivered </th>
-        <th class="py-8"> Contents </th>
-
+        <!-- sortable_orders_ths in orders helper -->
+        <% sortable_orders_ths.each do |resource_attr_name| %>
+          <th class="">
+            <%= link_to "#{resource_attr_name.to_s.humanize}", orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
+          </th>
+        <% end %>
+        <!-- sortable_orders_ths in orders helper -->
+        <% non_sortable_orders_ths.each do |resource_attr_name| %>
+          <th class="">
+            <%= "#{resource_attr_name.to_s.humanize}" %>
+          </th>
+        <% end %>
 
         <!-- <th class="py-8 "> <%#= sortable "po_number" %> </th>
         <th class="py-8 "> <%#= sortable "date_recieved" %> </th>
@@ -45,41 +38,34 @@
     </thead>
 
     <tbody>
-
-
       <% @paginated_orders.each do |order| %>
       <tr>
-        <tr class="">
-
-            <td class="py-8 align-middle font-light">
+            <td class=" align-middle font-light">
               <%= order.id %>
             </td>
 
-            <td class="py-8 align-middle font-light">
+            <td class=" align-middle font-light">
               <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
             </td>
 
-            <td class="py-8 align-middle font-light">
+            <td class=" align-middle font-light">
               <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
             </td>
 
-            <td class="py-8 align-middle font-light">
-              <%= order.po_number ||= "n/a" %>
+            <td class=" align-middle font-light">
+              <%= order.courrier %>
             </td>
 
-            <td class="py-8 align-middle font-light">
+            <td class=" align-middle font-light">
               <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
             </td>
 
-            <td class="py-8 align-middle font-light">
-              <%= order.courrier ||= "n/a" %>
+            <td class=" align-middle font-light">
+              <%= order.po_number ||= "n/a" %>
             </td>
 
-            <td class="py-8 align-middle font-light">
-              <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
-            </td>
 
-            <td class="py-8 align-middle font-light">
+            <td class=" align-middle font-light">
               <% if order.order_content.present? %>
 
                 <%= link_to(order_path(order)) do %>
@@ -100,11 +86,8 @@
                 <% end %>
               <% end %>
             </td>
-        </tr>
-
+          </tr>
       <% end %>
-    </tr>
-
     </tbody>
   </table>
 

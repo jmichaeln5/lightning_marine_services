@@ -3,12 +3,13 @@ module OrdersHelper
   def sortable_orders_ths
     %i[
       id
-      purchaser_id
+      ship
       vendor_id
       courrier
       date_recieved
     ]
   end
+
 
   def non_sortable_orders_ths
     %i[
