@@ -1,24 +1,18 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_order, only: %i[ show destroy ]
-  before_action :load_modules, only: %i[ all_orders, index ]
-  helper_method :sort_direction
+  before_action :load_modules
+  helper_method :sort_order_by, :sort_direction
 
-  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-  # helper_method :sort_column, :sort_direction
-  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-  # # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-
-
-
-  # ####################################
-  # ####################################
-  # ####################################
 
   def all_orders
+    @orders = SortTableLogicTwo.sorted_orders(sort_order_by, sort_direction)
+  end
+
+  # GET /orders or /orders.json
+  def index
+    @orders_per_page = 5
+    @archived_orders = Order.archived.order("created_at DESC")
 
     sort_column = params[:sort_column] ||= nil
 
@@ -37,33 +31,6 @@ class OrdersController < ApplicationController
     else
       @orders = Order.all.order("created_at DESC")
     end
-
-  end
-
-  # ####################################
-  # ####################################
-  # ####################################
-
-
-
-
-  # GET /orders or /orders.json
-  def index
-    @orders_per_page = 5
-    @archived_orders = Order.archived.order("created_at DESC")
-    if sort_column == 'id'
-      # byebug
-      @orders = Order.unarchived.order( sort_column + " " + sort_direction )
-      # byebug
-    elsif sort_column == 'purchaser_name'
-      @orders = Order.unarchived.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
-
-    elsif sort_column == 'vendor_name'
-      @orders = Order.unarchived.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
-    else
-      @orders = Order.unarchived.all.order("created_at DESC")
-    end
-
     #   # http://localhost:3000/orders?page=2?order_attr=id&sort_direction=DESC
 
     @get_page = params.fetch(:page, 0).to_i
@@ -170,7 +137,6 @@ class OrdersController < ApplicationController
     redirect_to request.referrer, notice: "Image deleted successfully."
   end
 
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
@@ -182,29 +148,19 @@ class OrdersController < ApplicationController
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
     end
 
-    def load_modules
-      # autoload :TableLogic, "table_logic.rb"
-      autoload :SortTableLogic, "sort_table_logic.rb"
+    def sort_order_by(sort_order_by = nil)
+      sort_order_by = params[:sort_order_by] ||= nil
+    end
+
+    def sort_direction(sort_direction = nil)
+      sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
     end
 
 
-# # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-# # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-# # # **********  COMMENTED OUT FOR TESTING TABLE LOGIC MODULE ******************************
-    # def sort_column(order_attr = nil)
-    #   if params[:order_attr] == 'id'
-    #     return 'id'
-    #   elsif params[:order_attr] == 'purchaser_name'
-    #     return 'purchaser_name'
-    #   elsif params[:order_attr] == 'vendor_name'
-    #     return 'vendor_name'
-    #   end
-    # end
-    #
-    def sort_direction(order_attr = nil)
-      order_attr = params[:order_attr]
-
-      sort_direction = order_attr == params[:order_attr] && params[:sort_direction] == "asc" ? "desc" : "asc"
+    def load_modules
+      # autoload :TableLogic, "table_logic.rb"
+      # autoload :SortTableLogic, "sort_table_logic.rb"
+      autoload :SortTableLogicTwo, "sort_table_logic_two.rb"
     end
 
 end
