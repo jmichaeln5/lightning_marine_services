@@ -1,7 +1,7 @@
 module OrdersHelper
 
   def sortable_orders_ths
-    display_on_th = %i[
+    %i[
       id
       purchaser_id
       vendor_id
@@ -10,8 +10,8 @@ module OrdersHelper
     ]
   end
 
-  def remaining_th_attr_names_arr
-    display_on_th = %i[
+  def non_sortable_orders_ths
+    %i[
       po_number
       order_content
     ]

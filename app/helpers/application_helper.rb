@@ -48,6 +48,11 @@ module ApplicationHelper
     end
   end
 
+  # def resource_klass
+  #   Object.const_get controller_name.classify
+  # end
+
+
   def get_resource(controller_name)
     if (main_functionality_controller? == true)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"

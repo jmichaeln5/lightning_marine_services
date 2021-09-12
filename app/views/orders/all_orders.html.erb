@@ -3,20 +3,18 @@
 <br>
 <br>
 
-  <h1> <%= current_action %></h1>
-
   <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
-
+        <!-- in orders helper -->
         <% sortable_orders_ths.each do |resource_attr_name| %>
           <th class="">
-            <%= link_to "#{resource_attr_name.to_s.humanize}", all_orders_path(sort_order_by: "#{resource_attr_name}", sort_direction: sort_direction) %>
+            <%= link_to "#{resource_attr_name.to_s.humanize}", all_orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
           </th>
         <% end %>
 
-        <%# SortTableLogic.remaining_th_attr_names_arr.each do |resource_attr_name| %>
-        <% remaining_th_attr_names_arr.each do |resource_attr_name| %>
+        <!-- in orders helper -->
+        <% non_sortable_orders_ths.each do |resource_attr_name| %>
           <th class="">
             <%= "#{resource_attr_name.to_s.humanize}" %>
           </th>

@@ -2,11 +2,11 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_order, only: %i[ show destroy ]
   before_action :load_modules
-  helper_method :sort_order_by, :sort_direction
+  helper_method :sort_option, :sort_direction
 
 
   def all_orders
-    @orders = SortTableLogicTwo.sorted_orders(sort_order_by, sort_direction)
+    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
   end
 
   # GET /orders or /orders.json
@@ -14,23 +14,8 @@ class OrdersController < ApplicationController
     @orders_per_page = 5
     @archived_orders = Order.archived.order("created_at DESC")
 
-    sort_column = params[:sort_column] ||= nil
+    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
 
-    if sort_column == 'id'
-      @orders = SortTableLogic.sort_resource_by_id(sort_direction)
-
-    elsif sort_column == 'purchaser_id'
-      @orders = SortTableLogic.sort_resource_by_purchaser_name(sort_direction)
-
-    elsif sort_column == 'vendor_id'
-      @orders = SortTableLogic.sort_resource_by_vendor_name(sort_direction)
-
-    elsif sort_column == 'po_number'
-      @orders = SortTableLogic.sort_resource_by_po_number(sort_direction)
-
-    else
-      @orders = Order.all.order("created_at DESC")
-    end
     #   # http://localhost:3000/orders?page=2?order_attr=id&sort_direction=DESC
 
     @get_page = params.fetch(:page, 0).to_i
@@ -38,9 +23,6 @@ class OrdersController < ApplicationController
 
 
     @page = @get_page
-
-
-    # @page = params.fetch(:page, byebug).to_i
     @set_page = @page_number * @orders_per_page
 
     if request.original_fullpath.include? "order_attr" || "sort_direction"
@@ -51,6 +33,8 @@ class OrdersController < ApplicationController
 
     @current_page_number = params.fetch(:page, 0)
     @total_pages = Order.all.count.to_i / @orders_per_page
+
+
 
     @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
 
@@ -148,19 +132,17 @@ class OrdersController < ApplicationController
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
     end
 
-    def sort_order_by(sort_order_by = nil)
-      sort_order_by = params[:sort_order_by] ||= nil
+    def load_modules
+      # autoload :SortTableLogic, "sort_logic/sort_table_logic.rb"
+      autoload :OrdersSortTableLogic, "sort_logic/orders_sort_table_logic.rb"
+    end
+
+    def sort_option(sort_option = nil)
+      sort_option = params[:sort_option] ||= nil
     end
 
     def sort_direction(sort_direction = nil)
       sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
-    end
-
-
-    def load_modules
-      # autoload :TableLogic, "table_logic.rb"
-      # autoload :SortTableLogic, "sort_table_logic.rb"
-      autoload :SortTableLogicTwo, "sort_table_logic_two.rb"
     end
 
 end

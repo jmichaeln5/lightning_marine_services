@@ -32,11 +32,7 @@ Rails.application.routes.draw do
   resources :users
   resources :purchasers
   resources :vendors
-  # resources :orders
-
-  resources :orders do
-    resources :sort, module: :orders
-  end
+  resources :orders
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
