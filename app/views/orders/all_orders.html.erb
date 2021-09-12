@@ -1,24 +1,15 @@
-<% content_for :title, "#{Order.all.count} Orders" %>
-
-<% content_for :subtitle do %>
-    <%= "#{Order.unarchived.all.count}" %>
-    <%= link_to "Archieved", archived_orders_path %>
-    Orders
-<% end %>
+<% content_for :title, "All Orders" %>
 
 <!-- For new resource on #index Controller Actions  -->
 <%= render 'shared/new_modal' %>
 
-<%#= render partial: "exports/export_csv_button", locals:{resource: get_resource(controller_name)}  %>
-
   <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
-
         <!-- sortable_orders_ths in orders helper -->
         <% sortable_orders_ths.each do |resource_attr_name| %>
           <th class="">
-            <%= link_to "#{resource_attr_name.to_s.humanize}", orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
+            <%= link_to "#{resource_attr_name.to_s.humanize}", all_orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
           </th>
         <% end %>
         <!-- sortable_orders_ths in orders helper -->
@@ -27,19 +18,12 @@
             <%= "#{resource_attr_name.to_s.humanize}" %>
           </th>
         <% end %>
-
-        <!-- <th class="py-8 "> <%#= sortable "po_number" %> </th>
-        <th class="py-8 "> <%#= sortable "date_recieved" %> </th>
-        <th class="py-8 "> <%#= sortable "courrier" %> </th>
-        <th class="py-8 "> <%#= sortable "date_delivered" %> </th>
-        <th class="py-8 "> <%#= sortable "id", "Content"  %> </th> -->
-
       </tr>
     </thead>
-
     <tbody>
-      <% @paginated_orders.each do |order| %>
-      <tr>
+
+      <% @orders.each do |order| %>
+        <tr>
             <td class=" align-middle font-light">
               <%= order.id %>
             </td>
@@ -86,37 +70,8 @@
                 <% end %>
               <% end %>
             </td>
-          </tr>
+        </tr>
       <% end %>
+
     </tbody>
   </table>
-
-  <div class="">
-    <div class="">
-      <%= render "shared/pagination_buttons" %>
-    </div>
-  </div>
-
-
-
-  <div class="py-4">
-    <p class="p-4">
-      Total Pages = <%= @total_pages %>
-      <br>
-      Current Page = <%= @current_page_number %>
-      <br>
-      @page.to_i = <%= @page.to_i %>
-    </p>
-  </div>
-
-
-
-
-  <!-- <%# @current_page_number = params.fetch(:page, 0) %>
-  <%#= link_to "Previous Page", orders_path(page: @page - 1) if @current_page_number.to_i > 0 %>
-  |
-  <%#= link_to "Next Page", orders_path(page: @page + 1) if @current_page_number.to_i < @total_pages.to_i  %> -->
-
-
-  <!-- http://localhost:3000/orders/?page=2 -->
-  <!-- /orders/?page=2 -->

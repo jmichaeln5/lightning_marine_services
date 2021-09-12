@@ -1,26 +1,23 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_order, only: %i[ show destroy ]
-  before_action :load_modules, only: %i[ index ]
-  helper_method :sort_column, :sort_direction
+  before_action :load_modules
+  helper_method :sort_option, :sort_direction
+
+
+  def all_orders
+    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
+
+    @order = Order.new
+    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+  end
 
   # GET /orders or /orders.json
   def index
-
     @orders_per_page = 5
     @archived_orders = Order.archived.order("created_at DESC")
-    if sort_column == 'id'
-      # byebug
-      @orders = Order.unarchived.order( sort_column + " " + sort_direction )
-      # byebug
-    elsif sort_column == 'purchaser_name'
-      @orders = Order.unarchived.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
 
-    elsif sort_column == 'vendor_name'
-      @orders = Order.unarchived.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
-    else
-      @orders = Order.unarchived.all.order("created_at DESC")
-    end
+    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
 
     #   # http://localhost:3000/orders?page=2?order_attr=id&sort_direction=DESC
 
@@ -29,13 +26,12 @@ class OrdersController < ApplicationController
 
 
     @page = @get_page
-
-
-    # @page = params.fetch(:page, byebug).to_i
     @set_page = @page_number * @orders_per_page
+
 
     if request.original_fullpath.include? "order_attr" || "sort_direction"
       @page_number = params.fetch(:page, 0).to_i
+      @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
     else
       @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
     end
@@ -43,7 +39,7 @@ class OrdersController < ApplicationController
     @current_page_number = params.fetch(:page, 0)
     @total_pages = Order.all.count.to_i / @orders_per_page
 
-    @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
+    # @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
 
     #################
     ### # Form Instance Vars
@@ -128,7 +124,6 @@ class OrdersController < ApplicationController
     redirect_to request.referrer, notice: "Image deleted successfully."
   end
 
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
@@ -141,25 +136,17 @@ class OrdersController < ApplicationController
     end
 
     def load_modules
-      autoload :TableLogic, "table_logic.rb"
+      autoload :OrdersSortTableLogic, "sort_logic/orders_sort_table_logic.rb"
     end
 
-    def sort_column(order_attr = nil)
-      if params[:order_attr] == 'id'
-        return 'id'
-      elsif params[:order_attr] == 'purchaser_name'
-        return 'purchaser_name'
-      elsif params[:order_attr] == 'vendor_name'
-        return 'vendor_name'
-      end
+    def sort_option(sort_option = nil)
+      # sort_option = params[:sort_option] ||= nil
+      sort_option = params[:sort_option] ||= nil unless params[:sort_option] == 'ship'
+      sort_option = params[:sort_option] == 'ship' ? 'purchaser_id' : params[:sort_option]
     end
 
-    def sort_direction
-      if params[:order_attr] && params[:sort_direction] == 'DESC'
-        'ASC'
-      else
-        "DESC"
-      end
+    def sort_direction(sort_direction = nil)
+      sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
     end
 
 end
