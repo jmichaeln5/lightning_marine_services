@@ -1,31 +1,14 @@
 class PurchasersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_purchaser, only: %i[ show edit update destroy ]
-  helper_method :sort_column, :sort_direction
+  before_action :load_modules
+  helper_method :sort_option, :sort_direction
 
-  # GET /purchasers or /purchasers.json
+  # # GET /purchasers or /purchasers.json
   def index
-    # @purchasers = Purchaser.all.order("created_at DESC")
     @purchaser = Purchaser.new
     @orders = Order.all
-    # @orders.where(purchaser_id: @purchasers.ids)
-
-    if sort_column == 'id'
-      @purchasers = Purchaser.order( sort_column + " " + sort_direction )
-    elsif sort_column == 'purchaser_name'
-      @purchasers = Purchaser.reorder("name" + " " + sort_direction)
-    elsif sort_column == 'order_amount'
-      @most_to_least_orders = Purchaser.all.sort {|a,b| b.orders.length <=> a.orders.length}
-
-      if params[:sort_direction] == 'ASC'
-        @purchasers = @most_to_least_orders
-      elsif params[:sort_direction] == 'DESC'
-        @purchasers = @most_to_least_orders.reverse
-      end
-
-    else
-      @purchasers = Purchaser.all.order("created_at DESC")
-    end
+    @purchasers = PurchasersSortTableLogic.sorted_purchasers(sort_option, sort_direction)
   end
 
   # GET /purchasers/1 or /purchasers/1.json
@@ -91,24 +74,15 @@ class PurchasersController < ApplicationController
     end
 
     def load_modules
-      autoload :TableLogic, "table_logic.rb"
+      autoload :PurchasersSortTableLogic, "purchasers/sort_logic/purchasers_sort_table_logic.rb"
     end
 
-    def sort_column(order_attr = nil)
-      if params[:order_attr] == 'id'
-        return 'id'
-      elsif params[:order_attr] == 'order_amount'
-        return 'order_amount'
-      elsif params[:order_attr] == 'purchaser_name'
-        return 'purchaser_name'
-      end
+    def sort_option(sort_option = nil)
+      sort_option = params[:sort_option] ||= nil
+      return sort_option.to_s
     end
 
-    def sort_direction
-      if params[:order_attr] && params[:sort_direction] == 'DESC'
-        'ASC'
-      else
-        "DESC"
-      end
+    def sort_direction(sort_direction = nil)
+      sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
     end
 end

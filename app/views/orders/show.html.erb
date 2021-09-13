@@ -2,7 +2,7 @@
   Ship: <%= link_to "#{@order.purchaser.name.possessive}", purchaser_path(@order.purchaser)  %> Order
 <% end %>
 
-<% content_for :order_number, "Order ID: #{@order.id}" %>
+<% content_for :subtitle, "Order ID: #{@order.id}" %>
 
 <div class="card p-2">
   <table>

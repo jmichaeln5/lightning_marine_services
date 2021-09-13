@@ -2,10 +2,13 @@
 
 <% content_for :subtitle do %>
     <%= "#{Order.unarchived.all.count}" %>
-    <%= link_to "Archieved", archived_orders_path %>
+    <%= link_to "Unarchieved", archived_orders_path %>
+    Orders
+    <br>
+    <%= "#{Order.archived.all.count}" %>
+    <%= link_to "archieved", archived_orders_path %>
     Orders
 <% end %>
-
 
 <!-- For new resource on #index Controller actions  -->
 <%= render 'shared/new_modal' %>

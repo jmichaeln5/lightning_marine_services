@@ -1,14 +1,12 @@
 <% content_for :title, "All Orders" %>
 
-<!-- For new resource on #index Controller actions  -->
 <%= render 'shared/new_modal' %>
 
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-      <!-- sortable_orders_ths in file: orders_sort_table_logic -->
       <% OrdersSortTableLogic.sortable_orders_ths.each do |resource_attr_name| %>
-        <th class="">
+        <th>
 
           <%= link_to "#{resource_attr_name.to_s.humanize}", all_orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
 
@@ -16,7 +14,7 @@
       <% end %>
 
       <% OrdersSortTableLogic.non_sortable_orders_ths.each do |resource_attr_name| %>
-        <th class="">
+        <th>
           <%= "#{resource_attr_name.to_s.humanize}" %>
         </th>
       <% end %>

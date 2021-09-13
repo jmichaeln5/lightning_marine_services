@@ -20,22 +20,23 @@
       <hr>
 
       <% form_path = "#{controller_name}/form".to_s %>
+
       <%= render form_path %>
 
       <div class="container">
-        <br>
-        
-        <span class="pt-4">
-          <%= link_to 'Delete', get_resource_instance(controller_name), method: :delete, data: { confirm: "Are you sure you want to delete this #{current_controller.singularize}? Once deleted this cannot be undone." }, class:'btn btn-sm btn-outline-danger' %>
-        </span>
+        <% if current_user.has_role? :admin %>
+          <br>
+          <span class="pt-4">
+            <%= link_to 'Delete', get_resource_instance(controller_name), method: :delete, data: { confirm: "Are you sure you want to delete this #{current_controller.singularize}? Once deleted this cannot be undone." }, class:'btn btn-sm btn-outline-danger' %>
+          </span>
+          <br>
 
-        <br>
+        <% end %>
         <br>
 
         <button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapseEditToggle" aria-expanded="false" aria-controls="collapseEditToggle">
           Close
         </button>
-
 
       </div>
 
