@@ -1,21 +1,20 @@
 module OrdersHelper
-
-  def sortable_orders_ths
-    %i[
-      id
-      ship
-      vendor_id
-      courrier
-      date_recieved
-    ]
-  end
-
-
-  def non_sortable_orders_ths
-    %i[
-      po_number
-      order_content
-    ]
-  end
-
+###  # Moved to: app/lib/sort_logic/orders_sort_table_logic.rb
+  # def sortable_orders_ths
+  #   %w[
+  #     id
+  #     purchaser_id
+  #     vendor_id
+  #     courrier
+  #     date_recieved
+  #   ]
+  # end
+  #
+###  # Moved to: app/lib/sort_logic/orders_sort_table_logic.rb
+  # def non_sortable_orders_ths
+  #   %w[
+  #     po_number
+  #     order_content
+  #   ]
+  # end
 end
