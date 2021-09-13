@@ -135,7 +135,7 @@ class OrdersController < ApplicationController
     end
 
     def load_modules
-      autoload :OrdersSortTableLogic, "sort_logic/orders_sort_table_logic.rb"
+      autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
     end
 
     def sort_option(sort_option = nil)

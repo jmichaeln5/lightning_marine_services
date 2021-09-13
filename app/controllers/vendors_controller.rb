@@ -1,29 +1,14 @@
 class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_vendor, only: %i[ show edit update destroy ]
-  helper_method :sort_column, :sort_direction
+  before_action :load_modules
+  helper_method :sort_option, :sort_direction
 
   # GET /vendors or /vendors.json
   def index
     @vendor = Vendor.new
     @orders = Order.all
-    if sort_column == 'id'
-      @vendors = Vendor.order( sort_column + " " + sort_direction )
-    elsif sort_column == 'vendor_name'
-      @vendors = Vendor.reorder("name" + " " + sort_direction)
-    elsif sort_column == 'order_amount'
-      @most_to_least_orders = Vendor.all.sort {|a,b| b.orders.length <=> a.orders.length}
-
-      if params[:sort_direction] == 'ASC'
-        @vendors = @most_to_least_orders
-      elsif params[:sort_direction] == 'DESC'
-        @vendors = @most_to_least_orders.reverse
-      end
-
-    else
-      @vendors = Vendor.all.order("created_at DESC")
-    end
-
+    @vendors = VendorsSortTableLogic.sorted_vendors(sort_option, sort_direction)
   end
 
   # GET /vendors/1 or /vendors/1.json
@@ -88,26 +73,15 @@ class VendorsController < ApplicationController
     end
 
     def load_modules
-      autoload :TableLogic, "table_logic.rb"
+      autoload :VendorsSortTableLogic, "vendors/sort_logic/vendors_sort_table_logic.rb"
     end
 
-    def sort_column(order_attr = nil)
-      if params[:order_attr] == 'id'
-        return 'id'
-      elsif params[:order_attr] == 'order_amount'
-        return 'order_amount'
-      elsif params[:order_attr] == 'vendor_name'
-        return 'vendor_name'
-      end
+    def sort_option(sort_option = nil)
+      sort_option = params[:sort_option] ||= nil
+      return sort_option.to_s
     end
 
-    def sort_direction
-      if params[:order_attr] && params[:sort_direction] == 'DESC'
-        'ASC'
-      else
-        "DESC"
-      end
+    def sort_direction(sort_direction = nil)
+      sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
     end
-
-
 end

@@ -1,19 +1,19 @@
 <% content_for :title, "All #{@vendors.count} Vendors" %>
 
-  <!-- For new resource on #index Controller Actions  -->
   <%= render 'shared/new_modal' %>
 
   <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
-        <!-- <th class="py-2">Vendor ID</th>
-        <th class="py-2">Vendor</th>
-        <th class="py-2">Orders</th> -->
-
-        <th class="py-8"> <%= link_to "VendorID", vendors_path(order_attr: 'id', sort_direction: sort_direction) %> </th>
-        <th class="py-8"> <%= link_to "Name", vendors_path(order_attr: 'vendor_name', sort_direction: sort_direction) %> </th>
-        <th class="py-8"> <%= link_to "Orders", vendors_path(order_attr: 'order_amount', sort_direction: sort_direction) %> </th>
-
+        <th class="">
+        <%= link_to "VendorID", vendors_path(sort_option: 'id', sort_direction: sort_direction) %>
+        </th>
+        <th class="">
+        <%= link_to "Name", vendors_path(sort_option: 'name', sort_direction: sort_direction) %>
+        </th>
+        <th class="">
+        <%= link_to "Orders", vendors_path(sort_option: 'order_amount', sort_direction: sort_direction) %>
+        </th>
       </tr>
     </thead>
 
