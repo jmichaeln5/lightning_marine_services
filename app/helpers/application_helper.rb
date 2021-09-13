@@ -71,6 +71,11 @@ module ApplicationHelper
   def current_url(new_params)
   end
 
+  def run_as_sql(arg = nil)
+    arg ||= nil
+    ActiveRecord::Base.connection.execute(arg.to_s)
+  end
+
   # def ignore_attrs_on_table
   #   ignore_attrs_on_table = ['created_at', 'updated_at']
   # end

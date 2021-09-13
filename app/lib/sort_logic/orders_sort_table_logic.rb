@@ -17,6 +17,11 @@ module OrdersSortTableLogic
     ]
   end
 
+  # def self.sortable_link_to(column, title = nil)
+  #   title ||= column.titleize
+  #   link_to title, {:sort => column, :direction => direction}
+  # end
+
   def self.sorted_orders(sort_option = nil, sort_direction = nil)
     sort_option ||= nil
     sort_direction ||= nil
