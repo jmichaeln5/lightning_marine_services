@@ -4,12 +4,11 @@ class OrdersController < ApplicationController
   before_action :load_modules
   helper_method :sort_option, :sort_direction
 
-
   def all_orders
-    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+
+    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
   end
 
   # GET /orders or /orders.json
@@ -140,9 +139,10 @@ class OrdersController < ApplicationController
     end
 
     def sort_option(sort_option = nil)
-      # sort_option = params[:sort_option] ||= nil
-      sort_option = params[:sort_option] ||= nil unless params[:sort_option] == 'ship'
-      sort_option = params[:sort_option] == 'ship' ? 'purchaser_id' : params[:sort_option]
+      sort_option = params[:sort_option] ||= nil
+      return sort_option.to_s
+      # sort_option = params[:sort_option] ||= nil unless params[:sort_option] == 'ship'
+      # sort_option = params[:sort_option] == 'ship' ? 'purchaser_id' : params[:sort_option]
     end
 
     def sort_direction(sort_direction = nil)
