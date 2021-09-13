@@ -1,16 +1,6 @@
 <% content_for :title, "#{Order.all.count} Orders" %>
 
-<% content_for :subtitle do %>
-    <%= "#{Order.unarchived.all.count}" %>
-    <%= link_to "Unarchieved", archived_orders_path %>
-    Orders
-    <br>
-    <%= "#{Order.archived.all.count}" %>
-    <%= link_to "archieved", archived_orders_path %>
-    Orders
-<% end %>
-
-<!-- For new resource on #index Controller actions  -->
+<%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 
 <table class="bg-white table table-striped border border-2">

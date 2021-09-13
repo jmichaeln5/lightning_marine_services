@@ -4,13 +4,14 @@
 
 <% content_for :subtitle, "Order ID: #{@order.id}" %>
 
+<%= render "shared/new_modal" %>
+
 <div class="card p-2">
   <table>
     <div class="pt-4">
-
     <thead>
       <tr>
-        <th>  </th>
+        <th> Order ID </th>
         <th> Vendor </th>
         <th> PO# </th>
         <th> Date Recieved </th>
@@ -20,7 +21,6 @@
         <th colspan="2"></th>
       </tr>
     </thead>
-
   </div>
 
     <tbody>

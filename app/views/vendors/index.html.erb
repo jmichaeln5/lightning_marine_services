@@ -1,5 +1,6 @@
-<% content_for :title, "All #{@vendors.count} Vendors" %>
+<% content_for :title, "#{@vendors.count} Vendors" %>
 
+  <%= render 'shared/tab_table_options' %>
   <%= render 'shared/new_modal' %>
 
   <table class="bg-white table table-striped border border-2">

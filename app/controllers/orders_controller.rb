@@ -58,6 +58,7 @@ class OrdersController < ApplicationController
 
   def archived_index
     @archived_orders = Order.archived.order("created_at DESC")
+    @unarchived_orders = Order.unarchived.order("created_at DESC")
     @orders = Order.all
   end
 

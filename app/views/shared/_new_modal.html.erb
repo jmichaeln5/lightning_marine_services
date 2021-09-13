@@ -1,9 +1,7 @@
-<%# if (main_functionality_controller? == true) && (current_action == 'index') %>
 <div class="py-4">
 
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-block btn-outline-primary " data-toggle="modal" data-target="#newModal">
-    <!-- Add New <%#= "#{current_controller.capitalize.singularize}" %> ( layouts/_new_modal ) -->
     <span class="align-middle">
       Add New <%= "#{current_controller.capitalize.singularize}" %>
     </span>
