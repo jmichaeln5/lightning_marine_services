@@ -19,7 +19,7 @@
 
     <div class="field pb-2">
       <p class="text-2xl"> PO# </p>
-      <%= f.number_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
+      <%= f.text_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
     </div>
 
 

@@ -19,36 +19,96 @@
 
   <div class="container p-2">
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Dept. </p>
       <%= f.text_field :dept, class: "form-control" %>
     </div>
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> PO# </p>
-      <%= f.number_field :po_number, class: "form-control" %>
-      <%#= f.number_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
+      <%= f.text_field :po_number, class: "form-control" %>
+      <%#= f.text_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
     </div>
 
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Courrier </p>
       <%= f.text_field :courrier, class: "form-control" %>
       <%#= f.text_field :courrier, value: ['Fedex', 'UPS', 'USPS', 'DHL'].sample, class: "form-control" %>
     </div>
 
 
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Date Recieved </p>
       <%= f.date_field :date_recieved, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
       <%#= f.date_field :date_recieved, as: :date, value: Faker::Date.between(from: '2021-01-23', to: '2021-09-25'), class: 'form-control'  %>
     </div>
 
-
-    <div class="field pb-2">
+    <div class="field pb-2 pt-2">
       <p class="text-2xl"> Date Delivered </p>
       <%= f.date_field :date_delivered, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
     </div>
+
+    <div class="field pb-2 pt-2">
+      <p class="text-2xl"> <%= f.label "Upload(s)" %> </p>
+      <%# byebug%>
+      <%= f.file_field :images, multiple: true, class: 'form-control' %>
+    </div>
+
+    <% if @order.images.each do |image| %>
+      <%= f.hidden_field :images, multiple: true, value: image.signed_id %>
+
+      <div class="border p-3 mt-4">
+        <div class="p-3">
+          <div class="row justify-between">
+
+            <div class="align-middle">
+
+              <% if image.image?  %>
+                <%= image_tag(image.variant(resize: "300x300")) %>
+              <% elsif image.blob.content_type == "video/mp4" %>
+
+                <!-- <div style="width: 300px;"> -->
+                <div class="max-w-xs">
+                  <%= video_tag rails_blob_path(image), controls: true %>
+                </div>
+
+                <% else %>
+                <div class="max-w-xs bg-red-200" >
+                    <p class="p-12">
+                      <span class="float-left text-red-400 max-w-xs" style="">
+                        Content Unavailable
+                      </span>
+                    </p>
+                    <br>
+                  </div>
+
+
+
+              <% end %>
+
+            </div>
+
+            <div class=" p-2">
+              <%#= ActiveStorage::Attachment.find(image.id) %>
+              <br>
+
+
+                <%= link_to 'Remove',  order_attachment_destroy_attachment_path(@order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400 align-middle" %>
+
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+
+
+
+
   </div>
 
   <p class="text-4xl font-semibold p-2"> Order Contents </p>
@@ -79,6 +139,7 @@
       <%= p.label 'Description', class:"text-2xl" %>
       <%= p.text_area :other_description,rows: 3, class: 'form-control' %>
     </div>
+
   <% end %>
 
   <br>

@@ -6,149 +6,92 @@
 ###########################################################################
 ###########################################################################
 
-
-User  *
-
-
-
-Purchaser  *
-
-    rails g model Purchaser name
-
-
-
-Vendor  *
-
-    rails g model Vendor name
-
-
-Order (Join Table)  *
-
-    rails g model Order purchaser:references vendor:references
-
-
-
-
-Detail  *
-
-    rails g model Detail box:integer, crate:integer, pallet:integer, other:integer, other_description:text, order:references
-
-
-###########################################################################
-###########################################################################
-*** Associations ***
-###########################################################################
-###########################################################################
-
-
-User  *
-
-
-
-Purchaser *
-
     class Purchaser < ActiveRecord::Base
       has_many :orders
       has_many :vendors, through: :orders
     end
-
-
-
-Vendor  *
 
     class Vendor < ApplicationRecord
       has_many :orders
       has_many :purchasers, through: :orders
     end
 
-
-
-
-Order *
-
     class Order < ActiveRecord::Base
       belongs_to :vendor
       belongs_to :purchaser
-      has_one :detail
+      has_one :order_content, dependent: :destroy
+
+      accepts_nested_attributes_for :order_content
     end
-
-
-
-Detail  *
 
     class Detail < ActiveRecord::Base
       belongs_to :order
     end
 
+###########################################################################
+###########################################################################
+*** Userful Links ***
+###########################################################################
+###########################################################################
+
+User Roles:
+https://medium.com/@rubycoders/user-roles-with-administrate-and-rolify-gems-a8aaf8e80d59
+
+
 
 ###########################################################################
 ###########################################################################
-*** Forum Post Notes ***
 ###########################################################################
 ###########################################################################
-
-
-
-rails g model Project programmer:references client:references
-
-
-# app/model/programmer.rb
-class Programmer < ActiveRecord::Base
-  has_many :projects
-  has_many :clients, through: :projects
-end
-
-# app/model/client.rb
-class Client < ActiveRecord::Base
-  has_many :projects
-  has_many :programmers, through: :projects
-end
-
-# app/model/project.rb
-class Projects < ActiveRecord::Base
-  belongs_to :programmer
-  belongs_to :client
-end
+###########################################################################
+###########################################################################
+###########################################################################
+*************** EXTRA ***************
+*************** EXTRA ***************
+*************** EXTRA ***************
+*************** EXTRA ***************
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
+###########################################################################
 
 
 
 
-(ORDER: Join Table)
-
-rails g model Order purchaser:references vendor:references
-
-class Purchaser < ActiveRecord::Base
-  has_many :orders
-  has_many :vendors, through: :orders
-end
-
-class Vendor < ApplicationRecord
-  has_many :orders
-  has_many :purchasers, through: :orders
-end
-
-class Order < ActiveRecord::Base
-  belongs_to :vendor
-  belongs_to :purchaser
-end
-
-
-AFTER:
-
-rails g model Detail order:references
-
-
-class Order < ActiveRecord::Base
-  belongs_to :vendor
-  belongs_to :purchaser
-  has_one :detail
-end
 
 ###########################################################################
 ###########################################################################
 *** Create Random Data ***
 ###########################################################################
 ###########################################################################
+
+
+      * (Users) Create Random *
+
+(0..5).each do |id|
+    user = User.new(
+        id: id,
+        first_name: 'User',
+        last_name: "#{id.humanize.capitalize}",
+        phone_number: "305"+[*0..3, *0..4].sample(7).join,
+        email: "user#{id}@gmail.com",
+        username: "user#{id.humanize}",
+        password: '123456',
+        password_confirmation: "123456"
+    )
+    user.skip_confirmation!
+    user.save
+    puts "*"*20
+    puts "#{user.username} created."
+    puts "*"*20
+    puts "#{user.inspect}"
+    puts "*"*20
+    puts " "
+end
+
 
       * (Purchasers) Create Random *
 

@@ -1,6 +1,6 @@
-<% content_for :title, "All #{@users.count} Users" %>
-
+<% content_for :title, "#{@users.count} Users" %>
 
 Users Index
+<br>
 
 <%= render partial: "user", collection: @users %>

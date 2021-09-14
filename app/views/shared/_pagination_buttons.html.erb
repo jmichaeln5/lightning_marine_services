@@ -1,0 +1,78 @@
+<div class="mt-4 d-flex justify-content-center">
+  <nav aria-label="Page navigation example" class="">
+    <ul class="pagination">
+
+
+      <!-- (First Page) Previous Page -->
+      <%  if 0 >= @page.to_i %>
+        <li class="page-item disabled disabled:opacity-50">
+          <a class="page-link" href="#" tabindex="-1">
+            < Prev
+          </a>
+        </li>
+      <% else %>
+      <!-- (!= First Page) Previous Page -->
+        <li class="page-item">
+          <%= link_to "< Prev", orders_path(page: @page - 1), class:"page-link"  %>
+        </li>
+      <% end %>
+
+      <!-- (Count) Previous Page-->
+      <li class="page-item">
+        <%= link_to "#{@page }", orders_path(page: @page - 1), class:"page-link"   if @page > 0 %>
+      </li>
+
+      <!-- (Count) Current Page -->
+        <li class="page-item active">
+          <%= link_to "#{@current_page_number.to_i + 1 }", orders_path(page: @current_page_number.to_i ), class:"page-link" %>
+        </li>
+
+        <!--  (Count) One Page After Current -->
+        <li class="page-item">
+          <%= link_to "#{@page + 2 }", orders_path(page: @page + 1), class:"page-link" if @page < @total_pages %>
+        </li>
+
+        <!--  (First Page) (Count) Two Pages After Current if First Page -->
+        <li class="page-item">
+          <%= link_to "#{@page + 3 }", orders_path(page: @page + 2), class:"page-link" if 0 == @page.to_i %>
+        </li>
+
+
+        <!-- (Last Page) Next Page -->
+        <%  if @page.to_i == @total_pages.to_i %>
+          <li class="page-item disabled disabled:opacity-50">
+            <a class="page-link" href="#" tabindex="-1">
+              Next >
+            </a>
+          </li>
+        <%  else %>
+        <!-- (!= Last Page) Next Page -->
+          <li class="page-item">
+            <%= link_to "Next >", orders_path(page: @page + 1), class:"page-link"  %>
+          </li>
+        <% end %>
+
+    </ul>
+  </nav>
+
+</div>
+
+
+
+
+
+<!-- <nav aria-label="Page navigation example" class="">
+  <ul class="pagination">
+    <div class="content-center">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </div>
+  </ul>
+</nav> -->
+
+
+
+<!--  -->

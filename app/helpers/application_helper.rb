@@ -48,6 +48,11 @@ module ApplicationHelper
     end
   end
 
+  # def resource_klass
+  #   Object.const_get controller_name.classify
+  # end
+
+
   def get_resource(controller_name)
     if (main_functionality_controller? == true)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"
@@ -62,5 +67,62 @@ module ApplicationHelper
       get_resource(controller_name).find(params[:id])
     # end
   end
+
+  def current_url(new_params)
+  end
+
+  def run_as_sql(arg = nil)
+    arg ||= nil
+    ActiveRecord::Base.connection.execute(arg.to_s)
+  end
+
+  # def ignore_attrs_on_table
+  #   ignore_attrs_on_table = ['created_at', 'updated_at']
+  # end
+
+  # def th_attr_names_arr
+  #   display_on_th = []
+  #
+  #   get_resource(controller_name).attribute_names.each do | attr |
+  #     display_on_th << attr unless (ignore_attrs_on_table.include?(attr))
+  #   end
+  #
+  #   display_on_th << "order_content" if current_page == 'orders#index'
+  #   display_on_th << "orders" if controller_name != 'orders'
+  #
+  #   attr_names_arr = display_on_th
+  # end
+
+
+  # def sortable(column, title = nil)
+  #   title ||= column.titleize
+  #   direction = column == params[:sort] && params[:direction] == "asc" ? "desc" : "asc"
+  #   link_to title, :sort => column, :direction => direction
+  # end
+
+
+  ##################################
+  ##################################
+  ##################################
+
+  # def sortable(order_attr, title = nil)
+  #   title ||= order_attr.titleize
+  #   sort_direction = order_attr == params[:order_attr] && params[:sort_direction] == "asc" ? "desc" : "asc"
+  #   # byebug
+  #   # link_to title, :order => column
+  #   link_to title, :order => order_attr, :sort_direction => sort_direction
+  # end
+  #
+  #
+  # def sortable_by_name(column, title = nil)
+  # end
+
+
+
+  ##################################
+  ##################################
+  ##################################
+
+
 
 end

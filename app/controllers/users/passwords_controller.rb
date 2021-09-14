@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
-  puts "PasswordsController"
-  puts "*"*2000
-  puts "PasswordsController"
-  puts "PasswordsController"
-  puts "PasswordsController"
-  puts "*"*2000
-  puts "PasswordsController"
-
-
   # GET /resource/password/new
   def new
     super
@@ -40,6 +31,6 @@ class Users::PasswordsController < Devise::PasswordsController
   # The path used after sending reset password instructions
   def after_sending_reset_password_instructions_path_for(resource_name)
     # super(resource_name)
-    signin_path
+    sign_in_path
   end
 end

@@ -16,6 +16,13 @@
 <% attribute_names_arr << "order_content" if current_page == 'orders#index' %>
 <% attribute_names_arr << "orders" if controller_name != 'orders' %>
 
+
+<%= resource.attribute_names.class %>
+
+<%#= link_to 'Download CSV list', csv_path, (format: :csv) %>
+
+<%= render partial: "exports/export_csv_button", locals:{resource: get_resource(controller_name)}  %>
+
 <!-- attribute_names_arr.include? ("order_content") -->
 
 <%#= class_names(active: attribute_names_arr.include? ("order_content")) %>    <!-- Inside " " for class  -->

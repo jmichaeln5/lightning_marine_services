@@ -1,35 +1,40 @@
-<!-- <% content_for :title, "All #{@purchasers.count} Ships" %>
+<% content_for :title, "#{@purchasers.count} Ships" %>
 
-<div class="card p-4">
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
-    <thead>
+<%= render 'shared/tab_table_options' %>
+<%= render 'shared/new_modal' %>
+
+<table class="bg-white table table-striped border border-2">
+
+  <thead>
+    <tr>
+        <th class="">
+        <%= link_to "PurchaserID", purchasers_path(sort_option: 'id', sort_direction: sort_direction) %>
+        </th>
+        <th class="">
+        <%= link_to "Name", purchasers_path(sort_option: 'name', sort_direction: sort_direction) %>
+        </th>
+        <th class="">
+        <%= link_to "Orders", purchasers_path(sort_option: 'order_amount', sort_direction: sort_direction) %>
+        </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @purchasers.each do |purchaser| %>
+
       <tr>
-        <th class="py-2">Ship ID</th>
-        <th class="py-2">Ship</th>
-        <th class="py-2">Orders</th>
+        <td class=" align-middle font-light">
+          <%= purchaser.id %>
+        </td>
+        <td class=" align-middle font-light">
+         <%= link_to "#{purchaser.name}", purchaser_path(purchaser)  %>
+        </td>
+        <td class=" align-middle font-light">
+          <%= link_to "#{purchaser.orders.count}", purchaser %>
+        </td>
       </tr>
-    </thead>
 
-    <tbody>
-      <% @purchasers.each do |purchaser| %>
+    <% end %>
+  </tbody>
 
-        <tr class="">
-            <td class="py-4">
-              <%= purchaser.id %>
-            </td>
-
-            <td class="py-4">
-             <%= purchaser.name %>
-            </td>
-
-            <td class="py-4">
-              <%= link_to "#{purchaser.orders.count}", purchaser %>
-            </td>
-        </tr>
-
-      <% end %>
-    </tbody>
-  </table>
-</div>
-
-<br> -->
+</table>

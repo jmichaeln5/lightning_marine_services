@@ -1,15 +1,17 @@
 <% content_for :title do %>
-  Ship: <%= link_to "#{@order.purchaser.name}", purchaser_path(@order.purchaser)  %>
+  Ship: <%= link_to "#{@order.purchaser.name.possessive}", purchaser_path(@order.purchaser)  %> Order
 <% end %>
 
-
-<% content_for :order_number, "Order ID: #{@order.id}" %>
+<% content_for :subtitle, "Order ID: #{@order.id}" %>
+<%= render 'shared/tab_table_options' %>
+<%= render "shared/new_modal" %>
 
 <div class="card p-2">
   <table>
+    <div class="pt-4">
     <thead>
       <tr>
-        <th>  </th>
+        <th> Order ID </th>
         <th> Vendor </th>
         <th> PO# </th>
         <th> Date Recieved </th>
@@ -19,35 +21,36 @@
         <th colspan="2"></th>
       </tr>
     </thead>
+  </div>
 
     <tbody>
 
         <tr class="">
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= @order.id %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= link_to "#{@order.vendor.name}", vendor_path(@order.vendor) %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= @order.po_number ||= "n/a" %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%=  @order.date_recieved ? @order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%= @order.courrier ||= "n/a" %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <%=  @order.date_delivered ? @order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class="pb-4 px-2">
               <% if @order.order_content.present? %>
                   Boxes: <%= @order.order_content.box ||= "n/a" %>
                   <br>
@@ -57,21 +60,91 @@
                   <br>
                   <% if is_nil_and_zero(@order.order_content.other) == false %>
                      <%= "Other: #{@order.order_content.other}" %>
-                    <br>
-                    <%= "Description: #{@order.order_content.other_description}" %>
                   <% end %>
               <% end %>
             </td>
 
-            <!-- <td class="pl-4 pb-4 px-2">
-              <%= link_to 'Edit', edit_order_path(@order) %>
-              <br>
-              <%= link_to 'Destroy', @order, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td> -->
-
         </tr>
     </tbody>
   </table>
-</div>
 
+
+  <% if @order.order_content.other_description.present? %>
+  <div class="px-4">
+    <div class="pb-2 px-2 font-bold">
+      Description
+    </div>
+
+    <td class="pb-4 px-2">
+      <%= "Description: #{@order.order_content.other_description}" %>
+    </td>
+  </div>
+  <% end %>
+
+      <div>
+        <div class="p-4">
+          <div class="pb-2 px-2 font-bold">
+            <%= pluralize(@order.images.count, 'Upload') %>
+          </div>
+
+        <% if @order.images.count > 0 %>
+          <div class="grid grid-cols-3 gap-3 border">
+            <% upload_count = 1 %>
+            <% @order.images.reverse.each do |image| %>
+
+              <% if image.image? %>
+                <div class="max-w-xs align-middle p-4 bg-gray-200" >
+                  <%= link_to image_tag(image), "#", data: {toggle: "modal", target: ".bd-image-modal-#{image.blob_id}-lg"} %>
+                </div>
+              <% elsif image.blob.content_type == "video/mp4" %>
+                <div class="max-w-xs align-middle p-4 bg-gray-200">
+                  <%= video_tag rails_blob_path(image), controls: true %>
+                </div>
+              <% end %>
+
+              <!-- Modal -->
+              <div class="modal fade bd-image-modal-<%= "#{image.blob_id}"%>-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+
+                    <div class="modal-header mb-12">
+                      <h5 class="modal-title"> Upload #<%= upload_count %> </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="px-4">
+                      <div class="inline-block justify-content-center ">
+                        <%= image_tag image, class:"object-fit" if image.variable?  %>
+                      </div>
+                      <div class="m-4">
+                        <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"btn btn-outline-success" if image.variable? %>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <% upload_count += 1 %>
+
+
+            <% end %>
+
+          </div>
+        <% end %>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
 <br>

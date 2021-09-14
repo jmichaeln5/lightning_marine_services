@@ -1,0 +1,76 @@
+<% content_for :title, "All Orders" %>
+
+<%= render 'shared/new_modal' %>
+
+<table class="bg-white table table-striped border border-2">
+  <thead>
+    <tr>
+      <% OrdersSortTableLogic.sortable_orders_ths.each do |resource_attr_name| %>
+        <th>
+
+          <%= link_to "#{resource_attr_name.to_s.humanize}", all_orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
+
+        </th>
+      <% end %>
+
+      <% OrdersSortTableLogic.non_sortable_orders_ths.each do |resource_attr_name| %>
+        <th>
+          <%= "#{resource_attr_name.to_s.humanize}" %>
+        </th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% @orders.each do |order| %>
+      <tr>
+          <td class=" align-middle font-light">
+            <%= order.id %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= order.courrier %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= order.po_number ||= "n/a" %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <% if order.order_content.present? %>
+
+              <%= link_to(order_path(order)) do %>
+
+                Boxes: <%= order.order_content.box ||= "n/a" %>
+                <br>
+                Crates: <%= order.order_content.crate ||= "n/a" %>
+                <br>
+                Pallets: <%= order.order_content.pallet ||= "n/a" %>
+                <br>
+
+                <% if is_nil_and_zero(order.order_content.other) == false %>
+                   <%= "Other: #{order.order_content.other}" %>
+                   <br>
+                   <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
+                <% end %>
+
+              <% end %>
+            <% end %>
+          </td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>

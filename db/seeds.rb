@@ -23,7 +23,9 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
       password: '123456',
       password_confirmation: "123456"
   )
+  admin_user.add_role "admin"
   admin_user.skip_confirmation!
+
   admin_user.save
 
   sample_user = User.new(
@@ -36,6 +38,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
       password: '123456',
       password_confirmation: "123456"
   )
+  sample_user.add_role "staff"
   sample_user.skip_confirmation!
   sample_user.save
 
@@ -143,12 +146,13 @@ puts " "
 if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.count < 5) )
   @order = Order.new
 
-  params =  {order: {"id"=> "1", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..5)}", "other_description"=>""}}}
+  params =  {order: {"id"=> "1", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.unique.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..5)}", "other_description"=>""}}}
 
   @order.update(params[:order])
   @order.save
 
   random_order_count = rand(80..150)
+  # random_order_count = rand(5..20)
 
   (2..random_order_count).each do |id|
   # rand(80..150).times do

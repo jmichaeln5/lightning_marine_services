@@ -1,75 +1,107 @@
-<!-- <% content_for :title, "All #{@orders.count} Orders" %>
+<% content_for :title, "#{Order.all.count} Orders" %>
 
-<div class="card p-4">
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
-    <thead>
-      <tr>
-        <th class="py-2"> OrderID</th>
-        <th class="py-2"> Ship </th>
-        <th class="py-2"> Vendor </th>
-        <th class="py-2"> PO# </th>
-        <th class="py-2"> Date Recieved </th>
-        <th class="py-2"> Courrier </th>
-        <th class="py-2"> Date Delivered </th>
-        <th class="py-2"> Contents </th>
-      </tr>
-    </thead>
+<%= render 'shared/tab_table_options' %>
+<%= render 'shared/new_modal' %>
 
-    <tbody>
-      <% @orders.each do |order| %>
-
-        <tr class="">
-            <td class="pb-10">
-              <%= order.id %>
-            </td>
-
-            <td class="pb-10">
-              <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
-            </td>
-
-            <td class="pb-10">
-              <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
-            </td>
-
-            <td class="pb-10">
-              <%= order.po_number ||= "n/a" %>
-            </td>
-
-            <td class="pb-10">
-              <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
-            </td>
-
-            <td class="pb-10">
-              <%= order.courrier ||= "n/a" %>
-            </td>
-
-            <td class="pb-10">
-              <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
-            </td>
-
-            <td class="pb-10">
-              <% if order.order_content.present? %>
-
-                <%= link_to(order_path(order)) do %>
-
-                  Boxes: <%= order.order_content.box ||= "n/a" %>
-                  <br>
-                  Crates: <%= order.order_content.crate ||= "n/a" %>
-                  <br>
-                  Pallets: <%= order.order_content.pallet ||= "n/a" %>
-                  <br>
-
-                  <% if is_nil_and_zero(order.order_content.other) == false %>
-                     <%= "Other: #{order.order_content.other}" %>
-                    <br>
-                    <%= "Description: #{order.order_content.other_description}" %>
-                  <% end %>
-
-                <% end %>
-              <% end %>
-            </td>
-        </tr>
+<table class="bg-white table table-striped border border-2">
+  <thead>
+    <tr>
+      <!-- sortable_orders_ths in file: orders_sort_table_logic -->
+      <% OrdersSortTableLogic.sortable_orders_ths.each do |resource_attr_name| %>
+        <th>
+          <%= link_to "#{resource_attr_name.to_s.humanize}", orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
+        </th>
       <% end %>
-    </tbody>
-  </table>
-</div> -->
+
+      <% OrdersSortTableLogic.non_sortable_orders_ths.each do |resource_attr_name| %>
+        <th>
+          <%= "#{resource_attr_name.to_s.humanize}" %>
+        </th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% @orders.each do |order| %>
+      <tr>
+          <td class=" align-middle font-light">
+            <%= order.id %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= order.courrier %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <%= order.po_number ||= "n/a" %>
+          </td>
+
+          <td class=" align-middle font-light">
+            <% if order.order_content.present? %>
+
+              <%= link_to(order_path(order)) do %>
+
+                Boxes: <%= order.order_content.box ||= "n/a" %>
+                <br>
+                Crates: <%= order.order_content.crate ||= "n/a" %>
+                <br>
+                Pallets: <%= order.order_content.pallet ||= "n/a" %>
+                <br>
+
+                <% if is_nil_and_zero(order.order_content.other) == false %>
+                   <%= "Other: #{order.order_content.other}" %>
+                   <br>
+                   <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
+                <% end %>
+
+              <% end %>
+            <% end %>
+          </td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>
+
+
+  <div>
+    <div>
+      <%= render "shared/pagination_buttons" %>
+    </div>
+  </div>
+
+
+
+  <div class="py-4">
+    <p class="p-4">
+      Total Pages = <%= @total_pages %>
+      <br>
+      Current Page = <%= @current_page_number %>
+      <br>
+      @page.to_i = <%= @page.to_i %>
+    </p>
+  </div>
+
+
+
+
+  <!-- <%# @current_page_number = params.fetch(:page, 0) %>
+  <%#= link_to "Previous Page", orders_path(page: @page - 1) if @current_page_number.to_i > 0 %>
+  |
+  <%#= link_to "Next Page", orders_path(page: @page + 1) if @current_page_number.to_i < @total_pages.to_i  %> -->
+
+
+  <!-- http://localhost:3000/orders/?page=2 -->
+  <!-- /orders/?page=2 -->

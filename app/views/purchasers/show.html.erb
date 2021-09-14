@@ -1,5 +1,9 @@
 <% content_for :title, "Ship: #{@purchaser.name}" %>
-<% content_for :order_number, "#{@orders.count} Orders" %>
+<% content_for :subtitle, "#{@orders.count} Orders" %>
+
+<%= render 'shared/tab_table_options' %>
+<%= render 'shared/new_order_on_show_modal' %>
+
 
 <div class="card p-2">
   <table>

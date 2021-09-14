@@ -1,0 +1,17 @@
+<% content_for :title, "#{@archived_orders.count} Archieved Orders" %>
+<% content_for :subtitle, "#{@unarchived_orders.unarchived.all.count} Unarchieved Orders" %>
+<% content_for :subtitle_two, "#{Order.all.count} Total Orders" %>
+
+
+<h3>
+<%= "#{@unarchived_orders.unarchived.all.count}" %> Unarchieved Orders
+</h3>
+
+
+<%= link_to "Unrchieved", orders_path %>
+Orders
+
+<% @archived_orders.each do |order| %>
+<%= order.inspect %>
+<hr>
+<% end %>

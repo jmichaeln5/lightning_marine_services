@@ -1,13 +1,15 @@
 class PurchasersController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_purchaser, only: %i[ show edit update destroy ]
+  before_action :load_modules
+  helper_method :sort_option, :sort_direction
 
-  # GET /purchasers or /purchasers.json
+  # # GET /purchasers or /purchasers.json
   def index
-    @purchasers = Purchaser.all.order("created_at DESC")
     @purchaser = Purchaser.new
     @orders = Order.all
-    @orders.where(purchaser_id: @purchasers.ids)
+    @purchasers = PurchasersSortTableLogic.sorted_purchasers(sort_option, sort_direction)
   end
 
   # GET /purchasers/1 or /purchasers/1.json
@@ -70,5 +72,18 @@ class PurchasersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def purchaser_params
       params.require(:purchaser).permit(:name)
+    end
+
+    def load_modules
+      autoload :PurchasersSortTableLogic, "purchasers/sort_logic/purchasers_sort_table_logic.rb"
+    end
+
+    def sort_option(sort_option = nil)
+      sort_option = params[:sort_option] ||= nil
+      return sort_option.to_s
+    end
+
+    def sort_direction(sort_direction = nil)
+      sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
     end
 end

@@ -1,32 +1,36 @@
-<!-- <% content_for :title, "All #{@vendors.count} Vendors" %>
+<% content_for :title, "#{@vendors.count} Vendors" %>
 
-<div class="card p-4">
-  <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+  <%= render 'shared/tab_table_options' %>
+  <%= render 'shared/new_modal' %>
+
+  <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
-        <th class="py-2">Vendor ID</th>
-        <th class="py-2">Vendor</th>
-        <th class="py-2">Orders</th>
+        <th class="">
+        <%= link_to "VendorID", vendors_path(sort_option: 'id', sort_direction: sort_direction) %>
+        </th>
+        <th class="">
+        <%= link_to "Name", vendors_path(sort_option: 'name', sort_direction: sort_direction) %>
+        </th>
+        <th class="">
+        <%= link_to "Orders", vendors_path(sort_option: 'order_amount', sort_direction: sort_direction) %>
+        </th>
       </tr>
     </thead>
 
     <tbody>
       <% @vendors.each do |vendor| %>
-        <tr class="">
-
-          <td class="py-4">
+        <tr>
+          <td class="py-8 align-middle font-light">
             <%= vendor.id %>
           </td>
-
-          <td class="py-4">
-            <%= vendor.name %>
+          <td class="py-8 align-middle font-light">
+            <%= link_to "#{vendor.name}", vendor %>
           </td>
-
-          <td class="py-4">
+          <td class="py-8 align-middle font-light">
            <%= link_to "#{vendor.orders.count}", vendor %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-</div> -->

@@ -7,6 +7,13 @@
   <div class=" card">
     <div class="p-4">
     <p class="text-3xl"> Welcome <%=current_user.email if current_user%> </p>
+
+      <%= "#{Order.all.count} Total Orders" %>
+      <br>
+      <%= "#{@unarchived_orders.unarchived.all.count} Unarchieved Orders" %>
+      <br>
+      <%= "#{@archived_orders.count} Archieved Orders" %>
+
     </div>
   </div>
 </div>

@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :users
+      resources :roles, only: [:index, :show]
+      root to: "users#index"
+    end
+
   root 'pages#home'
   get 'pages/about'
 
@@ -18,13 +24,28 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
+  get '/exports', to: 'exports#index', as: 'export_csv'
+  # get '/exports', to: 'exports#index', as: 'export_csv'
+  get '/exports/sample_page', to: 'exports#sample_page', as: 'export_sample_page'
+
 
   resources :users
   resources :purchasers
   resources :vendors
   resources :orders
 
-  # post '/orders/:order_id/create_order_from_order', to: 'orders#create', as: 'create_order_from_order_path'
+  get '/archived_orders', to: 'orders#archived_index'
+  get '/all_orders', to: 'orders#all_orders'
+  # get '/archived_orders', to: 'orders#archived_index', as: 'archieved_orders'
+
+  resources :orders do
+    resources :attachments do
+      delete :destroy_attachment
+    end
+  end
+
+  # Redirects to root if invalid path BUT, fucks up search params
+  # match '*path' => redirect('/'), :via => [:get, :post]
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
