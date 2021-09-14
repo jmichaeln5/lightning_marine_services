@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_order, only: %i[ show destroy ]
   before_action :load_modules
   helper_method :sort_option, :sort_direction

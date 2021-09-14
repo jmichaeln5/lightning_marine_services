@@ -1,5 +1,6 @@
 class VendorsController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
   before_action :load_modules
   helper_method :sort_option, :sort_direction

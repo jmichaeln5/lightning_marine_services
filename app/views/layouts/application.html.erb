@@ -66,19 +66,13 @@
                         <!-- For edit resource on #show Controller Actions  -->
                         <%= render 'shared/edit_toggle' %>
                       </div>
-                      <!-- For new Order on #show Controller Actions  -->
-                      <%= render 'shared/new_order_on_show_modal' %>
                   </div>
 
                 <% end %>
 
                 <!-- App -->
                 <div class="container">
-                  <% if (main_functionality_controller? == true) %>
-                    <%= render 'shared/show_table' if show_create_order_on_purchaser_and_vendor? %>
-                  <% end  %>
-
-                  <%= yield unless (show_create_order_on_purchaser_and_vendor?) %>
+                  <%= yield %>
                 </div>
 
 

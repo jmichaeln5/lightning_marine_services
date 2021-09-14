@@ -5,6 +5,15 @@ class ApplicationController < ActionController::Base
     dashboard_path
   end
 
+  def authenticate_admin
+    redirect_to root_path, alert: 'Not authorized.' unless current_user.has_role?(:admin)
+  end
+
+  def authenticate_staff
+    redirect_to root_path, alert: 'Not authorized.' unless current_user.has_role?(:staff)
+  end
+
+
   protected
 
   def configure_permitted_parameters
