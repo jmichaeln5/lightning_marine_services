@@ -2,19 +2,19 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
-  before_action :load_modules
   helper_method :sort_option, :sort_direction
 
   # GET /vendors or /vendors.json
   def index
+    autoload :VenodorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
+    @vendors = VenodorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
     @vendor = Vendor.new
-    @orders = Order.all
-    @vendors = VendorsSortTableLogic.sorted_vendors(sort_option, sort_direction)
   end
 
   # GET /vendors/1 or /vendors/1.json
   def show
-    @orders = Order.all.where(vendor_id: @vendor.id).order("created_at DESC")
+    autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
+    @orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
@@ -71,10 +71,6 @@ class VendorsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def vendor_params
       params.require(:vendor).permit(:name)
-    end
-
-    def load_modules
-      autoload :VendorsSortTableLogic, "vendors/sort_logic/vendors_sort_table_logic.rb"
     end
 
     def sort_option(sort_option = nil)

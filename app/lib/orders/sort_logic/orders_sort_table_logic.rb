@@ -17,6 +17,13 @@ module OrdersSortTableLogic
     ]
   end
 
+  #  # ####### ORDER > VENDOR
+  #  # Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
+
+  #  # ####### ORDER > PURCHASER
+  #  # Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+
+
   def self.sorted_orders(sort_option = nil, sort_direction = nil)
     sort_option ||= nil
     sort_direction ||= nil
@@ -37,9 +44,7 @@ module OrdersSortTableLogic
     end
   end
 
-  ## # Seperated into seperate methods for following reasons:
-  ######## # 1) Avioding possible Zeitwerk autoloading issues on initial app boot
-  ######## # 2) Future feature expansion
+  ## # Seperate methods to avoid possible Zeitwerk autoloading issues on initial app boot
   def self.sort_orders_purchaser_name(sort_option, sort_direction)
     @orders = Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
   end

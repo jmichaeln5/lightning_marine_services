@@ -1,5 +1,8 @@
-<% content_for :title, "All Orders" %>
+<% content_for :title, "All #{@orders.count} Orders" %>
+<% content_for :subtitle, "#{@unarchived_orders.unarchived.all.count} Unarchieved Orders" %>
+<% content_for :subtitle_two, "#{@archived_orders.count} Archieved Orders" %>
 
+<%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 
 <table class="bg-white table table-striped border border-2">
