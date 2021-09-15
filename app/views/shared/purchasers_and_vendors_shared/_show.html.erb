@@ -1,21 +1,15 @@
-
-<% content_for :title, "#{current_controller}: #{get_resource_instance(controller_name).name}" %>
-
-<% content_for :subtitle, "#{@orders.count} Orders" %>
-
-<%= render 'shared/tab_table_options' %>
-<%= render 'shared/new_order_on_show_modal' %>
+<% @resource = get_resource_instance(controller_name) %>
 
   <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
 
         <th>
-        <%= link_to "Order ID", resource_path(resource, sort_option: 'id', sort_direction: sort_direction) %>
+          <%= link_to "Order ID", purchaser_path(@resource, sort_option: 'id', sort_direction: sort_direction) %>
         </th>
 
         <th>
-          <%= link_to "Vendor", resource_path(resource, sort_option: 'vendor_name', sort_direction: sort_direction) %>
+          <%= link_to "Vendor", purchaser_path(@resource, sort_option: 'vendor_name', sort_direction: sort_direction) %>
         </th>
 
         <th>
@@ -23,7 +17,7 @@
         </th>
 
         <th>
-        <%= link_to "Date Recieved", resource_path(resource, sort_option: 'date_recieved', sort_direction: sort_direction) %>
+        <%= link_to "Date Recieved", purchaser_path(@resource, sort_option: 'date_recieved', sort_direction: sort_direction) %>
         </th>
 
         <th>
@@ -31,11 +25,11 @@
         </th>
 
         <th>
-        <%= link_to "Courrier", resource_path(resource, sort_option: 'courrier', sort_direction: sort_direction) %>
+        <%= link_to "Courrier", purchaser_path(@resource, sort_option: 'courrier', sort_direction: sort_direction) %>
         </th>
 
         <th>
-        <%= link_to "Date Delivered", resource_path(resource, sort_option: 'date_delivered', sort_direction: sort_direction) %>
+        <%= link_to "Date Delivered", purchaser_path(@resource, sort_option: 'date_delivered', sort_direction: sort_direction) %>
         </th>
 
       </tr>

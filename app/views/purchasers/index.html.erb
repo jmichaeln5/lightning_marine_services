@@ -1,4 +1,4 @@
-<% content_for :title, "#{@purchasers.count} Ships" %>
+<% content_for :title, "#{Purchaser.all.count} Ships" %>
 
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
@@ -38,3 +38,9 @@
   </tbody>
 
 </table>
+
+<div class="p-4">
+  <%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
+  |
+  <%= link_to "Next", request.params.merge(page: @page + 1) %>
+</div>

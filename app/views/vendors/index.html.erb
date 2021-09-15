@@ -1,4 +1,4 @@
-<% content_for :title, "#{@vendors.count} Vendors" %>
+<% content_for :title, "#{Vendor.all.count} Vendors" %>
 
   <%= render 'shared/tab_table_options' %>
   <%= render 'shared/new_modal' %>
@@ -7,7 +7,7 @@
     <thead>
       <tr>
         <th class="">
-        <%= link_to "Vendor ID", vendors_path(sort_option: 'id', sort_direction: sort_direction) %>
+          <%= link_to "Vendor ID", request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>
         </th>
         <th class="">
         <%= link_to "Vendor Name", vendors_path(sort_option: 'name', sort_direction: sort_direction) %>
@@ -34,3 +34,25 @@
       <% end %>
     </tbody>
   </table>
+
+<!-- SORT PARAMS -->
+<!-- vendors?sort_direction=desc&sort_option=name -->
+
+<!-- PAGE PARAMS -->
+<!-- vendors?page=2 -->
+
+<!-- PAGE + SORT PARAMS -->
+<!-- vendors?page=2?sort_direction=desc&sort_option=id -->
+
+<div class="p-4">
+  <%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
+  |
+  <%= link_to "Next", request.params.merge(page: @page + 1) %>
+</div>
+
+
+    <!-- http://localhost:3000/orders/?page=2 -->
+    <!-- /orders/?page=2 -->
+    <br>
+    <br>
+    <br>

@@ -13,28 +13,29 @@
       <% else %>
       <!-- (!= First Page) Previous Page -->
         <li class="page-item">
-          <%= link_to "< Prev", orders_path(page: @page - 1), class:"page-link"  %>
+          <%= link_to "Prev", request.params.merge(page: @page - 1), class:"page-link"  %>
         </li>
       <% end %>
 
+
       <!-- (Count) Previous Page-->
       <li class="page-item">
-        <%= link_to "#{@page }", orders_path(page: @page - 1), class:"page-link"   if @page > 0 %>
+        <%= link_to "#{@page} - 1", orders_path(page: @page - 1), class:"page-link"   if @page > 0 %>
       </li>
 
       <!-- (Count) Current Page -->
         <li class="page-item active">
-          <%= link_to "#{@current_page_number.to_i + 1 }", orders_path(page: @current_page_number.to_i ), class:"page-link" %>
+          <%= link_to "#{@page }", orders_path(page: @page.to_i ), class:"page-link" %>
         </li>
 
         <!--  (Count) One Page After Current -->
         <li class="page-item">
-          <%= link_to "#{@page + 2 }", orders_path(page: @page + 1), class:"page-link" if @page < @total_pages %>
+          <%= link_to "#{@page} + 1", orders_path(page: @page + 1), class:"page-link" if @page < @total_pages %>
         </li>
 
         <!--  (First Page) (Count) Two Pages After Current if First Page -->
         <li class="page-item">
-          <%= link_to "#{@page + 3 }", orders_path(page: @page + 2), class:"page-link" if 0 == @page.to_i %>
+          <%= link_to "#{@page} + 2", orders_path(page: @page + 2), class:"page-link" if 0 == @page.to_i %>
         </li>
 
 
