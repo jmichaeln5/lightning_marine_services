@@ -2,10 +2,11 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_order, only: %i[ show destroy ]
-  before_action :load_modules
   helper_method :sort_option, :sort_direction
 
   def all_orders
+    autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
+
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
@@ -13,50 +14,34 @@ class OrdersController < ApplicationController
     @unarchived_orders = Order.unarchived.order("created_at DESC")
   end
 
-  # GET /orders or /orders.json
   def index
-    @orders_per_page = 5
-    @archived_orders = Order.archived.order("created_at DESC")
+    autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
 
-    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-
-    #   # http://localhost:3000/orders?page=2?order_attr=id&sort_direction=DESC
-
-    @get_page = params.fetch(:page, 0).to_i
-    @page_number = params.fetch(:page, 0).to_i
-
-
-    @page = @get_page
-    @set_page = @page_number * @orders_per_page
-
-
-    if request.original_fullpath.include? "order_attr" || "sort_direction"
-      @page_number = params.fetch(:page, 0).to_i
-      @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
-    else
-      @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
-    end
-
-    @current_page_number = params.fetch(:page, 0)
-    @total_pages = Order.all.count.to_i / @orders_per_page
-
-    # @paginated_orders = @orders.offset(@set_page).limit(@orders_per_page)
-
-    #################
-    ### # Form Instance Vars
+    @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
-    ### # Export to CSV
-    # respond_to do |format|
-    #   format.html
-    #   format.csv do
-    #     headers['Content-Disposition'] = "attachment; filename=\"orders-list\""
-    #     headers['Content-Type'] ||= 'text/csv'
-    #   end
-    # end
-    #################
+    @orders_per_page = 10
+    @page = params.fetch(:page, 0).to_i
+    @offset_arg = @page * @orders_per_page
+    @orders = @sorted_orders.offset(@offset_arg).limit(@orders_per_page)
+
+    #  For pagination btns
+    @total_pages = @sorted_orders.count.to_i / @orders_per_page
+    #   #################
+    #   ### # Export to CSV
+    #   # respond_to do |format|
+    #   #   format.html
+    #   #   format.csv do
+    #   #     headers['Content-Disposition'] = "attachment; filename=\"orders-list\""
+    #   #     headers['Content-Type'] ||= 'text/csv'
+    #   #   end
+    #   # end
+    #   #################
   end
+
+
+
 
   def archived_index
     @archived_orders = Order.archived.order("created_at DESC")
@@ -135,10 +120,6 @@ class OrdersController < ApplicationController
 
     def order_params
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
-    end
-
-    def load_modules
-      autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
     end
 
     def sort_option(sort_option = nil)

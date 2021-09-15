@@ -7,8 +7,18 @@ class PurchasersController < ApplicationController
   # # GET /purchasers or /purchasers.json
   def index
     autoload :PurchasersIndexTableSortLogic, "purchasers/sort_logic/purchasers_index_table_sort_logic.rb"
-    @purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
+    # @purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
+    @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
     @purchaser = Purchaser.new
+
+    @purchasers_per_page = 10
+    @page = params.fetch(:page, 0).to_i
+    @offset_arg = @page * @purchasers_per_page
+    @purchasers = @sorted_purchasers.offset(@offset_arg).limit(@purchasers_per_page)
+
+    #  For pagination btns
+    @total_pages = @sorted_purchasers.count.to_i / @purchasers_per_page
+
   end
 
   # GET /purchasers/1 or /purchasers/1.json
