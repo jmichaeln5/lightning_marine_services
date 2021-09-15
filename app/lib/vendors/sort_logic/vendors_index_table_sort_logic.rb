@@ -1,4 +1,4 @@
-module VendorsSortTableLogic
+module VenodorsIndexTableSortLogic
 
   def self.sorted_vendors(sort_option = nil, sort_direction = nil)
     sort_option ||= nil
@@ -28,10 +28,9 @@ module VendorsSortTableLogic
 
   def self.sort_vendors_by_order_amount(sort_option, sort_direction)
     @most_to_least_orders = Vendor.all.sort {|a,b| b.orders.length <=> a.orders.length}
-
     if sort_direction == 'asc'
       @vendors = @most_to_least_orders
-    elsif sort_direction == 'desc'
+    else sort_direction == 'desc'
       @vendors = @most_to_least_orders.reverse
     end
   end
