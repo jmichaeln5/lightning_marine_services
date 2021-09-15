@@ -20,7 +20,7 @@ module ApplicationHelper
     current_page = "#{action_name}"
   end
 
-  def main_functionality_controller?
+  def show_on_order_ship_purchaser_pages?
     ['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? current_controller
   end
 
@@ -54,14 +54,14 @@ module ApplicationHelper
 
 
   def get_resource(controller_name)
-    if (main_functionality_controller? == true)
+    if (show_on_order_ship_purchaser_pages? == true)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"
     end
   end
 
   # Used in app/views/layouts/_edit_toggle.html.erb to get Model Instance on #show action (reason for instansiatied class to be found by params[:id] )
   def get_resource_instance(controller_name)
-    # if (main_functionality_controller? == true) && (action_name == 'show')
+    # if (show_on_order_ship_purchaser_pages? == true) && (action_name == 'show')
       # klass = Object.const_get "#{controller_name.singularize.capitalize}"
       # klass.find(params[:id])
       get_resource(controller_name).find(params[:id])

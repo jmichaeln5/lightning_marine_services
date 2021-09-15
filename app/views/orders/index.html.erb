@@ -76,32 +76,15 @@
 </table>
 
 
-  <div>
+  <!-- <div>
     <div>
-      <%= render "shared/pagination_buttons" %>
+      <%#= render "shared/pagination_buttons" %>
     </div>
+  </div> -->
+
+
+  <div class="p-4">
+    <%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
+    |
+    <%= link_to "Next", request.params.merge(page: @page + 1) %>
   </div>
-
-
-
-  <div class="py-4">
-    <p class="p-4">
-      Total Pages = <%= @total_pages %>
-      <br>
-      Current Page = <%= @current_page_number %>
-      <br>
-      @page.to_i = <%= @page.to_i %>
-    </p>
-  </div>
-
-
-
-
-  <!-- <%# @current_page_number = params.fetch(:page, 0) %>
-  <%#= link_to "Previous Page", orders_path(page: @page - 1) if @current_page_number.to_i > 0 %>
-  |
-  <%#= link_to "Next Page", orders_path(page: @page + 1) if @current_page_number.to_i < @total_pages.to_i  %> -->
-
-
-  <!-- http://localhost:3000/orders/?page=2 -->
-  <!-- /orders/?page=2 -->
