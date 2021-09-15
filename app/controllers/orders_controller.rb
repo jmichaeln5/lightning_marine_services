@@ -27,7 +27,8 @@ class OrdersController < ApplicationController
     @orders = @sorted_orders.offset(@offset_arg).limit(@orders_per_page)
 
     #  For pagination btns
-    @total_pages = @sorted_orders.count.to_i / @orders_per_page
+    @total_pages = @sorted_orders.length.to_i / @orders_per_page
+
     #   #################
     #   ### # Export to CSV
     #   # respond_to do |format|

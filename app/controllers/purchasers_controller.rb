@@ -17,7 +17,7 @@ class PurchasersController < ApplicationController
     @purchasers = @sorted_purchasers.offset(@offset_arg).limit(@purchasers_per_page)
 
     #  For pagination btns
-    @total_pages = @sorted_purchasers.count.to_i / @purchasers_per_page
+    @total_pages = @sorted_purchasers.length.to_i / @purchasers_per_page
 
   end
 

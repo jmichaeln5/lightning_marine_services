@@ -17,7 +17,6 @@ module PurchasersIndexTableSortLogic
   end
 
   ## # Seperate methods to avoid possible Zeitwerk autoloading issues on initial app boot
-
   def self.sort_purchasers_by_id(sort_option, sort_direction)
     @purchasers = Purchaser.order(sort_option + " " + sort_direction)
   end
@@ -27,11 +26,12 @@ module PurchasersIndexTableSortLogic
   end
 
   def self.sort_purchasers_by_order_amount(sort_option, sort_direction)
-    @most_to_least_orders = Purchaser.all.sort {|a,b| b.orders.length <=> a.orders.length}
     if sort_direction == 'asc'
-      @purchasers = @most_to_least_orders
-    else sort_direction == 'desc'
-      @purchasers = @most_to_least_orders.reverse
+      @purchasers = Purchaser.left_joins(:orders).group(:id).order('COUNT(orders.id) DESC')
+    elsif sort_direction == 'desc'
+      @purchasers = Purchaser.left_joins(:orders).group(:id).order('COUNT(orders.id) ASC')
+    else
+      @purchasers = Purchaser.all
     end
   end
 
