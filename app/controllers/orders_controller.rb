@@ -8,8 +8,9 @@ class OrdersController < ApplicationController
   def all_orders
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-
     @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
+    @archived_orders = Order.archived.order("created_at DESC")
+    @unarchived_orders = Order.unarchived.order("created_at DESC")
   end
 
   # GET /orders or /orders.json

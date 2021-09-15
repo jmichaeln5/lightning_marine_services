@@ -7,14 +7,14 @@
 
   <thead>
     <tr>
-        <th class="">
-        <%= link_to "PurchaserID", purchasers_path(sort_option: 'id', sort_direction: sort_direction) %>
+        <th>
+        <%= link_to "Ship ID", purchasers_path(sort_option: 'id', sort_direction: sort_direction) %>
         </th>
-        <th class="">
-        <%= link_to "Name", purchasers_path(sort_option: 'name', sort_direction: sort_direction) %>
+        <th>
+        <%= link_to "Ship Name", purchasers_path(sort_option: 'name', sort_direction: sort_direction) %>
         </th>
-        <th class="">
-        <%= link_to "Orders", purchasers_path(sort_option: 'order_amount', sort_direction: sort_direction) %>
+        <th>
+        <%= link_to "Ship Orders", purchasers_path(sort_option: 'order_amount', sort_direction: sort_direction) %>
         </th>
     </tr>
   </thead>

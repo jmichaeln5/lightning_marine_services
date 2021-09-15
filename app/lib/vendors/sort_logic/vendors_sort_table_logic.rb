@@ -16,9 +16,7 @@ module VendorsSortTableLogic
     end
   end
 
-  ## # Seperated into seperate methods for following reasons:
-  ######## # 1) Avioding possible Zeitwerk autoloading issues on initial app boot
-  ######## # 2) Future feature expansion
+  ## # Seperate methods to avoid possible Zeitwerk autoloading issues on initial app boot
 
   def self.sort_vendors_by_id(sort_option, sort_direction)
     @vendors = Vendor.order(sort_option + " " + sort_direction)

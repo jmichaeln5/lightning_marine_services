@@ -4,19 +4,38 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_order_on_show_modal' %>
 
-
-<div class="card p-2">
-  <table>
+  <table class="bg-white table table-striped border border-2">
     <thead>
       <tr>
-        <th>  OrderID</th>
-        <th> Vendor </th>
-        <th> PO# </th>
-        <th> Date Recieved </th>
-        <th> Courrier </th>
-        <th> Date Delivered </th>
-        <th> Contents </th>
-        <th colspan="2"></th>
+
+        <th>
+        <%= link_to "Order ID", purchaser_path(@purchaser, sort_option: 'id', sort_direction: sort_direction) %>
+        </th>
+
+        <th>
+          <%= link_to "Vendor", purchaser_path(@purchaser, sort_option: 'vendor_name', sort_direction: sort_direction) %>
+        </th>
+
+        <th>
+          PO Number
+        </th>
+
+        <th>
+        <%= link_to "Date Recieved", purchaser_path(@purchaser, sort_option: 'date_recieved', sort_direction: sort_direction) %>
+        </th>
+
+        <th>
+          Order Content
+        </th>
+
+        <th>
+        <%= link_to "Courrier", purchaser_path(@purchaser, sort_option: 'courrier', sort_direction: sort_direction) %>
+        </th>
+
+        <th>
+        <%= link_to "Date Delivered", purchaser_path(@purchaser, sort_option: 'date_delivered', sort_direction: sort_direction) %>
+        </th>
+
       </tr>
     </thead>
 
@@ -37,16 +56,9 @@
               <%= order.po_number ||= "n/a" %>
             </td>
 
+
             <td class="pb-10 px-2">
               <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
-            </td>
-
-            <td class="pb-10 px-2">
-              <%= order.courrier ||= "n/a" %>
-            </td>
-
-            <td class="pb-10 px-2">
-              <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
             <td class="pb-10 px-2">
@@ -71,6 +83,17 @@
               <% end %>
             </td>
 
+            <td class="pb-10 px-2">
+              <%= order.courrier ||= "n/a" %>
+            </td>
+
+
+            <td class="pb-10 px-2">
+              <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
+            </td>
+
+
+
             <!-- <td class="pl-4 pb-4 px-2">
               <%= link_to 'Show', order %> |
               <%= link_to 'Edit', edit_order_path(order) %> |
@@ -81,6 +104,3 @@
       <% end %>
     </tbody>
   </table>
-</div>
-
-<br>

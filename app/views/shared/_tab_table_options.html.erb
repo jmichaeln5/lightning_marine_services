@@ -9,10 +9,12 @@
           Options
         </button>
 
+        <% if current_user.has_role? :admin %>
+
         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions" id="adminOptions">
           Admin Options
         </button>
-
+        <% end %>
 
       </h2>
     </div>
@@ -24,7 +26,7 @@
       <br>
       Download
       <br>
-      <%= link_to "All Orders", all_orders_path %>
+      <%= link_to "All Orders Page", all_orders_path %>
 
 
       </div>
