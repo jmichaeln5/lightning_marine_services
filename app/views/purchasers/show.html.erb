@@ -4,4 +4,4 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_order_on_show_modal' %>
 
-<%= render 'shared/purchasers_and_vendors_shared/show' %>
+<%= render partial: "shared/purchasers_and_vendors_shared/show", locals: {resources: @purchaser} %>
