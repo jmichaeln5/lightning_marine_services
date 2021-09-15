@@ -1,0 +1,32 @@
+<table class="bg-white table table-striped border border-2">
+  <thead>
+    <tr>
+      <th>  <%= link_to "#{current_controller.singularize.titleize} ID", request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>  </th>
+      <th>  <%= link_to "#{current_controller.singularize.titleize} Name", request.params.merge(sort_option: 'name', sort_direction: sort_direction ) %>  </th>
+      <th>  <%= link_to "#{current_controller.singularize.titleize} Orders", request.params.merge(sort_option: 'order_amount', sort_direction: sort_direction ) %>  </th>
+    </tr>
+
+  </thead>
+
+  <tbody>
+    <% resources.each do |resource| %>
+      <tr>
+        <td class="py-8 align-middle font-light">
+          <%= resource.id %>
+        </td>
+        <td class="py-8 align-middle font-light">
+          <%= link_to "#{resource.name}", resource %>
+        </td>
+        <td class="py-8 align-middle font-light">
+         <%= link_to "#{resource.orders.count}", resource %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="p-4">
+<%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
+|
+<%= link_to "Next", request.params.merge(page: @page + 1) %>
+</div>

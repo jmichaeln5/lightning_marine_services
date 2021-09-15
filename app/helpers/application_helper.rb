@@ -61,11 +61,9 @@ module ApplicationHelper
 
   # Used in app/views/layouts/_edit_toggle.html.erb to get Model Instance on #show action (reason for instansiatied class to be found by params[:id] )
   def get_resource_instance(controller_name)
-    # if (show_on_order_ship_purchaser_pages? == true) && (action_name == 'show')
-      # klass = Object.const_get "#{controller_name.singularize.capitalize}"
-      # klass.find(params[:id])
-      get_resource(controller_name).find(params[:id])
-    # end
+      if (show_on_order_ship_purchaser_pages? == true)
+        get_resource(controller_name).find(params[:id])
+      end
   end
 
   def current_url(new_params)
