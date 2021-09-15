@@ -42,24 +42,24 @@
     <tbody>
       <% @orders.each do |order| %>
         <tr class="">
-            <td class="pb-10 px-2">
+          <td class=" align-middle font-light">
               <%= order.id %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class=" align-middle font-light">
               <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class=" align-middle font-light">
               <%= order.po_number ||= "n/a" %>
             </td>
 
 
-            <td class="pb-10 px-2">
+            <td class=" align-middle font-light">
               <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class=" align-middle font-light">
               <% if order.order_content.present? %>
 
                 <%= link_to(order_path(order)) do %>
@@ -81,12 +81,12 @@
               <% end %>
             </td>
 
-            <td class="pb-10 px-2">
+            <td class=" align-middle font-light">
               <%= order.courrier ||= "n/a" %>
             </td>
 
 
-            <td class="pb-10 px-2">
+            <td class=" align-middle font-light">
               <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
         </tr>

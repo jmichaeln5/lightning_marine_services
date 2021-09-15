@@ -6,15 +6,15 @@ class VendorsController < ApplicationController
 
   # GET /vendors or /vendors.json
   # def index
-  #   autoload :VenodorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
-  #   @vendors = VenodorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
+  #   autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
+  #   @vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
   #   @vendor = Vendor.new
   # end
 
   def index
-    autoload :VenodorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
+    autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
 
-    @sorted_vendors = VenodorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
+    @sorted_vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
     @vendor = Vendor.new
 
     @vendors_per_page = 10
@@ -23,7 +23,7 @@ class VendorsController < ApplicationController
     @vendors = @sorted_vendors.offset(@offset_arg).limit(@vendors_per_page)
 
     #  For pagination btns
-    @total_pages = @sorted_vendors.count.to_i / @vendors_per_page
+    @total_pages = @sorted_vendors.length.to_i / @vendors_per_page
 
   end
 

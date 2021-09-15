@@ -17,13 +17,6 @@ module OrdersSortTableLogic
     ]
   end
 
-  #  # ####### ORDER > VENDOR
-  #  # Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
-
-  #  # ####### ORDER > PURCHASER
-  #  # Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
-
-
   def self.sorted_orders(sort_option = nil, sort_direction = nil)
     sort_option ||= nil
     sort_direction ||= nil
