@@ -3,24 +3,43 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 
+<!-- <div class="p-4">
+  <button onclick="reverseTable()" class="btn btn-primary"> Reverse Table</button>
+</div> -->
+
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-      <!-- sortable_orders_ths in file: orders_sort_table_logic -->
-      <% OrdersSortTableLogic.sortable_orders_ths.each do |resource_attr_name| %>
-        <th>
-          <%= link_to "#{resource_attr_name.to_s.humanize}", orders_path(sort_option: "#{resource_attr_name}", sort_direction: sort_direction) %>
-        </th>
-      <% end %>
+      <th>
+        <%= link_to "Order ID", request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>
+      </th>
 
-      <% OrdersSortTableLogic.non_sortable_orders_ths.each do |resource_attr_name| %>
-        <th>
-          <%= "#{resource_attr_name.to_s.humanize}" %>
-        </th>
-      <% end %>
+      <th>
+        <%= link_to "Ship", request.params.merge(sort_option: 'purchaser_name', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
+        <%= link_to "Vendor", request.params.merge(sort_option: 'vendor_name', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
+        PO #
+      </th>
+
+      <th>
+        <%= link_to "Date Recieved", request.params.merge(sort_option: 'date_recieved', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
+        Order Content
+      </th>
+
+      <th>
+        <%= link_to "Courrier", request.params.merge(sort_option: 'courrier', sort_direction: sort_direction ) %>
+      </th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="table-body">
 
     <% @orders.each do |order| %>
       <tr>
@@ -37,15 +56,11 @@
           </td>
 
           <td class=" align-middle font-light">
-            <%= order.courrier %>
+            <%= order.po_number ||= "n/a" %>
           </td>
 
           <td class=" align-middle font-light">
             <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
-          </td>
-
-          <td class=" align-middle font-light">
-            <%= order.po_number ||= "n/a" %>
           </td>
 
           <td class=" align-middle font-light">
@@ -69,22 +84,12 @@
               <% end %>
             <% end %>
           </td>
+
+          <td class=" align-middle font-light">
+            <%= order.courrier %>
+          </td>
       </tr>
     <% end %>
 
   </tbody>
 </table>
-
-
-  <!-- <div>
-    <div>
-      <%#= render "shared/pagination_buttons" %>
-    </div>
-  </div> -->
-
-
-  <div class="p-4">
-    <%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
-    |
-    <%= link_to "Next", request.params.merge(page: @page + 1) %>
-  </div>

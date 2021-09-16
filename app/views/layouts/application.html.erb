@@ -32,35 +32,34 @@
 
                 <% if user_signed_in? %>
                   <div class=" container pt-4">
-
+                      <!-- Top Header Card Tabs -->
                       <%= render "shared/tabs" %>
-                      <!-- Header -->
+                      <!-- Header Card-->
                       <div class="card p-4 -mt-4">
-
+                        <!-- Top Left Header Content -->
                         <div class=" d-flex justify-content-start">
                           <div class=" object-left-top">
                             <div class="p-2">
                               <span class="">
                                 <%= yield(:top_left_header_content) %>
-                                <%#= link_to 'Admin Dashboard', admin_users_path if current_user.has_role? :admin %>
                               </span>
                             </div>
                           </div>
                         </div>
 
-
-
+                        <!-- Top Right Header Content -->
                         <div class=" d-flex justify-content-end">
                           <div class=" object-right-top">
                             <div class="">
                               <span class="">
                                 <%= yield(:top_right_header_content) %>
-                                <%= link_to 'Admin Dashboard', admin_users_path if current_user.has_role? :admin %>
+                                  <%= link_to "#{current_user.name  }", dashboard_path, class:"text-gray-500" %>
                               </span>
                             </div>
                           </div>
                         </div>
 
+                        <!-- Header Titles -->
                         <div class="text-4xl pb-4">
                           <%= yield(:title) %>
 
@@ -72,12 +71,6 @@
                             <%= yield(:subtitle_two) %>
                           </div>
                         </div>
-                        <!-- Order ID/Count -->
-                        <% if @orders != false %>
-                          <div class="text-4xl">
-                            <%= yield(:order_number) %>
-                          </div>
-                        <% end  %>
                         <!-- For edit resource on #show Controller Actions  -->
                         <%= render 'shared/edit_toggle' %>
                       </div>
@@ -90,6 +83,9 @@
                   <%= yield %>
                 </div>
 
+                <% if (@page.present?) && (@total_pages.present?) %>
+                  <%= render "shared/pagination_buttons" %>
+                <% end %>
 
                 <% if (show_on_order_ship_purchaser_pages? == true) %>
                     <div class="p-2">

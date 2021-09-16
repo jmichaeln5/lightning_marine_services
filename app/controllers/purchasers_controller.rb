@@ -7,7 +7,6 @@ class PurchasersController < ApplicationController
   # # GET /purchasers or /purchasers.json
   def index
     autoload :PurchasersIndexTableSortLogic, "purchasers/sort_logic/purchasers_index_table_sort_logic.rb"
-    # @purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
     @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
     @purchaser = Purchaser.new
 

@@ -9,18 +9,30 @@ class OrdersController < ApplicationController
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
+
+
     @archived_orders = Order.archived.order("created_at DESC")
     @unarchived_orders = Order.unarchived.order("created_at DESC")
-  end
+
+
+    @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
+    @orders_per_page = 10
+    @page = params.fetch(:page, 0).to_i
+    @offset_arg = @page * @orders_per_page
+    @orders = @sorted_orders.offset(@offset_arg).limit(@orders_per_page)
+
+    #  For pagination btns
+    @total_pages = @sorted_orders.length.to_i / @orders_per_page
+   end
 
   def index
     autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
 
-    @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
+
+    @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     @orders_per_page = 10
     @page = params.fetch(:page, 0).to_i
     @offset_arg = @page * @orders_per_page
