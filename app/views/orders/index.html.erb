@@ -3,6 +3,10 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 
+<!-- <div class="p-4">
+  <button onclick="reverseTable()" class="btn btn-primary"> Reverse Table</button>
+</div> -->
+
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
@@ -35,7 +39,7 @@
       </th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="table-body">
 
     <% @orders.each do |order| %>
       <tr>
@@ -89,17 +93,3 @@
 
   </tbody>
 </table>
-
-
-  <!-- <div>
-    <div>
-      <%#= render "shared/pagination_buttons" %>
-    </div>
-  </div> -->
-
-
-  <div class="p-4">
-    <%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
-    |
-    <%= link_to "Next", request.params.merge(page: @page + 1) %>
-  </div>

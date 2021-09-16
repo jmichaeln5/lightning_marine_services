@@ -8,7 +8,7 @@
 
   </thead>
 
-  <tbody>
+  <tbody id="table-body">
     <% resources.each do |resource| %>
       <tr>
         <td class="py-8 align-middle font-light">
@@ -25,8 +25,8 @@
   </tbody>
 </table>
 
-<div class="p-4">
+<!-- <div class="p-4">
 <%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
 |
 <%= link_to "Next", request.params.merge(page: @page + 1) %>
-</div>
+</div> -->

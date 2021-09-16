@@ -90,6 +90,9 @@
                   <%= yield %>
                 </div>
 
+                <% if (@page.present?) && (@total_pages.present?) %>
+                  <%= render "shared/pagination_buttons" %>
+                <% end %>
 
                 <% if (show_on_order_ship_purchaser_pages? == true) %>
                     <div class="p-2">

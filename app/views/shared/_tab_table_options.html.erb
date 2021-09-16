@@ -22,8 +22,14 @@
     <div id="collapseOptions" class="collapse" aria-labelledby="tableOptions" data-parent="#aboveTableAccordionOptions">
       <div class="card-body">
 
-      Sort
+
+      <% if show_on_order_ship_purchaser_pages? && ("#{controller_name}##{action_name}" != "orders#show")%>
+        <a href="#" onclick="return false;">
+          <span onclick="reverseTable()"> Reverse Table </span>
+        </a>
       <br>
+      <% end %>
+
       Download
       <br>
       <%= link_to "All Orders Page", all_orders_path %>
@@ -56,3 +62,19 @@
 
 
 </div>
+
+<script type="text/javascript">
+
+  function reverseTable() {
+    var table = document.getElementById("table-body")
+    var trContent = []
+    for (var i = 0, row; row = table.rows[i]; i++) {
+      trContent.push(row.innerHTML)
+    }
+    trContent.reverse()
+    for (var i = 0, row; row = table.rows[i]; i++) {
+      row.innerHTML = trContent[i]
+    }
+  }
+
+</script>

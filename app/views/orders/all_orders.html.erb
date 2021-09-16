@@ -98,10 +98,3 @@
       <%#= render "shared/pagination_buttons" %>
     </div>
   </div> -->
-
-
-  <div class="p-4">
-    <%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
-    |
-    <%= link_to "Next", request.params.merge(page: @page + 1) %>
-  </div>
