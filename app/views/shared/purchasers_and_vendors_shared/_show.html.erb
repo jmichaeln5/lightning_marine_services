@@ -28,9 +28,9 @@
       <%= link_to "Courrier", request.params.merge(sort_option: 'courrier', sort_direction: sort_direction ) %>
       </th>
 
-      <th>
+      <!-- <th>
         <%= link_to "Date Delivered", request.params.merge(sort_option: 'date_delivered', sort_direction: sort_direction ) %>
-      </th>
+      </th> -->
 
     </tr>
   </thead>
@@ -82,9 +82,9 @@
             <%= order.courrier ||= "n/a" %>
           </td>
 
-          <td class=" align-middle font-light">
+          <!-- <td class=" align-middle font-light">
             <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
-          </td>
+          </td> -->
       </tr>
     <% end %>
   </tbody>
