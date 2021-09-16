@@ -40,19 +40,6 @@ module ApplicationHelper
     end
   end
 
-  def view_on_main_functionality_controllers?
-    if ['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? controller_name
-      true
-    else
-      nil
-    end
-  end
-
-  # def resource_klass
-  #   Object.const_get controller_name.classify
-  # end
-
-
   def get_resource(controller_name)
     if (show_on_order_ship_purchaser_pages? == true)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"
