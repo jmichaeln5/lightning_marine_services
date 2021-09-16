@@ -44,21 +44,19 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
 
   #### * Devise *
-  #   #Mailers to send from friendfundapp@gmail.com
+  #   #Mailers to send from sample_email_address@gmail.com
   #   config.action_mailer.delivery_method = :sendmail
   #   config.action_mailer.perform_deliveries = true
   #   config.action_mailer.raise_delivery_errors = true
-  #   config.action_mailer.default_options = {from: 'friendfundapp@gmail.com'}
+  #   config.action_mailer.default_options = {from: 'sample_email_address@gmail.com'}
   #
   #   config.action_mailer.delivery_method = :smtp
   #   config.action_mailer.smtp_settings = {
   #     address:              'smtp.gmail.com',
   #     port:                 587,
   #     domain:               'localhost:3000',
-  #     # user_name:            ENV["ADMIN_EMAIL"],
-  #     # password:             ENV["DOG_SEEKER_GMAIL"],
-  #     user_name:            "friendfundapp@gmail.com",
-  #     password:             "newpass42069",
+  #     user_name:            "sample_email_address@gmail.com",
+  #     password:             "sample_password_for_sample_email_address",
   #     authentication:       'plain',
   #     enable_starttls_auto: true
   # }
