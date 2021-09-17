@@ -1,4 +1,5 @@
 <%= form_for @order do |f| %>
+
   <div class="field">
     <p class="text-3xl"> Ship </p>
     <% if @purchaser.present? %>
@@ -30,13 +31,11 @@
       <%#= f.text_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
     </div>
 
-
     <div class="field pb-2 pt-2">
       <p class="text-2xl"> Courrier </p>
       <%= f.text_field :courrier, class: "form-control" %>
       <%#= f.text_field :courrier, value: ['Fedex', 'UPS', 'USPS', 'DHL'].sample, class: "form-control" %>
     </div>
-
 
     <div class="field pb-2 pt-2">
       <p class="text-2xl"> Date Recieved </p>
@@ -45,13 +44,26 @@
     </div>
 
     <div class="field pb-2 pt-2">
-      <p class="text-2xl"> Date Delivered </p>
+
+      <span class="text-2xl justify-content-center">
+        Date Delivered
+      </span>
+
+      <% if (current_user.has_role? :admin) && (@order.archived) %>
+        <br>
+        <span class="float-right text-md">
+              <%= render 'shared/confirmation_modal' %>
+        </span>
+      <% end %>
+
+
       <%= f.date_field :date_delivered, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
+
+
     </div>
 
     <div class="field pb-2 pt-2">
       <p class="text-2xl"> <%= f.label "Upload(s)" %> </p>
-      <%# byebug%>
       <%= f.file_field :images, multiple: true, class: 'form-control' %>
     </div>
 
@@ -63,85 +75,57 @@
           <div class="row justify-between">
 
             <div class="align-middle">
-
               <% if image.image?  %>
                 <%= image_tag(image.variant(resize: "300x300")) %>
               <% elsif image.blob.content_type == "video/mp4" %>
-
-                <!-- <div style="width: 300px;"> -->
                 <div class="max-w-xs">
                   <%= video_tag rails_blob_path(image), controls: true %>
                 </div>
-
                 <% else %>
                 <div class="max-w-xs bg-red-200" >
-                    <p class="p-12">
-                      <span class="float-left text-red-400 max-w-xs" style="">
-                        Content Unavailable
-                      </span>
-                    </p>
-                    <br>
-                  </div>
-
-
-
+                  <p class="p-12">
+                    <span class="float-left text-red-400 max-w-xs" style="">
+                      Content Unavailable
+                    </span>
+                  </p>
+                  <br>
+                </div>
               <% end %>
-
             </div>
 
-            <div class=" p-2">
-              <%#= ActiveStorage::Attachment.find(image.id) %>
-              <br>
-
-
-                <%= link_to 'Remove',  order_attachment_destroy_attachment_path(@order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400 align-middle" %>
-
+              <%= link_to 'Remove',  order_attachment_destroy_attachment_path(@order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400 align-middle" %>
 
             </div>
-
           </div>
-
         </div>
       </div>
       <% end %>
     <% end %>
-
-
-
-
   </div>
 
   <p class="text-4xl font-semibold p-2"> Order Contents </p>
-
-  <%#= render 'orders/order_contents_form', contents: @contents%>
     <%= f.fields_for :order_content, @order.order_content do |p| %>
-    <%#= f.fields_for :order_content, @order.order_content.build do |p| %>
-
-    <div class="field pb-2">
-      <%= p.label'Boxes', class:"text-2xl" %>
-      <%= p.number_field :box, class: 'form-control' %>
-    </div>
-    <div class="field pb-2">
-      <%= p.label 'Crates', class:"text-2xl" %>
-      <%= p.number_field :crate, class: 'form-control' %>
-    </div>
-    <div class="field pb-2">
-      <%= p.label 'Pallets', class:"text-2xl" %>
-      <%= p.number_field :pallet, class: 'form-control' %>
-    </div>
-    <div class="field pb-2">
-      <%= p.label 'Other', class:"text-2xl" %>
-      <%= p.number_field :other, class: 'form-control' %>
-    </div>
-
-
-    <div class="field pb-2">
-      <%= p.label 'Description', class:"text-2xl" %>
-      <%= p.text_area :other_description,rows: 3, class: 'form-control' %>
-    </div>
-
-  <% end %>
-
+      <div class="field pb-2">
+        <%= p.label'Boxes', class:"text-2xl" %>
+        <%= p.number_field :box, class: 'form-control' %>
+      </div>
+      <div class="field pb-2">
+        <%= p.label 'Crates', class:"text-2xl" %>
+        <%= p.number_field :crate, class: 'form-control' %>
+      </div>
+      <div class="field pb-2">
+        <%= p.label 'Pallets', class:"text-2xl" %>
+        <%= p.number_field :pallet, class: 'form-control' %>
+      </div>
+      <div class="field pb-2">
+        <%= p.label 'Other', class:"text-2xl" %>
+        <%= p.number_field :other, class: 'form-control' %>
+      </div>
+      <div class="field pb-2">
+        <%= p.label 'Description', class:"text-2xl" %>
+        <%= p.text_area :other_description,rows: 3, class: 'form-control' %>
+      </div>
+    <% end %>
   <br>
   <div class="p-2">
     <div class="actions btn btn-outline-primary">
@@ -150,6 +134,5 @@
       <% end %>
     </div>
   </div>
-
 
 <% end %>
