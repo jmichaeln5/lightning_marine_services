@@ -1,0 +1,42 @@
+<%= link_to 'Remove Date Delivered', '#', "data-toggle" => "modal", 'data-target' => '#confirmationModal' %>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalLabel"> Admin Confirm: <%= current_user.name %>  </h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <div class="container">
+          <h4>
+            Are you sure?
+          </h4>
+          Removing the Delivery Date from this order will also unarchive this order.
+        </div>
+
+        <div class="pt-4 pb-2">
+          <button type="button" class="btn btn-warning">
+
+            <span onclick=
+                    "document.getElementById(
+                     'order_date_delivered').value = ''
+                     " data-dismiss="modal">
+              Yes, I'm Sure.
+            </span>
+          </button>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

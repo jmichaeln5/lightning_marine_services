@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
-  scope :unarchived, -> { where('archived != ?', true) }
-  scope :archived, -> { where('archived != ?', false) }
+  scope :unarchived, -> { where(archived: false) }
+  scope :archived, -> { where(archived: true) }
 
   belongs_to :purchaser
   belongs_to :vendor
@@ -15,23 +15,30 @@ class Order < ApplicationRecord
   validates :po_number, uniqueness: true
 
   before_save :order_content_exists?
-  before_save :archive_on_delivery
+  before_save :handle_archive
 
-  # scope :archived, where('archived_on != ?', nil)
+  #  before_save :before_save_methods
 
   def self.to_csv
-      attributes = %w{ id po_number date_recieved }
+    attributes = %w{ id po_number date_recieved }
 
-      CSV.generate(headers: true) do |csv|
-        csv << attributes
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
 
-        all.each do |contact|
-          csv << attributes.map{ |attr| contact.send(attr) }
-        end
+      all.each do |contact|
+        csv << attributes.map{ |attr| contact.send(attr) }
       end
+    end
   end
 
   private
+
+  if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+    if content_amount < 1
+      self.errors.add(:base, "Order is missing content.")
+      throw(:abort)
+    end
+  end
 
   def order_content_exists?
     order_content = self.order_content
@@ -42,20 +49,11 @@ class Order < ApplicationRecord
       add_content_amount = order_content.send(attr).to_i
       content_amount = content_amount + add_content_amount
     end
+  end
 
-  def archive_on_delivery
-    # byebug
+  def handle_archive
     self.archived = true if self.date_delivered.present?
+    self.archived = false if self.date_delivered.present? == false
   end
-
-    if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
-      if content_amount < 1
-        self.errors.add(:base, "Order is missing content.")
-        throw(:abort)
-      end
-    end
-  end
-
-
 
 end
