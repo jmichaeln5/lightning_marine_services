@@ -4,3 +4,5 @@
 <%= render 'shared/new_modal' %>
 
 <%= render partial: "shared/purchasers_and_vendors_shared/index", locals: {resources: @purchasers} %>
+
+<%= render "shared/pagination_buttons", total_pages: @purchasers.total_pages %>

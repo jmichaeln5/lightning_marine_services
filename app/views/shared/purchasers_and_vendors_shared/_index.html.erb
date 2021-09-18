@@ -9,7 +9,7 @@
   </thead>
 
   <tbody id="table-body">
-    <% resources.each do |resource| %>
+    <% resources.paginate_index.each do |resource| %>
       <tr>
         <td class="py-8 align-middle font-light">
           <%= resource.id %>

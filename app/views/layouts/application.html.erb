@@ -31,7 +31,14 @@
                 <%= render "shared/flash_messages" %>
 
                 <% if user_signed_in? %>
+
                   <div class=" container pt-4">
+
+                    <div class="float-right">
+                      <%= render "shared/search_on_page" %>
+                    </div>
+                    <br>
+                    <br>
                       <!-- Top Header Card Tabs -->
                       <%= render "shared/tabs" %>
                       <!-- Header Card-->
