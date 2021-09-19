@@ -16,10 +16,10 @@ module OrdersSortTableLogic
 
     if sortable_orders_ths.include? sort_option
       @orders = sort_by_sort_option(sort_option, sort_direction)
-    elsif sort_option == 'purchaser_name'
-          @orders = sort_orders_purchaser_name(sort_option, sort_direction)
+    elsif sort_option == 'ship_name'
+      @orders = sort_orders_purchaser_name(sort_option, sort_direction)
     elsif sort_option == 'vendor_name'
-          @orders = sort_orders_vendor_name(sort_option, sort_direction)
+      @orders = sort_orders_vendor_name(sort_option, sort_direction)
     else
       @orders = Order.all.order("created_at DESC")
     end

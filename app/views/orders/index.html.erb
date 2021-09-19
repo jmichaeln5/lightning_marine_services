@@ -3,6 +3,8 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 
+<%= render 'shared/pagination/page_drop_down', resource: @orders %>
+
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
@@ -11,7 +13,7 @@
       </th>
 
       <th>
-        <%= link_to "Ship", request.params.merge(sort_option: 'purchaser_name', sort_direction: sort_direction ) %>
+        <%= link_to "Ship", request.params.merge(sort_option: 'ship_name', sort_direction: sort_direction ) %>
       </th>
 
       <th>
@@ -90,4 +92,4 @@
   </tbody>
 </table>
 
-<%= render "shared/pagination_buttons", total_pages: @orders.total_pages %>
+<%= render "shared/pagination/pagination_buttons", total_pages: @orders.total_pages %>

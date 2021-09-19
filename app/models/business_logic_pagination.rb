@@ -20,4 +20,8 @@ class BusinessLogicPagination
     page_result = (@resource.count.modulo(@per_page) == 0) ? ( (@resource.count / @per_page) - 1 ) : (@resource.count / @per_page)
   end
 
+  def display_humanized_total_pages
+    total_pages + 1
+  end
+
 end
