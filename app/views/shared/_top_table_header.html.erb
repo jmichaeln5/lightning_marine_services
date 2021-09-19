@@ -1,0 +1,77 @@
+
+<nav class="navbar navbar-light bg-white border py-4">
+
+<div class="container">
+
+  <div class="grid grid-cols-2 gap-6 justify-content-center">
+
+    <div class="">
+      <span class="text-3xl mr-2">
+        <%= "#{current_controller.titleize}" %>
+        <br>Table
+      </span>
+    </div>
+
+    <% if params[:sort_option].present? %>
+      <% if params[:sort_direction].present? %>
+        <% display_sorted_direction = params[:sort_direction] == 'asc' ? 'descending' : 'ascending' %>
+      <% end %>
+
+      <div class="pt-4 align-middle">
+
+        <span class="text-base  justify-content-end">
+          <span class=" text-gray-600 row justify-content-center"> <%= "#{params[:sort_option].titleize} (#{display_sorted_direction})" %></span>
+          <!-- <span class=" text-gray-600 row"> <%= " "%></span> -->
+        </span>
+
+        <span class="text-sm row justify-content-center">  <%= link_to "remove sort", url_for(request.params.slice!(:sort_direction, :sort_option)) %>
+        </span>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+
+  <div class="ml-4 grid col-span-2 gap-4 justify-content-start ">
+
+
+      <button class="" type="button" data-toggle="dropdown" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      </button>
+      <div class="" id="navbarNavDropdown">
+        <ul class="">
+
+          <li class="nav-item dropdown">
+
+            <a class="nav-link border-2 " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= "Page: #{@page + 1}/#{resource.display_humanized_total_pages}"%>
+            </a>
+
+            <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+              <% (resource.display_humanized_total_pages).times do | page_number, index | %>
+
+                <% display_offset_page_number = page_number += 1 %>
+                <% display_selected_current_page = "selected" %>
+                <% select_me = (@page + 1) == display_offset_page_number ? true : false%>
+
+                <% if select_me == true %>
+                  <%= link_to "#{display_offset_page_number}/#{resource.display_humanized_total_pages} (current page)", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
+                <% else %>
+                  <%= link_to "#{display_offset_page_number}/#{resource.display_humanized_total_pages}", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
+                <% end %>
+              <% end %>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+</nav>

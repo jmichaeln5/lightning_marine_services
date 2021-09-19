@@ -12,7 +12,10 @@
 
         <li class="page-item disabled disabled:opacity-50">
           <a class="page-link" href="#" tabindex="-1" class="page-item">
-            < Prev
+
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+
           </a>
         </li>
       <% else %>
@@ -21,7 +24,7 @@
       <%= link_to "First", request.params.merge(page: 0), class:"d-flex justify-content-center mr-4 mt-2" if 0 < @page %>
 
         <li class="page-item">
-          <%= link_to "< Prev", request.params.merge(page: @page - 1), class:"page-link"  %>
+          <%= link_to raw("&laquo;"), request.params.merge(page: @page - 1), class:"page-link"  %>
         </li>
       <% end %>
 
@@ -50,12 +53,15 @@
         <%  if @page == total_pages %>
           <li class="page-item disabled disabled:opacity-50">
             <a class="page-link" href="#" tabindex="-1">
-              Next >
+
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+
             </a>
           </li>
         <%  else %>
         <!-- (!= Last Page) Next Page -->
-            <%= link_to "Next >", request.params.merge(page: @page + 1), class:"page-link page-item"  %>
+            <%= link_to raw("&raquo;"), request.params.merge(page: @page + 1), class:"page-link page-item"  %>
         <% end %>
 
         <%= link_to "Last", request.params.merge(page: total_pages), class:"d-flex justify-content-center ml-4 mt-2" if @page < total_pages %>

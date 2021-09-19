@@ -23,7 +23,6 @@ module PurchaserShowTableSortLogic
 
   end
 
-  ## # Seperate methods to avoid possible Zeitwerk autoloading issues on initial app boot
   def self.sort_by_sort_option(sort_option, sort_direction)
     @orders = @purchaser.orders.reorder(sort_option + " " + sort_direction)
   end

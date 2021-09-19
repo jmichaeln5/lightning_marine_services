@@ -3,7 +3,7 @@
   <%= render 'shared/tab_table_options' %>
   <%= render 'shared/new_modal' %>
 
-  <%= render 'shared/pagination/page_drop_down', resource: @vendors %>
+  <%= render 'shared/top_table_header', resource: @vendors %>
 
 
   <%= render partial: "shared/purchasers_and_vendors_shared/index", locals: {resources: @vendors} %>

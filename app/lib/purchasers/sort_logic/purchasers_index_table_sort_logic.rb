@@ -1,28 +1,27 @@
 module PurchasersIndexTableSortLogic
 
+  def self.sortable_purchasers_ths
+    sortable_purchasers_ths = [
+      'id',
+      'name'
+    ]
+  end
+
   def self.sorted_purchasers(sort_option = nil, sort_direction = nil)
     sort_option ||= nil
     sort_direction ||= nil
 
-    case sort_option
-    when 'id'
-      @purchasers = sort_purchasers_by_id(sort_option, sort_direction)
-    when 'name'
-      @purchasers = sort_purchasers_by_name(sort_option, sort_direction)
-    when 'order_amount'
+    if sortable_purchasers_ths.include? sort_option
+      @purchasers = sort_by_sort_option(sort_option, sort_direction)
+    elsif sort_option == 'order_amount'
       @purchasers = sort_purchasers_by_order_amount(sort_option, sort_direction)
     else
       @purchasers = Purchaser.all.order("created_at DESC")
     end
   end
 
-  ## # Seperate methods to avoid possible Zeitwerk autoloading issues on initial app boot
-  def self.sort_purchasers_by_id(sort_option, sort_direction)
-    @purchasers = Purchaser.order(sort_option + " " + sort_direction)
-  end
-
-  def self.sort_purchasers_by_name(sort_option, sort_direction)
-    @purchasers = Purchaser.order("name #{sort_direction}")
+  def self.sort_by_sort_option(sort_option, sort_direction)
+    @purchasers = Purchaser.reorder(sort_option + " " + sort_direction)
   end
 
   def self.sort_purchasers_by_order_amount(sort_option, sort_direction)
