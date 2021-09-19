@@ -16,7 +16,6 @@ module VendorsIndexTableSortLogic
     end
   end
 
-  ## # Seperate methods to avoid possible Zeitwerk autoloading issues on initial app boot
   def self.sort_vendors_by_id(sort_option, sort_direction)
     @vendors = Vendor.order(sort_option + " " + sort_direction)
   end

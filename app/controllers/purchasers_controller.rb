@@ -2,6 +2,7 @@ class PurchasersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_purchaser, only: %i[ show edit update destroy ]
+  before_action :set_pagination_params, only: %i[ index ]
   helper_method :sort_option, :sort_direction
 
   # # GET /purchasers or /purchasers.json
@@ -9,15 +10,7 @@ class PurchasersController < ApplicationController
     autoload :PurchasersIndexTableSortLogic, "purchasers/sort_logic/purchasers_index_table_sort_logic.rb"
     @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
     @purchaser = Purchaser.new
-
-    @purchasers_per_page = 10
-    @page = params.fetch(:page, 0).to_i
-    @offset_arg = @page * @purchasers_per_page
-    @purchasers = @sorted_purchasers.offset(@offset_arg).limit(@purchasers_per_page)
-
-    #  For pagination btns
-    @total_pages = @sorted_purchasers.length.to_i / @purchasers_per_page
-
+    @purchasers = BusinessLogicPagination.new(@sorted_purchasers, @per_page, @page)
   end
 
   # GET /purchasers/1 or /purchasers/1.json
@@ -90,4 +83,10 @@ class PurchasersController < ApplicationController
     def sort_direction(sort_direction = nil)
       sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
     end
+
+    def set_pagination_params
+      @per_page = 10
+      @page = params.fetch(:page, 0).to_i
+    end
+
 end

@@ -7,7 +7,7 @@
       </th>
 
       <th>
-        <%= link_to "Ship", request.params.merge(sort_option: 'purchaser_name', sort_direction: sort_direction ) if controller_name == "vendors" %>
+        <%= link_to "Ship", request.params.merge(sort_option: 'ship_name', sort_direction: sort_direction ) if controller_name == "vendors" %>
 
         <%= link_to "Vendor", request.params.merge(sort_option: 'vendor_name', sort_direction: sort_direction ) if controller_name == "purchasers" %>
       </th>

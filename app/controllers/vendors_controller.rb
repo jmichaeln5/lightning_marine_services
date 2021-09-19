@@ -2,14 +2,8 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
+  before_action :set_pagination_params, only: %i[ index ]
   helper_method :sort_option, :sort_direction
-
-  # GET /vendors or /vendors.json
-  # def index
-  #   autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
-  #   @vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
-  #   @vendor = Vendor.new
-  # end
 
   def index
     autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
@@ -17,14 +11,7 @@ class VendorsController < ApplicationController
     @sorted_vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
     @vendor = Vendor.new
 
-    @vendors_per_page = 10
-    @page = params.fetch(:page, 0).to_i
-    @offset_arg = @page * @vendors_per_page
-    @vendors = @sorted_vendors.offset(@offset_arg).limit(@vendors_per_page)
-
-    #  For pagination btns
-    @total_pages = @sorted_vendors.length.to_i / @vendors_per_page
-
+    @vendors = BusinessLogicPagination.new(@sorted_vendors, @per_page, @page)
   end
 
   # GET /vendors/1 or /vendors/1.json
@@ -97,4 +84,10 @@ class VendorsController < ApplicationController
     def sort_direction(sort_direction = nil)
       sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
     end
+
+    def set_pagination_params
+      @per_page = 10
+      @page = params.fetch(:page, 0).to_i
+    end
+    
 end

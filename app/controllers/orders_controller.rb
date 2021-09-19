@@ -2,64 +2,23 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_order, only: %i[ show destroy ]
+  before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
 
   def all_orders
     autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
-
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-
-
-    @archived_orders = Order.archived.order("created_at DESC")
-    @unarchived_orders = Order.unarchived.order("created_at DESC")
-
-
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-    @orders_per_page = 10
-    @page = params.fetch(:page, 0).to_i
-    @offset_arg = @page * @orders_per_page
-    @orders = @sorted_orders.offset(@offset_arg).limit(@orders_per_page)
-
-    #  For pagination btns
-    @total_pages = @sorted_orders.length.to_i / @orders_per_page
-   end
+    @orders = BusinessLogicPagination.new(@sorted_orders, @per_page, @page)
+  end
 
   def index
     autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
-
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-
-
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-    @orders_per_page = 10
-    @page = params.fetch(:page, 0).to_i
-    @offset_arg = @page * @orders_per_page
-    @orders = @sorted_orders.offset(@offset_arg).limit(@orders_per_page)
-
-    #  For pagination btns
-    @total_pages = @sorted_orders.length.to_i / @orders_per_page
-
-    #   #################
-    #   ### # Export to CSV
-    #   # respond_to do |format|
-    #   #   format.html
-    #   #   format.csv do
-    #   #     headers['Content-Disposition'] = "attachment; filename=\"orders-list\""
-    #   #     headers['Content-Type'] ||= 'text/csv'
-    #   #   end
-    #   # end
-    #   #################
-  end
-
-
-
-
-  def archived_index
-    @archived_orders = Order.archived.order("created_at DESC")
-    @unarchived_orders = Order.unarchived.order("created_at DESC")
-    @orders = Order.all
+    @orders = BusinessLogicPagination.new(@sorted_orders, @per_page, @page)
   end
 
   # GET /orders/1 or /orders/1.json
@@ -138,12 +97,15 @@ class OrdersController < ApplicationController
     def sort_option(sort_option = nil)
       sort_option = params[:sort_option] ||= nil
       return sort_option.to_s
-      # sort_option = params[:sort_option] ||= nil unless params[:sort_option] == 'ship'
-      # sort_option = params[:sort_option] == 'ship' ? 'purchaser_id' : params[:sort_option]
     end
 
     def sort_direction(sort_direction = nil)
       sort_direction = params[:sort_direction] == "desc" ? "asc" : "desc"
+    end
+
+    def set_pagination_params
+      @per_page = 10
+      @page = params.fetch(:page, 0).to_i
     end
 
 end

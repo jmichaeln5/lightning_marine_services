@@ -1,6 +1,6 @@
 <% content_for :title, "All #{Order.all.count} Orders" %>
-<% content_for :subtitle, "#{@unarchived_orders.unarchived.all.count} Unarchieved Orders" %>
-<% content_for :subtitle_two, "#{@archived_orders.count} Archieved Orders" %>
+<% content_for :subtitle, "#{ Order.unarchived.all.count} Unarchieved Orders" %>
+<% content_for :subtitle_two, "#{Order.archived.count} Archieved Orders" %>
 
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
@@ -13,7 +13,7 @@
       </th>
 
       <th>
-        <%= link_to "Ship", request.params.merge(sort_option: 'purchaser_name', sort_direction: sort_direction ) %>
+        <%= link_to "Ship", request.params.merge(sort_option: 'ship_name', sort_direction: sort_direction ) %>
       </th>
 
       <th>
@@ -37,12 +37,23 @@
       </th>
     </tr>
   </thead>
-  
+
   <tbody id="table-body">
-    <% @orders.each do |order| %>
+    <% @orders.paginate_index.each do |order| %>
       <tr>
-          <td class=" align-middle font-light">
+          <td class="align-middle ">
+
+            <% if order.archived? == true %>
+              <div class="text-gray-500">
+                archived
+              </div>
+            <% end %>
+
+          <span class="font-light">
             <%= order.id %>
+
+          </span>
+
           </td>
 
           <td class=" align-middle font-light">
@@ -87,14 +98,11 @@
             <%= order.courrier %>
           </td>
       </tr>
+
     <% end %>
 
   </tbody>
 </table>
 
 
-  <!-- <div>
-    <div>
-      <%#= render "shared/pagination_buttons" %>
-    </div>
-  </div> -->
+<%= render "shared/pagination/pagination_buttons", total_pages: @orders.total_pages %>
