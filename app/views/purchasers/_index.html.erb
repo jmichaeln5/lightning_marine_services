@@ -1,0 +1,25 @@
+<table class="bg-white table table-striped border border-2">
+  <thead>
+    <tr class="col-3">
+      <th>  <%= link_to "#{current_controller.singularize.titleize} ID", request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>  </th>
+      <th>  <%= link_to "#{current_controller.singularize.titleize} Name", request.params.merge(sort_option: 'name', sort_direction: sort_direction ) %>  </th>
+      <th>  <%= link_to "#{current_controller.singularize.titleize} Orders", request.params.merge(sort_option: 'order_amount', sort_direction: sort_direction ) %>  </th>
+    </tr>
+  </thead>
+
+  <tbody id="table-body">
+    <% purchasers.paginate.each do |purchaser| %>
+      <tr class="col-3">
+        <td class=" align-middle font-light">
+          <%= purchaser.id %>
+        </td>
+        <td class=" align-middle font-light">
+          <%= link_to "#{purchaser.name}", purchaser %>
+        </td>
+        <td class=" align-middle font-light">
+         <%= link_to "#{purchaser.orders.count}", purchaser %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

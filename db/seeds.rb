@@ -143,6 +143,7 @@ puts " "
 puts " "
 
 
+
 if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.count < 5) )
   @order = Order.new
 
@@ -153,9 +154,11 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
 
   random_order_count = rand(80..150)
   # random_order_count = rand(5..20)
-
   (2..random_order_count).each do |id|
   # rand(80..150).times do
+
+    archived_options = [true, false]
+
     order = Order.new(
       id: id,
       purchaser_id: "#{Purchaser.all.ids.sample}",
@@ -163,8 +166,11 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
       dept:"",
       po_number: "#{Faker::Company.sic_code}",
       courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
-      date_recieved:"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}"
+      date_recieved:"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}",
+      archived:  archived_options.sample
     )
+
+    # byebug
 
     order.build_order_content(
       id: id,

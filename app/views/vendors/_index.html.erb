@@ -5,28 +5,21 @@
       <th>  <%= link_to "#{current_controller.singularize.titleize} Name", request.params.merge(sort_option: 'name', sort_direction: sort_direction ) %>  </th>
       <th>  <%= link_to "#{current_controller.singularize.titleize} Orders", request.params.merge(sort_option: 'order_amount', sort_direction: sort_direction ) %>  </th>
     </tr>
-
   </thead>
 
   <tbody id="table-body">
-    <% resources.paginate_index.each do |resource| %>
+    <% vendors.paginate.each do |vendor| %>
       <tr class="col-3">
         <td class=" align-middle font-light">
-          <%= resource.id %>
+          <%= vendor.id %>
         </td>
         <td class=" align-middle font-light">
-          <%= link_to "#{resource.name}", resource %>
+          <%= link_to "#{vendor.name}", vendor %>
         </td>
         <td class=" align-middle font-light">
-         <%= link_to "#{resource.orders.count}", resource %>
+         <%= link_to "#{vendor.orders.count}", vendor %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<!-- <div class="p-4">
-<%= link_to "Prev", request.params.merge(page: @page - 1) unless @page < 1 %>
-|
-<%= link_to "Next", request.params.merge(page: @page + 1) %>
-</div> -->

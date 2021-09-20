@@ -2,6 +2,17 @@
   <nav aria-label="Page navigation example" class="">
     <ul class="pagination">
 
+      <% if total_pages < 1 %>
+      <!-- If one page -->
+          <li class="page-item disabled">
+            <a class="page-link" href="#">
+              Page 1/1
+            </a>
+          </li>
+
+      <% else %>
+
+
       <!-- (First Page) Previous Page -->
       <%  if 0 >= @page %>
         <span class="d-flex justify-content-center mr-4 mt-2" >
@@ -73,6 +84,9 @@
             </span>
           </span>
         <% end %>
+
+        <% end %>
+
 
     </ul>
   </nav>

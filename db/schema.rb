@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2021_09_07_193445) do
     t.datetime "date_recieved"
     t.string "courrier"
     t.datetime "date_delivered"
-    t.boolean "archived", default: false
+    t.boolean "archived"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["purchaser_id"], name: "index_orders_on_purchaser_id"

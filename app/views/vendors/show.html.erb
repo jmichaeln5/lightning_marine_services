@@ -1,7 +1,9 @@
 <% content_for :title, "Vendor: #{@vendor.name}" %>
-<% content_for :subtitle, "#{@orders.count} Orders" %>
+<% content_for :subtitle, "#{@sorted_vendor_orders.count} Orders" %>
 
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_order_on_show_modal' %>
 
-<%= render partial: "shared/purchasers_and_vendors_shared/show", locals: {resources: @vendor} %>
+<%= render 'shared/top_table_header', resource: @orders %>
+<%= render partial: "show", locals: {resource: @orders} %>
+<%= render "shared/pagination/pagination_buttons", total_pages: @orders.total_pages %>

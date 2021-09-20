@@ -34,10 +34,20 @@
   </div>
 
 
+
   <div class="ml-4 grid col-span-2 gap-4 justify-content-start ">
 
+    <% if 1 >= resource.display_humanized_total_pages  %>
 
-      <button class="" type="button" data-toggle="dropdown" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="pt-4">
+        <p class="nav-link border-2 text-gray-400" type="button">
+          Page 1/1
+        </p>
+      </div>
+
+    <% else %>
+
+      <button class="pt-2" type="button" data-toggle="dropdown" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       </button>
       <div class="" id="navbarNavDropdown">
         <ul class="">
@@ -56,7 +66,7 @@
                 <% select_me = (@page + 1) == display_offset_page_number ? true : false%>
 
                 <% if select_me == true %>
-                  <%= link_to "#{display_offset_page_number}/#{resource.display_humanized_total_pages} (current page)", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
+                  <%= link_to "#{display_offset_page_number}/#{resource.display_humanized_total_pages } (current page)", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
                 <% else %>
                   <%= link_to "#{display_offset_page_number}/#{resource.display_humanized_total_pages}", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
                 <% end %>
@@ -66,6 +76,7 @@
 
         </ul>
       </div>
+    <% end %>
     </div>
 
 

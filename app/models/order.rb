@@ -4,12 +4,10 @@ class Order < ApplicationRecord
 
   belongs_to :purchaser
   belongs_to :vendor
-
+  has_many_attached :images
   has_one :order_content, dependent: :destroy
 
   accepts_nested_attributes_for :order_content
-
-  has_many_attached :images
 
   validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
   validates :po_number, uniqueness: true

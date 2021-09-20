@@ -18,7 +18,9 @@ class OrdersController < ApplicationController
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-    @orders = BusinessLogicPagination.new(@sorted_orders, @per_page, @page)
+
+
+    @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
   end
 
   # GET /orders/1 or /orders/1.json

@@ -1,0 +1,87 @@
+<table class="bg-white table table-striped border border-2">
+  <thead>
+    <tr>
+
+      <th>
+        <%= link_to "#{current_controller.singularize.titleize} ID", request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
+        <%= link_to "Ship", request.params.merge(sort_option: 'ship_name', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
+        PO Number
+      </th>
+
+      <th>
+        <%= link_to "Date Recieved", request.params.merge(sort_option: 'date_recieved', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
+        Order Content
+      </th>
+
+      <th>
+      <%= link_to "Courrier", request.params.merge(sort_option: 'courrier', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
+        <%= link_to "Date Delivered", request.params.merge(sort_option: 'date_delivered', sort_direction: sort_direction ) %>
+      </th>
+
+    </tr>
+  </thead>
+
+  <tbody id="table-body">
+    <% resource.paginate.each do |order| %>
+      <tr class="">
+        <td class=" align-middle font-light">
+            <%= order.id %>
+        </td>
+
+        <td class=" align-middle font-light">
+          <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser)%>
+        </td>
+
+        <td class=" align-middle font-light">
+          <%= order.po_number ||= "n/a" %>
+        </td>
+
+        <td class=" align-middle font-light">
+          <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
+        </td>
+
+        <td class=" align-middle font-light">
+          <% if order.order_content.present? %>
+
+            <%= link_to(order_path(order)) do %>
+
+              Boxes: <%= order.order_content.box ||= "n/a" %>
+              <br>
+              Crates: <%= order.order_content.crate ||= "n/a" %>
+              <br>
+              Pallets: <%= order.order_content.pallet ||= "n/a" %>
+              <br>
+
+              <% if is_nil_and_zero(order.order_content.other) == false %>
+                 <%= "Other: #{order.order_content.other}" %>
+                <br>
+                <%= "Description: #{order.order_content.other_description}" %>
+              <% end %>
+
+            <% end %>
+          <% end %>
+        </td>
+
+        <td class=" align-middle font-light">
+          <%= order.courrier ||= "n/a" %>
+        </td>
+
+        <td class=" align-middle font-light">
+          <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
