@@ -12,7 +12,7 @@ class BusinessLogicPagination
     @offset_arg = @per_page * @page
   end
 
-  def paginate_index
+  def paginate
     @resource.offset(paginated_offeset).limit(@per_page)
   end
 

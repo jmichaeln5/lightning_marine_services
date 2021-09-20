@@ -2,7 +2,7 @@ class PurchasersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_purchaser, only: %i[ show edit update destroy ]
-  before_action :set_pagination_params, only: %i[ index ]
+  before_action :set_pagination_params, only: %i[ index show]
   helper_method :sort_option, :sort_direction
 
   # # GET /purchasers or /purchasers.json
@@ -16,9 +16,10 @@ class PurchasersController < ApplicationController
   # GET /purchasers/1 or /purchasers/1.json
   def show
     autoload :PurchaserShowTableSortLogic, "purchasers/sort_logic/purchaser_show_table_sort_logic.rb"
-    @orders = PurchaserShowTableSortLogic.sorted_purchaser_orders(@purchaser, sort_option, sort_direction)
+    @sorted_purchaser_orders = PurchaserShowTableSortLogic.sorted_purchaser_orders(@purchaser, sort_option, sort_direction)
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+    @orders = BusinessLogicPagination.new(@sorted_purchaser_orders, 10, @page)
   end
 
   # GET /purchasers/new

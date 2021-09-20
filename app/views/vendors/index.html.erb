@@ -4,8 +4,5 @@
   <%= render 'shared/new_modal' %>
 
   <%= render 'shared/top_table_header', resource: @vendors %>
-
-
-  <%= render partial: "shared/purchasers_and_vendors_shared/index", locals: {resources: @vendors} %>
-
+  <%= render partial: "index", locals: {vendors: @vendors} %>
   <%= render "shared/pagination/pagination_buttons", total_pages: @vendors.total_pages %>

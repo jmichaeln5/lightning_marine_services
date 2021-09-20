@@ -8,7 +8,7 @@ class CreateOrders < ActiveRecord::Migration[6.1]
       t.datetime :date_recieved
       t.string :courrier
       t.datetime :date_delivered
-      t.boolean :archived, default: false
+      t.boolean :archived
       t.timestamps
     end
   end

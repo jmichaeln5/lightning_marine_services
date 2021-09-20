@@ -2,24 +2,23 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
-  before_action :set_pagination_params, only: %i[ index ]
+  before_action :set_pagination_params, only: %i[ index show]
   helper_method :sort_option, :sort_direction
 
   def index
     autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
-
     @sorted_vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
     @vendor = Vendor.new
-
     @vendors = BusinessLogicPagination.new(@sorted_vendors, @per_page, @page)
   end
 
   # GET /vendors/1 or /vendors/1.json
   def show
     autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
-    @orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
+    @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+    @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
   end
 
   # GET /vendors/new
@@ -89,5 +88,5 @@ class VendorsController < ApplicationController
       @per_page = 10
       @page = params.fetch(:page, 0).to_i
     end
-    
+
 end

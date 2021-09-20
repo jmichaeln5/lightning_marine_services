@@ -35,11 +35,17 @@
       <th>
         <%= link_to "Courrier", request.params.merge(sort_option: 'courrier', sort_direction: sort_direction ) %>
       </th>
+
+      <th>
+        <%= link_to "Date Delivered", request.params.merge(sort_option: 'date_delivered', sort_direction: sort_direction ) %>
+      </th>
+
+
     </tr>
   </thead>
 
   <tbody id="table-body">
-    <% @orders.paginate_index.each do |order| %>
+    <% @orders.paginate.each do |order| %>
       <tr>
           <td class="align-middle ">
 
@@ -97,6 +103,11 @@
           <td class=" align-middle font-light">
             <%= order.courrier %>
           </td>
+
+          <td class=" align-middle font-light">
+            <%=  order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+          </td>
+
       </tr>
 
     <% end %>
