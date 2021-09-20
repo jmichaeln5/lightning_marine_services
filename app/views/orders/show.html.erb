@@ -2,8 +2,13 @@
   Ship: <%= link_to "#{@order.purchaser.name.possessive}", purchaser_path(@order.purchaser)  %> Order
 <% end %>
 
+
+
 <% content_for :subtitle, "Order ID: #{@order.id}" %>
 <%= render 'shared/tab_table_options' %>
+
+
+
 <%= render "shared/new_modal" %>
 
 <div class="card p-2">
