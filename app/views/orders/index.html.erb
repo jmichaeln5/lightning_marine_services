@@ -13,6 +13,10 @@
       </th>
 
       <th>
+        <%= link_to "Dept", request.params.merge(sort_option: 'dept', sort_direction: sort_direction ) %>
+      </th>
+
+      <th>
         <%= link_to "Ship", request.params.merge(sort_option: 'ship_name', sort_direction: sort_direction ) %>
       </th>
 
@@ -45,6 +49,10 @@
         <tr>
             <td class=" align-middle font-light">
               <%= order.id %>
+            </td>
+
+            <td class=" align-middle font-light">
+              <%= order.dept %>
             </td>
 
             <td class=" align-middle font-light">

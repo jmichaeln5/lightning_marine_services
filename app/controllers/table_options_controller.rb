@@ -21,39 +21,27 @@ class TableOptionsController < ApplicationController
 
   # POST /table_options or /table_options.json
   def create
-    @table_option = TableOption.new(table_option_params)
-
-      # if @table_option.save
-      #   format.html { redirect_to @table_option, notice: "Table option was successfully created." }
-      #   format.json { render :show, status: :created, location: @table_option }
-      # else
-      #   format.html { render :new, status: :unprocessable_entity }
-      #   format.json { render json: @table_option.errors, status: :unprocessable_entity }
-      # end
-
-
-      if @table_option.save
-        redirect_to table_option_path(@table_option), notice: "Table Option Created Successfully."
-      else
-        redirect_to request.referrer
-        @table_option.errors.each do |error|
-          flash[:alert] = @table_option.errors.full_messages.map {|message| message}
-        end
+    if @table_option.save
+      redirect_to table_option_path(@table_option), notice: "Table Option Created Successfully."
+    else
+      redirect_to request.referrer
+      @table_option.errors.each do |error|
+        flash[:alert] = @table_option.errors.full_messages.map {|message| message}
       end
-
+    end
   end
 
   # PATCH/PUT /table_options/1 or /table_options/1.json
   def update
-    respond_to do |format|
-      if @table_option.update(table_option_params)
-        format.html { redirect_to @table_option, notice: "Table option was successfully updated." }
-        format.json { render :show, status: :ok, location: @table_option }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @table_option.errors, status: :unprocessable_entity }
+    if @table_option.update(table_option_params)
+      redirect_to request.referrer, notice: "Table options updated successfully. New table options: #{@table_option.option_list}"
+    else
+      redirect_to request.referrer
+      @table_option.errors.each do |error|
+        flash[:alert] = @table_option.errors.full_messages.map {|message| message}
       end
     end
+
   end
 
   # DELETE /table_options/1 or /table_options/1.json
@@ -73,6 +61,9 @@ class TableOptionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def table_option_params
-      params.require(:table_option).permit(:resource_table_type, :option_list, :user_id)
+      # params.require(:table_option).permit(:resource_table_type, :option_list, :user_id)
+
+      params[:table_option][:option_list] ||= []
+      params.require(:table_option).permit(:resource_table_type, :user_id, option_list: [])
     end
 end

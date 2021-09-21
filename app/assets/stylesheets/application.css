@@ -31,6 +31,11 @@ body {
   width: 48px;
 }
 
+.table-option {
+  display: block;
+  background-color: #ff30be
+}
+
 @media (max-width: 768px) {
   .desktop-text {
     display: none;

@@ -232,6 +232,7 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
+    type-humanizer (0.0.9)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     warden (1.2.9)
@@ -284,6 +285,7 @@ DEPENDENCIES
   selenium-webdriver
   spring
   turbolinks (~> 5)
+  type-humanizer
   tzinfo-data
   web-console (>= 4.1.0)
   webdrivers

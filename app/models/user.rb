@@ -9,7 +9,6 @@ class User < ApplicationRecord
 
   has_many :table_options
 
-
   validates :first_name, :last_name, :phone_number, :email, presence: true, length: { minimum: 2, maximum: 30 }
 
   validates :username, :email, uniqueness: true
@@ -42,6 +41,5 @@ class User < ApplicationRecord
   def name
     "#{first_name} #{last_name}"
   end
-
 
 end
