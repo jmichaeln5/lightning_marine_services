@@ -1,0 +1,29 @@
+<!-- Button trigger modal -->
+<div class="btn btn-outline-primary" data-toggle="modal" data-target="#tableOptionsModal">
+  <%= current_controller.titleize%> Table Options
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="tableOptionsModal" tabindex="-1" role="dialog" aria-labelledby="tableOptionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tableOptionsModalLabel"> Table Options </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <% if current_user.table_options.any? && current_user.table_options.where(resource_table_type: controller_name).any? %>
+          <% @table_option = current_user.table_options.where(resource_table_type: controller_name).first %>
+        <% else %>
+          <% @table_option = TableOption.new %>
+        <% end %>
+        <%= render 'table_options/form', table_option: @table_option %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

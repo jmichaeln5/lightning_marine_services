@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Table Options</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Resource table type</th>
+      <th>Option list</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @table_options.each do |table_option| %>
+      <tr>
+        <td><%= table_option.resource_table_type %></td>
+        <td><%= table_option.option_list %></td>
+        <td><%= table_option.user_id %></td>
+        <td><%= link_to 'Show', table_option %></td>
+        <td><%= link_to 'Edit', edit_table_option_path(table_option) %></td>
+        <td><%= link_to 'Destroy', table_option, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Table Option', new_table_option_path %>

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Resource table type:</strong>
+  <%= @table_option.resource_table_type %>
+</p>
+
+<p>
+  <strong>Option list:</strong>
+  <%= @table_option.option_list %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @table_option.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_table_option_path(@table_option) %> |
+<%= link_to 'Back', table_options_path %>

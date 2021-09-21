@@ -1,0 +1,54 @@
+<%= form_with(model: table_option) do |form| %>
+
+  <div class="field">
+    <p class="text-3xl"> <%= current_controller.titleize %> Table Options </p>
+    <%#= form.text_field :resource_table_type,value: current_controller.titleize, disabled: true %>
+    <%= form.hidden_field :resource_table_type, value: current_controller.titleize %>
+
+    <!-- <%= form.label :resource_table_type %> -->
+    <%#= form.select :resource_table_type, [["Orders", 'Orders'], ["Ships", 'Purchasers'], ["Vendors", 'Vendors']] %>
+  </div>
+
+  <div class="field">
+    <%#= form.label :option_list %>
+    <%#= form.text_area :option_list %>
+    <div class="container bg-gray-200 p-2">
+
+      <p class="text-2xl -mb-1 pb-2"> Select which columns you would like displayed on <%= current_controller.titleize %> Table </p>
+
+      <div class="text-xl">
+        <%= form.select :option_list, options_for_select(get_resource(controller_name).column_names), {:include_blank => true}, {:multiple => true, :size => get_resource(controller_name).column_names.size}  %>
+      </div>
+
+      <span class="desktop-text"style="color:gray;">
+        <div>
+            <br>
+            To select multiple columns
+            <br>
+            <strong>Windows:</strong> hold ctrl + click role
+            <br>
+            <strong>Mac:</strong> hold cmd + click role
+            <br>
+        </div>
+      </span>
+
+    </div>
+
+    <br>
+  </div>
+
+  <div class="field">
+    <!-- <%= form.label :user_id %> -->
+    <%#= form.text_field :user_id, value: current_user.id %>
+    <%= form.hidden_field :user_id %>
+  </div>
+
+  <div class="pb-2">
+    <div class="actions btn btn-outline-primary">
+      <%= button_tag(type: 'submit') do %>
+        Save
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

@@ -7,9 +7,16 @@ class User < ApplicationRecord
 
   has_person_name
 
+  has_many :table_options
+
+
   validates :first_name, :last_name, :phone_number, :email, presence: true, length: { minimum: 2, maximum: 30 }
 
   validates :username, :email, uniqueness: true
+
+  # validates_length_of :table_options, maximum: 3
+
+  # validate :validate_amount_of_table_options
 
 
   before_create :set_default_role, if: :new_record?

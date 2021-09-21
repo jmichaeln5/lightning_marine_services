@@ -23,6 +23,13 @@
       <div class="card-body">
 
 
+        <% if show_on_order_ship_purchaser_pages? && ("#{controller_name}##{action_name}" != "orders#show")%>
+        <%= render "table_options/table_options_modal" if main_controllers.include? controller_name %>
+
+
+          <hr>
+        <% end %>
+
       <% if show_on_order_ship_purchaser_pages? && ("#{controller_name}##{action_name}" != "orders#show")%>
         <a href="#" onclick="return false;">
           <span onclick="reverseTable()"> Reverse Table Content </span>
@@ -31,7 +38,8 @@
       <% end %>
 
         Download
-<hr>        <%= link_to "All Orders Page", all_orders_path %>
+      <hr>
+       <%= link_to "All Orders Page", all_orders_path %>
 
       </div>
     </div>
