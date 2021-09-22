@@ -1,0 +1,70 @@
+<%= form_with(model: table_option) do |form| %>
+
+  <div class="field">
+    <p class="text-3xl"> <%= "New" if table_option.nil?%> <%= current_controller.titleize %> Table Options </p>
+    <%= form.hidden_field :resource_table_type, value: controller_name.singularize.titleize %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  </div>
+
+  <div class="field">
+    <div class="container bg-gray-200 p-2">
+      <p class="text-2xl -mb-1 pb-2"> Select which columns you would like displayed. </p>
+
+      <div class="text-xl">
+
+        <% if controller_name == 'orders' %>
+
+              <% order_options_for_select = ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] %>
+
+              <%= form.select :option_list, options_for_select(order_options_for_select), {:include_hidden => false}, {:multiple => true}  %>
+
+        <% elsif controller_name == 'purchasers' %>
+
+              <% purchaser_options_for_select = ["Order ID","id"], ['Dept', 'dept'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] %>
+              <%= form.select :option_list, options_for_select(purchaser_options_for_select), {:include_hidden => false}, {:multiple => true}  %>
+
+          <% elsif controller_name == 'vendors' %>
+
+              <% vendor_options_for_select = ["Order ID","id"], ['Dept', 'dept'], ['Ship', 'ship_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] %>
+              <%= form.select :option_list, options_for_select(vendor_options_for_select), {:include_hidden => false}, {:multiple => true}  %>
+
+        <% end %>
+
+      </div>
+
+      <span class="desktop-text"style="color:gray;">
+        <div>
+            <br>
+            To select multiple columns
+            <br>
+            <strong>Windows:</strong> hold ctrl + click role
+            <br>
+            <strong>Mac:</strong> hold cmd + click role
+            <br>
+            <br>
+        </div>
+      </span>
+
+      <!-- <%# if @table_option != nil%>
+        <div class="text-xl">
+          Current <%#= current_controller.titleize %> Table Options:
+          <br>
+          <p class="text-base font-bold">
+            <%#= @table_option.option_list%>
+          </p>
+        </div>
+      <%# end %> -->
+    </div>
+
+    <br>
+  </div>
+
+  <div class="pb-2">
+    <div class="actions btn btn-outline-primary">
+      <%= button_tag(type: 'submit') do %>
+        Save
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

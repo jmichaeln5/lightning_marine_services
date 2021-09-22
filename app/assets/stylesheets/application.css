@@ -20,8 +20,6 @@ body {
 	/* font-weight: 350; */
 }
 
-
-
 .scrollToTop {
   background-color: black;
   border: none;
@@ -31,4 +29,20 @@ body {
   font-size: 16px;
   line-height: 48px;
   width: 48px;
+}
+
+.table-option {
+  display: block;
+  background-color: #ff30be
+}
+
+@media (max-width: 768px) {
+  .desktop-text {
+    display: none;
+  }
+}
+@media (min-width: 992px) {
+  .desktop-text {
+    display: block;
+  }
 }

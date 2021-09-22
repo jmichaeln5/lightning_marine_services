@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   resources :vendors
   resources :orders
 
+  resources :table_options
+
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
   # get '/archived_orders', to: 'orders#archived_index', as: 'archieved_orders'

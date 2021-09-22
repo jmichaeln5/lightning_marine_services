@@ -7,12 +7,16 @@ class User < ApplicationRecord
 
   has_person_name
 
+  has_many :table_options
+
   validates :first_name, :last_name, :phone_number, :email, presence: true, length: { minimum: 2, maximum: 30 }
 
   validates :username, :email, uniqueness: true
 
-
+  # before_create :set_default_table_options, if: :new_record?
   before_create :set_default_role, if: :new_record?
+
+  private
 
   def set_default_role
     if self.roles.any? == false
@@ -35,6 +39,5 @@ class User < ApplicationRecord
   def name
     "#{first_name} #{last_name}"
   end
-
 
 end

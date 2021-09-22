@@ -22,8 +22,17 @@
     <div id="collapseOptions" class="collapse" aria-labelledby="tableOptions" data-parent="#aboveTableAccordionOptions">
       <div class="card-body">
 
+      <% if main_controllers.include? controller_name %>
+        <% if index_action_purchaser_and_vendor? != true %>
+            <div class="p-3">
+              <%= render "table_options/table_options_modal" %>
+            </div>
+            <div class=" text-gray-500 text-sm"> (Select what columns are displayed on Table)</div>
+            <hr>
+        <% end %>
+      <% end %>
 
-      <% if show_on_order_ship_purchaser_pages? && ("#{controller_name}##{action_name}" != "orders#show")%>
+      <% if show_on_order_ship_purchaser_pages? && ("#{controller_name}##{action_name}" != "orders#show") %>
         <a href="#" onclick="return false;">
           <span onclick="reverseTable()"> Reverse Table Content </span>
         </a>
@@ -31,7 +40,8 @@
       <% end %>
 
         Download
-<hr>        <%= link_to "All Orders Page", all_orders_path %>
+      <hr>
+       <%= link_to "All Orders Page", all_orders_path %>
 
       </div>
     </div>

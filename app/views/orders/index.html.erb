@@ -1,4 +1,4 @@
-<% content_for :title, "#{Order.all.count} Orders" %>
+<% content_for :title, "#{Order.unarchived.count} Orders" %>
 
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
@@ -8,34 +8,18 @@
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-      <th>
-        <%= link_to "Order ID", request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>
-      </th>
-
-      <th>
-        <%= link_to "Ship", request.params.merge(sort_option: 'ship_name', sort_direction: sort_direction ) %>
-      </th>
-
-      <th>
-        <%= link_to "Vendor", request.params.merge(sort_option: 'vendor_name', sort_direction: sort_direction ) %>
-      </th>
-
-      <th>
-        PO #
-      </th>
-
-      <th>
-        <%= link_to "Date Recieved", request.params.merge(sort_option: 'date_recieved', sort_direction: sort_direction ) %>
-      </th>
-
-      <th>
-        Order Content
-      </th>
-
-      <th>
-        <%= link_to "Courrier", request.params.merge(sort_option: 'courrier', sort_direction: sort_direction ) %>
-      </th>
-    </tr>
+      <!-- Creating th's with BusinessLogicTableOption defined in app/models/business_logic_table_option.rb -->
+      <% @initialize_table_options.selected_table_options.each do |option| %>
+            <% if ((option[1]) == 'po_number') || ((option[1]) == 'order_content' )%>
+                <th>
+                  <%= "#{option[0]}"%>
+                </th>
+            <% else %>
+                <th>
+                  <%= link_to "#{option[0]}", request.params.merge(sort_option: "#{option[1]}", sort_direction: sort_direction ) %>
+                </th>
+            <% end %>
+      <% end %>
   </thead>
 
   <tbody id="table-body">
@@ -43,51 +27,53 @@
     <% @orders.paginate.each do |order| %>
       <% if order.archived == false %>
         <tr>
-            <td class=" align-middle font-light">
-              <%= order.id %>
-            </td>
+          <% @initialize_table_options.selected_table_options.each do |option| %>
+              <td>
+                <% if (option[1]) == 'id' %>
+                  <%= link_to "#{order.id}", order_path(order) %>
 
-            <td class=" align-middle font-light">
-              <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
-            </td>
+                <% elsif (option[1]) == 'ship_name' %>
+                  <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
 
-            <td class=" align-middle font-light">
-              <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
-            </td>
+                <% elsif (option[1]) == 'vendor_name' %>
+                  <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
 
-            <td class=" align-middle font-light">
-              <%= order.po_number ||= "n/a" %>
-            </td>
+                <% elsif (option[1]) == 'date_recieved' %>
+                  <%= order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
 
-            <td class=" align-middle font-light">
-              <%=  order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
-            </td>
+                <% elsif (option[1]) == 'order_content' %>
 
-            <td class=" align-middle font-light">
-              <% if order.order_content.present? %>
+                    <% if order.order_content.present? %>
 
-                <%= link_to(order_path(order)) do %>
+                      <%= link_to(order_path(order)) do %>
 
-                  Boxes: <%= order.order_content.box ||= "n/a" %>
-                  <br>
-                  Crates: <%= order.order_content.crate ||= "n/a" %>
-                  <br>
-                  Pallets: <%= order.order_content.pallet ||= "n/a" %>
-                  <br>
+                        Boxes: <%= order.order_content.box ||= "n/a" %>
+                        <br>
+                        Crates: <%= order.order_content.crate ||= "n/a" %>
+                        <br>
+                        Pallets: <%= order.order_content.pallet ||= "n/a" %>
+                        <br>
 
-                  <% if is_nil_and_zero(order.order_content.other) == false %>
-                     <%= "Other: #{order.order_content.other}" %>
-                     <br>
-                     <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
-                  <% end %>
+                        <% if is_nil_and_zero(order.order_content.other) == false %>
+                           <%= "Other: #{order.order_content.other}" %>
+                           <br>
+                           <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
+                        <% end %>
 
+                      <% end %>
+                    <% end %>
+
+                <% elsif (option[1]) == 'date_delivered' %>
+                  <%= order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+
+                <% else %>
+                  <%= order.send(option[1]) %>
                 <% end %>
-              <% end %>
-            </td>
 
-            <td class=" align-middle font-light">
-              <%= order.courrier %>
-            </td>
+              </td>
+          <% end %>
+
+
         </tr>
       <% end %>
     <% end %>

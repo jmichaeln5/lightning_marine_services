@@ -17,6 +17,7 @@
     <thead>
       <tr>
         <th> Order ID </th>
+        <th> Dept </th>
         <th> Vendor </th>
         <th> PO# </th>
         <th> Date Recieved </th>
@@ -33,6 +34,10 @@
         <tr class="">
             <td class="pb-4 px-2">
               <%= @order.id %>
+            </td>
+
+            <td class="pb-4 px-2">
+              <%= @order.dept ||= "n/a" %>
             </td>
 
             <td class="pb-4 px-2">

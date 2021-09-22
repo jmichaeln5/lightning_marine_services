@@ -41,9 +41,7 @@ module ApplicationHelper
   end
 
   def get_resource(controller_name)
-    if (show_on_order_ship_purchaser_pages? == true)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"
-    end
   end
 
   # Used in app/views/layouts/_edit_toggle.html.erb to get Model Instance on #show action (reason for instansiatied class to be found by params[:id] )
@@ -62,7 +60,7 @@ module ApplicationHelper
   # end
 
   def main_controllers
-    main_controllers = ["orders", "purchasers", "vendors"]
+    main_controllers = ["orders", "purchasers", "vendors", "table_options"]
   end
 
 end
