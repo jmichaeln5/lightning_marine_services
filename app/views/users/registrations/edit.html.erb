@@ -7,11 +7,16 @@
   <%= render "users/shared/error_messages", resource: resource %>
 
   <div class="field font-bold">
-    full name
+    First name
     <br />
-      <%= f.text_field :name, autofocus: true, class:"bg-gray-200" %>
+      <%= f.text_field :first_name, autofocus: true, class:"bg-gray-200" %>
   </div>
 
+  <div class="field font-bold">
+    Last name
+    <br />
+      <%= f.text_field :last_name, autofocus: true, class:"bg-gray-200" %>
+  </div>
   <div class="field font-bold">
     phone number
     <br />

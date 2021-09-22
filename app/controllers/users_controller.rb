@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_admin
+  before_action :authenticate_admin, only: %i[ index ]
   # GET /users or /users.json
   def index
+
     @users = User.all.order("created_at ASC")
     users = User.all.order("created_at ASC")
 
