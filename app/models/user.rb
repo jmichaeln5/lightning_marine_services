@@ -13,12 +13,10 @@ class User < ApplicationRecord
 
   validates :username, :email, uniqueness: true
 
-  # validates_length_of :table_options, maximum: 3
-
-  # validate :validate_amount_of_table_options
-
-
+  # before_create :set_default_table_options, if: :new_record?
   before_create :set_default_role, if: :new_record?
+
+  private
 
   def set_default_role
     if self.roles.any? == false

@@ -1,6 +1,6 @@
 <!-- Button trigger modal -->
 <div class="btn btn-outline-primary" data-toggle="modal" data-target="#tableOptionsModal">
-  <%= current_controller.titleize%> Table Options
+  Table Options: <%= current_controller.titleize%>
 </div>
 
 <!-- Modal -->
@@ -8,7 +8,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="tableOptionsModalLabel"> Table Options </h5>
+        <h5 class="modal-title" id="tableOptionsModalLabel">
+          <!-- <%= link_to 'Table Options', table_options_path%>  -->
+          Table Options
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -19,6 +22,7 @@
         <% else %>
           <% @table_option = TableOption.new %>
         <% end %>
+
         <%= render 'table_options/form', table_option: @table_option %>
       </div>
       <div class="modal-footer">

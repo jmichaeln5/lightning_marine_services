@@ -3,18 +3,17 @@ class TableOption < ApplicationRecord
 
   belongs_to :user
 
-  validate :validate_amount_of_table_options_for_user
-  validate :validate_uniq_resource_for_table_option, on: :create
+  before_save :validate_amount_of_table_options_for_user
+  before_create :validate_uniq_resource_for_table_option
 
   private
 
-
-
   def validate_amount_of_table_options_for_user
-     if self.user.table_options.size > 3
+    if ((self.user.table_options.present?) && (self.user.table_options.size > 3))
       self.errors.add(:base, "You can only have 3 Settings for 3 Tables: Orders, Ships, and Vendors")
       throw(:abort)
     end
+
   end
 
   def validate_uniq_resource_for_table_option

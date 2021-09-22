@@ -8,40 +8,19 @@
 <%= render 'shared/top_table_header', resource: @orders %>
 
 
-<h1>
-  <%# @table_options = current_user.table_options.where(resource_table_type: controller_name.singularize.titleize).first %>
-
-
-  <%# table_options_arr = ActiveSupport::JSON.decode(@table_options.option_list) %>
-
-  <%#= table_options_arr[0] %>
-
-  <%#= sanitize_json_str(@table_options.option_list) %>
-
-
-  <%#= @initialize_table_options.sanatize_user_table_options %>
-
-  selected_table_options:
-  <br>
-
-  <%= @initialize_table_options.selected_table_options %>
-
-
-</h1>
-
-
-
-
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-      <!-- Works to hide -->
-      <!-- <th class="<%#= class_names(hidden: current_controller == 'orders' ) %>"> -->
-
       <% @initialize_table_options.selected_table_options.each do |option| %>
-          <th>
-            <%= link_to "#{option[0]}", request.params.merge(sort_option: "#{option[1]}", sort_direction: sort_direction ) %>
-          </th>
+            <% if ((option[1]) == 'po_number') || ((option[1]) == 'order_content' )%>
+                <th>
+                  <%= "#{option[0]}"%>
+                </th>
+            <% else %>
+                <th>
+                  <%= link_to "#{option[0]}", request.params.merge(sort_option: "#{option[1]}", sort_direction: sort_direction ) %>
+                </th>
+            <% end %>
       <% end %>
 
       <!-- <th>
@@ -90,12 +69,51 @@
 
         <% @initialize_table_options.selected_table_options.each do |option| %>
             <td>
-              <% if (option[1]) == 'ship_name' %>
-                <%= order.purchaser.name %>
+
+              <% if (option[1]) == 'id' %>
+
+                <% if (option[1]) == 'id' && ( order.archived? == true ) %>
+                  <span class="text-gray-500">archived</span>
+                  <br>
+                <% end %>
+                <%= link_to "#{order.id}", order_path(order) %>
+
+              <% elsif (option[1]) == 'ship_name' %>
+                <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
+
               <% elsif (option[1]) == 'vendor_name' %>
-                <%= order.vendor.name %>
+                <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
+
+              <% elsif (option[1]) == 'date_recieved' %>
+                <%= order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+
+              <% elsif (option[1]) == 'order_content' %>
+
+                  <% if order.order_content.present? %>
+
+                    <%= link_to(order_path(order)) do %>
+
+                      Boxes: <%= order.order_content.box ||= "n/a" %>
+                      <br>
+                      Crates: <%= order.order_content.crate ||= "n/a" %>
+                      <br>
+                      Pallets: <%= order.order_content.pallet ||= "n/a" %>
+                      <br>
+
+                      <% if is_nil_and_zero(order.order_content.other) == false %>
+                         <%= "Other: #{order.order_content.other}" %>
+                         <br>
+                         <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
+                      <% end %>
+
+                    <% end %>
+                  <% end %>
+
+              <% elsif (option[1]) == 'date_delivered' %>
+                <%= order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+
               <% else %>
-              <%= order.send(option[1]) %>
+                <%= order.send(option[1]) %>
               <% end %>
 
             </td>

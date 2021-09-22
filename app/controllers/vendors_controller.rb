@@ -19,6 +19,7 @@ class VendorsController < ApplicationController
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
+    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
   end
 
   # GET /vendors/new

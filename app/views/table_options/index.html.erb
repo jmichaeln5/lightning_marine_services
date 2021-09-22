@@ -1,4 +1,140 @@
-<p id="notice"><%= notice %></p>
+<% content_for :title, "You have #{current_user.table_options.count} Table Options" %>
+<%= render 'shared/tab_table_options' %>
+
+
+<div class="card">
+
+
+  <br>
+  <p class="text-xl pt-4">
+    Table Options allow you to select what you see on each table.
+
+    <br>
+    <br>
+      Your changes will only effect your individual account so feel free to customize tables how you like.
+
+      <br>
+      <br>
+      You can always change your options by clicking the
+      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOptions" aria-expanded="false" aria-controls="collapseOptions" id="tableOptions">
+               Options
+      </button>
+      button which is available on each main page (Orders, Ships, Vendors).
+  </p>
+
+  <p class="text-xl p-4">
+    The table with the red background has an extra column(date delivered) that may not be useful for you at the moment. does not have a Date Delivered column.
+  </p>
+    <div class="p-2 justify-content-center  ">
+
+            <div class="p-4 bg-red-100" style="'">
+              <div class="p-2 ">
+              <div class="text-xl font-bold ">
+                Before Table Options:
+              </div>
+              <br>
+
+
+              <div class="row justify-content-center">
+                <div class="col-auto">
+
+                <table class="table table-responsive table-striped border-2 border-red-200">
+                  <thead>
+                    <tr>
+                      <th scope="col"> Order</th>
+                      <th scope="col">Vendor</th>
+                      <th scope="col">Date Recieved</th>
+                      <th scope="col">Date Delivered</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Grainger</td>
+                      <td>7/4/21</td>
+                      <td> 7/7/21</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Grainger</td>
+                      <td>7/4/21</td>
+                      <td> 7/6/21</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Good Smoker</td>
+                      <td>7/3/21</td>
+                      <td> 7/8/21</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+             </div>
+
+
+              </div>
+
+            </div>
+
+
+
+
+            <div class="p-4 bg-green-100" style="'">
+              <div class="p-2">
+              <div class="text-xl font-bold">
+                After Table Options:
+              </div>
+              <br>
+              <div class="row justify-content-center">
+                <div class="col-auto">
+
+                <table class="table table-striped  border-2 border-green-200">
+                  <thead>
+                    <tr>
+                      <th scope="col"> Order</th>
+                      <th scope="col">Vendor</th>
+                      <th scope="col">Date Recieved</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Grainger</td>
+                      <td>7/4/21</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Grainger</td>
+                      <td>7/4/21</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Good Smoker</td>
+                      <td>7/6/21</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+             </div>
+
+
+              </div>
+
+            </div>
+
+
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
 
 <h1>Table Options</h1>
 

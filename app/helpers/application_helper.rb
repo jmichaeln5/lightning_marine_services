@@ -60,7 +60,7 @@ module ApplicationHelper
   # end
 
   def main_controllers
-    main_controllers = ["orders", "purchasers", "vendors"]
+    main_controllers = ["orders", "purchasers", "vendors", "table_options"]
   end
 
 end

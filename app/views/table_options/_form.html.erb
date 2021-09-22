@@ -8,24 +8,24 @@
 
   <div class="field">
     <div class="container bg-gray-200 p-2">
-      <p class="text-2xl -mb-1 pb-2"> Select which columns you would like displayed on <%= current_controller.titleize %> Table </p>
+      <p class="text-2xl -mb-1 pb-2"> Select which columns you would like displayed. </p>
 
       <div class="text-xl">
 
         <% if controller_name == 'orders' %>
 
-              <% order_options_for_select = ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['Dept', 'dept'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] %>
+              <% order_options_for_select = ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] %>
 
               <%= form.select :option_list, options_for_select(order_options_for_select), {:include_hidden => false}, {:multiple => true}  %>
 
         <% elsif controller_name == 'purchasers' %>
 
-              <% purchaser_options_for_select = ["Ship ID","id"], ["Ship Name","name"], ["Ship Orders","purchaser_orders"] %>
+              <% purchaser_options_for_select = ["Order ID","id"], ['Dept', 'dept'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] %>
               <%= form.select :option_list, options_for_select(purchaser_options_for_select), {:include_hidden => false}, {:multiple => true}  %>
 
           <% elsif controller_name == 'vendors' %>
 
-              <% vendor_options_for_select = ["Vendor ID","id"], ["Vendor Name","name"], ["Vendor Orders", "vendor_orders"] %>
+              <% vendor_options_for_select = ["Order ID","id"], ['Dept', 'dept'], ['Ship', 'ship_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] %>
               <%= form.select :option_list, options_for_select(vendor_options_for_select), {:include_hidden => false}, {:multiple => true}  %>
 
         <% end %>
@@ -45,13 +45,15 @@
         </div>
       </span>
 
-      <% if table_option != nil%>
+      <!-- <%# if @table_option != nil%>
         <div class="text-xl">
-          Current <%= current_controller.titleize %> Table Options:
+          Current <%#= current_controller.titleize %> Table Options:
           <br>
-          <p class="text-base font-bold"><%= table_option.option_list%></p>
+          <p class="text-base font-bold">
+            <%#= @table_option.option_list%>
+          </p>
         </div>
-      <% end %>
+      <%# end %> -->
     </div>
 
     <br>

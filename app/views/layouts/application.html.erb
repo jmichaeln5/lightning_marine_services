@@ -39,8 +39,8 @@
                     <br>
                     <br>
 
+                    <!-- <h1> <%= link_to "Table Options", table_options_path %></h1> -->
 
-                    <h1> <%= link_to "Table Options", table_options_path %></h1>
                       <!-- Top Header Card Tabs -->
                       <%= render "shared/top_header_card_tabs" %>
                       <!-- Header Card-->
@@ -64,7 +64,7 @@
                             <div class="">
                               <span class="">
                                 <%= yield(:top_right_header_content) %>
-                                  <%= link_to "#{current_user.name  }", dashboard_path, class:"text-gray-500" %>
+                                  <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
                               </span>
                             </div>
                           </div>
