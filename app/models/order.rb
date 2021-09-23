@@ -13,7 +13,7 @@ class Order < ApplicationRecord
   validates :po_number, uniqueness: true
 
   before_save :order_content_exists?
-  # before_save :handle_archive
+  before_save :handle_archive
 
   #  before_save :before_save_methods
 
@@ -50,7 +50,7 @@ class Order < ApplicationRecord
   end
 
   def handle_archive
-    self.archived = true if self.date_delivered.present?
+    self.archived = true if self.date_delivered.present? == true
     self.archived = false if self.date_delivered.present? == false
   end
 

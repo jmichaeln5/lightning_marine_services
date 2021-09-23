@@ -11,13 +11,7 @@ class OrdersController < ApplicationController
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     @orders = BusinessLogicPagination.new(@sorted_orders, @per_page, @page)
-
-    # @table_option = current_user.table_options.where(resource_table_type:'Order').present? ? current_user.table_options.where(resource_table_type:'Order').first : TableOption.new
-
-    # @table_option = TableOption.new
-
     @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
-
   end
 
   def index
@@ -25,11 +19,8 @@ class OrdersController < ApplicationController
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-
-    # @table_option = TableOption.new
     @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
     @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
-
   end
 
   # GET /orders/1 or /orders/1.json

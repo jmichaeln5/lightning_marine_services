@@ -3,7 +3,6 @@
 <% end %>
 
 
-
 <% content_for :subtitle, "Order ID: #{@order.id}" %>
 <%= render 'shared/tab_table_options' %>
 
@@ -33,6 +32,11 @@
 
         <tr class="">
             <td class="pb-4 px-2">
+              <% if @order.archived? == true  %>
+                <span class="text-gray-500">archived</span>
+                <br>
+              <% end %>
+
               <%= @order.id %>
             </td>
 

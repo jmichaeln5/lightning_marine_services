@@ -17,6 +17,7 @@
         </button>
       </div>
       <div class="modal-body">
+        
         <% if current_user.table_options.any? && current_user.table_options.where(resource_table_type: controller_name.singularize.titleize).any? %>
           <% @table_option = current_user.table_options.where(resource_table_type: controller_name.singularize.titleize).first %>
         <% else %>

@@ -18,22 +18,14 @@ module Admin
     end
 
     def update_role
-    # @user = User.where(id: params[:id]).first
-    # submitted_roles = params[:user][:roles].reject!(&:empty?)
-    # @user.add_role
-
       @user = User.where(id: params[:id]).first
-
       @user.roles = [] if @user.roles.any?
       submitted_roles = params[:user][:roles].reject!(&:empty?)
 
       submitted_roles.each do |role|
         new_role = Role.find(role).name
-        # new_role_name = new_role.name
         @user.add_role new_role if ((@user.has_role? new_role) == false)
       end
-
-
     end
 
 

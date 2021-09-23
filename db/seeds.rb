@@ -66,7 +66,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
   puts "*"*20
   puts " "
 
-  (3..5).each do |id|
+  (3..20).each do |id|
       user = User.new(
           id: id,
           first_name: 'User',
