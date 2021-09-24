@@ -28,11 +28,12 @@
     </thead>
   </div>
 
+<h1>   <%= @order.archived  %></h1>
     <tbody>
 
         <tr class="">
             <td class="pb-4 px-2">
-              <% if @order.archived? == true  %>
+              <% if @order.archived  %>
                 <span class="text-gray-500">archived</span>
                 <br>
               <% end %>

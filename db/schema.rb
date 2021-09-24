@@ -56,9 +56,9 @@ ActiveRecord::Schema.define(version: 2021_09_21_002400) do
   end
 
   create_table "orders", force: :cascade do |t|
+    t.string "dept"
     t.bigint "purchaser_id", null: false
     t.bigint "vendor_id", null: false
-    t.string "dept"
     t.string "po_number"
     t.datetime "date_recieved"
     t.string "courrier"

@@ -28,7 +28,7 @@
       <% if order.archived == false %>
         <tr>
           <% @initialize_table_options.selected_table_options.each do |option| %>
-              <td>
+            <td class="align-middle">
                 <% if (option[1]) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>
 

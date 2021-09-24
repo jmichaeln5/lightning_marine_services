@@ -21,7 +21,22 @@ class OrdersController < ApplicationController
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
     @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+
+    respond_to do |format|
+      format.html
+      # Donwnload Orders link in app/views/orders/_export_csv_button.html.erb, if link is clicked will be formatted through here
+      format.csv {
+        send_data @orders.resource.to_csv,
+        filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
+        type: 'text/csv; charset=utf-8'
+      }
+      format.xls {
+        send_data (Order.all).to_csv,
+        filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      }
+    end
   end
+
 
   # GET /orders/1 or /orders/1.json
   def show

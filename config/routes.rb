@@ -24,11 +24,6 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
-  get '/exports', to: 'exports#index', as: 'export_csv'
-  # get '/exports', to: 'exports#index', as: 'export_csv'
-  get '/exports/sample_page', to: 'exports#sample_page', as: 'export_sample_page'
-
-
   resources :users
   resources :purchasers
   resources :vendors
