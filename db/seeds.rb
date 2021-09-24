@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
 def is_nil_and_zero(data)
    data.blank? || data == 0
 end
@@ -38,7 +30,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
       password: '123456',
       password_confirmation: "123456"
   )
-  sample_user.add_role "staff"
+  sample_user.add_role "admin"
   sample_user.skip_confirmation!
   sample_user.save
 
@@ -66,7 +58,10 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
   puts "*"*20
   puts " "
 
-  (3..20).each do |id|
+  all_available_roles = ["admin", "staff", "customer"]
+  limited_roles = ["staff", "customer"]
+
+  (3..30).each do |id|
       user = User.new(
           id: id,
           first_name: 'User',
@@ -77,10 +72,21 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
           password: '123456',
           password_confirmation: "123456"
       )
+
+      if Role.first.users.count > 5
+         assign_roles = all_available_roles
+       else
+         assign_roles = limited_roles
+       end
+
+      user.add_role assign_roles.sample
+
       user.skip_confirmation!
       user.save
       puts "*"*20
       puts "#{user.username} created."
+      puts "*"*20
+      puts "#{user.username} role(s): #{user.roles.map {|r| r.name}}"
       puts "*"*20
       puts "#{user.inspect}"
       puts "*"*20
@@ -88,7 +94,7 @@ if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count
   end
 end
 
-rand(15..30).times do
+rand(10..50).times do
     # purchaser = Purchaser.create(name: Faker::Book.title)
     purchaser = Purchaser.create(name: Faker::Company.unique.name )
     puts " "
@@ -116,7 +122,7 @@ puts " "
 
 
 
-rand(7..15).times do
+rand(7..50).times do
   # vendor = Vendor.create(name: Faker::Book.title)
   vendor = Vendor.create(name: Faker::Company.unique.name )
     puts " "
@@ -143,7 +149,6 @@ puts " "
 puts " "
 
 
-
 if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.count < 5) )
   @order = Order.new
 
@@ -152,7 +157,7 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
   @order.update(params[:order])
   @order.save
 
-  random_order_count = rand(80..150)
+  random_order_count = rand(80..300)
   # random_order_count = rand(5..20)
   (2..random_order_count).each do |id|
   # rand(80..150).times do
@@ -166,11 +171,13 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
       dept:"",
       po_number: "#{Faker::Company.sic_code}",
       courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
-      date_recieved:"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}",
+      date_recieved:"#{Faker::Date.between(from: '2020-01-23', to: '2021-05-25')}",
       archived:  archived_options.sample
     )
 
-    # byebug
+    if order.archived?
+      order.date_delivered = "#{Faker::Date.between(from: '2021-05-25', to: '2021-09-25')}"
+    end
 
     order.build_order_content(
       id: id,
@@ -183,8 +190,6 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
 
     order.save
 
-    # byebug
-
     puts " "
     puts "*"*20
     puts "#{order} created."
@@ -193,9 +198,6 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
     puts "#{order.order_content.inspect}"
     puts "*"*20
     puts " "
-
-    # puts "#{order_id}"
-
   end
 
 
@@ -210,6 +212,10 @@ puts "*"*20
 puts "*"*20
 puts " "
 puts "#{Order.all.count} Orders created."
+puts " "
+puts "#{Order.all.unarchived.count} Unarchived Orders created."
+puts " "
+puts "#{Order.all.archived.count} Archived Orders created."
 puts " "
 puts "*"*20
 puts "*"*20
