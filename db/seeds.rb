@@ -157,7 +157,7 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
   @order.update(params[:order])
   @order.save
 
-  random_order_count = rand(80..300)
+  random_order_count = rand(300..1500)
   # random_order_count = rand(5..20)
   (2..random_order_count).each do |id|
   # rand(80..150).times do
@@ -168,12 +168,15 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
       id: id,
       purchaser_id: "#{Purchaser.all.ids.sample}",
       vendor_id: "#{Vendor.all.ids.sample}",
-      dept:"",
       po_number: "#{Faker::Company.sic_code}",
       courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
       date_recieved:"#{Faker::Date.between(from: '2020-01-23', to: '2021-05-25')}",
       archived:  archived_options.sample
     )
+
+    if [true, false].sample == true
+      order.dept = "#{Faker::Job.field}"
+    end
 
     if order.archived?
       order.date_delivered = "#{Faker::Date.between(from: '2021-05-25', to: '2021-09-25')}"

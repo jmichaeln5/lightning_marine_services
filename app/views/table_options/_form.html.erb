@@ -1,11 +1,7 @@
 <%= form_with(model: table_option) do |form| %>
 
   <div class="field">
-    <!-- <h3> <%= table_option.id.nil? %></h3>
-    <h1> <%= table_option.inspect %></h1> -->
-
     <p class="text-3xl"> <%= "New" if table_option.id.nil? %> <%= current_controller.titleize.singularize %> Table Options </p>
-
     <%= form.hidden_field :resource_table_type, value: controller_name.singularize.titleize %>
     <%= form.hidden_field :user_id, value: current_user.id %>
   </div>
