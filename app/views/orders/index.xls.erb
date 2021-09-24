@@ -1,0 +1,41 @@
+<table border="1">
+    <tr>
+      <th scope="col">Order ID</th>
+      <th scope="col">Dept</th>
+      <th scope="col">Ship</th>
+      <th scope="col"> Vendor</th>
+      <th scope="col"> PO Number</th>
+      <th scope="col"> Date Recieved</th>
+      <th scope="col"> Order Content</th>
+      <th scope="col"> Courrier</th>
+      <th scope="col"> Date Delivered</th>
+    </tr>
+  <% Order.all.each do |order|%>
+    <tr>
+      <th scope="row">1</th>
+      <td> <%= order.id %> </td>
+      <td> <%= order.dept %> </td>
+      <td> <%= order.ship.name %> </td>
+      <td> <%= order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %> </td>
+      <td>
+        <% if order.order_content.present? %>
+
+
+            Boxes: <%= order.order_content.box ||= "n/a" %>
+            <br>
+            Crates: <%= order.order_content.crate ||= "n/a" %>
+            <br>
+            Pallets: <%= order.order_content.pallet ||= "n/a" %>
+            <br>
+            Other: <%= order.order_content.other ||= "n/a" %>
+            <br>
+            Description: <%= order.order_content.other_description ||= "n/a" %>
+            <br>
+        <% end %>
+      </td>
+
+      <td> <%= order.courrier %> </td>
+      <td> <%= order.date_delivered %> </td>
+    </tr>
+
+</table>

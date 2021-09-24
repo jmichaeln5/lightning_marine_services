@@ -39,7 +39,9 @@
         <hr>
       <% end %>
 
-        Download
+        <!-- Download -->
+        <%#= render "exports/export_csv_button"%>
+        <%= render "orders/export_csv_button"%>
       <hr>
        <%= link_to "All Orders Page", all_orders_path %>
 
