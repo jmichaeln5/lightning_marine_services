@@ -1,6 +1,5 @@
 module TableOptionsHelper
   def self.order_options_for_select_arr
-    # [ ['Order ID from helper', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ]
     [ ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ]
   end
 

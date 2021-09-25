@@ -39,33 +39,20 @@
         <hr>
       <% end %>
 
-        <!-- Download -->
-        <%#= render "exports/export_csv_button"%>
-        <%= render "orders/export_csv_button"%>
+      <%= link_to "All Orders Page", all_orders_path %>
       <hr>
-       <%= link_to "All Orders Page", all_orders_path %>
+      <!-- Download All Orders-->
+      <%= render "orders/export_csv_button"%>
 
       </div>
     </div>
 
   </div>
 
-
-
   <div class="card">
-
-    <!-- <div class="card-header" id="adminOptions">
-      <h2 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions">
-          Admin Options
-        </button>
-      </h2>
-    </div> -->
-
     <div id="collapseAdminOptions" class="collapse" aria-labelledby="adminOptions" data-parent="#aboveTableAccordionOptions">
       <div class="card-body">
         <%= link_to 'Admin Dashboard', admin_users_path if current_user.has_role? :admin %>
-
       </div>
     </div>
 

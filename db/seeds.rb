@@ -178,7 +178,7 @@ if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.co
       order.dept = "#{Faker::Job.field}"
     end
 
-    if order.archived?
+    if order.archived == true
       order.date_delivered = "#{Faker::Date.between(from: '2021-05-25', to: '2021-09-25')}"
     end
 
