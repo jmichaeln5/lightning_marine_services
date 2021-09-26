@@ -3,15 +3,36 @@ class PurchasersController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_purchaser, only: %i[ show edit update destroy ]
   before_action :set_pagination_params, only: %i[ index show]
+  before_action :set_search_params, only: %i[ index show]
   helper_method :sort_option, :sort_direction
+
+  # # GET /purchasers or /purchasers.json
+###  # BEFORE CURRENT BRANCH
+###  # BEFORE CURRENT BRANCH
+###  # BEFORE CURRENT BRANCH
+  # def index
+    # autoload :PurchasersIndexTableSortLogic, "purchasers/sort_logic/purchasers_index_table_sort_logic.rb"
+    # @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
+    # @purchaser = Purchaser.new
+    # @purchasers = BusinessLogicPagination.new(@sorted_purchasers, @per_page, @page)
+  # end
 
   # # GET /purchasers or /purchasers.json
   def index
     autoload :PurchasersIndexTableSortLogic, "purchasers/sort_logic/purchasers_index_table_sort_logic.rb"
-    @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
+
     @purchaser = Purchaser.new
-    @purchasers = BusinessLogicPagination.new(@sorted_purchasers, @per_page, @page)
+
+    if @query.nil?
+        @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
+        @paginated_purchasers = BusinessLogicPagination.new(@sorted_purchasers, @per_page, @page)
+        @purchasers = @paginated_purchasers.paginate
+    end
   end
+
+
+
+
 
   # GET /purchasers/1 or /purchasers/1.json
   def show
@@ -89,6 +110,19 @@ class PurchasersController < ApplicationController
     def set_pagination_params
       @per_page = 10
       @page = params.fetch(:page, 0).to_i
+      @total_purchaser_count = Purchaser.all.count
+    end
+
+    def set_search_params
+
+      @query = params[:q]
+      @query_purchasers = Purchaser.search(@query) unless @query.nil?
+
+      if @query.nil? == false
+        @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
+        @paginated_purchasers = BusinessLogicPagination.new(@query_purchasers.results, @per_page, @page)
+        @purchasers = @paginated_purchasers.paginate
+      end
     end
 
 end

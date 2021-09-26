@@ -7,7 +7,7 @@
   </div>
 
   <div class="field">
-    <div class="container bg-gray-200 p-2">
+    <div class="container bg-gray-200 p-2 ">
       <p class="text-2xl -mb-1 pb-2"> Select which columns you would like displayed. </p>
 
       <div class="text-xl">
@@ -32,20 +32,29 @@
             <br>
         </div>
       </span>
-
-      <div class="text-xl">
-        Current <%= current_controller.titleize %> Table Options:
+      <hr>
+      <div class="pb-4">
+        <div class="text-xl pt-2">
+          <%= current_controller.titleize %> Table Options:
+        </div>
+        <% if table_option.id.nil? %>
+            <p class="font-bold -mb-1">
+              You have not selected Table Options for <%= current_controller.titleize %>
+            </p>
+            <div class="text-base font-bold text-gray-500">
+              Default Options:
+              <br>
+              <span class="text-gray-500">
+                <%= TableOptionsHelper.default_table_options(controller_name).map {|option| option[0]} %>
+              </span>
+            </div>
+        <% else %>
+            <p class="text-base font-bold">
+              <%= table_option.option_list%>
+            </p>
+        <% end %>
       </div>
 
-      <% if table_option.id.nil? %>
-          <p class="text-base font-bold">
-            No Table Options for <%= current_controller.titleize %>
-          </p>
-      <% else %>
-          <p class="text-base font-bold">
-            <%= table_option.option_list%>
-          </p>
-      <% end %>
     </div>
 
     <br>

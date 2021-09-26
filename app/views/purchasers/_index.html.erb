@@ -8,16 +8,17 @@
   </thead>
 
   <tbody id="table-body">
-    <% purchasers.paginate.each do |purchaser| %>
+    <%# resource_main.paginate.each do |resource| %>
+    <% resource_main.each do |resource| %>
       <tr class="col-3">
         <td class=" align-middle font-light">
-          <%= purchaser.id %>
+          <%= resource.id %>
         </td>
         <td class=" align-middle font-light">
-          <%= link_to "#{purchaser.name}", purchaser %>
+          <%= link_to "#{resource.name}", resource %>
         </td>
         <td class=" align-middle font-light">
-         <%= link_to "#{purchaser.orders.count}", purchaser %>
+         <%= link_to "#{resource.orders.count}", resource %>
         </td>
       </tr>
     <% end %>
