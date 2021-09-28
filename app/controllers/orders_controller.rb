@@ -7,20 +7,36 @@ class OrdersController < ApplicationController
 
   def all_orders
     autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
-    @order = Order.new
-    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     @orders = BusinessLogicPagination.new(@sorted_orders, @per_page, @page)
     @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+
+    @order = Order.new
+    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+
   end
 
   def index
-    autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
+    ############ Before
+    # autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
+    # @order = Order.new
+    # @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+    # @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
+    # @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
+    # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+
+    ############ After
+    @orders_main = Order.all.unarchived
+    
+    @sorted_orders = SortResource.new(@orders_main, sort_option, sort_direction)
+
+    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+    @orders = BusinessLogicPagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
+
+
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-    @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+
 
     respond_to do |format|
       format.html

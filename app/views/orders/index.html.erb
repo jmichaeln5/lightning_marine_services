@@ -14,7 +14,7 @@
 <!-- ****************************** -->
 <!-- ****************************** -->
 
-<!-- Refactor 1 (Broken)-->
+<!-- Before  -->
 <%#= render 'shared/top_table_header', resource: @paginated_orders %>
 <%#= render 'index' %>
 <%#= render "shared/pagination/pagination_buttons", total_pages: @paginated_orders.total_pages %>
@@ -24,8 +24,21 @@
 <!-- ****************************** -->
 
 
-<!-- (Refactor 2)  -->
+<!-- After  -->
 <!-- 'shared/top_table_header' Uses Pagination (method: display_humanized_total_pages) -->
 <%= render 'shared/top_table_header', resource: @orders %>
 <%= render 'index' %>
 <%= render "shared/pagination/pagination_buttons", total_pages: @orders.total_pages %>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  -->

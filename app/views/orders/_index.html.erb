@@ -18,7 +18,15 @@
 
   <tbody id="table-body">
 
+    <!-- Before -->
+    <!-- @orders defined in commented out @sorted_orders from auto loaded module : OrdersSortTableLogic -->
+    <%# @orders.paginate.each do |order| %>
+
+    <!-- After -->
+    <!-- @orders defined in commented out @sorted_orders from auto loaded module : OrdersSortTableLogic -->
     <% @orders.paginate.each do |order| %>
+
+
       <% if order.archived == false %>
         <tr>
           <% @initialize_table_options.selected_table_options.each do |option| %>
