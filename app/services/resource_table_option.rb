@@ -1,11 +1,16 @@
 class ResourceTableOption
     attr_accessor :user, :resource_table
 
-    def initialize(user, resource_table, resource_action = nil)
+    def initialize(user, resource_table, resource_action)
       @user = user
       @resource_table = resource_table
-      @resource_action ||= resource_action
+      @resource_action = resource_action
     end
+
+    def controller_name_and_action
+      "#{@resource_table}##{@resource_action}".downcase
+    end
+
 
     def table_option_present?
       if @user.table_options.where(resource_table_type: @resource_table).any?
@@ -27,20 +32,24 @@ class ResourceTableOption
       TableOptionsHelper.order_options_for_select_arr
     end
 
-    def purchaser_table_options
+    def purchaser_table_index_options
       TableOptionsHelper.purchaser_index_options_for_select_arr if @resource_action == 'index'
+    end
+
+    def purchaser_table_show_options
       TableOptionsHelper.purchaser_show_options_for_select_arr if @resource_action == 'show'
     end
 
-    def vendor_table_options
+    def vendor_table_index_options
       TableOptionsHelper.vendor_index_options_for_select_arr if @resource_action == 'index'
+    end
+
+    def vendor_table_show_options
       TableOptionsHelper.vendor_show_options_for_select_arr if @resource_action == 'show'
     end
 
     def default_table_options
-      return order_table_options if @resource_table == 'Order'
-      return purchaser_index_options_for_select_arr if @resource_table == 'Purchaser'
-      return vendor_index_options_for_select_arr if @resource_table == 'Vendor'
+      TableOptionsHelper.default_table_options_for_form(controller_name_and_action)
     end
 
     def get_table_option
