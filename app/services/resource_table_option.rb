@@ -1,4 +1,4 @@
-class ResourceTableOptions
+class ResourceTableOption
     attr_accessor :user, :resource_table
 
     def initialize(user, resource_table, resource_action = nil)
