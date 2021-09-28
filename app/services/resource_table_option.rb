@@ -1,20 +1,20 @@
 class ResourceTableOption
-    attr_accessor :user, :resource_table
+    attr_accessor :user, :resource
 
-    def initialize(user, resource_table, resource_action)
+    def initialize(user, resource, action)
       @user = user
-      @resource_table = resource_table
-      @resource_action = resource_action
+      @resource = resource
+      @action = action
     end
 
     def controller_name_and_action
-      "#{@resource_table}##{@resource_action}".downcase
+      "#{@resource}##{@action}".downcase
     end
 
 
     def table_option_present?
-      if @user.table_options.where(resource_table_type: @resource_table).any?
-        @table_option = @user.table_options.where(resource_table_type: @resource_table).first
+      if @user.table_options.where(resource_table_type: @resource).any?
+        @table_option = @user.table_options.where(resource_table_type: @resource).first
       else
         return false
       end
@@ -33,19 +33,19 @@ class ResourceTableOption
     end
 
     def purchaser_table_index_options
-      TableOptionsHelper.purchaser_index_options_for_select_arr if @resource_action == 'index'
+      TableOptionsHelper.purchaser_index_options_for_select_arr if @action == 'index'
     end
 
     def purchaser_table_show_options
-      TableOptionsHelper.purchaser_show_options_for_select_arr if @resource_action == 'show'
+      TableOptionsHelper.purchaser_show_options_for_select_arr if @action == 'show'
     end
 
     def vendor_table_index_options
-      TableOptionsHelper.vendor_index_options_for_select_arr if @resource_action == 'index'
+      TableOptionsHelper.vendor_index_options_for_select_arr if @action == 'index'
     end
 
     def vendor_table_show_options
-      TableOptionsHelper.vendor_show_options_for_select_arr if @resource_action == 'show'
+      TableOptionsHelper.vendor_show_options_for_select_arr if @action == 'show'
     end
 
     def default_table_options
@@ -53,16 +53,16 @@ class ResourceTableOption
     end
 
     def get_table_option
-      # if @user.table_options.where(resource_table_type: @resource_table).first.option_list.present?
+      # if @user.table_options.where(resource_table_type: @resource).first.option_list.present?
       if table_option_present? && @table_option.option_list.present?
-        ActiveSupport::JSON.decode(@user.table_options.where(resource_table_type: resource_table).first.option_list)
+        ActiveSupport::JSON.decode(@user.table_options.where(resource_table_type: resource).first.option_list)
       else
         return default_table_options
       end
     end
 
     def selected_table_options
-      # if @user.table_options.where(resource_table_type: @resource_table).first.present?
+      # if @user.table_options.where(resource_table_type: @resource).first.present?
       if table_option_present? && @table_option.option_list.present?
           selected_table_options = Array.new
           active_options_arr = get_table_option.to_a
@@ -72,7 +72,7 @@ class ResourceTableOption
           selected_table_options
       else
           return default_table_options
-          # controller_name_and_action = "#{@resource_table}##{@resource_action}".downcase
+          # controller_name_and_action = "#{@resource}##{@action}".downcase
           # return TableOptionsHelper.default_table_options_for_form.send(controller_name_and_action)
 
       end
