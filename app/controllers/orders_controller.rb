@@ -25,15 +25,22 @@ class OrdersController < ApplicationController
     # @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
 
-    ############ After
+    #################################### After (ResourceSort)
     @orders_main = Order.all.unarchived
-    
-    @sorted_orders = SortResource.new(@orders_main, sort_option, sort_direction)
+    @sorted_orders = ResourceSort.new(@orders_main, sort_option, sort_direction)
 
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+
+    #################################### After (ResourceTableOptions)
+    # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+    @initialize_table_options = ResourceTableOptions.new(current_user, 'Order')
+
+
+
+
+
+
+    ####################################
     @orders = BusinessLogicPagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
-
-
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
