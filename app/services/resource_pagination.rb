@@ -1,4 +1,5 @@
-class ResourcePagination
+# class ResourcePagination ############ Before Resource Parent Class
+class ResourcePagination < Resource
 
   attr_accessor :resource, :resources_per_page, :page
 

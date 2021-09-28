@@ -25,15 +25,26 @@ class OrdersController < ApplicationController
     # @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
 
+    ############ Before Resource Parent
+    # @orders_main = Order.all.unarchived
+    # @initialize_table_options = ResourceTableOption.new(current_user, 'Order', 'index')
+    # @sorted_orders = ResourceSort.new(@orders_main, sort_option, sort_direction)
+    # @orders = ResourcePagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
+
+
+    ############ After Resource Parent
+    @resource = Resource.new(current_user, Order)
     @orders_main = Order.all.unarchived
-    @sorted_orders = ResourceSort.new(@orders_main, sort_option, sort_direction)
     @initialize_table_options = ResourceTableOption.new(current_user, 'Order', 'index')
+    @sorted_orders = ResourceSort.new(@orders_main, sort_option, sort_direction)
     @orders = ResourcePagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
+
+    # ResourcePagination.first # Using to throw error to peep Resource from @resource
+
 
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-
 
     respond_to do |format|
       format.html
