@@ -1,4 +1,4 @@
-class SortResource
+class ResourceSort
 
   attr_accessor :resource, :sort_option, :sort_direction
 
