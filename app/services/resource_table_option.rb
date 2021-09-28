@@ -1,4 +1,4 @@
-class ResourceTableOptions
+class ResourceTableOption
     attr_accessor :user, :resource_table
 
     def initialize(user, resource_table, resource_action = nil)
@@ -37,22 +37,11 @@ class ResourceTableOptions
       TableOptionsHelper.vendor_show_options_for_select_arr if @resource_action == 'show'
     end
 
-    # def default_table_options
-    #   TableOptionsHelper.default_table_options(@resource_table, @resource_action)
-    # end
-
-
     def default_table_options
       return order_table_options if @resource_table == 'Order'
       return purchaser_index_options_for_select_arr if @resource_table == 'Purchaser'
       return vendor_index_options_for_select_arr if @resource_table == 'Vendor'
     end
-
-    # def self.default_table_options(controller_name, action_name)
-    #   return order_options_for_select_arr if resource_table == 'orders'
-    #   # Other actions called in BusinessLogicTableOption corresponding method
-    # end
-
 
     def get_table_option
       # if @user.table_options.where(resource_table_type: @resource_table).first.option_list.present?

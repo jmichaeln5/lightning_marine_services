@@ -32,7 +32,7 @@ class OrdersController < ApplicationController
 
     #################################### After (ResourceTableOptions)
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
-    @initialize_table_options = ResourceTableOptions.new(current_user, 'Order')
+    @initialize_table_options = ResourceTableOption.new(current_user, 'Order')
 
 
 
