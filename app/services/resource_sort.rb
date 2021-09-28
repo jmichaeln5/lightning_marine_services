@@ -1,4 +1,5 @@
-class ResourceSort
+# class ResourceSort ############ Before Resource Parent Class
+class ResourceSort < Resource
 
   attr_accessor :resource, :sort_option, :sort_direction
 

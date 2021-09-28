@@ -1,4 +1,5 @@
-class ResourceTableOption
+# class ResourceTableOption ############ Before Resource Parent Class
+class ResourceTableOption < Resource
     attr_accessor :user, :resource
 
     def initialize(user, resource, action)
