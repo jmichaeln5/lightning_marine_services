@@ -41,7 +41,7 @@ class PurchasersController < ApplicationController
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @orders = BusinessLogicPagination.new(@sorted_purchaser_orders, 10, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Purchaser')
+    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Purchaser', 'index')
   end
 
   # GET /purchasers/new

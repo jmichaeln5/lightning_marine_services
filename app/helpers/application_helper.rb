@@ -4,12 +4,8 @@ module ApplicationHelper
      data.blank? || data == 0
   end
 
-  def locale_to
-    @locale_to = "#{controller_name.capitalize}##{action_name}"
-  end
-
-  def current_page
-    current_page = "#{controller_name}##{action_name}"
+  def controller_name_and_action
+      "#{controller_name}##{action_name}"
   end
 
   def current_controller
@@ -17,7 +13,7 @@ module ApplicationHelper
   end
 
   def current_action
-    current_page = "#{action_name}"
+    "#{action_name}"
   end
 
   def show_on_order_ship_purchaser_pages?
@@ -25,7 +21,7 @@ module ApplicationHelper
   end
 
   def show_create_order_on_purchaser_and_vendor?
-    if ((current_page == 'purchasers#show' ) || (current_page == 'vendors#show'))
+    if ((controller_name_and_action == 'purchasers#show' ) || (controller_name_and_action == 'vendors#show'))
       true
     else
       nil
@@ -33,7 +29,7 @@ module ApplicationHelper
   end
 
   def index_action_purchaser_and_vendor?
-    if ((current_page == 'purchasers#index' ) || (current_page == 'vendors#index'))
+    if ((controller_name_and_action == 'purchasers#index' ) || (controller_name_and_action == 'vendors#index'))
       true
     else
       nil

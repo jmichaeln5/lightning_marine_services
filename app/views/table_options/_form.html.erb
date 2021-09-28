@@ -8,59 +8,59 @@
 
   <div class="field">
     <div class="container bg-gray-200 p-2 ">
-      <p class="text-2xl -mb-1 pb-2"> Select which columns you would like displayed. </p>
 
-      <div class="text-xl">
-        <% if controller_name == 'orders' %>
-              <%= form.select :option_list, options_for_select(TableOptionsHelper.order_options_for_select_arr), {:include_hidden => false}, {:multiple => true}  %>
-        <% elsif controller_name == 'purchasers' %>
-              <%= form.select :option_list, options_for_select(TableOptionsHelper.purchaser_options_for_select_arr), {:include_hidden => false}, {:multiple => true}  %>
-          <% elsif controller_name == 'vendors' %>
-              <%= form.select :option_list, options_for_select(TableOptionsHelper.vendor_options_for_select_arr), {:include_hidden => false}, {:multiple => true}  %>
-        <% end %>
-      </div>
+      <div class="p-1">
+        <p class="text-2xl -mb-1 pb-2">
+          Columns to Display:
+        </p>
 
-      <span class="desktop-text"style="color:gray;">
-        <div>
-            <br>
-            To select multiple columns
-            <br>
-            <strong>Windows:</strong> hold ctrl + click role
-            <br>
-            <strong>Mac:</strong> hold cmd + click role
-            <br>
-            <br>
-        </div>
-      </span>
-      <hr>
-      <div class="pb-4">
-        <div class="text-xl pt-2">
-          <%= current_controller.titleize %> Table Options:
-        </div>
-        <% if table_option.id.nil? %>
-            <p class="font-bold -mb-1">
-              You have not selected Table Options for <%= current_controller.titleize %>
-            </p>
-            <div class="text-base font-bold text-gray-500">
-              Default Options:
-              <br>
-              <span class="text-gray-500">
-                <%= TableOptionsHelper.default_table_options(controller_name).map {|option| option[0]} %>
-              </span>
+        <div class="text-xl">
+<%= controller_name_and_action %>
+            <div class="p-2">
+              <%# strfy_options = TableOptionsHelper.default_table_options(controller_name, action_name).to_s %>
+              <%=strfy_options = TableOptionsHelper.default_table_options_for_form(controller_name_and_action).to_s %>
+              <%#= strfy_options = TableOptionsHelper.purchaser_index_options_for_select_arr.to_s %>
+              <%# TableOptionsHelper.default_table_options(controller_name, action_name).each do | option | %>
+              <% TableOptionsHelper.default_table_options_for_form(controller_name_and_action).each do | option | %>
+                    <% if ((@table_option != nil ) && (@table_option.option_list != nil )) && (option[1].to_s.in? @table_option.option_list) %>
+                          <!-- <div class="border-4 border-green-400 mb-4"> -->
+                          <div class="p-1">
+                            <%= check_box_tag "table_option[option_list][]", option[1], {:multiple => true} %>
+                            <%= option[0] %>
+                          </div>
+                    <% else  %>
+                          <!-- <div class="border-4 border-red-400 mb-4"> -->
+                          <div class="p-1">
+                            <%= check_box_tag "table_option[option_list][]", option[1] %>
+                            <%= option[0] %>
+                          </div>
+                    <% end %>
+              <% end %>
             </div>
-        <% else %>
-            <p class="text-base font-bold">
-              <%= table_option.option_list%>
-            </p>
-        <% end %>
+        </div>
+
+      <hr>
+      <div>
+        <p class="text-2xl">
+          Amount of <%= current_controller.titleize %> to display
+        </p>
+        <div class="text-xl">
+          <%= form.select :resources_per_page, options_for_select(TableOptionsHelper.options_for_resources_per_page, @table_option.resources_per_page)  %>
+        </div>
       </div>
 
+      <% if current_user.table_options.where(resource_table_type: controller_name.singularize.titleize).any? %>
+        <div class="">
+        <hr>
+        <%= link_to "Remove #{current_controller.titleize} table options", @table_option, method: :delete, data: { confirm: "Are you sure?" } %>
+        </div>
+      <% end %>
     </div>
 
     <br>
   </div>
 
-  <div class="pb-2">
+  <div class="p-4">
     <div class="actions btn btn-outline-primary">
       <%= button_tag(type: 'submit') do %>
         Save

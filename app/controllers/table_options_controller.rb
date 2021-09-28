@@ -4,7 +4,6 @@ class TableOptionsController < ApplicationController
 
   # GET /table_options or /table_options.json
   def index
-    # @table_options = TableOption.all
     @table_options = current_user.table_options
   end
 
@@ -23,10 +22,11 @@ class TableOptionsController < ApplicationController
 
   # POST /table_options or /table_options.json
   def create
+
     @table_option = TableOption.new table_option_params
 
     if @table_option.save
-      redirect_to request.referrer, notice: "Table Option Created Successfully."
+      redirect_to request.referrer, notice: "Table options created successfully."
     else
       redirect_to request.referrer
       @table_option.errors.each do |error|
@@ -37,9 +37,8 @@ class TableOptionsController < ApplicationController
 
   # PATCH/PUT /table_options/1 or /table_options/1.json
   def update
-    # byebug
     if @table_option.update(table_option_params)
-      redirect_to request.referrer, notice: "Table options updated successfully. New table options: #{@table_option.option_list}"
+      redirect_to request.referrer, notice: "Table options updated successfully."
     else
       redirect_to request.referrer
       @table_option.errors.each do |error|
@@ -52,10 +51,7 @@ class TableOptionsController < ApplicationController
   # DELETE /table_options/1 or /table_options/1.json
   def destroy
     @table_option.destroy
-    respond_to do |format|
-      format.html { redirect_to table_options_url, notice: "Table option was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to request.referrer, notice: "Table options removed. Now displaying default table options"
   end
 
   private
@@ -66,7 +62,9 @@ class TableOptionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def table_option_params
-      params[:table_option][:option_list] ||= []
-      params.require(:table_option).permit(:resource_table_type, :user_id, option_list: [])
+
+      # params[:table_option][:option_list] ||= []
+      # params[:table_option][:option_list]
+      params.require(:table_option).permit(:resource_table_type, :user_id, :resources_per_page, option_list: [])
     end
 end

@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 2021_09_26_220616) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "resources_per_page"
+    t.integer "resources_per_page", default: 10, null: false
     t.index ["user_id"], name: "index_table_options_on_user_id"
   end
 

@@ -27,8 +27,7 @@
             New <%= "#{current_controller.capitalize.singularize}" %>
           </div>
           <hr>
-
-          <% if current_page == 'orders#show' %>
+          <% if controller_name_and_action == 'orders#show' %>
             <% form_path = 'orders/create_order_from_order' %>
           <% else %>
             <% form_path = "#{controller_name}/form".to_s %>
