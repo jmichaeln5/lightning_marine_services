@@ -25,9 +25,26 @@
 
 
 <!-- After  -->
+<h4>
+  <% if (sort_option != nil) && (sort_direction != nil)   %>
+  <!-- @sorted_orders = the next line -->
+    <%= @resource.output_resource( Order, sort_option, sort_direction) %>
+    <br>
+    <p class="text-xl">
+      <%#= @resource.sort_resource( Order, sort_option, sort_direction).unarchived.count %>
+      <%#= @new_paginate_module %>
+    </p>
+  <% end %>
+</h4>
+
 <!-- 'shared/top_table_header' Uses Pagination (method: display_humanized_total_pages) -->
 <%= render 'shared/top_table_header', resource: @orders %>
-<%= render 'index' %>
+
+<%= render 'index',
+  table_options: @table_options.selected_table_options,
+  orders: @resource.sort_resource( Order, sort_option, sort_direction)
+%>
+
 <%= render "shared/pagination/pagination_buttons", total_pages: @orders.total_pages %>
 
 

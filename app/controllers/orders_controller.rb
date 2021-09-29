@@ -28,16 +28,20 @@ class OrdersController < ApplicationController
     ############ Before Resource Parent
     # @orders_main = Order.all.unarchived
     # @initialize_table_options = ResourceTableOption.new(current_user, 'Order', 'index')
-    # @sorted_orders = ResourceSort.new(@orders_main, sort_option, sort_direction)
     # @orders = ResourcePagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
-
 
     ############ After Resource Parent
     @resource = Resource.new(current_user, Order)
+
     @orders_main = Order.all.unarchived
-    @initialize_table_options = ResourceTableOption.new(current_user, 'Order', 'index')
-    @sorted_orders = ResourceSort.new(@orders_main, sort_option, sort_direction)
-    @orders = ResourcePagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
+
+    @table_options = ResourceTableOption.new(current_user, 'Order', 'index')
+    # @orders = ResourcePagination.new(@sorted_orders.parent_class.unarchived, @per_page, @page)
+
+    @sorted_orders = @resource.sort_resource( Order, sort_option, sort_direction)
+    @orders = ResourcePagination.new(@sorted_orders, @per_page, @page)
+
+    # @new_paginate_module = @resource
 
     # ResourcePagination.first # Using to throw error to peep Resource from @resource
 

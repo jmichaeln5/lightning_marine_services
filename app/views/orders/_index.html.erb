@@ -2,8 +2,13 @@
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
+      <!-- BEFORE -->
       <!-- Creating th's with BusinessLogicTableOption defined in app/models/business_logic_table_option.rb -->
-      <% @initialize_table_options.selected_table_options.each do |option| %>
+      <%# @initialize_table_options.selected_table_options.each do |option| %>
+
+
+      <!-- AFTER -->
+      <% table_options.each do |option| %>
             <% if ((option[1]) == 'po_number') || ((option[1]) == 'order_content' )%>
                 <th>
                   <%= "#{option[0]}"%>
@@ -24,12 +29,21 @@
 
     <!-- After -->
     <!-- @orders defined in commented out @sorted_orders from auto loaded module : OrdersSortTableLogic -->
-    <% @orders.paginate.each do |order| %>
+
+    <%# @orders.resource.each do |order| %>
+
+    <% orders.each do |order| %>
 
 
       <% if order.archived == false %>
         <tr>
-          <% @initialize_table_options.selected_table_options.each do |option| %>
+          <!-- BEFORE -->
+          <!-- Creating th's with BusinessLogicTableOption defined in app/models/business_logic_table_option.rb -->
+          <%# @initialize_table_options.selected_table_options.each do |option| %>
+
+          <!-- AFTER -->
+          <% table_options.each do |option| %>
+
               <td>
                 <% if (option[1]) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>
