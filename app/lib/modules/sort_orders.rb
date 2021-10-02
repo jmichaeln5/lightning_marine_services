@@ -38,13 +38,13 @@ module SortOrders
     end
   end
 
-  def output_resource(resource, sort_option = nil, sort_direction = nil)
-    if (sort_option != nil) && (sort_direction != nil)
-      sort_option ||= sort_option
-      sort_direction ||= sort_direction
-      get_resource_class
-      return " Sorting #{sort_option} by: #{sort_direction} "
-    end
-  end
+  # def output_resource(resource, sort_option = nil, sort_direction = nil)
+  #   if (sort_option != nil) && (sort_direction != nil)
+  #     sort_option ||= sort_option
+  #     sort_direction ||= sort_direction
+  #     get_resource_class
+  #     return " Sorting #{sort_option} by: #{sort_direction} "
+  #   end
+  # end
 
 end

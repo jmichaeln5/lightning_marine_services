@@ -1,4 +1,4 @@
-
+<%= paginate @orders %>
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
@@ -32,7 +32,7 @@
 
     <%# @orders.resource.each do |order| %>
 
-    <% orders.each do |order| %>
+    <% @orders.each do |order| %>
 
 
       <% if order.archived == false %>

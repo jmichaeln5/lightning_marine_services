@@ -1,11 +1,12 @@
 # class ResourceTableOption ############ Before Resource Parent Class
 class ResourceTableOption < Resource
-    attr_accessor :user, :resource
+    attr_accessor :user, :resource, :action, :page
 
-    def initialize(user, resource, action)
+    def initialize(user, resource, action, page)
       @user = user
       @resource = resource
       @action = action
+      @page = page
     end
 
     def controller_name_and_action
@@ -13,21 +14,30 @@ class ResourceTableOption < Resource
     end
 
 
-    def table_option_present?
-      if @user.table_options.where(resource_table_type: @resource).any?
-        @table_option = @user.table_options.where(resource_table_type: @resource).first
+    def table_options_present?
+      if @user.table_options.where(resource_table_type: @resource.to_s).any?
+        # @table_options = @user.table_options.where(resource_table_type: @resource).first
+        return true
       else
-        return false
+        return nil
       end
     end
 
+    def table_options
+      @table_options = @user.table_options.where(resource_table_type: @resource.to_s).first if table_options_present?
+    end
+
     def resources_per_page
-      if table_option_present?
-        return @table_option.resources_per_page
+      if table_options_present?
+        return @table_options.resources_per_page
       else
         return 10
       end
     end
+
+    # def total_pages
+    #   # byebug
+    # end
 
     def order_table_options
       TableOptionsHelper.order_options_for_select_arr
@@ -53,30 +63,14 @@ class ResourceTableOption < Resource
       TableOptionsHelper.default_table_options_for_form(controller_name_and_action)
     end
 
-    def get_table_option
+    def return_table_options
       # if @user.table_options.where(resource_table_type: @resource).first.option_list.present?
-      if table_option_present? && @table_option.option_list.present?
-        ActiveSupport::JSON.decode(@user.table_options.where(resource_table_type: resource).first.option_list)
+      if table_options_present? && table_options.option_list.present?
+        ActiveSupport::JSON.decode(table_options.option_list)
       else
         return default_table_options
       end
     end
 
-    def selected_table_options
-      # if @user.table_options.where(resource_table_type: @resource).first.present?
-      if table_option_present? && @table_option.option_list.present?
-          selected_table_options = Array.new
-          active_options_arr = get_table_option.to_a
-
-          order_table_options.map {|o| selected_table_options << o if active_options_arr.include? o[1] }
-
-          selected_table_options
-      else
-          return default_table_options
-          # controller_name_and_action = "#{@resource}##{@action}".downcase
-          # return TableOptionsHelper.default_table_options_for_form.send(controller_name_and_action)
-
-      end
-    end
 
   end
