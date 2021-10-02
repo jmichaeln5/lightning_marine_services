@@ -31,21 +31,21 @@
 
                 <% if user_signed_in? %>
 
-<!-- OUT OF POSITION SEARCH BAR -->
-<!-- OUT OF POSITION SEARCH BAR -->
-<!-- OUT OF POSITION SEARCH BAR -->
-<div class="p-4">
-<div class="">
-<div class="align-center">
-<%= render "shared/search_on_page" %>
-</div>
+                <!-- OUT OF POSITION SEARCH BAR -->
+                <!-- OUT OF POSITION SEARCH BAR -->
+                <!-- OUT OF POSITION SEARCH BAR -->
+                <div class="p-4">
+                <div class="">
+                <div class="align-center">
+                <%= render "shared/search_on_page" %>
+                </div>
 
-</div>
+                </div>
 
-</div>
-<!-- OUT OF POSITION SEARCH BAR -->
-<!-- OUT OF POSITION SEARCH BAR -->
-<!-- OUT OF POSITION SEARCH BAR -->
+                </div>
+                <!-- OUT OF POSITION SEARCH BAR -->
+                <!-- OUT OF POSITION SEARCH BAR -->
+                <!-- OUT OF POSITION SEARCH BAR -->
 
                   <div class=" container pt-4">
 
@@ -119,9 +119,6 @@
                   <%= yield %>
                 </div>
 
-                <% if (@page.present?) && (@total_pages.present?) %>
-                  <%= render "shared/pagination/pagination_buttons" %>
-                <% end %>
 
                 <% if main_controllers.include? controller_name %>
                     <div class="p-2">
