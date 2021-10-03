@@ -16,9 +16,6 @@ class Resource < InitResourceKlass # Instance Methods
   end
 
   # Use Service's Class Methods by appeneding on InitResourceKlass
-  # Use Service's Class Methods by appeneding on InitResourceKlass
-  # Use Service's Class Methods by appeneding on InitResourceKlass
-
   def self.present_sorted_orders
     InitResourceKlass.set_sort_resource.sort_resource
   end
@@ -35,14 +32,17 @@ class Resource < InitResourceKlass # Instance Methods
     InitResourceKlass.set_table_options.return_table_options
   end
 
+
+  # Set ivar methods here
   def self.present_total_pages
-    # byebug
     present_sorted_orders
 
     resource_amount = present_sorted_orders.count
     resources_per_page =  present_table_options.resources_per_page
 
-    return (resource_amount.modulo(resources_per_page) == 0) ? ( (resource_amount / resources_per_page) - 1 ) : (resource_amount / resources_per_page)
+    # return (resource_amount.modulo(resources_per_page) == 0) ? ( (resource_amount / resources_per_page) - 1 ) : (resource_amount / resources_per_page)
+
+    return (resource_amount / resources_per_page)
   end
 
 
@@ -50,15 +50,5 @@ class Resource < InitResourceKlass # Instance Methods
   def self.yeet_bruv
     "Yeetin"
   end
-
-
-  # byebug
-
-
-
-  # @orders = InitResourceKlass.set_sort_resource
-  # @table_options = InitResourceKlass.set_table_options
-
-
 
 end

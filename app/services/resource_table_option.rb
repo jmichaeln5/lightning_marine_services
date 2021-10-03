@@ -16,7 +16,6 @@ class ResourceTableOption < Resource
 
     def table_options_present?
       if @user.table_options.where(resource_table_type: @resource.to_s).any?
-        # @table_options = @user.table_options.where(resource_table_type: @resource).first
         return true
       else
         return nil
@@ -29,7 +28,7 @@ class ResourceTableOption < Resource
 
     def resources_per_page
       if table_options_present?
-        return @table_options.resources_per_page
+        return table_options.resources_per_page
       else
         return 10
       end
@@ -66,7 +65,9 @@ class ResourceTableOption < Resource
     def return_table_options
       # if @user.table_options.where(resource_table_type: @resource).first.option_list.present?
       if table_options_present? && table_options.option_list.present?
-        ActiveSupport::JSON.decode(table_options.option_list)
+        # byebug
+        # ActiveSupport::JSON.decode(table_options.option_list)
+        table_options.option_list_arr
       else
         return default_table_options
       end

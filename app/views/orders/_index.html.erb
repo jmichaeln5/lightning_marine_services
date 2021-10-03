@@ -1,21 +1,14 @@
-<%= paginate @orders %>
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-      <!-- BEFORE -->
-      <!-- Creating th's with BusinessLogicTableOption defined in app/models/business_logic_table_option.rb -->
-      <%# @initialize_table_options.selected_table_options.each do |option| %>
-
-
-      <!-- AFTER -->
-      <% table_options.each do |option| %>
-            <% if ((option[1]) == 'po_number') || ((option[1]) == 'order_content' )%>
+      <% @table_options.return_table_options.each do |option| %>
+            <% if ((option) == 'po_number') || ((option) == 'order_content' )%>
                 <th>
-                  <%= "#{option[0]}"%>
+                  <%= "#{option}"%>
                 </th>
             <% else %>
                 <th>
-                  <%= link_to "#{option[0]}", request.params.merge(sort_option: "#{option[1]}", sort_direction: sort_direction ) %>
+                  <%= link_to "#{option}", request.params.merge(sort_option: "#{option}", sort_direction: sort_direction ) %>
                 </th>
             <% end %>
       <% end %>
@@ -23,37 +16,23 @@
 
   <tbody id="table-body">
 
-    <!-- Before -->
-    <!-- @orders defined in commented out @sorted_orders from auto loaded module : OrdersSortTableLogic -->
-    <%# @orders.paginate.each do |order| %>
-
-    <!-- After -->
-    <!-- @orders defined in commented out @sorted_orders from auto loaded module : OrdersSortTableLogic -->
-
-    <%# @orders.resource.each do |order| %>
-
     <% @orders.each do |order| %>
 
 
       <% if order.archived == false %>
         <tr>
-          <!-- BEFORE -->
-          <!-- Creating th's with BusinessLogicTableOption defined in app/models/business_logic_table_option.rb -->
-          <%# @initialize_table_options.selected_table_options.each do |option| %>
-
-          <!-- AFTER -->
-          <% table_options.each do |option| %>
-
+          <% @table_options.return_table_options.each do |option| %>
+              <%# byebug %>
               <td>
-                <% if (option[1]) == 'id' %>
+                <% if (option) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>
-                <% elsif (option[1]) == 'ship_name' %>
+                <% elsif (option) == 'ship_name' %>
                   <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
-                <% elsif (option[1]) == 'vendor_name' %>
+                <% elsif (option) == 'vendor_name' %>
                   <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
-                <% elsif (option[1]) == 'date_recieved' %>
+                <% elsif (option) == 'date_recieved' %>
                   <%= order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
-                <% elsif (option[1]) == 'order_content' %>
+                <% elsif (option) == 'order_content' %>
                     <% if order.order_content.present? %>
                       <%= link_to(order_path(order)) do %>
 
@@ -71,15 +50,28 @@
                         <% end %>
                       <% end %>
                     <% end %>
-                <% elsif (option[1]) == 'date_delivered' %>
+
+                <% elsif (option) == 'date_delivered' %>
                   <%= order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
                 <% else %>
-                  <%= order.send(option[1]) %>
+
+                  <%#= order.send(option[1]) %>
+                  <% if option.to_s.downcase.include? ("ship" ) %>
+                    <%= order.send("purchaser").name %>
+                  <% elsif option.to_s.downcase.include? ("vendor" )  %>
+                    <%= order.send("vendor").name %>
+                  <% else %>
+                    <!-- Error -->
+                    <%#= order.send(option[1]) %>
+                    <!-- No Error -->
+                    <%= order.send(option) %>
+                  <% end %>
+
+
                 <% end %>
 
               </td>
           <% end %>
-
 
         </tr>
       <% end %>

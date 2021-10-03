@@ -25,7 +25,7 @@ class InitResourceKlass # Defining Class Methods for Resource Klass
   def self.set_table_options
     @init_table_options = ResourceTableOption.new(@user, @parent_class, @parent_action, @page)
     # return @table_options.table_options
-    @table_options = @init_table_options
+    # @table_options = @init_table_options
   end
 
   # def self.test_init_in_resource
