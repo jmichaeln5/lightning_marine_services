@@ -1,0 +1,164 @@
+<!-- Contents of file should change frequently to fufil purpose -->
+<!-- Contents of file should change frequently to fufil purpose -->
+<!-- Contents of file should change frequently to fufil purpose -->
+<!-- Contents of file should change frequently to fufil purpose -->
+
+<% content_for :content_for_modal_button_text do  %>
+    <button type="button" class="btn btn-info btn-lg py-4" data-toggle="modal" data-target="#contentForModal" style="position: fixed; top: 20%; right:0;">
+      (Testing Modal)
+      <br>
+       @resource
+    </button>
+<% end %>
+
+<%# content_for :content_for_modal_link_text do  %>
+  <%#= link_to "(Modal)Testing @resource/Resource", '#', "data-toggle" => "modal", 'data-target' => '#contentForModal', class:'', style:'' %>
+<%# end %>
+
+<% content_for :content_for_modal_title, "@resource/Resource" %>
+<%# content_for :content_for_modal_body do  %>
+<%# end %>
+<% content_for :content_for_modal_body do  %> <!-- BEGIN content_for_modal_body -->
+<!-- BEGIN content_for_modal_body -->
+<!-- BEGIN content_for_modal_body -->
+<!-- BEGIN content_for_modal_body -->
+<!-- **************************** -->
+<!-- **************************** -->
+<!-- **************************** -->
+
+<h1>
+controller_name_and_action: <%= controller_name_and_action%>
+</h1>
+
+<% if (sort_option != nil) && (sort_direction != nil)   %>
+
+<br>
+<br>
+
+      <div class="border-4 border-green-400">
+        <div class="p-2">
+          <p class="font-bold text-3xl">
+            Set from: SetResourceClass(app/services/set_resource_class.rb)
+          </p>
+        </div>
+        <div class="p-4">
+                <div class="row">
+                  <p class="col-xs-4 text-2xl px-4 font-bold ">
+                      @set_sort_resource:
+                  </p>
+
+                  <p class="text-base text-lg">
+                    <%= @set_sort_resource.sortable_orders_ths %>
+                  </p>
+                </div>
+        </div>
+      </div>
+
+
+      <div class="row ">
+        <p class="col-xs-4 text-2xl px-4 font-bold ">
+          Resource Offset:
+        </p>
+
+        <p class="text-base text-lg">
+
+          <%#= @table_options.get_resource_offset %>
+        </p>
+      </div>
+
+      <div class="row ">
+        <p class="col-xs-4 text-2xl px-4 font-bold ">
+              Resource Per Page:
+        </p>
+
+        <p class="text-base text-xl">
+          <%= @table_options.resources_per_page %>
+        </p>
+      </div>
+
+      <div class="row ">
+        <p class="col-xs-4 text-2xl px-4 font-bold ">
+            @get_resource_attrs:
+        </p>
+
+        <p class="text-base text-xl">
+          <%= @get_resource_attrs %>
+        </p>
+      </div>
+
+
+      <div class="row ">
+        <p class="col-xs-4 text-2xl px-4 font-bold ">
+            @set_resource_attrs_klass:
+        </p>
+
+        <p class="text-base text-xl">
+          <%= @set_resource_attrs_klass %>
+        </p>
+      </div>
+
+  <% end %>
+
+
+
+  <br>
+  <br>
+
+  <!-- GET ARGS TO INITALIZE AND SET RESOURCE -->
+  <!-- GET ARGS TO INITALIZE AND SET RESOURCE -->
+  <!-- GET ARGS TO INITALIZE AND SET RESOURCE -->
+  <!-- GET ARGS TO INITALIZE AND SET RESOURCE -->
+  <!-- GET ARGS TO INITALIZE AND SET RESOURCE -->
+  <!-- GET ARGS TO INITALIZE AND SET RESOURCE -->
+  <!-- GET ARGS TO INITALIZE AND SET RESOURCE -->
+
+<% counting_resources = 0%>
+  <%= @orders.each do |o| %>
+  <%#= @sorted_paginated_orders.each do |o| %>
+  <%#= @sorted_paginated_orders.offset(@table_options.resources_per_page * @page).limit(@table_options.resources_per_page).each do |o| %>
+
+
+  <% counting_resources += 1 %>
+
+  <div class="row">
+
+    <p class="col-xs-4  font-bold ">
+      COUNT:   <p class="text-base px-2"><%= counting_resources%> </p>
+    </p>
+
+
+    <p class="col-xs-4  font-bold ">
+      ID:   <p class="text-base px-2"><%= "#{o.id} " %> </p>
+    </p>
+
+    <p class="col-xs-4 font-bold ">
+      SHIP:   <p class="text-base px-2"><%= "#{o.purchaser.name} " %> </p>
+    </p>
+
+
+    <p class="col-xs-4 font-bold ">
+      VENDOR:   <p class="text-base px-2"><%= "#{o.vendor.name} " %> </p>
+    </p>
+
+  </div>
+  <hr>
+  <br>
+
+  <% end %>
+
+
+
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+
+<!-- **************************** -->
+<!-- **************************** -->
+<!-- **************************** -->
+  <!-- END content_for_modal_body -->
+  <!-- END content_for_modal_body -->
+  <!-- END content_for_modal_body -->
+<% end %>  <!-- END content_for_modal_body -->

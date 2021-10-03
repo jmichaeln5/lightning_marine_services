@@ -15,19 +15,23 @@
         </p>
 
         <div class="text-xl">
-            <%= controller_name_and_action %>
             <div class="p-2">
-              <%= strfy_options = TableOptionsHelper.default_table_options_for_form(controller_name_and_action).to_s %>
+              <%# strfy_options = TableOptionsHelper.default_table_options(controller_name, action_name).to_s %>
+              <%=strfy_options = TableOptionsHelper.default_table_options_for_form(controller_name_and_action).to_s %>
+              <%#= strfy_options = TableOptionsHelper.purchaser_index_options_for_select_arr.to_s %>
+              <%# TableOptionsHelper.default_table_options(controller_name, action_name).each do | option | %>
               <% TableOptionsHelper.default_table_options_for_form(controller_name_and_action).each do | option | %>
-              <% if ((@table_option != nil ) && (@table_option.option_list_arr != nil )) && (option.to_s.in? @table_option.option_list_arr) %>
+                    <% if ((@table_option != nil ) && (@table_option.option_list != nil )) && (option[1].to_s.in? @table_option.option_list) %>
+                          <!-- <div class="border-4 border-green-400 mb-4"> -->
                           <div class="p-1">
-                            <%= check_box_tag "table_option[option_list][]", option, {:multiple => true} %>
-                            <%= option %>
+                            <%= check_box_tag "table_option[option_list][]", option[1], {:multiple => true} %>
+                            <%= option[0] %>
                           </div>
                     <% else  %>
+                          <!-- <div class="border-4 border-red-400 mb-4"> -->
                           <div class="p-1">
-                            <%= check_box_tag "table_option[option_list][]", option %>
-                            <%= option %>
+                            <%= check_box_tag "table_option[option_list][]", option[1] %>
+                            <%= option[0] %>
                           </div>
                     <% end %>
               <% end %>
