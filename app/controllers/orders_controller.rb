@@ -50,9 +50,7 @@ class OrdersController < ApplicationController
 
     @resource_orders = Resource.present_sorted_orders
     @sort_resource_klass = Resource.present_sort_resource_class
-    # @table_options = Resource.present_table_options
     @table_options = Resource.present_table_options
-    # @table_options_to_display = Resource.present_table_options_to_display
     @total_pages = Resource.present_total_pages
     @orders = @resource_orders.page(@page)
 

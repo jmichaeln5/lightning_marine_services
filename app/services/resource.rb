@@ -7,7 +7,7 @@ module InitResourceClass
   end
 end
 
-class Resource < InitResourceKlass # Instance Methods
+class Resource < InitResourceKlass # Resource Class acts as Data Object
   extend InitResourceClass
 
   def self.get_resource_struct( options = {} )
@@ -15,7 +15,7 @@ class Resource < InitResourceKlass # Instance Methods
     # byebug
   end
 
-  # Use Service's Class Methods by appeneding on InitResourceKlass
+  ### ********* Call Service Classes Here by appeneding on InitResourceKlass
   def self.present_sorted_orders
     InitResourceKlass.set_sort_resource.sort_resource
   end
@@ -33,7 +33,7 @@ class Resource < InitResourceKlass # Instance Methods
   end
 
 
-  # Set ivar methods here
+  ### ********* Set ivar methods here
   def self.present_total_pages
     present_sorted_orders
 

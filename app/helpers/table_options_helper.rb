@@ -1,5 +1,9 @@
 module TableOptionsHelper
 
+  def self.sortable_ths
+    sortable_ths = ["id", "dept", "ship_name", "vendor_name", "date_recieved", "courrier", "date_delivered"]
+  end
+
   def self.order_options_for_select_arr
     [ ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
   end

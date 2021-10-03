@@ -2,13 +2,13 @@
   <thead>
     <tr>
       <% @table_options.return_table_options.each do |option| %>
-            <% if ((option) == 'po_number') || ((option) == 'order_content' )%>
-                <th>
-                  <%= "#{option}"%>
+            <% if option.in? TableOptionsHelper.sortable_ths  %>
+                <th class="align-middle">
+                  <%= link_to "#{option.titleize}", request.params.merge(sort_option: "#{option}", sort_direction: sort_direction ) %>
                 </th>
             <% else %>
-                <th>
-                  <%= link_to "#{option}", request.params.merge(sort_option: "#{option}", sort_direction: sort_direction ) %>
+                <th class="align-middle">
+                  <%= "#{option.titleize}"%>
                 </th>
             <% end %>
       <% end %>
@@ -18,12 +18,10 @@
 
     <% @orders.each do |order| %>
 
-
       <% if order.archived == false %>
         <tr>
           <% @table_options.return_table_options.each do |option| %>
-              <%# byebug %>
-              <td>
+            <td class=" align-middle font-light">
                 <% if (option) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>
                 <% elsif (option) == 'ship_name' %>

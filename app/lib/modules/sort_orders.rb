@@ -4,15 +4,15 @@ module SortOrders
     super
   end
 
-  def sortable_orders_ths
-    [
-      'id',
-      'dept',
-      'courrier',
-      'date_recieved',
-      'date_delivered'
-    ]
-  end
+  # def sortable_orders_ths
+  #   [
+  #     'id',
+  #     'dept',
+  #     'courrier',
+  #     'date_recieved',
+  #     'date_delivered'
+  #   ]
+  # end
 
   def sort_resource(resource, sort_option = nil, sort_direction = nil)
     if (sort_option != nil) && (sort_direction != nil)
