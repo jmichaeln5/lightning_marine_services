@@ -30,10 +30,6 @@ class PurchasersController < ApplicationController
     end
   end
 
-
-
-
-
   # GET /purchasers/1 or /purchasers/1.json
   def show
     autoload :PurchaserShowTableSortLogic, "purchasers/sort_logic/purchaser_show_table_sort_logic.rb"
