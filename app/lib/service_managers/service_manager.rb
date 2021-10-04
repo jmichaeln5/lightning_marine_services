@@ -13,9 +13,36 @@ module ServiceManager
     @service_manager = Struct.new(*options.keys).new(*options.values)
   end
 
-  ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(resource) # Checks if Resource be sorted
-  ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(resource) # Checks if Resource be sorted
-  ServiceManagerSortResource::WithSortDirection.new.is_satisfied_by?(resource) # Checks if Resource be sorted
+  class Composite
+
+    def initialize(service_managers)
+      @service_managers = { truthy: Array(service_managers), falsy: [] }
+    end
+
+    def is_satisfied_by?(candidate)
+      truthy_check = ->(service_manager) { service_manager.new.is_satisfied_by?(candidate) }
+      falsy_check = ->(service_manager) { !service_manager.new.is_satisfied_by?(candidate) }
+
+      @service_managers[:truthy].all?(&truthy_check) && @service_managers[:falsy].all?(&falsy_check)
+    end
+
+    def and(service_managers)
+      @service_managers[:truthy] = (@service_managers[:truthy] + Array(service_managers)).uniq
+      self
+    end
+
+    def not(service_managers)
+      @service_managers[:falsy] = (@service_managers[:falsy] + Array(service_managers)).uniq
+      self
+    end
+
+  end
+
+
+
+  # ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(resource) # Checks if Resource be sorted
+  # ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(resource) # Checks if Resource be sorted
+  # ServiceManagerSortResource::WithSortDirection.new.is_satisfied_by?(resource) # Checks if Resource be sorted
 
   # def self.yeet_bruv
   #   "Yeetin"

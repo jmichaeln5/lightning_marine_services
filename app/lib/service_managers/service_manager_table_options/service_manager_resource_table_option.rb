@@ -9,5 +9,4 @@ module ServiceManagerResourceTableOption
     end
   end
 
-
 end

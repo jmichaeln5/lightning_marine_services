@@ -66,10 +66,10 @@ class OrdersController < ApplicationController
     ####################################################
     ####################################################
     # byebug ####### ****************************#######
-    init_resource = Resource.init_resource( klass_attrs )
-    @resource = Resource.new_resource_struct ( klass_attrs )
+    # init_resource = Resource.init_resource( klass_attrs ) #
+    @resource = Resource.new_resource_struct ( klass_attrs ) # Resource Data Object
 
-    byebug ####### *********************************
+    # byebug ####### *********************************
     ####################################################
     ####################################################
 
@@ -81,18 +81,22 @@ class OrdersController < ApplicationController
     ####### ************************************ #######
     ####################################################
     # byebug ####### ****************************#######
-    init_service_manager = ServiceManager.init_service_manager( klass_attrs )
+
+    init_service_manager = ServiceManager.init_service_manager( klass_attrs ) # method extended ServiceManagerCore (Sets ivars)
     @service_manager = ServiceManager.new_service_manager_struct ( klass_attrs )
+    # byebug ####### ****************************#######
 
-    # @init_sort_service_struct = ServiceManager::SortService.new_service_manager_struct( klass_attrs )
-    # @init_pagination_service_struct = ServiceManager::ServiceManagerPaginateResource.new_service_manager_struct( klass_attrs )
+    # ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
+    # ServiceManagerResourceSort::WithSortDirection.new.is_satisfied_by?(@resource)
+    # ServiceManagerPaginateResource::WithPagination.new.is_satisfied_by?(@resource)
 
-    ServiceManager::ServiceManagerResourceSort::WithSortDirection.new.is_satisfied_by?(@resource) # => true
+    spec = ServiceManager::Composite.new(
+    ServiceManagerResourceTableOption::ResourceHasTableOption)
+    .and(ServiceManagerResourcePagination::ResourcePagination)
+    .not(ServiceManagerResourceSort::WithSortDirection)
 
-    ### Resources per page:
-    ##  ###  Resource.present_table_options.resources_per_page
-    ##  ###  Get @resource as struct with all neccessary to manage services
-    ServiceManager::ServiceManagerPaginateResource::WithPagination.new.is_satisfied_by?(@resource) # => true
+    spec.is_satisfied_by?(@resource)
+
     # byebug ####### *********************************
     ####################################################
     ####################################################
