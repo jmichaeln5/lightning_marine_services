@@ -1,11 +1,10 @@
 autoload :ServiceManagerCore, "service_managers/service_manager_core.rb"
-autoload :ServiceManagerSortResource, "service_managers/service_manager_sort/service_manager_sort_resource.rb"
-
+# autoload :ServiceManagerSortResource, "service_managers/service_manager_sort/service_manager_sort_resource.rb"
 
 module ServiceManager
   extend ServiceManagerCore # Allowing Use of init_service_manager method to initialize ServiceManager Ivars
 
-  def new_service_manager_struct( options = {} )
+  def self.new_service_manager_struct( options = {} )
     @service_manager = Struct.new(*options.keys).new(*options.values)
   end
 
