@@ -5,6 +5,8 @@ module InitResourceClass
   def get_resource_class_attrs( options={} )
     options.each { |k,v| instance_variable_set("@#{k}", v) }
   end
+
+  # byebug
 end
 
 class Resource < InitResourceKlass # Resource Class acts as Data Object
@@ -32,7 +34,6 @@ class Resource < InitResourceKlass # Resource Class acts as Data Object
     InitResourceKlass.set_table_options.return_table_options
   end
 
-
   ### ********* Set ivar methods here
   def self.present_total_pages
     present_sorted_orders
@@ -45,10 +46,9 @@ class Resource < InitResourceKlass # Resource Class acts as Data Object
     return (resource_amount / resources_per_page)
   end
 
-
-
   def self.yeet_bruv
     "Yeetin"
   end
 
+  # byebug
 end
