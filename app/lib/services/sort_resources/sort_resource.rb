@@ -1,4 +1,4 @@
-class SortResource < Resource
+class SortResource
 
   attr_accessor :resource, :sort_option, :sort_direction, :page
 
@@ -19,7 +19,6 @@ class SortResource < Resource
     ]
   end
 
-  # def sort_resource
   def sort_resource
     if (@sort_option != nil) && (@sort_direction != nil)
         if sortable_orders_ths.include? sort_option

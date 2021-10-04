@@ -13,7 +13,6 @@ class ResourceTableOption < Resource
       "#{@resource}##{@action}".downcase
     end
 
-
     def table_options_present?
       if @user.table_options.where(resource_table_type: @resource.to_s).any?
         return true
@@ -27,11 +26,7 @@ class ResourceTableOption < Resource
     end
 
     def resources_per_page
-      if table_options_present?
-        return table_options.resources_per_page
-      else
-        return 10
-      end
+      table_options.resources_per_page ||= 10
     end
 
     # def total_pages
