@@ -87,7 +87,7 @@ class OrdersController < ApplicationController
     # @init_sort_service_struct = ServiceManager::SortService.new_service_manager_struct( klass_attrs )
     # @init_pagination_service_struct = ServiceManager::ServiceManagerPaginateResource.new_service_manager_struct( klass_attrs )
 
-    ServiceManager::ServiceManagerSortResource::WithSortDirection.new.is_satisfied_by?(@resource) # => true
+    ServiceManager::ServiceManagerResourceSort::WithSortDirection.new.is_satisfied_by?(@resource) # => true
 
     ### Resources per page:
     ##  ###  Resource.present_table_options.resources_per_page
@@ -201,10 +201,6 @@ class OrdersController < ApplicationController
     def set_pagination_params
       @per_page = 10
       @page = params.fetch(:page, 0).to_i
-    end
-
-    def include_resource_class
-
     end
 
 end

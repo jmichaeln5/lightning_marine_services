@@ -7,15 +7,6 @@ module Resource
     @resource = Struct.new(*options.keys).new(*options.values)
   end
 
-    module ResourcePagination
-      extend Resource
-      class WithPagination
-        def is_satisfied_by?(resource)
-            !resource.page.to_s.empty?
-        end
-      end
-    end
-
 end
 
 
