@@ -31,8 +31,8 @@ class OrdersController < ApplicationController
     # @orders = ResourcePagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
 
     ############ After Resource Parent
-    # autoload :InitResource, "resource/init_resource.rb"
     autoload :InitResourceKlass, "resource/init_resource.rb"
+    autoload :ServiceManager, "service_managers/service_manager.rb"
 
      klass_attrs = {
       user: current_user,
@@ -45,7 +45,6 @@ class OrdersController < ApplicationController
 
     init_resource_klass =  InitResourceKlass.set_resource_klass_attrs( klass_attrs ) # Gets attrs needed to init Services
     init_resource_class =  Resource.get_resource_class_attrs( klass_attrs ) #init Services' ivar methods from InitResourceKlass in Resource Class
-
     @resource = Resource.get_resource_struct( klass_attrs ) # Gets struct to call Service instance methods
 
     @resource_orders = Resource.present_sorted_orders
@@ -53,6 +52,21 @@ class OrdersController < ApplicationController
     @table_options = Resource.present_table_options
     @total_pages = Resource.present_total_pages
     @orders = @resource_orders.page(@page)
+
+    ############ **************************************
+    # byebug ####### *********************************
+    init_service_manager = ServiceManager.init_service_manager( klass_attrs )
+    # @init_sort_service_struct = ServiceManager::SortService.new_service_manager_struct( klass_attrs )
+    # @init_pagination_service_struct = ServiceManager::ServiceManagerPaginateResource.new_service_manager_struct( klass_attrs )
+
+    ServiceManager::ServiceManagerSortResource::WithSortDirection.new.is_satisfied_by?(@resource) # => true
+
+    ### Resources per page:
+    ##  ###  Resource.present_table_options.resources_per_page
+    ##  ###  Get @resource as struct with all neccessary to manage services
+    ServiceManager::ServiceManagerPaginateResource::WithPagination.new.is_satisfied_by?(@resource) # => true
+    # byebug ####### *********************************
+    ############ **************************************
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new

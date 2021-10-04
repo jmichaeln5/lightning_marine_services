@@ -8,6 +8,8 @@ module InitResource ### *** Allows hash params to be used as instance variables 
   def self.say_yo
     "heyyyyoooo"
   end
+
+  # byebug
 end
 
 class InitResourceKlass # Defining Class Methods for Resource Klass
@@ -23,19 +25,14 @@ class InitResourceKlass # Defining Class Methods for Resource Klass
   end
 
   def self.set_table_options
-    @init_table_options = ResourceTableOption.new(@user, @parent_class, @parent_action, @page)
+    return @init_table_options = ResourceTableOption.new(@user, @parent_class, @parent_action, @page)
     # return @table_options.table_options
     # @table_options = @init_table_options
   end
-
-  # def self.test_init_in_resource
-  #
-  # end
 
   def self.my_dood
     "Ayooooo"
   end
 
   # byebug
-
 end
