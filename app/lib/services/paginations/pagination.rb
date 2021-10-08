@@ -1,6 +1,4 @@
 module Pagination
-
-  # class PaginationKlass < IndepentTableOption::TableOptionKlass
   class PaginationKlass
     attr_accessor :resource, :per_page, :page
 
