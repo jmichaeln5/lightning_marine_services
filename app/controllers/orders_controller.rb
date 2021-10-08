@@ -32,70 +32,61 @@ class OrdersController < ApplicationController
 
     ############ After Resource Parent
     # autoload :InitResourceKlass, "resources/init_resource.rb"
+    # autoload :InitResource, "resources/init_resource.rb"
+
+    ####################################################
     autoload :Resource, "resources/resource.rb"
+    ####################################################
     autoload :ServiceManager, "service_managers/service_manager.rb"
+    ####################################################
+    autoload :ResourceManagerTableOption, "resources/resource_managers/resource_manager_table_options/resource_manager_table_option.rb"
+    ####################################################
+    autoload :ResourceManagerPagination, "resources/resource_managers/resource_manager_paginations/resource_manager_pagination.rb"
+    ####################################################
+    autoload :ResourceManagerSort, "resources/resource_managers/resource_manager_sorts/resource_manager_sort.rb"
+    ####################################################
+
 
      klass_attrs = {
       user: current_user,
+      target: Order.all,
       parent_class: Order,
       parent_action: 'index',
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
     }
-    ####################################################
-    ####### ************************************ #######
-    ####### ******  RESOURCE DATA OBJECT  ****** #######
-    ####### ************************************ #######
-    ####################################################
-    # byebug ####### ****************************#######
 
-    # init_resource_klass =  InitResourceKlass.set_resource_klass_attrs( klass_attrs ) # Gets attrs needed to init Services
-    # init_resource_class =  Resource.get_resource_class_attrs( klass_attrs ) #init Services' ivar methods from InitResourceKlass in Resource Class
-    # @resource = Resource.get_resource_struct( klass_attrs ) # Gets struct to call Service instance methods
-    #
-    # @resource_orders = Resource.present_sorted_orders
-    # @sort_resource_klass = Resource.present_sort_resource_class
-    # @table_options = Resource.present_table_options
-    # @total_pages = Resource.present_total_pages
-    # @orders = @resource_orders.page(@page)
-
-    ####################################################
-    ####################################################
-    ####################################################
-    ####################################################
-    ####################################################
-    # byebug ####### ****************************#######
-    # init_resource = Resource.init_resource( klass_attrs ) #
     @resource = Resource.new_resource_struct ( klass_attrs ) # Resource Data Object
 
-    # byebug ####### *********************************
-    ####################################################
-    ####################################################
+    init_service_manager = ServiceManager.init_service_manager( klass_attrs ) # method extended from ServiceManagerCore (Sets ivars)
 
+    ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
 
+    ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
 
-    ####################################################
-    ####### ************************************ #######
-    ####### ******  SERVICE MANAGER   ********** #######
-    ####### ************************************ #######
-    ####################################################
-    # byebug ####### ****************************#######
+    ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(@resource)
 
-    init_service_manager = ServiceManager.init_service_manager( klass_attrs ) # method extended ServiceManagerCore (Sets ivars)
-    @service_manager = ServiceManager.new_service_manager_struct ( klass_attrs )
-    # byebug ####### ****************************#######
-
-    # ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
-    # ServiceManagerResourceSort::WithSortDirection.new.is_satisfied_by?(@resource)
-    # ServiceManagerPaginateResource::WithPagination.new.is_satisfied_by?(@resource)
-
-    spec = ServiceManager::Composite.new(
-    ServiceManagerResourceTableOption::ResourceHasTableOption)
+    spec =
+    ServiceManager::Composite.new(ServiceManagerResourceTableOption::ResourceHasTableOption)
     .and(ServiceManagerResourcePagination::ResourcePagination)
-    .not(ServiceManagerResourceSort::WithSortDirection)
+    .and(ServiceManagerResourceSort::ResourceSortDirection)
 
     spec.is_satisfied_by?(@resource)
+
+    ####################################################
+    ####################################################
+    # byebug ####### ***********************************
+
+    # @orders = Order.all
+
+    @table_option_klass = ResourceManagerTableOption.new_table_option(user = @resource.user, parent_class = @resource.parent_class, action = @resource.parent_action, page = @resource.page)
+
+    @sort_orders_klass = ResourceManagerSort.new_sort(resource = @resource, target = @resource.target, sort_option = @resource.sort_option, sort_direction = @resource.sort_direction)
+
+    @pagination_klass = ResourceManagerPagination.new_pagination(resource = @resource.target, per_page = @table_option_klass.resources_per_page, page = @page)
+
+    @orders = @sort_orders_klass.sort_resource
 
     # byebug ####### *********************************
     ####################################################
@@ -203,7 +194,7 @@ class OrdersController < ApplicationController
     end
 
     def set_pagination_params
-      @per_page = 10
+      # @per_page = 10
       @page = params.fetch(:page, 0).to_i
     end
 

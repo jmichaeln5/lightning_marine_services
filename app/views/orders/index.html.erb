@@ -1,11 +1,9 @@
 <% content_for :title, "#{Order.unarchived.count} Orders" %>
 
-<%#= render 'shared/tab_table_options' %>
+<%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 <br>
 
-
-<%#= @table_options_to_display %>
-<%#= render 'shared/top_table_header', resource: @paginated_purchasers %>
-<%#= paginate @orders %>
+<%= render 'shared/top_table_header', total_pages: @pagination_klass.total_pages %>
 <%= render 'index' %>
+<%#= render "shared/pagination/pagination_buttons" %>

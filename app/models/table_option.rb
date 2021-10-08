@@ -28,7 +28,6 @@ class TableOption < ApplicationRecord
     end
   end
 
-
   def validate_table_option_option_list
     # byebug
 
