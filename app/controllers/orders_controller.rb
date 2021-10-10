@@ -26,8 +26,6 @@ class OrdersController < ApplicationController
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
 
     ############ After
-
-
     ####################################################
     #### ********** For ResourceManager **********
     #### ********** For ResourceManager **********
@@ -35,18 +33,6 @@ class OrdersController < ApplicationController
     #### ********** For ResourceManager **********
     autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
     ####################################################
-
-
-    #  klass_attrs = {
-    #   user: current_user,
-    #   target: Order.all,
-    #   parent_class: Order,
-    #   parent_action: 'index',
-    #   sort_option: sort_option,
-    #   sort_direction: sort_direction,
-    #   page: @page
-    # }
-
 
     klass_attrs = {
      user: User.first,
@@ -57,14 +43,6 @@ class OrdersController < ApplicationController
      sort_direction: sort_direction,
      page: @page
    }
-    # ResourceManager
-
-    # @resource = Resource.new_resource_struct ( klass_attrs ) # Resource Data Object
-
-    # @resource = ResourceManager.new_resource_struct ( klass_attrs ) # Resource Data Object
-
-
-    # @resource = ResourceManager.new_resource_struct ( klass_attrs ) # Resource Data Object
 
     @init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
 
