@@ -25,72 +25,98 @@ class OrdersController < ApplicationController
     # @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
 
-    ############ Before Resource Parent
-    # @orders_main = Order.all.unarchived
-    # @initialize_table_options = ResourceTableOption.new(current_user, 'Order', 'index')
-    # @orders = ResourcePagination.new(@sorted_orders.resource.unarchived, @per_page, @page)
+    ############ After
 
-    ############ After Resource Parent
-    # autoload :InitResourceKlass, "resources/init_resource.rb"
-    # autoload :InitResource, "resources/init_resource.rb"
 
     ####################################################
-    autoload :Resource, "resources/resource.rb"
-    ####################################################
-    autoload :ServiceManager, "service_managers/service_manager.rb"
-    ####################################################
-    autoload :ResourceManagerTableOption, "resources/resource_managers/resource_manager_table_options/resource_manager_table_option.rb"
-    ####################################################
-    autoload :ResourceManagerPagination, "resources/resource_managers/resource_manager_paginations/resource_manager_pagination.rb"
-    ####################################################
-    autoload :ResourceManagerSort, "resources/resource_managers/resource_manager_sorts/resource_manager_sort.rb"
+    #### ********** For ResourceManager **********
+    #### ********** For ResourceManager **********
+    #### ********** For ResourceManager **********
+    #### ********** For ResourceManager **********
+    autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
     ####################################################
 
 
-     klass_attrs = {
-      user: current_user,
-      target: Order.all,
-      parent_class: Order,
-      parent_action: 'index',
-      sort_option: sort_option,
-      sort_direction: sort_direction,
-      page: @page
-    }
+    #  klass_attrs = {
+    #   user: current_user,
+    #   target: Order.all,
+    #   parent_class: Order,
+    #   parent_action: 'index',
+    #   sort_option: sort_option,
+    #   sort_direction: sort_direction,
+    #   page: @page
+    # }
 
-    @resource = Resource.new_resource_struct ( klass_attrs ) # Resource Data Object
 
-    init_service_manager = ServiceManager.init_service_manager( klass_attrs ) # method extended from ServiceManagerCore (Sets ivars)
+    klass_attrs = {
+     user: User.first,
+     target: Order.all,
+     parent_class: Order,
+     parent_action: 'index',
+     sort_option: sort_option,
+     sort_direction: sort_direction,
+     page: @page
+   }
+    # ResourceManager
 
-    ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
+    # @resource = Resource.new_resource_struct ( klass_attrs ) # Resource Data Object
 
-    ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+    # @resource = ResourceManager.new_resource_struct ( klass_attrs ) # Resource Data Object
 
-    ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(@resource)
 
-    spec =
-    ServiceManager::Composite.new(ServiceManagerResourceTableOption::ResourceHasTableOption)
-    .and(ServiceManagerResourcePagination::ResourcePagination)
-    .and(ServiceManagerResourceSort::ResourceSortDirection)
+    # @resource = ResourceManager.new_resource_struct ( klass_attrs ) # Resource Data Object
 
-    spec.is_satisfied_by?(@resource)
+    @init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
 
-    ####################################################
-    ####################################################
-    # byebug ####### ***********************************
+    ResourceManager::ResourceKlass.my_dood
+    ResourceManager::ResourceKlass.done
+
+    puts "End of ResourceManager"
+
+    @table_option_klass = ResourceManager::ResourceKlass.table_option_klass
+    @sort_orders_klass = ResourceManager::ResourceKlass.sort_orders_klass
+    @pagination_klass = ResourceManager::ResourceKlass.pagination_klass
 
     # @orders = Order.all
-
-    @table_option_klass = ResourceManagerTableOption.new_table_option(user = @resource.user, parent_class = @resource.parent_class, action = @resource.parent_action, page = @resource.page)
-
-    @sort_orders_klass = ResourceManagerSort.new_sort(resource = @resource, target = @resource.target, sort_option = @resource.sort_option, sort_direction = @resource.sort_direction)
-
-    @pagination_klass = ResourceManagerPagination.new_pagination(resource = @resource.target, per_page = @table_option_klass.resources_per_page, page = @page)
-
     @orders = @sort_orders_klass.sort_resource
 
+    # byebug
+
+    # init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
+
+    # @table_option_klass = ResourceManager::ResourceKlass.set_table_options(user = @resource.user, parent_class = @resource.parent_class, action = @resource.parent_action, page = @resource.page)
+
+    # byebug
+
+    # init_service_manager = ServiceManager.init_service_manager( klass_attrs ) # method extended from ServiceManagerCore (Sets ivars)
+    # ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+    #
+    # ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(@resource)
+    #
+    # spec =
+    # ServiceManager::Composite.new(ServiceManagerResourceTableOption::ResourceHasTableOption)
+    # .and(ServiceManagerResourcePagination::ResourcePagination)
+    # .and(ServiceManagerResourceSort::ResourceSortDirection)
+    #
+    # spec.is_satisfied_by?(@resource)
+    #
+    # ####################################################
+    # ####################################################
+    # # byebug ####### ***********************************
+    #
+    # @orders = Order.all
+
+    # @table_option_klass = ResourceManager::ResourceKlass.table_option_klass
+    #
+    # @sort_orders_klass = ResourceManager::ResourceKlass.sort_orders_klass
+    #
+    # @pagination_klass = ResourceManager::ResourceKlass.pagination_klass
+    #
+    # @orders = @sort_orders_klass.sort_resource
+    #
     # byebug ####### *********************************
-    ####################################################
-    ####################################################
+    # ####################################################
+    # ####################################################
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
