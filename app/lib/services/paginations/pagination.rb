@@ -1,24 +1,24 @@
 module Pagination
   class PaginationKlass
-    attr_accessor :resource, :per_page, :page
+    attr_accessor :resource, :resources_per_page, :page
 
-    def initialize(resource, per_page, page)
+    def initialize(resource, resources_per_page, page)
       @resource = resource
-      @per_page = per_page
+      @resources_per_page = resources_per_page
       @page = page
     end
 
     def paginated_offset
-      (@per_page * @page).to_i
+      (@resources_per_page * @page).to_i
     end
 
     def paginate
-      @resource.offset(paginated_offset).limit(@per_page)
+      @resource.offset(paginated_offset).limit(@resources_per_page)
     end
 
     def total_pages
       resource_amount = @resource.ids.count
-      page_result = (resource_amount.modulo(@per_page) == 0) ? ( (resource_amount / @per_page) - 1 ) : (resource_amount / @per_page)
+      page_result = (resource_amount.modulo(@resources_per_page) == 0) ? ( (resource_amount / @resources_per_page) - 1 ) : (resource_amount / @resources_per_page)
     end
 
     def display_humanized_total_pages

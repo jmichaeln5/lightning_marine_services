@@ -1,8 +1,9 @@
 autoload :ServiceManagerCore, "service_managers/service_manager_core.rb"
+
 autoload :ServiceManagerResourceTableOption, "service_managers/service_manager_table_options/service_manager_resource_table_option.rb"
+
 autoload :ServiceManagerResourcePagination, "service_managers/service_manager_pagination/service_manager_resource_pagination.rb"
 autoload :ServiceManagerResourceSort, "service_managers/service_manager_sort/service_manager_resource_sort.rb"
-
 
 module ServiceManager # Manages state of @resource data object with services
   extend ServiceManagerCore # Allowing Use of init_service_manager method to initialize ServiceManager Ivars
