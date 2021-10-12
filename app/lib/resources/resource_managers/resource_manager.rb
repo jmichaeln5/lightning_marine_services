@@ -14,48 +14,46 @@ module ResourceManager
   extend ResourceManagerSort
 
   def self.init_resource_manager( options={} ) # Set ivars to be used in when called in classes below
-    # byebug
     options.each { |k,v| instance_variable_set("@#{k}", v) }
-    # byebu
-    ResourceKlass.set_resource_struct( options )
-    ResourceKlass.init_resource( options ) # method extended from ResourceCore
-
+    ResourceManagerKlass.set_resource_manager( options )
+    ResourceManagerKlass.init_resource( options ) # method extended from ResourceCore
   end
 
-      class ResourceKlass
+      class ResourceManagerKlass
         extend ResourceCore
         extend ResourceManagerTableOption
         extend ResourceManagerPagination
         extend ResourceManagerSort
         extend ResourceManager
 
-        def self.set_resource_struct( options = {} )
-          @resource_klass = Struct.new(*options.keys).new(*options.values)
+        def self.set_resource_manager( options = {} )
+          @resource_manager ||= Struct.new(*options.keys).new(*options.values)
           init_resource(options)
+          @generic_resource = @resource_manager
         end
 
-        def self.my_dood
-          "Ayooooo"
+        def self.resource_manager_my_dood
+          "resource_manager_my_dood: Ayooooo"
           # byebug
         end
 
-        def self.table_option_klass
-          @table_options = ResourceManagerTableOption.new_table_option(user = @resource_klass.user, parent_class = @resource_klass.parent_class, action = @resource_klass.parent_action, page = @resource_klass.page)
+        def self.set_table_options
+          @table_options = ResourceManagerTableOption.new_table_option(user = @generic_resource.user, parent_class = @generic_resource.parent_class, action = @generic_resource.parent_action, page = @generic_resource.page)
         end
 
-        def self.sort_orders_klass
-          @sort_orders_klass = ResourceManagerSort.new_sort(resource = @resource_klass, target = @resource_klass.target, sort_option = @resource_klass.sort_option, sort_direction = @resource_klass.sort_direction)
+        def self.set_sort_orders_klass
+          @sort_orders_klass = ResourceManagerSort.new_sort(resource = @generic_resource, target = @generic_resource.target, sort_option = @generic_resource.sort_option, sort_direction = @generic_resource.sort_direction)
         end
 
-        def self.pagination_klass
-          @pagination_klass = ResourceManagerPagination.new_pagination(resource = @resource_klass.target, resources_per_page = table_option_klass.resources_per_page, page = @page)
+        def self.set_pagination_klass
+          @pagination_klass = ResourceManagerPagination.new_pagination(resource = @generic_resource.target, resources_per_page = set_table_options.resources_per_page, page = @page)
         end
 
-        def self.done
+        def self.resource_manager_done
           puts " "
           puts "*"*500
           puts " "
-          puts "    done!    "
+          puts "  resource_manager_done:  done!    "
           puts " "
           puts "*"*500
           puts " "
