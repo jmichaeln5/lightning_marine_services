@@ -28,63 +28,63 @@ module Resource
   end
 
       class ResourceKlass < ResourceManager::ResourceManagerKlass
-        extend ResourceCore
-        extend ResourceManager
-        # extend ServiceManagerCore
-        extend ServiceManager
-        # extend ResourceManagerTableOption
-        # extend ResourceManagerPagination
-        # extend ResourceManagerSort
-        # extend ResourceManager
+          extend ResourceCore
+          extend ResourceManager
+          # extend ServiceManagerCore
+          extend ServiceManager
+          # extend ResourceManagerTableOption
+          # extend ResourceManagerPagination
+          # extend ResourceManagerSort
+          # extend ResourceManager
 
-        def self.set_resource( options = {} )
-          # Struct.new(*options.keys).new(*options.values)
-          @resource ||= Struct.new(*options.keys).new(*options.values)
-          init_resource(options)
-          @generic_resource ||= @resource
-          @options ||= options
-        end
+          def self.set_resource( options = {} )
+            # Struct.new(*options.keys).new(*options.values)
+            @resource ||= Struct.new(*options.keys).new(*options.values)
+            init_resource(options)
+            @generic_resource ||= @resource
+            @options ||= options
+          end
 
-        def self.resource_my_dood
-          "Ayooooo"
-          # byebug
-        end
+          def self.resource_my_dood
+            "Ayooooo"
+            # byebug
+          end
 
-        def self.set_table_options
-          super
-        end
+          def self.set_table_options
+            super
+          end
 
-        def self.set_sort_orders_klass
-          super
-        end
+          def self.set_sort_orders_klass
+            super
+          end
 
-        def self.set_pagination_klass
-          super
-        end
+          def self.set_pagination_klass
+            super
+          end
 
-        def self.get_table_options
-          @table_options ||= set_table_options unless ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
-        end
+          def self.get_table_options
+            @table_options ||= set_table_options unless ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
+          end
 
-        def self.get_pagination_klass
-          # byebug
-          @pagination_klass ||= set_pagination_klass unless ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(@resource)
-        end
+          def self.get_pagination_klass
+            # byebug
+            @pagination_klass ||= set_pagination_klass unless ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(@resource)
+          end
 
-        def self.get_sort_orders_klass
-          @sort_orders_klass ||= set_sort_orders_klass unless ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
-        end
+          def self.get_sort_orders_klass
+            @sort_orders_klass ||= set_sort_orders_klass unless ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+          end
 
-        def self.resource_done
-          puts " "
-          puts "*"*500
-          puts " "
-          puts "   resource_done: done!    "
-          puts " "
-          puts "*"*500
-          puts " "
-          # byebug
-        end
+          def self.resource_done
+            puts " "
+            puts "*"*500
+            puts " "
+            puts "   resource_done: done!    "
+            puts " "
+            puts "*"*500
+            puts " "
+            # byebug
+          end
 
       end
 
