@@ -33,6 +33,9 @@ class OrdersController < ApplicationController
     #### ********** For ResourceManager **********
     autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
     ####################################################
+    autoload :Resource, "resources/resource.rb"
+    ####################################################
+
 
     klass_attrs = {
      user: User.first,
@@ -44,25 +47,42 @@ class OrdersController < ApplicationController
      page: @page
    }
 
-    @init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
+   # @init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
+   @init_resource = Resource.init_resource_klass ( klass_attrs )
 
-    ResourceManager::ResourceKlass.my_dood
-    ResourceManager::ResourceKlass.done
+   # Resource::ResourceKlass.resource_my_dood
 
-    puts "End of ResourceManager"
 
-    @table_option_klass = ResourceManager::ResourceKlass.table_option_klass
-    @sort_orders_klass = ResourceManager::ResourceKlass.sort_orders_klass
-    @pagination_klass = ResourceManager::ResourceKlass.pagination_klass
+
+    # byebug
+
+
+    @table_option_klass = ResourceManager::ResourceManagerKlass.set_table_options
+    @sort_orders_klass = ResourceManager::ResourceManagerKlass.set_sort_orders_klass
+    @pagination_klass = ResourceManager::ResourceManagerKlass.set_pagination_klass
+
+    @resource_table_option_klass = Resource::ResourceKlass.set_table_options
+    @resource_sort_orders_klass = Resource::ResourceKlass.set_sort_orders_klass
+    @resource_pagination_klass = Resource::ResourceKlass.set_pagination_klass
 
     # @orders = Order.all
     @orders = @sort_orders_klass.sort_resource
 
+    Resource::ResourceKlass.resource_my_dood
+    ResourceManager::ResourceManagerKlass.resource_manager_my_dood
+
+    Resource::ResourceKlass.resource_done
+    ResourceManager::ResourceManagerKlass.resource_manager_done
+
+    puts "End of ResourceManager"
+
     # byebug
+
+
 
     # init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
 
-    # @table_option_klass = ResourceManager::ResourceKlass.set_table_options(user = @resource.user, parent_class = @resource.parent_class, action = @resource.parent_action, page = @resource.page)
+    # @table_option_klass = ResourceManager::ResourceManagerKlass.set_table_options(user = @resource.user, parent_class = @resource.parent_class, action = @resource.parent_action, page = @resource.page)
 
     # byebug
 
@@ -84,11 +104,11 @@ class OrdersController < ApplicationController
     #
     # @orders = Order.all
 
-    # @table_option_klass = ResourceManager::ResourceKlass.table_option_klass
+    # @table_option_klass = ResourceManager::ResourceManagerKlass.table_option_klass
     #
-    # @sort_orders_klass = ResourceManager::ResourceKlass.sort_orders_klass
+    # @sort_orders_klass = ResourceManager::ResourceManagerKlass.sort_orders_klass
     #
-    # @pagination_klass = ResourceManager::ResourceKlass.pagination_klass
+    # @pagination_klass = ResourceManager::ResourceManagerKlass.pagination_klass
     #
     # @orders = @sort_orders_klass.sort_resource
     #
