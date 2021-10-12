@@ -1,7 +1,4 @@
-autoload :ServiceManager, "service_managers/service_manager.rb"
-
 module ServiceManagerResourceTableOption
-  extend ServiceManager
 
   class ResourceHasTableOption
     def is_satisfied_by?(resource)

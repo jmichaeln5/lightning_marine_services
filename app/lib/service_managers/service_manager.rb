@@ -11,10 +11,21 @@ module ServiceManager # Manages state of @resource data object with services
   extend ServiceManagerResourcePagination #   " "
   extend ServiceManagerResourceSort #         " "
 
-  def self.new_service_manager_struct( options = {} )
-    # @service_manager = Struct.new(*options.keys).new(*options.values)
-    Struct.new(*options.keys).new(*options.values)
+  def self.init_new_service_manager( options = {} )
+    @init_service_manager ||= init_service_manager(options)
+
+    # @service_manager ||= Struct.new(*options.keys).new(*options.values)
+    # Struct.new(*options.keys).new(*options.values)
   end
+
+  def self.set_new_service_manager( options = {} )
+    # Struct.new(*options.keys).new(*options.values)
+    @service_manager ||= Struct.new(*options.keys).new(*options.values)
+    init_service_manager(options)
+    @generic_service_manager ||= @service_manager
+    @options ||= options
+  end
+
 
   class Composite # Specification Pattern
 
@@ -41,10 +52,40 @@ module ServiceManager # Manages state of @resource data object with services
 
   end
 
+  class ManageServices < Composite
+    extend ServiceManagerCore
+    extend ServiceManagerResourceTableOption
+    extend ServiceManagerResourcePagination
+    extend ServiceManagerResourceSort
 
-  def yeet_service_mod
-    "ueet from service mod no self"
+    def initialize(service_managers)
+      super
+    end
+
+    def is_satisfied_by?(candidate)
+      super
+    end
+
+    def and(service_managers)
+      super
+    end
+
+    def not(service_managers)
+      super
+    end
+
+    def has_table_option?
+
+    end
+
+    def self.yeet_manage_service
+      "yeet_manage_service: Big yeets from ManageServices"
+    end
+
+
   end
+
+
 
 end
 

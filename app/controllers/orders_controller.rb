@@ -49,7 +49,7 @@ class OrdersController < ApplicationController
 
    # @init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
    @init_resource = Resource.init_resource_klass ( klass_attrs )
-
+   # @resource = Resource::ResourceKlass.new_resource_struct( klass_attrs )
    # Resource::ResourceKlass.resource_my_dood
 
 
@@ -57,13 +57,19 @@ class OrdersController < ApplicationController
     # byebug
 
 
-    @table_option_klass = ResourceManager::ResourceManagerKlass.set_table_options
-    @sort_orders_klass = ResourceManager::ResourceManagerKlass.set_sort_orders_klass
-    @pagination_klass = ResourceManager::ResourceManagerKlass.set_pagination_klass
+    # @table_option_klass = ResourceManager::ResourceManagerKlass.set_table_options
+    # @sort_orders_klass = ResourceManager::ResourceManagerKlass.set_sort_orders_klass
+    # @pagination_klass = ResourceManager::ResourceManagerKlass.set_pagination_klass
+    #
+    # @resource_table_option_klass = Resource::ResourceKlass.get_table_options
+    # @resource_sort_orders_klass = Resource::ResourceKlass.get_sort_orders_klass
+    # @resource_pagination_klass = Resource::ResourceKlass.get_pagination_klass
 
-    @resource_table_option_klass = Resource::ResourceKlass.set_table_options
-    @resource_sort_orders_klass = Resource::ResourceKlass.set_sort_orders_klass
-    @resource_pagination_klass = Resource::ResourceKlass.set_pagination_klass
+    @table_option_klass = Resource::ResourceKlass.get_table_options
+    # @sort_orders_klass = Resource::ResourceKlass.get_sort_orders_klass
+    @sort_orders_klass = Resource::ResourceKlass.set_sort_orders_klass # fix to use get instead of set method
+    @pagination_klass = Resource::ResourceKlass.get_pagination_klass
+
 
     # @orders = Order.all
     @orders = @sort_orders_klass.sort_resource
@@ -71,7 +77,7 @@ class OrdersController < ApplicationController
     Resource::ResourceKlass.resource_my_dood
     ResourceManager::ResourceManagerKlass.resource_manager_my_dood
 
-    Resource::ResourceKlass.resource_done
+    # Resource::ResourceKlass.resource_done
     ResourceManager::ResourceManagerKlass.resource_manager_done
 
     puts "End of ResourceManager"
@@ -86,11 +92,15 @@ class OrdersController < ApplicationController
 
     # byebug
 
-    # init_service_manager = ServiceManager.init_service_manager( klass_attrs ) # method extended from ServiceManagerCore (Sets ivars)
+    # init_service_manager = ServiceManager.init_new_service_manager( klass_attrs ) # method extended from ServiceManagerCore (Sets ivars)
     # ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+
+
+    # Resource::ResourceKlass.resource_done
     #
     # ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(@resource)
-    #
+    # ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+    # #
     # spec =
     # ServiceManager::Composite.new(ServiceManagerResourceTableOption::ResourceHasTableOption)
     # .and(ServiceManagerResourcePagination::ResourcePagination)

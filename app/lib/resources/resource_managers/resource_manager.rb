@@ -17,6 +17,7 @@ module ResourceManager
     options.each { |k,v| instance_variable_set("@#{k}", v) }
     ResourceManagerKlass.set_resource_manager( options )
     ResourceManagerKlass.init_resource( options ) # method extended from ResourceCore
+    # @options ||= options
   end
 
       class ResourceManagerKlass
@@ -29,7 +30,8 @@ module ResourceManager
         def self.set_resource_manager( options = {} )
           @resource_manager ||= Struct.new(*options.keys).new(*options.values)
           init_resource(options)
-          @generic_resource = @resource_manager
+          @generic_resource ||= @resource_manager
+          @options ||= options
         end
 
         def self.resource_manager_my_dood
