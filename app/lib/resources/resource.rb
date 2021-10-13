@@ -63,7 +63,7 @@ module Resource
           end
 
           def self.get_table_options
-            @table_options ||= set_table_options unless ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
+            @table_options ||= set_table_options unless ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@resource)
           end
 
           def self.get_pagination_klass

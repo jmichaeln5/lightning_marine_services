@@ -49,26 +49,35 @@ class OrdersController < ApplicationController
 
    # @init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
    @init_resource = Resource.init_resource_klass ( klass_attrs )
+   @resource = Resource.init_resource_klass ( klass_attrs )
+
    # @resource = Resource::ResourceKlass.new_resource_struct( klass_attrs )
    # Resource::ResourceKlass.resource_my_dood
-
-
 
     # byebug
 
 
-    # @table_option_klass = ResourceManager::ResourceManagerKlass.set_table_options
-    # @sort_orders_klass = ResourceManager::ResourceManagerKlass.set_sort_orders_klass
-    # @pagination_klass = ResourceManager::ResourceManagerKlass.set_pagination_klass
+
+    @table_option = ResourceManager::ResourceManagerKlass.set_table_options
+    # @table_option_option_list = TableOptionsHelper.default_table_options_for_form("orders#index")
+
+    @sort_orders_klass = ResourceManager::ResourceManagerKlass.set_sort_orders_klass
+    @pagination_klass = ResourceManager::ResourceManagerKlass.set_pagination_klass
     #
     # @resource_table_option_klass = Resource::ResourceKlass.get_table_options
     # @resource_sort_orders_klass = Resource::ResourceKlass.get_sort_orders_klass
     # @resource_pagination_klass = Resource::ResourceKlass.get_pagination_klass
 
-    @table_option_klass = Resource::ResourceKlass.get_table_options
-    # @sort_orders_klass = Resource::ResourceKlass.get_sort_orders_klass
-    @sort_orders_klass = Resource::ResourceKlass.set_sort_orders_klass # fix to use get instead of set method
-    @pagination_klass = Resource::ResourceKlass.get_pagination_klass
+
+
+    ### Use ivars from Resource *********************
+    ### Use ivars from Resource *********************
+    ### Use ivars from Resource *********************
+
+    # @table_option_klass = Resource::ResourceKlass.get_table_options
+    # # @sort_orders_klass = Resource::ResourceKlass.get_sort_orders_klass
+    # @sort_orders_klass = Resource::ResourceKlass.set_sort_orders_klass # fix to use get instead of set method
+    # @pagination_klass = Resource::ResourceKlass.get_pagination_klass
 
 
     # @orders = Order.all
@@ -102,7 +111,7 @@ class OrdersController < ApplicationController
     # ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
     # #
     # spec =
-    # ServiceManager::Composite.new(ServiceManagerResourceTableOption::ResourceHasTableOption)
+    # ServiceManager::Composite.new(ServiceManagerTableOption::HasTableOption)
     # .and(ServiceManagerResourcePagination::ResourcePagination)
     # .and(ServiceManagerResourceSort::ResourceSortDirection)
     #

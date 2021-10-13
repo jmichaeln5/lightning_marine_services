@@ -6,7 +6,6 @@ class TableOption < ApplicationRecord
   before_create :validate_uniq_resource_for_table_option
 
   def option_list_arr
-    # byebug
     option_list_arr = self.option_list.present? ? ActiveSupport::JSON.decode(self.option_list) : nil
   end
 

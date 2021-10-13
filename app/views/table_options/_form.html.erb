@@ -4,6 +4,7 @@
     <p class="text-3xl"> <%= "New" if table_option.id.nil? %> <%= current_controller.titleize.singularize %> Table Options </p>
     <%= form.hidden_field :resource_table_type, value: controller_name.singularize.titleize %>
     <%= form.hidden_field :user_id, value: current_user.id %>
+    <%= form.hidden_field :set_default_options, value: "#{controller_name}#{action_name}" %>
   </div>
 
     <div class="container bg-gray-200 p-2 ">
