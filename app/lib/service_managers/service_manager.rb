@@ -4,14 +4,14 @@ autoload :ServiceManagerTableOption, "service_managers/service_manager_table_opt
 ####################################################
 autoload :ServiceManagerPagination, "service_managers/service_manager_paginations/service_manager_pagination.rb"
 ####################################################
-autoload :ServiceManagerResourceSort, "service_managers/service_manager_sort/service_manager_resource_sort.rb"
+autoload :ServiceManagerSort, "service_managers/service_manager_sorts/service_manager_sort.rb"
 ####################################################
 
 module ServiceManager # Manages state of @resource data object with services
   extend ServiceManagerCore # Allowing Use of init_service_manager method to initialize ServiceManager Ivars
   extend ServiceManagerTableOption # Manage Resource Table Option Service shizzz
   extend ServiceManagerPagination #   " "
-  extend ServiceManagerResourceSort #         " "
+  extend ServiceManagerSort #         " "
 
   def self.init_new_service_manager( options = {} )
     @init_service_manager ||= init_service_manager(options)
@@ -67,7 +67,7 @@ module ServiceManager # Manages state of @resource data object with services
     extend ServiceManagerCore
     extend ServiceManagerTableOption
     extend ServiceManagerPagination
-    extend ServiceManagerResourceSort
+    extend ServiceManagerSort
 
     def initialize(service_managers)
       super
@@ -110,6 +110,6 @@ end
 # spec = ServiceManager::Composite.new(
 # ServiceManagerTableOption::HasTableOption)
 # .and(ServiceManagerPagination::PaginationKlass)
-# .not(ServiceManagerResourceSort::WithSortDirection)
+# .not(ServiceManagerSort::WithSortDirection)
 
 # spec.is_satisfied_by?(@resource)

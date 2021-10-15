@@ -55,6 +55,7 @@ module Resource
             # byebug
           end
 
+          # Setting individual service ivars
           def self.set_table_options
             super
           end
@@ -67,6 +68,7 @@ module Resource
             super
           end
 
+          # Getting individual service ivars
           def self.get_table_options
             set_table_options
             @options.merge!(table_option: @table_option) # Adding table option to @options hash

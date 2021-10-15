@@ -1,6 +1,6 @@
-module ServiceManagerResourceSort
+module ServiceManagerSort
 
-  class ResourceSortDirection
+  class SortDirection
     def is_satisfied_by?(resource)
         !resource.sort_option.to_s.empty?
     end

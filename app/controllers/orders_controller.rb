@@ -120,18 +120,18 @@ class OrdersController < ApplicationController
     # byebug
 
     # init_service_manager = ServiceManager.init_new_service_manager( klass_attrs ) # method extended from ServiceManagerCore (Sets ivars)
-    # ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+    # ServiceManagerSort::SortDirection.new.is_satisfied_by?(@resource)
 
 
     # Resource::ResourceKlass.resource_done
     #
     # ServiceManagerPagination::PaginationKlass.new.is_satisfied_by?(@resource)
-    # ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+    # ServiceManagerSort::SortDirection.new.is_satisfied_by?(@resource)
     # #
     # spec =
     # ServiceManager::Composite.new(ServiceManagerTableOption::HasTableOption)
     # .and(ServiceManagerPagination::PaginationKlass)
-    # .and(ServiceManagerResourceSort::ResourceSortDirection)
+    # .and(ServiceManagerSort::SortDirection)
     #
     # spec.is_satisfied_by?(@resource)
     #
