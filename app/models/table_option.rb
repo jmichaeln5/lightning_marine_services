@@ -5,8 +5,8 @@ class TableOption < ApplicationRecord
   before_save :validate_table_option_option_list
   before_create :validate_uniq_resource_for_table_option
 
-  def option_list_arr
-    option_list_arr = self.option_list.present? ? ActiveSupport::JSON.decode(self.option_list) : nil
+  def selected_options
+    self.option_list.present? ? ActiveSupport::JSON.decode(self.option_list) : nil
   end
 
   private
@@ -30,11 +30,11 @@ class TableOption < ApplicationRecord
   def validate_table_option_option_list
     # byebug
 
-    # self.option_list = nil if self.option_list_arr.size < 0
+    # self.option_list = nil if self.option_list.size < 0
 
-    # option_list_arr.size
+    # option_list.size
 
-    if self.option_list_arr.present? && option_list_arr.size < 3
+    if self.option_list.present? && option_list.size < 3
       self.errors.add(:base, "You must have at least 3 columns selected to display.")
       throw(:abort)
     end

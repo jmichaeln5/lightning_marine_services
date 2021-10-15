@@ -45,6 +45,11 @@ module Resource
             @options ||= options
           end
 
+          def self.new_resource( options = {} )
+            init_resource( options )
+            @resource = Struct.new(*options.keys).new(*options.values)
+          end
+
           def self.resource_my_dood
             "Ayooooo"
             # byebug
@@ -58,21 +63,33 @@ module Resource
             super
           end
 
-          def self.set_pagination_klass
+          def self.set_pagination
             super
           end
 
           def self.get_table_options
-            @table_options ||= set_table_options unless ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@resource)
+            set_table_options
+            @options.merge!(table_option: @table_option) # Adding table option to @options hash
+
+            @resource_with_table_option = new_resource(@options)
+            return @resource_with_table_option.table_option
           end
 
-          def self.get_pagination_klass
-            # byebug
-            @pagination_klass ||= set_pagination_klass unless ServiceManagerResourcePagination::ResourcePagination.new.is_satisfied_by?(@resource)
+          def self.get_pagination
+            set_pagination
+
+            @options.merge!(pagination: @pagination)
+
+            @resource_with_pagination = new_resource(@options)
+            return @resource_with_pagination.pagination
           end
 
           def self.get_sort_orders_klass
-            @sort_orders_klass ||= set_sort_orders_klass unless ServiceManagerResourceSort::ResourceSortDirection.new.is_satisfied_by?(@resource)
+            set_sort_orders_klass
+          end
+
+          def self.get_resource
+            get_table_options
           end
 
           def self.resource_done

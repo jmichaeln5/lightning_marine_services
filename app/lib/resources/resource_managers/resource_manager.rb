@@ -21,6 +21,9 @@ module ResourceManager
     ResourceManagerKlass.set_resource_manager( options )
     ResourceManagerKlass.init_resource( options ) # method extended from ResourceCore
     # @options ||= options
+
+    # byebug
+
   end
 
     class ResourceManagerKlass
@@ -32,10 +35,10 @@ module ResourceManager
       extend ServiceManager
 
       def self.set_resource_manager( options = {} )
-        @resource_manager ||= Struct.new(*options.keys).new(*options.values)
+        @resource_manager = Struct.new(*options.keys).new(*options.values)
         init_resource(options)
-        @generic_resource ||= @resource_manager
-        @options ||= options
+        @generic_resource = @resource_manager
+        @options = options
       end
 
       def self.resource_manager_my_dood
@@ -44,42 +47,32 @@ module ResourceManager
       end
 
       def self.set_table_options
-        # @table_option = ResourceManagerTableOption.new_table_option(user = @generic_resource.user, parent_class = @generic_resource.parent_class, action = @generic_resource.parent_action, page = @generic_resource.page)
+        table_option_hash = Hash.new
+        if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
+           @table_option = ResourceManagerTableOption.user_table_option(
+             user = @generic_resource.user,
+             parent_class = @generic_resource.parent_class,
+             parent_action = @generic_resource.parent_action,
+             page = @generic_resource.page
+             )
+        else
+          @table_option = ResourceManagerTableOption.new_table_option(
+            user = @generic_resource.user,
+            parent_class = @generic_resource.parent_class,
+            parent_action = @generic_resource.parent_action,
+            page = @generic_resource.page
+            )
+        end
+      end
 
+      def self.set_pagination
         # byebug
-        # if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
-        #   @table_option = @generic_resource.user.table_options.where(resource_table_type: @generic_resource.parent_class.name).first
-        # else
-        #   @table_option = ResourceManagerTableOption.new_table_option(user = @generic_resource.user, parent_class = @generic_resource.parent_class, action = @generic_resource.parent_action, page = @generic_resource.page)
-        # end
-
-
-        @table_option = ResourceManagerTableOption.new_table_option(
-          user = @generic_resource.user,
-          parent_class = @generic_resource.parent_class,
-          action = @generic_resource.parent_action,
-          page = @generic_resource.page
-          ) unless ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@resource)
-
-
-        @table_option = ResourceManagerTableOption.user_table_option(
-          user = @generic_resource.user,
-          parent_class = @generic_resource.parent_class,
-          action = @generic_resource.parent_action,
-          page = @generic_resource.page
-          ) unless ServiceManagerTableOption::HasTableOption.new.is_not_satisfied_by?(@resource)
-
+        @pagination = ResourceManagerPagination.new_pagination(resource = @generic_resource.target, resources_per_page = set_table_options.resources_per_page, page = @page) unless ServiceManagerPagination::PaginationKlass.new.is_satisfied_by?(@generic_resource)
+        # byebug
       end
 
       def self.set_sort_orders_klass
         @sort_orders_klass = ResourceManagerSort.new_sort(resource = @generic_resource, target = @generic_resource.target, sort_option = @generic_resource.sort_option, sort_direction = @generic_resource.sort_direction)
-      end
-
-      def self.set_pagination_klass
-
-        # byebug
-
-        @pagination_klass = ResourceManagerPagination.new_pagination(resource = @generic_resource.target, resources_per_page = set_table_options.resources_per_page, page = @page)
       end
 
       def self.resource_manager_done

@@ -40,11 +40,17 @@ module TableOptionsHelper
   end
 
   def self.set_default_options(table_option, default_table_option_list)
-    if table_option.option_list == nil
+
+    # byebug
+
+    if table_option.option_list.nil?
       table_option.option_list = default_table_options_for_form(default_table_option_list)
     else
       table_option.option_list
     end
+
+    byebug
+
   end
 
 end

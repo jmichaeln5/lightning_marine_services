@@ -19,7 +19,7 @@
             <div class="p-2">
               <%= strfy_options = TableOptionsHelper.default_table_options_for_form(controller_name_and_action).to_s %>
               <% TableOptionsHelper.default_table_options_for_form(controller_name_and_action).each do | option | %>
-                    <% if ((@table_option != nil ) && (@table_option.option_list_arr != nil )) && (option.to_s.in? @table_option.option_list_arr) %>
+                    <% if ((@table_option != nil ) && (@table_option.option_list != nil )) && (option.to_s.in? @table_option.option_list) %>
                           <div class="p-1">
                             <%= check_box_tag "table_option[option_list][]", option, {:multiple => true} %>
                             <%= option %>

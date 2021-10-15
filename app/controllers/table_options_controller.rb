@@ -25,7 +25,13 @@ class TableOptionsController < ApplicationController
 
     @table_option = TableOption.new table_option_params
 
-    TableOptionsHelper.set_default_options(@table_option, default_table_option_list)
+    # TableOptionsHelper.set_default_options(@table_option, default_table_option_list)
+
+    # byebug
+
+
+    TableOptionsHelper.set_default_options(@table_option, default_table_option_list) if @table_option.option_list.nil?
+
 
     if @table_option.save
       redirect_to request.referrer, notice: "Table options created successfully."
@@ -42,11 +48,22 @@ class TableOptionsController < ApplicationController
 
     # TableOptionsHelper.default_table_options_for_form(params[:table_option][:set_default_options])
 
-    TableOptionsHelper.set_default_options(@table_option, default_table_option_list)
+    # byebug
+
+
+    # TableOptionsHelper.set_default_options(@table_option, default_table_option_list)
+
+
     # byebug
 
     if @table_option.update(table_option_params)
+
+      TableOptionsHelper.set_default_options(@table_option, default_table_option_list)
+
+
       redirect_to request.referrer, notice: "Table options updated successfully."
+
+
     else
       redirect_to request.referrer
       @table_option.errors.each do |error|

@@ -1,14 +1,16 @@
 autoload :ServiceManagerCore, "service_managers/service_manager_core.rb"
-
+####################################################
 autoload :ServiceManagerTableOption, "service_managers/service_manager_table_options/service_manager_table_option.rb"
-
-autoload :ServiceManagerResourcePagination, "service_managers/service_manager_pagination/service_manager_resource_pagination.rb"
+####################################################
+autoload :ServiceManagerPagination, "service_managers/service_manager_paginations/service_manager_pagination.rb"
+####################################################
 autoload :ServiceManagerResourceSort, "service_managers/service_manager_sort/service_manager_resource_sort.rb"
+####################################################
 
 module ServiceManager # Manages state of @resource data object with services
   extend ServiceManagerCore # Allowing Use of init_service_manager method to initialize ServiceManager Ivars
   extend ServiceManagerTableOption # Manage Resource Table Option Service shizzz
-  extend ServiceManagerResourcePagination #   " "
+  extend ServiceManagerPagination #   " "
   extend ServiceManagerResourceSort #         " "
 
   def self.init_new_service_manager( options = {} )
@@ -40,13 +42,13 @@ module ServiceManager # Manages state of @resource data object with services
       @service_managers[:truthy].all?(&truthy_check) && @service_managers[:falsy].all?(&falsy_check)
     end
 
-    ################################################################
-    def is_not_satisfied_by?(candidate)
-      falsy_check = ->(service_manager) { service_manager.new.is_satisfied_by?(candidate) }
-      truthy_check = ->(service_manager) { !service_manager.new.is_satisfied_by?(candidate) }
-      @service_managers[:falsy].all?(&falsy_check) && @service_managers[:truthy].all?(&truthy_check)
-    end
-    ################################################################
+    # ################################################################
+    # def is_not_satisfied_by?(candidate)
+    #   falsy_check = ->(service_manager) { service_manager.new.is_satisfied_by?(candidate) }
+    #   truthy_check = ->(service_manager) { !service_manager.new.is_satisfied_by?(candidate) }
+    #   @service_managers[:falsy].all?(&falsy_check) && @service_managers[:truthy].all?(&truthy_check)
+    # end
+    # ################################################################
 
 
     def and(service_managers)
@@ -64,7 +66,7 @@ module ServiceManager # Manages state of @resource data object with services
   class ManageServices < Composite
     extend ServiceManagerCore
     extend ServiceManagerTableOption
-    extend ServiceManagerResourcePagination
+    extend ServiceManagerPagination
     extend ServiceManagerResourceSort
 
     def initialize(service_managers)
@@ -107,7 +109,7 @@ end
 # ### Example- (Checking if @resource (data object) satisfys requirements for multiple services):
 # spec = ServiceManager::Composite.new(
 # ServiceManagerTableOption::HasTableOption)
-# .and(ServiceManagerResourcePagination::ResourcePagination)
+# .and(ServiceManagerPagination::PaginationKlass)
 # .not(ServiceManagerResourceSort::WithSortDirection)
 
 # spec.is_satisfied_by?(@resource)
