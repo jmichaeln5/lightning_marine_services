@@ -1,20 +1,33 @@
 autoload :ServiceManagerCore, "service_managers/service_manager_core.rb"
-
-autoload :ServiceManagerResourceTableOption, "service_managers/service_manager_table_options/service_manager_resource_table_option.rb"
-
-autoload :ServiceManagerResourcePagination, "service_managers/service_manager_pagination/service_manager_resource_pagination.rb"
-autoload :ServiceManagerResourceSort, "service_managers/service_manager_sort/service_manager_resource_sort.rb"
+####################################################
+autoload :ServiceManagerTableOption, "service_managers/service_manager_table_options/service_manager_table_option.rb"
+####################################################
+autoload :ServiceManagerPagination, "service_managers/service_manager_paginations/service_manager_pagination.rb"
+####################################################
+autoload :ServiceManagerSort, "service_managers/service_manager_sorts/service_manager_sort.rb"
+####################################################
 
 module ServiceManager # Manages state of @resource data object with services
   extend ServiceManagerCore # Allowing Use of init_service_manager method to initialize ServiceManager Ivars
-  extend ServiceManagerResourceTableOption # Manage Resource Table Option Service shizzz
-  extend ServiceManagerResourcePagination #   " "
-  extend ServiceManagerResourceSort #         " "
+  extend ServiceManagerTableOption # Manage Resource Table Option Service shizzz
+  extend ServiceManagerPagination #   " "
+  extend ServiceManagerSort #         " "
 
-  def self.new_service_manager_struct( options = {} )
-    # @service_manager = Struct.new(*options.keys).new(*options.values)
-    Struct.new(*options.keys).new(*options.values)
+  def self.init_new_service_manager( options = {} )
+    @init_service_manager ||= init_service_manager(options)
+
+    # @service_manager ||= Struct.new(*options.keys).new(*options.values)
+    # Struct.new(*options.keys).new(*options.values)
   end
+
+  def self.set_new_service_manager( options = {} )
+    # Struct.new(*options.keys).new(*options.values)
+    @service_manager ||= Struct.new(*options.keys).new(*options.values)
+    init_service_manager(options)
+    @generic_service_manager ||= @service_manager
+    @options ||= options
+  end
+
 
   class Composite # Specification Pattern
 
@@ -29,6 +42,15 @@ module ServiceManager # Manages state of @resource data object with services
       @service_managers[:truthy].all?(&truthy_check) && @service_managers[:falsy].all?(&falsy_check)
     end
 
+    # ################################################################
+    # def is_not_satisfied_by?(candidate)
+    #   falsy_check = ->(service_manager) { service_manager.new.is_satisfied_by?(candidate) }
+    #   truthy_check = ->(service_manager) { !service_manager.new.is_satisfied_by?(candidate) }
+    #   @service_managers[:falsy].all?(&falsy_check) && @service_managers[:truthy].all?(&truthy_check)
+    # end
+    # ################################################################
+
+
     def and(service_managers)
       @service_managers[:truthy] = (@service_managers[:truthy] + Array(service_managers)).uniq
       self
@@ -41,23 +63,53 @@ module ServiceManager # Manages state of @resource data object with services
 
   end
 
+  class ManageServices < Composite
+    extend ServiceManagerCore
+    extend ServiceManagerTableOption
+    extend ServiceManagerPagination
+    extend ServiceManagerSort
 
-  def yeet_service_mod
-    "ueet from service mod no self"
+    def initialize(service_managers)
+      super
+    end
+
+    def is_satisfied_by?(candidate)
+      super
+    end
+
+    def and(service_managers)
+      super
+    end
+
+    def not(service_managers)
+      super
+    end
+
+    def has_table_option?
+
+    end
+
+    def self.yeet_manage_service
+      "yeet_manage_service: Big yeets from ManageServices"
+    end
+
+
   end
+
+
 
 end
 
 # ### ******* Define spec as local var and pass as argument to ServiceManager::Composite.new
 # ### Example- (Checking if @resource (data object) satisfys requirements for individual services):
 
-# spec = ServiceManagerResourceTableOption::ResourceHasTableOption.new.is_satisfied_by?(@resource)
+# spec = ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@resource)
 # spec.is_satisfied_by?(@resource)
 
 # ### Example- (Checking if @resource (data object) satisfys requirements for multiple services):
 # spec = ServiceManager::Composite.new(
-# ServiceManagerResourceTableOption::ResourceHasTableOption)
-# .and(ServiceManagerResourcePagination::ResourcePagination)
-# .not(ServiceManagerResourceSort::WithSortDirection)
+# ServiceManagerTableOption::HasTableOption)
+# .and(ServiceManagerPagination::PaginationKlass)
+# .not(ServiceManagerSort::WithSortDirection)
 
 # spec.is_satisfied_by?(@resource)
