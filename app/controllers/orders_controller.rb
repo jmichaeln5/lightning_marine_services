@@ -4,6 +4,7 @@ class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show destroy ]
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
+  before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @resource (data object) attrs in klass_attrs hash (local var)
 
   def all_orders
     autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
@@ -13,7 +14,6 @@ class OrdersController < ApplicationController
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-
   end
 
   def index
@@ -26,19 +26,8 @@ class OrdersController < ApplicationController
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
 
     ############ After
-    ####################################################
-    #### ********** For ResourceManager **********
-    #### ********** For ResourceManager **********
-    #### ********** For ResourceManager **********
-    #### ********** For ResourceManager **********
-    autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
-    ####################################################
-    autoload :Resource, "resources/resource.rb"
-    ####################################################
-
-
     klass_attrs = {
-     user: User.first,
+     user: current_user,
      target: Order.all,
      parent_class: Order,
      parent_action: 'index',
@@ -47,111 +36,9 @@ class OrdersController < ApplicationController
      page: @page
    }
 
-   # @init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
-   @init_resource = Resource.init_resource_klass ( klass_attrs )
-
-
-   @resource = Resource.init_resource_klass ( klass_attrs )
-
-   # @resource = Resource::ResourceKlass.new_resource_struct( klass_attrs )
-   # Resource::ResourceKlass.resource_my_dood
-
-    # byebug
-
-
-
-    # @resource_manager_table_option = ResourceManager::ResourceManagerKlass.set_table_options
-
-    resource_table_option = Resource::ResourceKlass.get_table_options
-    resource_pagination = Resource::ResourceKlass.get_pagination
-    # @table_option_option_list = TableOptionsHelper.default_table_options_for_form("orders#index")
-
-    @table_options = resource_table_option
-
-
-    # byebug
-
-
-    # @table_option = @resource_manager_table_option
-
-
-    @pagination_klass = resource_pagination
-
-
-
-    @sort_orders_klass = ResourceManager::ResourceManagerKlass.set_sort_orders_klass
-    # @pagination_klass = ResourceManager::ResourceManagerKlass.set_pagination
-    #
-    # @resource_table_option_klass = Resource::ResourceKlass.get_table_options
-    # @resource_sort_orders_klass = Resource::ResourceKlass.get_sort_orders_klass
-    # @resource_pagination_klass = Resource::ResourceKlass.get_pagination_klass
-
-
-
-    ### Use ivars from Resource *********************
-    ### Use ivars from Resource *********************
-    ### Use ivars from Resource *********************
-
-    # @table_option_klass = Resource::ResourceKlass.get_table_options
-    # # @sort_orders_klass = Resource::ResourceKlass.get_sort_orders_klass
-    # @sort_orders_klass = Resource::ResourceKlass.set_sort_orders_klass # fix to use get instead of set method
-    # @pagination_klass = Resource::ResourceKlass.get_pagination_klass
-
-
-    # @orders = Order.all
-    @orders = @sort_orders_klass.sort_resource
-
-    Resource::ResourceKlass.resource_my_dood
-    ResourceManager::ResourceManagerKlass.resource_manager_my_dood
-
-    # Resource::ResourceKlass.resource_done
-    ResourceManager::ResourceManagerKlass.resource_manager_done
-
-    puts "End of ResourceManager"
-
-    # byebug
-
-
-
-    # init_resource_manager = ResourceManager.init_resource_manager ( klass_attrs ) # Resource Data Object
-
-    # @table_option_klass = ResourceManager::ResourceManagerKlass.set_table_options(user = @resource.user, parent_class = @resource.parent_class, action = @resource.parent_action, page = @resource.page)
-
-    # byebug
-
-    # init_service_manager = ServiceManager.init_new_service_manager( klass_attrs ) # method extended from ServiceManagerCore (Sets ivars)
-    # ServiceManagerSort::SortDirection.new.is_satisfied_by?(@resource)
-
-
-    # Resource::ResourceKlass.resource_done
-    #
-    # ServiceManagerPagination::PaginationKlass.new.is_satisfied_by?(@resource)
-    # ServiceManagerSort::SortDirection.new.is_satisfied_by?(@resource)
-    # #
-    # spec =
-    # ServiceManager::Composite.new(ServiceManagerTableOption::HasTableOption)
-    # .and(ServiceManagerPagination::PaginationKlass)
-    # .and(ServiceManagerSort::SortDirection)
-    #
-    # spec.is_satisfied_by?(@resource)
-    #
-    # ####################################################
-    # ####################################################
-    # # byebug ####### ***********************************
-    #
-    # @orders = Order.all
-
-    # @table_option_klass = ResourceManager::ResourceManagerKlass.table_option_klass
-    #
-    # @sort_orders_klass = ResourceManager::ResourceManagerKlass.sort_orders_klass
-    #
-    # @pagination_klass = ResourceManager::ResourceManagerKlass.pagination_klass
-    #
-    # @orders = @sort_orders_klass.sort_resource
-    #
-    # byebug ####### *********************************
-    # ####################################################
-    # ####################################################
+    @init_resource = Resource.init_resource_klass ( klass_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+    @orders = @resource.target.unarchived
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
@@ -170,7 +57,6 @@ class OrdersController < ApplicationController
       }
     end
   end
-
 
   # GET /orders/1 or /orders/1.json
   def show
@@ -255,8 +141,12 @@ class OrdersController < ApplicationController
     end
 
     def set_pagination_params
-      # @per_page = 10
       @page = params.fetch(:page, 0).to_i
+    end
+
+    def load_resource_files
+      autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
+      autoload :Resource, "resources/resource.rb"
     end
 
 end

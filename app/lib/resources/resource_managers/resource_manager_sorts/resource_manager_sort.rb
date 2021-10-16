@@ -1,10 +1,10 @@
-autoload :Sort, "services/sorts/sort.rb"
+autoload :SortOrders, "services/sorts/sort_orders.rb"
 
 module ResourceManagerSort
-  extend Sort
+  extend SortOrders
 
-  def self.new_sort(resource, target, sort_option, sort_direction)
-    Sort::SortKlass.new(resource, target, sort_option, sort_direction)
+  def self.sort_orders(target, sort_option, sort_direction)
+    SortOrders.sort_target(target, sort_option, sort_direction)
   end
 
 end

@@ -49,7 +49,7 @@ module TableOptionsHelper
       table_option.option_list
     end
 
-    byebug
+    # byebug
 
   end
 
