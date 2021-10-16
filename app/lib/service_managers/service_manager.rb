@@ -15,19 +15,14 @@ module ServiceManager # Manages state of @resource data object with services
 
   def self.init_new_service_manager( options = {} )
     @init_service_manager ||= init_service_manager(options)
-
-    # @service_manager ||= Struct.new(*options.keys).new(*options.values)
-    # Struct.new(*options.keys).new(*options.values)
   end
 
   def self.set_new_service_manager( options = {} )
-    # Struct.new(*options.keys).new(*options.values)
     @service_manager ||= Struct.new(*options.keys).new(*options.values)
     init_service_manager(options)
     @generic_service_manager ||= @service_manager
     @options ||= options
   end
-
 
   class Composite # Specification Pattern
 
@@ -41,15 +36,6 @@ module ServiceManager # Manages state of @resource data object with services
 
       @service_managers[:truthy].all?(&truthy_check) && @service_managers[:falsy].all?(&falsy_check)
     end
-
-    # ################################################################
-    # def is_not_satisfied_by?(candidate)
-    #   falsy_check = ->(service_manager) { service_manager.new.is_satisfied_by?(candidate) }
-    #   truthy_check = ->(service_manager) { !service_manager.new.is_satisfied_by?(candidate) }
-    #   @service_managers[:falsy].all?(&falsy_check) && @service_managers[:truthy].all?(&truthy_check)
-    # end
-    # ################################################################
-
 
     def and(service_managers)
       @service_managers[:truthy] = (@service_managers[:truthy] + Array(service_managers)).uniq
@@ -92,7 +78,6 @@ module ServiceManager # Manages state of @resource data object with services
     def self.yeet_manage_service
       "yeet_manage_service: Big yeets from ManageServices"
     end
-
 
   end
 
