@@ -35,10 +35,6 @@ module ResourceManager
       Struct.new(*options.keys).new(*options.values)
     end
 
-    def self.resource_manager_my_dood
-      "resource_manager_my_dood: Ayooooo"
-    end
-
     def self.set_sort
       if ServiceManagerSort::SortDirection.new.is_satisfied_by?(@generic_resource)
         @sorted_resource =
@@ -50,10 +46,7 @@ module ResourceManager
       else
         @sorted_resource = @generic_resource.target.order("created_at DESC")
       end
-      # @options.merge!(target: @sorted_resource, target_sorted: true)
-      # @generic_resource = update_resource_manager(@options)
     end
-
 
     def self.set_table_option
       table_option_hash = Hash.new
@@ -73,10 +66,7 @@ module ResourceManager
           page = @generic_resource.page
           )
       end
-      # @options.merge!(table_option: @table_option, has_table_option: true)
-      # @generic_resource = update_resource_manager(@options)
     end
-
 
     def self.set_pagination # resources_per_page defined in set_table_option
       @pagination =
@@ -91,10 +81,7 @@ module ResourceManager
         paginated_offset = @pagination.paginated_offset,
         resources_per_page = @pagination.resources_per_page
       )
-      # @options.merge!(target: @paginated_target, pagination: @pagination, has_pagination: true)
-      # @generic_resource = update_resource_manager(@options)
     end
-
 
   end
 end

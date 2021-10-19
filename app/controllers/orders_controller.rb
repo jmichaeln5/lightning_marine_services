@@ -66,8 +66,6 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = Order.new
-    # @order.order_content.build
-    # @order.order_content.new
   end
 
   # GET /orders/1/edit
