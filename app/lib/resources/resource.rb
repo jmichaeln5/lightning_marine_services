@@ -50,7 +50,7 @@ module Resource
       super
     end
 
-
+    # Getting ivars for individual services from ResourceManager and merging into @options hash
     def self.get_sort
       set_sort
       @options.merge!(target: @sorted_resource, target_sorted: true)
@@ -69,7 +69,7 @@ module Resource
       @generic_resource = update_resource_manager(@options)
     end
 
-
+    # Setting then Getting services ivars, merging into @options hash, returning updated resource
     def self.get_resource
       get_sort
       get_table_option
