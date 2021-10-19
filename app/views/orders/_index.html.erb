@@ -18,7 +18,6 @@
 
     <% @orders.each do |order| %>
 
-      <% if order.archived == false %>
         <tr>
           <% @resource.table_option.selected_options.each do |option| %>
 
@@ -74,7 +73,6 @@
           <% end %>
 
         </tr>
-      <% end %>
     <% end %>
 
   </tbody>
