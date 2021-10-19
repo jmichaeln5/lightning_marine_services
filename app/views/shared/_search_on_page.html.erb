@@ -1,6 +1,39 @@
-<form class="form-inline my-lg-0 p-3">
+<!-- <form class="form-inline my-lg-0 p-3">
   <div class="row flex-nowrap pb-2">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-outline-secondary  mr-sm-2" type="submit">Search</button>
   </div>
- </form>
+</form> -->
+
+<div class="float-right">
+  <span>
+    <%= form_tag purchasers_path, method: :get do %>
+      <% text_field_tag :q, nil, placeholder: '(Sample) Search Ships' %>
+    <% end %>
+
+    <span class="text-xs pt-2">
+      Sample Search for Purchasers in: app/views/shared/_search_on_page.html.erb
+    </span>
+
+  </span>
+
+
+<!-- <form class="form-inline my-lg-0 p-3">
+  <div class="row flex-nowrap pb-2">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-secondary  mr-sm-2" type="submit">Search</button>
+  </div>
+</form>
+
+<br> -->
+
+  <!-- <p class="text-xl">
+    Rendered Search Bar
+    <br>
+    <p class="text-sm text-gray-500">
+      app/views/searches/_search_bar.html.erb
+    </p>
+  </p>
+  <%#= render "searches/search_bar" %> -->
+
+</div>

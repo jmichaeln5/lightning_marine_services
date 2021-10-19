@@ -4,23 +4,42 @@ class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show destroy ]
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
+  before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @resource (data object) attrs in klass_attrs hash (local var)
 
   def all_orders
     autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
-    @order = Order.new
-    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
     @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     @orders = BusinessLogicPagination.new(@sorted_orders, @per_page, @page)
     @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+
+    @order = Order.new
+    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
 
   def index
-    autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
+    ############ Before
+    # autoload :OrdersSortTableLogic, "orders/sort_logic/orders_sort_table_logic.rb"
+    # @order = Order.new
+    # @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+    # @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
+    # @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
+    # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
+    ############ After *****************************************
+    klass_attrs = {
+      user: current_user,
+      target: Order.all.unarchived,
+      parent_class: Order,
+      parent_action: 'index',
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+    @init_resource = Resource.init_resource_klass ( klass_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+    @orders = @resource.target
+    ############################################################
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
-    @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
 
     respond_to do |format|
       format.html
@@ -36,7 +55,6 @@ class OrdersController < ApplicationController
       }
     end
   end
-
 
   # GET /orders/1 or /orders/1.json
   def show
@@ -121,8 +139,12 @@ class OrdersController < ApplicationController
     end
 
     def set_pagination_params
-      @per_page = 10
       @page = params.fetch(:page, 0).to_i
+    end
+
+    def load_resource_files
+      autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
+      autoload :Resource, "resources/resource.rb"
     end
 
 end
