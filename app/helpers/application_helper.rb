@@ -47,14 +47,6 @@ module ApplicationHelper
       end
   end
 
-  def current_url(new_params)
-  end
-
-  # def run_as_sql(arg = nil)
-  #   arg ||= nil
-  #   ActiveRecord::Base.connection.execute(arg.to_s)
-  # end
-
   def main_controllers
     main_controllers = ["orders", "purchasers", "vendors", "table_options"]
   end

@@ -71,10 +71,6 @@ module ServiceManager # Manages state of @resource data object with services
       super
     end
 
-    def has_table_option?
-
-    end
-
     def self.yeet_manage_service
       "yeet_manage_service: Big yeets from ManageServices"
     end
