@@ -28,12 +28,6 @@ class TableOption < ApplicationRecord
   end
 
   def validate_table_option_option_list
-    # byebug
-
-    # self.option_list = nil if self.option_list.size < 0
-
-    # option_list.size
-
     if self.option_list.present? && option_list.size < 3
       self.errors.add(:base, "You must have at least 3 columns selected to display.")
       throw(:abort)

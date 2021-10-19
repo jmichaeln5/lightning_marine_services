@@ -36,6 +36,7 @@ class OrdersController < ApplicationController
     }
     @init_resource = Resource.init_resource_klass ( klass_attrs )
     @resource = Resource::ResourceKlass.get_resource
+    # byebug
     @orders = @resource.target
     ############################################################
     @order = Order.new
