@@ -3,8 +3,6 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 <br>
-
-<%#= render 'shared/top_table_header', total_pages: @pagination_klass.total_pages %>
-<%= render 'shared/top_table_header', total_pages: @resource.pagination.total_pages %>
+<%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
 <%= render 'index' %>
-<%#= render "shared/pagination/pagination_buttons" %>
+<%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>

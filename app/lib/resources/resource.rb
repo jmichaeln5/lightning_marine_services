@@ -1,9 +1,6 @@
 autoload :ResourceCore, "resources/resource_core.rb"
-####################################################
 autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
-####################################################
 autoload :ServiceManager, "service_managers/service_manager.rb"
-####################################################
 
 module Resource
   extend ResourceCore
@@ -53,19 +50,39 @@ module Resource
     # Getting ivars for individual services from ResourceManager and merging into @options hash
     def self.get_sort
       set_sort
-      @options.merge!(target: @sorted_resource, target_sorted: true)
+
+      @options.merge!(
+        target_sorted: true, uniqueness: true,
+        target: @sorted_resource
+      )
       @generic_resource = update_resource_manager(@options)
     end
 
     def self.get_table_option
       set_table_option
-      @options.merge!(table_option: @table_option, has_table_option: true)
+
+      @options.merge!(
+        has_table_option: true,
+        table_option: @table_option,
+        resource_table_type: @table_option.resource_table_type,
+        option_list: @table_option.option_list,
+        selected_options: @table_option.selected_options,
+        resources_per_page: @table_option.resources_per_page
+      )
       @generic_resource = update_resource_manager(@options)
     end
 
     def self.get_pagination
       set_pagination
-      @options.merge!(target: @paginated_target, pagination: @pagination, has_pagination: true)
+
+      @options.merge!(
+        has_pagination: true,
+        target: @paginated_target,
+        pagination: @pagination,
+        total_pages: @pagination.total_pages,
+        paginated_offset: @pagination.paginated_offset
+      )
+      # byebug
       @generic_resource = update_resource_manager(@options)
     end
 
