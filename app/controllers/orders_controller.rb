@@ -24,11 +24,13 @@ class OrdersController < ApplicationController
     # @sorted_orders = OrdersSortTableLogic.sorted_orders(sort_option, sort_direction)
     # @orders = BusinessLogicPagination.new(@sorted_orders.unarchived, @per_page, @page)
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Order')
-
-    ############ After
+    ############################################################
+    ############################################################
+    ############################################################
+    ############ After *****************************************
     klass_attrs = {
      user: current_user,
-     target: Order.all,
+     target: Order.all.unarchived,
      parent_class: Order,
      parent_action: 'index',
      sort_option: sort_option,
@@ -38,7 +40,15 @@ class OrdersController < ApplicationController
 
     @init_resource = Resource.init_resource_klass ( klass_attrs )
     @resource = Resource::ResourceKlass.get_resource
-    @orders = @resource.target.unarchived
+
+    @orders = @resource.target
+
+
+    ############################################################
+    ############################################################
+    ############################################################
+
+
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
