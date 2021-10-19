@@ -50,20 +50,21 @@ module ResourceManager
       else
         @sorted_resource = @generic_resource.target.order("created_at DESC")
       end
-      @options.merge!(target: @sorted_resource, target_sorted: true)
-      @generic_resource = update_resource_manager(@options)
+      # @options.merge!(target: @sorted_resource, target_sorted: true)
+      # @generic_resource = update_resource_manager(@options)
     end
 
 
     def self.set_table_option
       table_option_hash = Hash.new
       if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
-         @table_option = ResourceManagerTableOption.user_table_option(
-           user = @generic_resource.user,
-           parent_class = @generic_resource.parent_class,
-           parent_action = @generic_resource.parent_action,
-           page = @generic_resource.page
-           )
+
+        @table_option = ResourceManagerTableOption.user_table_option(
+          user = @generic_resource.user,
+          parent_class = @generic_resource.parent_class,
+          parent_action = @generic_resource.parent_action,
+          page = @generic_resource.page
+        )
       else
         @table_option = ResourceManagerTableOption.new_table_option(
           user = @generic_resource.user,
@@ -72,8 +73,8 @@ module ResourceManager
           page = @generic_resource.page
           )
       end
-      @options.merge!(table_option: @table_option, has_table_option: true)
-      @generic_resource = update_resource_manager(@options)
+      # @options.merge!(table_option: @table_option, has_table_option: true)
+      # @generic_resource = update_resource_manager(@options)
     end
 
 
@@ -90,8 +91,8 @@ module ResourceManager
         paginated_offset = @pagination.paginated_offset,
         resources_per_page = @pagination.resources_per_page
       )
-      @options.merge!(target: @paginated_target, pagination: @pagination, has_pagination: true)
-      @generic_resource = update_resource(@options)
+      # @options.merge!(target: @paginated_target, pagination: @pagination, has_pagination: true)
+      # @generic_resource = update_resource_manager(@options)
     end
 
 

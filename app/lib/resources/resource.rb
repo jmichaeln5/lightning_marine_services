@@ -38,11 +38,11 @@ module Resource
     end
 
     # Setting ivars for individual services from ResourceManager
-    def self.set_table_option
+    def self.set_sort
       super
     end
 
-    def self.set_sort
+    def self.set_table_option
       super
     end
 
@@ -50,10 +50,30 @@ module Resource
       super
     end
 
-    def self.get_resource
+
+    def self.get_sort
       set_sort
+      @options.merge!(target: @sorted_resource, target_sorted: true)
+      @generic_resource = update_resource_manager(@options)
+    end
+
+    def self.get_table_option
       set_table_option
+      @options.merge!(table_option: @table_option, has_table_option: true)
+      @generic_resource = update_resource_manager(@options)
+    end
+
+    def self.get_pagination
       set_pagination
+      @options.merge!(target: @paginated_target, pagination: @pagination, has_pagination: true)
+      @generic_resource = update_resource_manager(@options)
+    end
+
+
+    def self.get_resource
+      get_sort
+      get_table_option
+      get_pagination
       return update_resource(@options)
     end
   end
