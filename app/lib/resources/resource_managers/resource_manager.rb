@@ -37,19 +37,13 @@ module ResourceManager
 
     def self.set_sort
       if ServiceManagerSort::SortDirection.new.is_satisfied_by?(@generic_resource)
-        @sorted_resource =
-          ResourceManagerSort.sort_orders(
-            target = @generic_resource.target,
-            sort_option = @generic_resource.sort_option,
-            sort_direction = @generic_resource.sort_direction
-          )
+          @sorted_resource = ResourceManagerSort.sort_resource(resource = @generic_resource)
       else
         @sorted_resource = @generic_resource.target.order("created_at DESC")
       end
     end
 
     def self.set_table_option
-      table_option_hash = Hash.new
       if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
 
         @table_option = ResourceManagerTableOption.user_table_option(
@@ -68,19 +62,21 @@ module ResourceManager
       end
     end
 
-    def self.set_pagination # resources_per_page defined in set_table_option
+    def self.set_pagination
+      generic_resource_is_paginated = ServiceManagerPagination::PaginationKlass.new.is_satisfied_by?(@generic_resource)
+
       @pagination =
         ResourceManagerPagination.new_pagination(
-          target = @generic_resource.target,
+          target = set_sort,
           resources_per_page = @table_option.resources_per_page,
           page = @page
-          ) unless ServiceManagerPagination::PaginationKlass.new.is_satisfied_by?(@generic_resource)
+          ) unless generic_resource_is_paginated
 
       @paginated_target = ResourceManagerPagination.paginate_resource(
         target = @pagination.target,
         paginated_offset = @pagination.paginated_offset,
         resources_per_page = @pagination.resources_per_page
-      )
+      ) unless generic_resource_is_paginated
     end
 
   end
