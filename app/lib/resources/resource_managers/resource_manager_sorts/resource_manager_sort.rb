@@ -33,12 +33,4 @@ module ResourceManagerSort
 
   end
 
-  # def self.sort_orders(target, sort_option, sort_direction)
-  #   SortOrders.sort_target(target, sort_option, sort_direction)
-  # end
-  #
-  # def self.sort_vendors(target, sort_option, sort_direction)
-  #   SortVendors.sort_target(target, sort_option, sort_direction)
-  # end
-
 end
