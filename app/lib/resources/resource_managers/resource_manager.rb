@@ -44,7 +44,6 @@ module ResourceManager
     end
 
     def self.set_table_option
-      table_option_hash = Hash.new
       if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
 
         @table_option = ResourceManagerTableOption.user_table_option(
