@@ -2,21 +2,16 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
-  before_action :set_pagination_params, only: %i[ index all_orders ]
+  before_action :set_pagination_params, only: %i[ index show ]
   helper_method :sort_option, :sort_direction
-  before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
+  before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
 
   def index
-    # autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
-    # @sorted_vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
-    # @vendor = Vendor.new
-    # @vendors = BusinessLogicPagination.new(@sorted_vendors, @per_page, @page)
-
     resource_attrs = {
       user: current_user,
       target: Vendor.all,
       parent_class: Vendor,
-      parent_action: 'index', # handled same as index action
+      parent_action: 'index',
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
@@ -27,15 +22,61 @@ class VendorsController < ApplicationController
     @vendors = @resource.target
   end
 
+
+  ####################################################
+  ####################################################
+  ####################################################
+  # # GET /vendors/1 or /vendors/1.json
+  # def show
+  #   autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
+  #   @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
+  #   @order = Order.new
+  #   @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+  #   @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
+  #   @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
+  # end
+
   # GET /vendors/1 or /vendors/1.json
   def show
-    autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
-    @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
+    # autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
+    # @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
+    # @order = Order.new
+    # @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+    # @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
+    # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
+
+    resource_attrs = {
+      user: current_user,
+      target: @vendor.orders,
+      parent_class: Vendor,
+      parent_action: 'show',
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+    # @vendor = Vendor.new
+    # @vendors = @resource.target
+
+
+
+    # @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
+    # @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
+    # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
+
+
   end
+  ####################################################
+  ####################################################
+  ####################################################
+
+
+
+
+
 
   # GET /vendors/new
   def new
