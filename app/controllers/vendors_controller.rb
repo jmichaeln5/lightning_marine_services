@@ -2,14 +2,29 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
-  before_action :set_pagination_params, only: %i[ index show]
+  before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
+  before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
 
   def index
-    autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
-    @sorted_vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
+    # autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
+    # @sorted_vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
+    # @vendor = Vendor.new
+    # @vendors = BusinessLogicPagination.new(@sorted_vendors, @per_page, @page)
+
+    resource_attrs = {
+      user: current_user,
+      target: Vendor.all,
+      parent_class: Vendor,
+      parent_action: 'index', # handled same as index action
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
     @vendor = Vendor.new
-    @vendors = BusinessLogicPagination.new(@sorted_vendors, @per_page, @page)
+    @vendors = @resource.target
   end
 
   # GET /vendors/1 or /vendors/1.json
@@ -86,8 +101,12 @@ class VendorsController < ApplicationController
     end
 
     def set_pagination_params
-      @per_page = 10
       @page = params.fetch(:page, 0).to_i
+    end
+
+    def load_resource_files
+      autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
+      autoload :Resource, "resources/resource.rb"
     end
 
 end
