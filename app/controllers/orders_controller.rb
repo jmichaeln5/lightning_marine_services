@@ -35,6 +35,7 @@ class OrdersController < ApplicationController
     }
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
+
     @orders = @resource.target
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new

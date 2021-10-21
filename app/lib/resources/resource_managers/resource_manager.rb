@@ -35,13 +35,23 @@ module ResourceManager
       Struct.new(*options.keys).new(*options.values)
     end
 
+
+
+
+
     def self.set_sort
       if ServiceManagerSort::SortDirection.new.is_satisfied_by?(@generic_resource)
-          @sorted_resource = ResourceManagerSort.sort_resource(resource = @generic_resource)
+          @sorted_resource = ResourceManagerSort.manage_sort(resource = @generic_resource)
       else
         @sorted_resource = @generic_resource.target.order("created_at DESC")
       end
+
+      # raise StandardError.new "ResourceManager::ResourceManagerKlass: @sorted_resource is nil, cannot continue to next service." if @sorted_resource == nil
     end
+
+
+
+
 
     def self.set_table_option
       if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
