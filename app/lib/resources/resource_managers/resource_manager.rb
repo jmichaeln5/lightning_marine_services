@@ -35,10 +35,6 @@ module ResourceManager
       Struct.new(*options.keys).new(*options.values)
     end
 
-
-
-
-
     def self.set_sort
       if ServiceManagerSort::SortDirection.new.is_satisfied_by?(@generic_resource)
           @sorted_resource = ResourceManagerSort.manage_sort(resource = @generic_resource)

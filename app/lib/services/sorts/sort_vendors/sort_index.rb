@@ -9,17 +9,16 @@ module SortIndex
     when 'order_amount'
       sort_vendors_by_order_amount(target, sort_option, sort_direction)
     else
-      return target.order("created_at DESC")
+      return Sort.invalid_sort(target, sort_option, sort_direction)
     end
   end
 
   def sort_by_sort_option(target, sort_option, sort_direction)
-      target.reorder(sort_option + " " + sort_direction)
+    target.reorder(sort_option + " " + sort_direction)
   end
 
   def sort_vendors_by_order_amount(target, sort_option, sort_direction)
-      Vendor.left_joins(:orders).group(:id).order("COUNT(orders.id) #{sort_direction}")
+    Vendor.left_joins(:orders).group(:id).order("COUNT(orders.id) #{sort_direction}")
   end
-
 
 end

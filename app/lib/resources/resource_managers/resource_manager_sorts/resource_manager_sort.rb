@@ -1,5 +1,3 @@
-# autoload :SortOrders, "services/sorts/sort_orders/sort_orders.rb"
-# autoload :SortVendors, "services/sorts/sort_vendors/sort_vendors.rb"
 autoload :Sort, "services/sorts/sort.rb"
 
 module ResourceManagerSort

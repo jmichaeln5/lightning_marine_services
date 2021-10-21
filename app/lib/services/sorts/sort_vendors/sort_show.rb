@@ -17,10 +17,9 @@ module SortShow
     when 'ship_name'
       return sort_by_ship_name(target, sort_option, sort_direction)
     else
-      return target
+      return Sort.invalid_sort(target, sort_option, sort_direction)
     end
   end
-
 
   def sort_by_sort_option(target, sort_option, sort_direction)
     target.reorder(sort_option + " " + sort_direction)
