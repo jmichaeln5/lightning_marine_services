@@ -1,36 +1,9 @@
-autoload :SortOrders, "services/sorts/sort_orders.rb"
-autoload :SortVendors, "services/sorts/sort_vendors.rb"
+autoload :Sort, "services/sorts/sort.rb"
 
 module ResourceManagerSort
-  extend SortOrders
-  extend SortVendors
-
-  def self.sort_resource(resource)
-
-    # byebug
-
-    if resource.parent_class.name == 'Order'
-
-      SortOrders.sort_target(
-        target = resource.target,
-        sort_option = resource.sort_option,
-        sort_direction = resource.sort_direction
-      )
-
-    elsif resource.parent_class.name == 'Vendor'
-
-      # byebug
-
-      SortVendors.sort_target(
-        target = resource.target,
-        sort_option = resource.sort_option,
-        sort_direction = resource.sort_direction
-      )
-
-    else
-      return resource.target
-    end
-
+  extend Sort
+  def self.manage_sort(resource)
+    Sort.trigger_sort_target(resource)
   end
 
 end
