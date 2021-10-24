@@ -4,9 +4,11 @@ class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show destroy ]
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
-  before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
+  before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @order_resource (data object) attrs in resource_attrs hash (local var)
 
   def all_orders
+    # load_resource_files
+    Resource.reload_ivars
     resource_attrs = {
       user: current_user,
       target: Order.all,
@@ -16,14 +18,20 @@ class OrdersController < ApplicationController
       sort_direction: sort_direction,
       page: @page
     }
+
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @resource = Resource::ResourceKlass.get_resource
-    @orders = @resource.target
+    @order_resource = Resource::ResourceKlass.get_resource
+    @orders = @order_resource.paginated_target
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
 
+
+
+
   def index
+    # load_resource_files
+    Resource.reload_ivars
     resource_attrs = {
       user: current_user,
       target: Order.all.unarchived,
@@ -34,8 +42,10 @@ class OrdersController < ApplicationController
       page: @page
     }
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @resource = Resource::ResourceKlass.get_resource
-    @orders = @resource.target
+    @order_resource = Resource::ResourceKlass.get_resource
+
+    # @orders = @order_resource.target
+    @orders = @order_resource.paginated_target
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
@@ -53,6 +63,9 @@ class OrdersController < ApplicationController
       }
     end
   end
+
+
+
 
   # GET /orders/1 or /orders/1.json
   def show
@@ -140,6 +153,10 @@ class OrdersController < ApplicationController
     def load_resource_files
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
+
+      Resource.reload_ivars
+      ResourceManager.reload_ivars
+
     end
 
 end

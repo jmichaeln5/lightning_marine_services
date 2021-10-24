@@ -16,8 +16,7 @@
 
   <tbody id="table-body">
 
-    <% @vendor.orders.each do |order| %>
-
+    <% @resource.paginated_target.each do |order| %>
         <tr>
           <% @resource.table_option.selected_options.each do |option| %>
 

@@ -4,9 +4,11 @@ class VendorsController < ApplicationController
   before_action :set_vendor, only: %i[ show edit update destroy ]
   before_action :set_pagination_params, only: %i[ index show ]
   helper_method :sort_option, :sort_direction
-  before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
+  # before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @vendors_resource (data object) attrs in resource_attrs hash (local var)
 
   def index
+    load_resource_files
+
     resource_attrs = {
       user: current_user,
       target: Vendor.all,
@@ -16,10 +18,22 @@ class VendorsController < ApplicationController
       sort_direction: sort_direction,
       page: @page
     }
+
+    # byebug
+    # if @vendors_resource == nil
+    #   byebug
+    # end
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @resource = Resource::ResourceKlass.get_resource
+    @vendors_resource = Resource::ResourceKlass.get_resource
     @vendor = Vendor.new
-    @vendors = @resource.target
+    # @vendors = @vendors_resource.target
+    @vendors = @vendors_resource.paginated_target
+
+    # if @vendors_resource.parent_class != Vendor
+    #   byebug
+    # end
+
+    # byebug
   end
 
 
@@ -45,6 +59,8 @@ class VendorsController < ApplicationController
     # @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
     # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
 
+    load_resource_files
+
     resource_attrs = {
       user: current_user,
       target: @vendor.orders,
@@ -55,9 +71,9 @@ class VendorsController < ApplicationController
       page: @page
     }
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @resource = Resource::ResourceKlass.get_resource
+    @vendors_resource = Resource::ResourceKlass.get_resource
     # @vendor = Vendor.new
-    # @vendors = @resource.target
+    # @vendors = @vendors_resource.target
 
 
 
@@ -148,6 +164,12 @@ class VendorsController < ApplicationController
     def load_resource_files
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
+
+      Resource.reload_ivars
+      ResourceManager.reload_ivars
+      # Resource.reload_ivars(resource_attrs)
+      # Resource.reload_ivars(resource_attrs)
+      # Resource.reload_ivars(resource_attrs)
     end
 
 end

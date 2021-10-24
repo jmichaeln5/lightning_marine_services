@@ -2,8 +2,6 @@
 
   <%= render 'shared/tab_table_options' %>
   <%= render 'shared/new_modal' %>
-
-  <%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
-  <%#= render partial: "index", locals: {vendors: @vendors} %>
-  <%= render 'index' %>
-  <%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>
+  <%= render 'shared/top_table_header', total_pages: @vendors_resource.total_pages %>
+  <%= render partial: 'vendors/index', locals: { vendors: @vendors} %>
+  <%= render "shared/pagination/pagination_buttons", total_pages: @vendors_resource.total_pages %>
