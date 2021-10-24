@@ -1,10 +1,11 @@
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-        <% @resource.table_option.selected_options.each do |option| %>
+        <% @order_resource.table_option.selected_options.each do |option| %>
             <% if option.in? TableOptionsHelper.sortable_ths  %>
                 <th class="align-middle">
-                  <%= link_to "#{option.titleize}", request.params.merge(sort_option: "#{option}", sort_direction: sort_direction ) %>
+                  <%= link_to "#{option.titleize}", request.params.merge( sort_option: "#{option}", sort_direction: sort_direction ) %>
+                  <%#= link_to "#{option.titleize}", request.params.merge(page: 0, sort_option: "#{option}", sort_direction: sort_direction ) %>
                 </th>
             <% else %>
                 <th class="align-middle">
@@ -19,9 +20,7 @@
     <% @orders.each do |order| %>
 
         <tr>
-          <% @resource.table_option.selected_options.each do |option| %>
-
-
+          <% @order_resource.table_option.selected_options.each do |option| %>
                 <td class=" align-middle font-light">
                 <% if (option) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>

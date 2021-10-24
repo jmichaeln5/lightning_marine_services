@@ -12,7 +12,7 @@ module ResourceManager
   extend ServiceManager
 
   def self.init_resource_manager( options={} ) # Set ivars to be used in when called in classes below
-    options.each { |k,v| instance_variable_set("@#{k}", v) }
+    # options.each { |k,v| instance_variable_set("@#{k}", v) }
     ResourceManagerKlass.set_resource_manager( options )
     ResourceManagerKlass.init_resource( options ) # method extended from ResourceCore
   end
@@ -41,11 +41,8 @@ module ResourceManager
       else
         @sorted_resource = @generic_resource.target.order("created_at DESC")
       end
-
       # raise StandardError.new "ResourceManager::ResourceManagerKlass: @sorted_resource is nil, cannot continue to next service." if @sorted_resource == nil
     end
-
-
 
 
 
@@ -68,22 +65,46 @@ module ResourceManager
       end
     end
 
-    def self.set_pagination
-      generic_resource_is_paginated = ServiceManagerPagination::PaginationKlass.new.is_satisfied_by?(@generic_resource)
 
+    ################################################
+    ################################################
+    ################################################
+    def self.set_pagination
       @pagination =
         ResourceManagerPagination.new_pagination(
-          target = set_sort,
+          target = @sorted_resource,
           resources_per_page = @table_option.resources_per_page,
           page = @page
-          ) unless generic_resource_is_paginated
+        )
 
-      @paginated_target = ResourceManagerPagination.paginate_resource(
-        target = @pagination.target,
-        paginated_offset = @pagination.paginated_offset,
-        resources_per_page = @pagination.resources_per_page
-      ) unless generic_resource_is_paginated
+      # byebug
+
+      # @paginated_target = ResourceManagerPagination.paginate_resource(
+      #   target = @pagination.target,
+      #   paginated_offset = @pagination.paginated_offset,
+      #   resources_per_page = @pagination.resources_per_page
+      # )
+
+      # @paginated_target = Pagination::Paginate.paginate_resource(@pagination)
+
     end
+
+    def self.paginate_target(pagination)
+      @paginated_target = Pagination::Paginate.paginate_resource(@pagination)
+
+      @options.merge!(
+        paginated_target: @paginated_target,
+        has_paginated_target?: true
+      )
+
+    end
+
+    ################################################
+    ################################################
+    ################################################
+
+
+
 
   end
 end

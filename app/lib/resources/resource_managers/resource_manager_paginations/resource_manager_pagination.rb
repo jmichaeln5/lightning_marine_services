@@ -7,8 +7,9 @@ module ResourceManagerPagination
     Pagination::PaginationKlass.new(target, resources_per_page, page)
   end
 
-  def self.paginate_resource(target, paginated_offset, resources_per_page)
-    target.offset(paginated_offset).limit(resources_per_page)
-  end
+  # def self.paginate_resource(target, paginated_offset, resources_per_page)
+  #   # byebug
+  #   target.offset(paginated_offset).limit(resources_per_page)
+  # end
 
 end

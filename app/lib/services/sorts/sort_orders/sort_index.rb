@@ -23,14 +23,14 @@ module SortIndex
     end
 
     def sort_by_sort_option(target, sort_option, sort_direction)
-      target.reorder(sort_option + " " + sort_direction)
+      return target.reorder(sort_option + " " + sort_direction)
     end
 
     def sort_by_ship_name(target, sort_option, sort_direction)
-      target.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+      return target.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
     end
 
     def sort_by_vendor_name(target, sort_option, sort_direction)
-      target.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
+      return target.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
     end
   end

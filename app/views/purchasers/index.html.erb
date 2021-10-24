@@ -2,33 +2,6 @@
 
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
-
-<!-- Before Search -->
-<%#= render 'shared/top_table_header', resource: @purchasers %>
-<%#= render partial: "index", locals: {purchasers: @purchasers} %>
-<%#= render "shared/pagination/pagination_buttons", total_pages: @purchasers.total_pages %>
-
-
-<!-- After Search -->
-<% if  @query.nil? == true %>
-  <!-- If no search results -->
-  <%= render 'shared/top_table_header', resource: @paginated_purchasers %>
-  <%= render partial: "index", locals: {resource_main: @purchasers} %>
-  <%= render "shared/pagination/pagination_buttons", total_pages: @paginated_purchasers.total_pages %>
-<% else %>
-  <!-- If search results -->
-  <%= render 'shared/top_table_header', resource: @paginated_purchasers %>
-      <div class=" border-2 border-green-500">
-        <%= render partial: "searches/index", locals: {
-          resource_main: @purchasers,
-          resource_query: @queried_purchasers,
-          resource_main_class_name: 'Purchaser',
-          resource_main_count: @query_purchasers.count,
-          resource_main_total_count: @total_purchaser_count,
-          resource_main_page: @page,
-          resource_main_per_page: @per_page
-        } %>
-        <%= render "shared/pagination/pagination_buttons", total_pages: @paginated_purchasers.total_pages %>
-
-      </div>
-<% end %>
+<%= render 'shared/top_table_header', total_pages: @purchasers_resource.total_pages %>
+<%= render partial: 'purchasers/index', locals: { purchasers: @purchasers_resource} %>
+<%= render "shared/pagination/pagination_buttons", total_pages: @purchasers_resource.total_pages %>
