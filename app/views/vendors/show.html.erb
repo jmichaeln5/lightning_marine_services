@@ -4,6 +4,6 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_order_on_show_modal' %>
 
-<%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
+<%= render 'shared/top_table_header', total_pages: @vendors_resource.total_pages %>
 <%= render partial: "show" %>
-<%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>
+<%= render "shared/pagination/pagination_buttons", total_pages: @vendors_resource.total_pages %>

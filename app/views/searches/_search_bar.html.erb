@@ -7,17 +7,27 @@
 
 <div class="float-right">
   <span>
-    <%#= form_tag purchasers_path, method: :get do %>
-      <%# text_field_tag :q, nil, placeholder: '(Sample) Search ' %>
+
+    <%#= form_tag orders_path, method: :get do %>
+      <%# text_field_tag :q, nil, placeholder: '(Sample) Search' %>
     <%# end %>
 
-    <%= form_tag orders_path, method: :get do %>
-      <% text_field_tag :q, nil, placeholder: '(Sample) Search ' %>
+    <%= form_tag request.params.merge(q: nil), method: :get do %>
+      <% text_field_tag :q, nil, placeholder: 'Search' %>
     <% end %>
 
 
+
+    <%#= form_tag  "yeet", request.params.merge(q: nil) %>
+
+
+    <%#= link_to  "yeet" , request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>
+
+
+
     <span class="text-xs pt-2">
-      Sample Search in: app/views/shared/_search_on_page.html.erb
+      This specific Search Bar lives in:
+      app/views/searches/_search_bar.html.erb
     </span>
 
   </span>
@@ -32,13 +42,5 @@
 
 <br> -->
 
-  <!-- <p class="text-xl">
-    Rendered Search Bar
-    <br>
-    <p class="text-sm text-gray-500">
-      app/views/searches/_search_bar.html.erb
-    </p>
-  </p>
-  <%#= render "searches/search_bar" %> -->
 
 </div>

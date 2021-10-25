@@ -35,12 +35,22 @@ class PurchasersController < ApplicationController
 
   # GET /purchasers/1 or /purchasers/1.json
   def show
-    autoload :PurchaserShowTableSortLogic, "purchasers/sort_logic/purchaser_show_table_sort_logic.rb"
-    @sorted_purchaser_orders = PurchaserShowTableSortLogic.sorted_purchaser_orders(@purchaser, sort_option, sort_direction)
+    load_resource_files
+
+    resource_attrs = {
+      user: current_user,
+      target: @purchaser.orders,
+      parent_class: Purchaser,
+      parent_action: 'show',
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @purchaser_resource = Resource::ResourceKlass.get_resource
+
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @orders = BusinessLogicPagination.new(@sorted_purchaser_orders, 10, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Purchaser', 'index')
   end
 
   # GET /purchasers/new

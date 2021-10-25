@@ -1,75 +1,78 @@
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-      <!-- Creating th's with BusinessLogicTableOption defined in app/models/business_logic_table_option.rb -->
-      <% @initialize_table_options.selected_table_options.each do |option| %>
-            <% if ((option[1]) == 'po_number') || ((option[1]) == 'order_content' )%>
-                <th>
-                  <%= "#{option[0]}"%>
+        <% @purchaser_resource.table_option.selected_options.each do |option| %>
+            <% if option.in? TableOptionsHelper.sortable_ths  %>
+                <th class="align-middle">
+                  <%= link_to "#{option.titleize}", request.params.merge(sort_option: "#{option}", sort_direction: sort_direction ) %>
                 </th>
             <% else %>
-                <th>
-                  <%= link_to "#{option[0]}", request.params.merge(sort_option: "#{option[1]}", sort_direction: sort_direction ) %>
+                <th class="align-middle">
+                  <%= "#{option.titleize}"%>
                 </th>
             <% end %>
       <% end %>
-    </tr>
   </thead>
 
   <tbody id="table-body">
-    <% resource.paginate.each do |order| %>
-      <tr>
-        <% @initialize_table_options.selected_table_options.each do |option| %>
-          <td class="align-middle">
-              <% if (option[1]) == 'id' %>
 
-                <% if (option[1]) == 'id' && ( order.archived? == true ) %>
-                  <span class="text-gray-500">archived</span>
-                  <br>
-                <% end %>
+    <% @purchaser_resource.paginated_target.each do |order| %>
+        <tr>
+          <% @purchaser_resource.table_option.selected_options.each do |option| %>
 
-                <%= link_to "#{order.id}", order_path(order) %>
 
-              <% elsif (option[1]) == 'ship_name' %>
-                <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
+                <td class=" align-middle font-light">
+                <% if (option) == 'id' %>
+                  <%= link_to "#{order.id}", order_path(order) %>
+                <% elsif (option) == 'ship_name' %>
+                  <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
+                <% elsif (option) == 'vendor_name' %>
+                  <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
+                <% elsif (option) == 'date_recieved' %>
+                  <%= order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+                <% elsif (option) == 'order_content' %>
+                    <% if order.order_content.present? %>
+                      <%= link_to(order_path(order)) do %>
 
-              <% elsif (option[1]) == 'vendor_name' %>
-                <%= link_to "#{order.vendor.name}", vendor_path(order.vendor) %>
+                        Boxes: <%= order.order_content.box ||= "n/a" %>
+                        <br>
+                        Crates: <%= order.order_content.crate ||= "n/a" %>
+                        <br>
+                        Pallets: <%= order.order_content.pallet ||= "n/a" %>
+                        <br>
 
-              <% elsif (option[1]) == 'date_recieved' %>
-                <%= order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
-
-              <% elsif (option[1]) == 'order_content' %>
-
-                  <% if order.order_content.present? %>
-
-                    <%= link_to(order_path(order)) do %>
-
-                      Boxes: <%= order.order_content.box ||= "n/a" %>
-                      <br>
-                      Crates: <%= order.order_content.crate ||= "n/a" %>
-                      <br>
-                      Pallets: <%= order.order_content.pallet ||= "n/a" %>
-                      <br>
-
-                      <% if is_nil_and_zero(order.order_content.other) == false %>
-                         <%= "Other: #{order.order_content.other}" %>
-                         <br>
-                         <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
+                        <% if is_nil_and_zero(order.order_content.other) == false %>
+                           <%= "Other: #{order.order_content.other}" %>
+                           <br>
+                           <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
+                        <% end %>
                       <% end %>
-
                     <% end %>
+
+                <% elsif (option) == 'date_delivered' %>
+                  <%= order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+                <% else %>
+
+                  <%#= order.send(option[1]) %>
+                  <% if option.to_s.downcase.include? ("ship" ) %>
+                    <%= order.send("purchaser").name %>
+                  <% elsif option.to_s.downcase.include? ("vendor" )  %>
+                    <%= order.send("vendor").name %>
+                  <% else %>
+                    <!-- Error -->
+                    <%#= order.send(option[1]) %>
+                    <!-- No Error -->
+                    <%= order.send(option) %>
                   <% end %>
 
-              <% elsif (option[1]) == 'date_delivered' %>
-                <%= order.date_delivered ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
 
-              <% else %>
-                <%= order.send(option[1]) %>
-              <% end %>
-            </td>
-        <% end %>
-      </tr>
+                <% end %>
+
+              </td>
+          <% end %>
+
+        </tr>
     <% end %>
+
   </tbody>
 </table>

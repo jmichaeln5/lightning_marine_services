@@ -2,6 +2,7 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
+  before_action :set_search_params, only: %i[ index all_orders show]
   before_action :set_pagination_params, only: %i[ index show ]
   helper_method :sort_option, :sort_direction
   # before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @vendors_resource (data object) attrs in resource_attrs hash (local var)
@@ -9,9 +10,15 @@ class VendorsController < ApplicationController
   def index
     load_resource_files
 
+    if @query.nil?
+      vendors_target = Vendor.all
+    else
+      vendors_target = @vendors_query
+    end
+
     resource_attrs = {
       user: current_user,
-      target: Vendor.all,
+      target: vendors_target,
       parent_class: Vendor,
       parent_action: 'index',
       sort_option: sort_option,
@@ -19,10 +26,6 @@ class VendorsController < ApplicationController
       page: @page
     }
 
-    # byebug
-    # if @vendors_resource == nil
-    #   byebug
-    # end
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @vendors_resource = Resource::ResourceKlass.get_resource
     @vendor = Vendor.new
@@ -61,29 +64,26 @@ class VendorsController < ApplicationController
 
     load_resource_files
 
+    if @query.nil?
+      vendors_target = Vendor.all
+    else
+      vendors_target = @vendors_query
+    end
+
     resource_attrs = {
       user: current_user,
-      target: @vendor.orders,
+      target: vendors_target,
       parent_class: Vendor,
-      parent_action: 'show',
+      parent_action: 'index',
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
     }
+
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @vendors_resource = Resource::ResourceKlass.get_resource
-    # @vendor = Vendor.new
-    # @vendors = @vendors_resource.target
-
-
-
-    # @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    # @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
-    # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
-
-
   end
   ####################################################
   ####################################################
@@ -165,11 +165,23 @@ class VendorsController < ApplicationController
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
 
-      Resource.reload_ivars
-      ResourceManager.reload_ivars
-      # Resource.reload_ivars(resource_attrs)
-      # Resource.reload_ivars(resource_attrs)
-      # Resource.reload_ivars(resource_attrs)
+      # Resource.reload_ivars
+      # ResourceManager.reload_ivars
+    end
+
+    def set_search_params
+      @query = params[:q]
+
+       if @query.present?
+          Vendor.reindex
+          raw_query = Vendor.search(@query)
+          results_arr = Array.new
+          raw_query.results.each do |result|
+            results_arr << result.id
+          end
+        end
+
+      @vendors_query = Vendor.where(id: results_arr)
     end
 
 end
