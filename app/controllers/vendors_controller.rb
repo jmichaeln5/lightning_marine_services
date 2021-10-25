@@ -5,7 +5,7 @@ class VendorsController < ApplicationController
   before_action :set_search_params, only: %i[ index all_orders show]
   before_action :set_pagination_params, only: %i[ index show ]
   helper_method :sort_option, :sort_direction
-  # before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @vendors_resource (data object) attrs in resource_attrs hash (local var)
+  # before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
 
   def index
     load_resource_files
@@ -27,12 +27,12 @@ class VendorsController < ApplicationController
     }
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @vendors_resource = Resource::ResourceKlass.get_resource
+    @resource = Resource::ResourceKlass.get_resource
     @vendor = Vendor.new
-    # @vendors = @vendors_resource.target
-    @vendors = @vendors_resource.paginated_target
+    # @vendors = @resource.target
+    @vendors = @resource.paginated_target
 
-    # if @vendors_resource.parent_class != Vendor
+    # if @resource.parent_class != Vendor
     #   byebug
     # end
 
@@ -65,7 +65,7 @@ class VendorsController < ApplicationController
     load_resource_files
 
     if @query.nil?
-      vendors_target = Vendor.all
+      vendors_target = @vendor.orders
     else
       vendors_target = @vendors_query
     end
@@ -74,14 +74,14 @@ class VendorsController < ApplicationController
       user: current_user,
       target: vendors_target,
       parent_class: Vendor,
-      parent_action: 'index',
+      parent_action: 'show',
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
     }
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @vendors_resource = Resource::ResourceKlass.get_resource
+    @resource = Resource::ResourceKlass.get_resource
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end

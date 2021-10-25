@@ -1,7 +1,7 @@
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-        <% @vendors_resource.table_option.selected_options.each do |option| %>
+        <% @resource.table_option.selected_options.each do |option| %>
             <% if option.in? TableOptionsHelper.sortable_ths  %>
                 <th class="align-middle">
                   <%= link_to "#{option.titleize}", request.params.merge(sort_option: "#{option}", sort_direction: sort_direction ) %>
@@ -16,9 +16,9 @@
 
   <tbody id="table-body">
 
-    <% @vendors_resource.paginated_target.each do |order| %>
+    <% @resource.paginated_target.each do |order| %>
         <tr>
-          <% @vendors_resource.table_option.selected_options.each do |option| %>
+          <% @resource.table_option.selected_options.each do |option| %>
 
 
                 <td class=" align-middle font-light">
