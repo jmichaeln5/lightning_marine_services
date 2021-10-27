@@ -38,15 +38,12 @@ module ResourceManager
       Struct.new(*options.keys).new(*options.values)
     end
 
-
     def self.set_search
-      # byebug
       if ServiceManagerSearch::HasSearchQuery.new.is_satisfied_by?(@generic_resource)
         @search_query = ResourceManagerSearch.manage_search(resource = @generic_resource)
       else
         @search_query = @generic_resource.target
       end
-
     end
 
     def self.set_sort
@@ -77,10 +74,6 @@ module ResourceManager
       end
     end
 
-
-    ################################################
-    ################################################
-    ################################################
     def self.set_pagination
       @pagination =
         ResourceManagerPagination.new_pagination(
@@ -97,15 +90,7 @@ module ResourceManager
         paginated_target: @paginated_target,
         has_paginated_target?: true
       )
-
     end
-
-    ################################################
-    ################################################
-    ################################################
-
-
-
 
   end
 end
