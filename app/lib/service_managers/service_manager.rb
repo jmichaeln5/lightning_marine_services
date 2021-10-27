@@ -1,5 +1,7 @@
 autoload :ServiceManagerCore, "service_managers/service_manager_core.rb"
 ####################################################
+autoload :ServiceManagerSearch, "service_managers/service_manager_searches/service_manager_search.rb"
+####################################################
 autoload :ServiceManagerTableOption, "service_managers/service_manager_table_options/service_manager_table_option.rb"
 ####################################################
 autoload :ServiceManagerPagination, "service_managers/service_manager_paginations/service_manager_pagination.rb"

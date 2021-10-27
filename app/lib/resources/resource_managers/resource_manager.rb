@@ -1,4 +1,5 @@
 autoload :ResourceCore, "resources/resource_core.rb"
+autoload :ResourceManagerSearch, "resources/resource_managers/resource_manager_searches/resource_manager_search.rb"
 autoload :ResourceManagerTableOption, "resources/resource_managers/resource_manager_table_options/resource_manager_table_option.rb"
 autoload :ResourceManagerPagination, "resources/resource_managers/resource_manager_paginations/resource_manager_pagination.rb"
 autoload :ResourceManagerSort, "resources/resource_managers/resource_manager_sorts/resource_manager_sort.rb"
@@ -6,6 +7,7 @@ autoload :ServiceManager, "service_managers/service_manager.rb"
 
 module ResourceManager
   extend ResourceCore
+  extend ResourceManagerSearch
   extend ResourceManagerTableOption
   extend ResourceManagerPagination
   extend ResourceManagerSort
@@ -19,6 +21,7 @@ module ResourceManager
 
   class ResourceManagerKlass
     extend ResourceCore
+    extend ResourceManagerSearch
     extend ResourceManagerTableOption
     extend ResourceManagerPagination
     extend ResourceManagerSort
@@ -35,6 +38,17 @@ module ResourceManager
       Struct.new(*options.keys).new(*options.values)
     end
 
+
+    def self.set_search
+      # byebug
+      if ServiceManagerSearch::HasSearchQuery.new.is_satisfied_by?(@generic_resource)
+        @search_query = ResourceManagerSearch.manage_search(resource = @generic_resource)
+      else
+        @search_query = @generic_resource.target
+      end
+
+    end
+
     def self.set_sort
       if ServiceManagerSort::SortDirection.new.is_satisfied_by?(@generic_resource)
           @sorted_resource = ResourceManagerSort.manage_sort(resource = @generic_resource)
@@ -43,8 +57,6 @@ module ResourceManager
       end
       # raise StandardError.new "ResourceManager::ResourceManagerKlass: @sorted_resource is nil, cannot continue to next service." if @sorted_resource == nil
     end
-
-
 
     def self.set_table_option
       if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
@@ -76,17 +88,6 @@ module ResourceManager
           resources_per_page = @table_option.resources_per_page,
           page = @page
         )
-
-      # byebug
-
-      # @paginated_target = ResourceManagerPagination.paginate_resource(
-      #   target = @pagination.target,
-      #   paginated_offset = @pagination.paginated_offset,
-      #   resources_per_page = @pagination.resources_per_page
-      # )
-
-      # @paginated_target = Pagination::Paginate.paginate_resource(@pagination)
-
     end
 
     def self.paginate_target(pagination)

@@ -135,9 +135,9 @@ class PurchasersController < ApplicationController
 
        if @query.present?
           Purchaser.reindex
-          raw_query = Purchaser.search(@query)
+          @search_query = Purchaser.search(@query)
           results_arr = Array.new
-          raw_query.results.each do |result|
+          @search_query.results.each do |result|
             results_arr << result.id
           end
         end

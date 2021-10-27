@@ -11,22 +11,6 @@
   </div>
 
   <div class=" w-1/4">
-    <% if params[:q].present? %>
-        <div class="text-xl row">
-          <%# byebug %>
-          Searching for:
-        </div>
-        <div class="text-xl text-gray-600 row">
-          <%= "#{params[:q].titleize}"%>
-        </div>
-        <div class="text-sm row">
-           <%= link_to "remove search", url_for(request.params.slice!(:q)) %>
-        </div>
-    <% end %>
-  </div>
-
-
-  <div class=" w-1/4">
     <% if params[:sort_option].present? %>
         <div class="text-xl row">
           Sort Options:
@@ -38,6 +22,25 @@
         </div>
         <div class="text-sm row">
            <%= link_to "remove sort", url_for(request.params.slice!(:sort_direction, :sort_option)) %>
+        </div>
+    <% end %>
+  </div>
+
+
+  <div class=" w-1/4">
+    <% if params[:q].present? %>
+        <div class="text-xl row">
+          <!-- Searching for: -->
+          <%= pluralize(@resource.results_length , 'result') if @resource.results_length > 0 %>
+          <%= 'No results' if @resource.results_length == 0 %>
+
+          for:
+        </div>
+        <div class="text-xl text-gray-600 row">
+          <%= "#{params[:q]}"%>
+        </div>
+        <div class="text-sm row">
+           <%= link_to "remove search", url_for(request.params.slice!(:q)) %>
         </div>
     <% end %>
   </div>

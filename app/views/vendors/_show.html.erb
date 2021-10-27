@@ -24,6 +24,8 @@
                 <td class=" align-middle font-light">
                 <% if (option) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>
+                <% elsif (option) == 'dept' %>
+                  <%= link_to "#{order.dept}", order_path(order) %>
                 <% elsif (option) == 'ship_name' %>
                   <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser) %>
                 <% elsif (option) == 'vendor_name' %>
@@ -58,6 +60,8 @@
                     <%= order.send("purchaser").name %>
                   <% elsif option.to_s.downcase.include? ("vendor" )  %>
                     <%= order.send("vendor").name %>
+                  <% elsif option.to_s.downcase.include? ("dept" )  %>
+                    <%= order.send("dept") %>
                   <% else %>
                     <!-- Error -->
                     <%#= order.send(option[1]) %>

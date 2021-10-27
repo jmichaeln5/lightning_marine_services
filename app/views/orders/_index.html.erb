@@ -17,11 +17,24 @@
 
   <tbody id="table-body">
 
+    <% order_count = 0 %>
+
     <% @orders.each do |order| %>
 
+    <% if @query.present? %>
+      <tr class="text-xl w-100">
+        <td class="align-middle w-100">
+          <%= "Result #{order_count += 1}:"%>
+        </td>
+      </tr>
+    <% end %>
+
         <tr>
+
           <% @resource.table_option.selected_options.each do |option| %>
-                <td class=" align-middle font-light">
+                <td class="align-middle font-light">
+
+
                 <% if (option) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>
                 <% elsif (option) == 'ship_name' %>

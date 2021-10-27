@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
     Resource.reload_ivars
     resource_attrs = {
       user: current_user,
-      target: Order.all.unarchived,
+      target: Order.all,
       parent_class: Order,
       parent_action: 'index',
       sort_option: sort_option,
@@ -33,27 +33,33 @@ class OrdersController < ApplicationController
 
 
 
-
+  ##################################
+  ##################################
+  #### *****************************
   def index
     load_resource_files
 
-    if @query.nil?
-      @orders_target = Order.all.unarchived
-    else
-      @orders_target = @orders_query
-    end
+    # if @query.nil?
+    #   @orders_target = Order.all.unarchived
+    # else
+    #   @orders_target = @orders_query
+    # end
 
     Resource.reload_ivars
+
     resource_attrs = {
       user: current_user,
-      # target: Order.all.unarchived,
-      target: @orders_target,
+      target: Order.all.unarchived,
+      # target: @orders_target,
       parent_class: Order,
       parent_action: 'index',
+      search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
     }
+
+
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
@@ -61,6 +67,8 @@ class OrdersController < ApplicationController
     @orders = @resource.paginated_target
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+
+    # byebug
 
     respond_to do |format|
       format.html
@@ -76,6 +84,9 @@ class OrdersController < ApplicationController
       }
     end
   end
+  #### *****************************
+  ##################################
+  ##################################
 
 
 
@@ -166,25 +177,32 @@ class OrdersController < ApplicationController
     def load_resource_files
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
+      autoload :OrdersResource, "resources/orders_resource.rb"
 
       Resource.reload_ivars
       ResourceManager.reload_ivars
     end
 
+
+
+
     def set_search_params
       @query = params[:q]
 
-       if @query.present?
-          Order.reindex
-          search_query = self.action_name == 'index' ? Order.unarchived.search(@query) : Order.search(@query)
+       # if @query.present?
+       #    Order.reindex
+       #    @search_query = self.action_name == 'index' ? Order.unarchived.search(@query) : Order.search(@query)
+       #
+       #    results_arr = Array.new
+       #    @search_query.results.each do |result|
+       #      results_arr << result.id
+       #    end
+       #
+       #    return @orders_query = Order.where(id: results_arr)
+       #
+       #  end
 
-          results_arr = Array.new
-          search_query.results.each do |result|
-            results_arr << result.id
-          end
-        end
-
-      @orders_query = Order.where(id: results_arr)
+      # byebug
     end
 
 

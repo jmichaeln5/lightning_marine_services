@@ -55,13 +55,6 @@ class VendorsController < ApplicationController
 
   # GET /vendors/1 or /vendors/1.json
   def show
-    # autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
-    # @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
-    # @order = Order.new
-    # @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    # @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
-    # @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
-
     load_resource_files
 
     if @query.nil?
@@ -169,14 +162,25 @@ class VendorsController < ApplicationController
       # ResourceManager.reload_ivars
     end
 
-    def set_search_params
-      @query = params[:q]
-
+    def set_search_params(q = nil)
+      @query = params[:q] ||= nil
        if @query.present?
+
           Vendor.reindex
-          raw_query = Vendor.search(@query)
+          # Vendor.reindex if action_name == 'index'
+          @search_query = Vendor.search(@query)
+
+          # Order.reindex if action_name == 'show'
+          # Vendor.reindex if action_name == 'index'
+          #
+          # @search_query = Order.search(@query) if action_name == 'show'
+          # @search_query = Vendor.search(@query) if action_name == 'index'
+
           results_arr = Array.new
-          raw_query.results.each do |result|
+
+          byebug
+
+          @search_query.results.each do |result|
             results_arr << result.id
           end
         end
