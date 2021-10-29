@@ -189,8 +189,6 @@ class OrdersController < ApplicationController
 
     def set_search_params
       @query = params[:q]
-      # @query ||= params[:q]
-      # @query = params[:q] ||= nil
     end
 
 end

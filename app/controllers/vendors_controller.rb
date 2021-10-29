@@ -40,7 +40,7 @@ class VendorsController < ApplicationController
       parent_class: Vendor,
       parent_action: 'show',
       controller_name: 'vendors',
-      controller_action: 'show',
+      controller_action: 'vendors#show',
       search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
@@ -49,6 +49,7 @@ class VendorsController < ApplicationController
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
+
     @table_option = @resource.table_option
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
@@ -118,7 +119,9 @@ class VendorsController < ApplicationController
     end
 
     def set_pagination_params
+      # @per_page = 10
       @page = params.fetch(:page, 0).to_i
+      @total_vendor_count = Vendor.all.count
     end
 
     def load_resource_files
@@ -128,19 +131,6 @@ class VendorsController < ApplicationController
       # Resource.reload_ivars
       # ResourceManager.reload_ivars
     end
-
-    # def set_search_params(q = nil)
-    #   @query = params[:q] ||= nil
-    #    if @query.present?
-    #       Vendor.reindex
-    #       @search_query = Vendor.search(@query)
-    #       results_arr = Array.new
-    #       @search_query.results.each do |result|
-    #         results_arr << result.id
-    #       end
-    #     end
-    #   @vendors_query = Vendor.where(id: results_arr)
-    # end
 
     def set_search_params
       @query = params[:q]
