@@ -5,11 +5,8 @@ module Sort
   end
 
   def self.trigger_sort_target(resource)
-    # target = resource.target
     parent_class = resource.parent_class
     parent_action = resource.parent_action
-    # sort_option = resource.sort_option
-    # sort_direction = resource.sort_direction
 
     # Defining parent and child module method sort_target will be called from
     sort_parent_class_module = "Sort#{parent_class.name.pluralize}"
