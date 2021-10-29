@@ -1,10 +1,6 @@
 class TableOption < ApplicationRecord
   belongs_to :user
 
-  # before_create :validate_uniq_table_option
-  # before_save :validate_user_table_options_amount
-  # before_save :validate_table_option_option_list
-
   before_create :validate_uniq_table_option, :validate_user_table_options_amount, :validate_table_option_option_list
 
   before_update :validate_user_table_options_amount, :validate_table_option_option_list
