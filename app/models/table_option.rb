@@ -29,12 +29,12 @@ class TableOption < ApplicationRecord
     end
   end
 
-  # def validate_user_table_options_amount
-  #   if ((self.user.table_options.present?) && (self.user.table_options.size > 3))
-  #     self.errors.add(:base, "You already have the maximum amount of Table Options")
-  #     throw(:abort)
-  #   end
-  # end
+  def validate_user_table_options_amount
+    if ((self.user.table_options.present?) && (self.user.table_options.size > 3))
+      self.errors.add(:base, "You already have the maximum amount of Table Options")
+      throw(:abort)
+    end
+  end
 
   def validate_table_option_option_list
     if self.option_list.present? && self.selected_options.size < 3
