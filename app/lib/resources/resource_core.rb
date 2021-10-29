@@ -9,7 +9,6 @@ module ResourceCore
       next if ivar == '@attributes'
       self.instance_variable_set(ivar, nil)
     end
-
   end
 
 end

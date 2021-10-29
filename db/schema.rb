@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2021_09_26_220616) do
 
   create_table "table_options", force: :cascade do |t|
     t.string "resource_table_type"
+    t.string "resource_table_action"
     t.text "option_list"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false

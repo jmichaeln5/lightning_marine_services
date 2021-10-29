@@ -22,10 +22,11 @@ class TableOptionsController < ApplicationController
 
   # POST /table_options or /table_options.json
   def create
-
     @table_option = TableOption.new table_option_params
 
     TableOptionsHelper.set_default_options(@table_option, default_table_option_list) if @table_option.option_list.nil?
+
+    # byebug
 
     if @table_option.save
       redirect_to request.referrer, notice: "Table options created successfully."
@@ -41,10 +42,9 @@ class TableOptionsController < ApplicationController
   def update
     if @table_option.update(table_option_params)
 
-      TableOptionsHelper.set_default_options(@table_option, default_table_option_list)
+      TableOptionsHelper.set_default_options(@table_option, default_table_option_list) if @table_option.option_list.nil?
 
       redirect_to request.referrer, notice: "Table options updated successfully."
-
     else
       redirect_to request.referrer
       @table_option.errors.each do |error|
@@ -68,7 +68,7 @@ class TableOptionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def table_option_params
-      params.require(:table_option).permit(:resource_table_type, :user_id, :resources_per_page, option_list: [])
+      params.require(:table_option).permit(:resource_table_type, :resource_table_action, :user_id, :resources_per_page, option_list: [])
     end
 
     def default_table_option_list

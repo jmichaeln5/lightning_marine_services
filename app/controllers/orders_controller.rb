@@ -2,10 +2,9 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_order, only: %i[ show destroy ]
-  before_action :set_search_params, only: %i[ index all_orders show]
+  before_action :set_search_params, only: %i[ index all_orders]
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
-  # before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
 
   def all_orders
     load_resource_files
@@ -15,6 +14,9 @@ class OrdersController < ApplicationController
       target: Order.all,
       parent_class: Order,
       parent_action: 'all_orders',
+      controller_name: 'orders',
+      controller_action: 'all_orders',
+      controller_name_and_action: 'orders#all_orders',
       search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
@@ -24,10 +26,9 @@ class OrdersController < ApplicationController
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
+    @table_option = @resource.table_option
     @orders = @resource.paginated_target
     @order = Order.new
-    @vendor = Vendor.new
-    @purchaser =
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
 
@@ -41,6 +42,9 @@ class OrdersController < ApplicationController
       target: Order.all.unarchived,
       parent_class: Order,
       parent_action: 'index',
+      controller_name: 'orders',
+      controller_action: 'index',
+      controller_name_and_action: 'orders#index',
       search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
@@ -50,9 +54,12 @@ class OrdersController < ApplicationController
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
+    @table_option = @resource.table_option
     @orders = @resource.paginated_target
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+
+    # byebug
 
     respond_to do |format|
       format.html
@@ -71,6 +78,25 @@ class OrdersController < ApplicationController
 
   # GET /orders/1 or /orders/1.json
   def show
+
+    load_resource_files
+
+    Resource.reload_ivars
+
+    resource_attrs = {
+      user: current_user,
+      target: @order,
+      parent_class: Order,
+      controller_name: 'orders',
+      controller_action: 'show',
+      parent_action: 'show',
+      controller_name_and_action: 'orders#show',
+      search_query: @query,
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+
     @new_order = Order.new
     order ||= @order
     @new_order_content = @new_order != nil ? @new_order.build_order_content : OrderContent.new
@@ -163,6 +189,8 @@ class OrdersController < ApplicationController
 
     def set_search_params
       @query = params[:q]
+      # @query ||= params[:q]
+      # @query = params[:q] ||= nil
     end
 
 end

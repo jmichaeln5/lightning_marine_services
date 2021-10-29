@@ -53,10 +53,8 @@ module Resource
     end
 
     # Getting ivars for individual services from ResourceManager and merging into @options hash
-
     def self.get_search
       set_search
-
       @options.merge!(
         has_search_query?: true,
         target: @search_query,
@@ -68,7 +66,6 @@ module Resource
 
     def self.get_sort
       set_sort
-
       @options.merge!(
         has_sorted_target?: true,
         target: @sorted_resource
@@ -76,14 +73,13 @@ module Resource
       @generic_resource = update_resource_manager(@options)
     end
 
-
     def self.get_table_option
       set_table_option
-
       @options.merge!(
         has_table_option?: true,
         table_option: @table_option,
         resource_table_type: @table_option.resource_table_type,
+        resource_table_action: @table_option.resource_table_action,
         option_list: @table_option.option_list,
         selected_options: @table_option.selected_options,
         resources_per_page: @table_option.resources_per_page
@@ -93,7 +89,6 @@ module Resource
 
     def self.get_pagination
       set_pagination
-
       @options.merge!(
         pagination: @pagination,
         has_pagination?: true,
@@ -102,10 +97,9 @@ module Resource
         paginated_offset: @pagination.paginated_offset
       )
       @generic_resource = update_resource_manager(@options)
-
     end
 
-    # Setting then Getting services ivars, merging into @options hash, returning updated resource
+    # Setting then Getting services then merging into @options hash, returning updated resource
     def self.get_resource
       get_search
       get_sort
@@ -114,7 +108,10 @@ module Resource
       paginate_target(@pagination)
 
       @generic_resource = update_resource_manager(@options)
-      return @generic_resource
+      @resource = @generic_resource
+      
+      # return @resource
+      return update_resource_manager(@options)
     end
 
   end

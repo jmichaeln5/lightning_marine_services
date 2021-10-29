@@ -1,4 +1,4 @@
-<% if (show_on_order_ship_purchaser_pages? == true) && (current_action == 'show') %>
+<% if (display_on_orders_purchasers_vendors? == true) && (current_action == 'show') %>
   <div class="container p-2">
     <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseEditToggle" aria-expanded="false" aria-controls="collapseEditToggle">
       <%= "Edit #{current_controller.capitalize.singularize}" %>

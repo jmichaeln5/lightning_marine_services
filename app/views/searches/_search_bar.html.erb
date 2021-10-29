@@ -12,7 +12,8 @@
       <%# text_field_tag :q, nil, placeholder: '(Sample) Search' %>
     <%# end %>
 
-    <%= form_tag request.params.merge(q: nil), method: :get do %>
+    <%#= form_tag request.params.merge(q: nil), method: :get do %>
+    <%= form_tag request.params.merge(q: @query, sort_option: sort_option, sort_direction: sort_direction ), method: :get do %>
       <% text_field_tag :q, nil, placeholder: 'Search' %>
     <% end %>
 

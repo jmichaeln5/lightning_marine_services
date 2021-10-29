@@ -1,11 +1,16 @@
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>
-        <% @resource.table_option.selected_options.each do |option| %>
+      <% if @query.present? %>
+          <th class="align-middle">
+            Search Results
+          </th>
+      <% end %>
+
+      <% @resource.table_option.selected_options.each do |option| %>
             <% if option.in? TableOptionsHelper.sortable_ths  %>
                 <th class="align-middle">
-                  <%= link_to "#{option.titleize}", request.params.merge( sort_option: "#{option}", sort_direction: sort_direction ) %>
-                  <%#= link_to "#{option.titleize}", request.params.merge(page: 0, sort_option: "#{option}", sort_direction: sort_direction ) %>
+                  <%= link_to "#{option.titleize}", request.params.merge(q: @query, sort_option: "#{option}", sort_direction: sort_direction ) %>
                 </th>
             <% else %>
                 <th class="align-middle">
@@ -13,27 +18,24 @@
                 </th>
             <% end %>
       <% end %>
+    </tr>
   </thead>
 
   <tbody id="table-body">
 
-    <% order_count = 0 %>
+    <% results_counter = 0 %>
 
     <% @orders.each do |order| %>
 
-    <% if @query.present? %>
-      <tr class="text-xl w-100">
-        <td class="align-middle w-100">
-          <%= "Result #{order_count += 1}:"%>
-        </td>
-      </tr>
-    <% end %>
-
         <tr>
+          <% if @query.present? %>
+              <td class="align-middle font-light">
+                <%= "Result: #{results_counter += 1}"%>
+              </td>
+          <% end %>
 
           <% @resource.table_option.selected_options.each do |option| %>
                 <td class="align-middle font-light">
-
 
                 <% if (option) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>

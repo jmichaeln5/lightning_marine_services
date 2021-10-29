@@ -1,10 +1,14 @@
 <%= form_with(model: table_option) do |form| %>
 
   <div class="field">
+
     <p class="text-3xl"> <%= "New" if table_option.id.nil? %> <%= current_controller.titleize.singularize %> Table Options </p>
-    <%= form.hidden_field :resource_table_type, value: controller_name.singularize.titleize %>
+    <%= form.hidden_field :resource_table_type, value: controller_name.downcase %>
+    <%= form.hidden_field :resource_table_action, value: action_name %>
+    <h1><%= controller_name %></h1>
+    <h1><%= action_name %></h1>
     <%= form.hidden_field :user_id, value: current_user.id %>
-    <%= form.hidden_field :set_default_options, value: "#{controller_name}##{action_name}" %>
+    <%= form.hidden_field :set_default_options, value: "#{controller_name.downcase}##{action_name}" %>
   </div>
 
     <div class="container bg-gray-200 p-2 ">
@@ -18,6 +22,7 @@
             <div class="p-2">
               <% strfy_options = TableOptionsHelper.default_table_options_for_form(controller_name_and_action).to_s %>
               <% TableOptionsHelper.default_table_options_for_form(controller_name_and_action).each do | option | %>
+
                     <% if ((@table_option != nil ) && (@table_option.option_list != nil )) && (option.to_s.in? @table_option.option_list) %>
                           <div class="p-1">
                             <%= check_box_tag "table_option[option_list][]", option, {:multiple => true} %>
@@ -29,6 +34,7 @@
                             <%= option %>
                           </div>
                     <% end %>
+
               <% end %>
             </div>
         </div>
@@ -43,9 +49,11 @@
         </div>
       </div>
 
-      <% if current_user.table_options.where(resource_table_type: controller_name.singularize.titleize).any? %>
-        <div class="">
-        <hr>
+      <% if @table_option.belongs_to_user? %>
+        <div class="px-8">
+          <hr>
+        </div>
+        <div class="pt-2">
         <%= link_to "Remove #{current_controller.titleize} table options", @table_option, method: :delete, data: { confirm: "Are you sure?" } %>
         </div>
       <% end %>

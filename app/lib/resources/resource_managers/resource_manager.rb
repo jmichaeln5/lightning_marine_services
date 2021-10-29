@@ -56,22 +56,35 @@ module ResourceManager
     end
 
     def self.set_table_option
-      if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
+      # byebug
 
-        @table_option = ResourceManagerTableOption.user_table_option(
-          user = @generic_resource.user,
-          parent_class = @generic_resource.parent_class,
-          parent_action = @generic_resource.parent_action,
-          page = @generic_resource.page
-        )
+      # spec = has_table_option_for_index_action = ServiceManager::Composite.new(
+      # ServiceManagerTableOption::HasTableOption)
+      # .and(ServiceManagerTableOption::IsIndexAction)
+      # .not(ServiceManagerTableOption::IsShowAction)
+      #
+      # spec.is_satisfied_by?(@generic_resource)
+
+
+      # has_table_option_for_show_action = ServiceManager::Composite.new(
+      # ServiceManagerTableOption::HasTableOption)
+      # .and(ServiceManagerTableOption::IsShowAction)
+      # .not(ServiceManagerTableOption::IsIndexAction)
+
+      # ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
+      # ServiceManagerTableOption::IsIndexAction.new.is_satisfied_by?(@generic_resource)
+      # ServiceManagerTableOption::IsShowAction.new.is_satisfied_by?(@generic_resource)
+
+      # byebug
+
+      if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
+        @table_option = ResourceManagerTableOption.user_table_option(resource = @generic_resource)
       else
-        @table_option = ResourceManagerTableOption.new_table_option(
-          user = @generic_resource.user,
-          parent_class = @generic_resource.parent_class,
-          parent_action = @generic_resource.parent_action,
-          page = @generic_resource.page
-          )
+        @table_option = ResourceManagerTableOption.manage_table_option(resource = @generic_resource)
       end
+
+      # byebug
+
     end
 
     def self.set_pagination

@@ -5,32 +5,29 @@ class PurchasersController < ApplicationController
   before_action :set_search_params, only: %i[ index show]
   before_action :set_pagination_params, only: %i[ index show]
   helper_method :sort_option, :sort_direction
-  # before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @purchasers_resource (data object) attrs in resource_attrs hash (local var)
 
   # # GET /purchasers or /purchasers.json
   def index
     load_resource_files
 
-    if @query.nil?
-      purchaser_target = Purchaser.all
-    else
-      purchaser_target = @purchasers_query
-    end
-
     resource_attrs = {
       user: current_user,
-      target: purchaser_target,
+      target: Purchaser.all,
       parent_class: Purchaser,
       parent_action: 'index',
+      controller_name: 'purchasers',
+      controller_action: 'index',
+      controller_name_and_action: 'purchasers#index',
+      search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
     }
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @purchasers_resource = Resource::ResourceKlass.get_resource
+    @resource = Resource::ResourceKlass.get_resource
     @purchaser = Purchaser.new
-    @purchasers = @purchasers_resource.paginated_target
+    @purchasers = @resource.paginated_target
   end
 
   # GET /purchasers/1 or /purchasers/1.json
@@ -42,12 +39,16 @@ class PurchasersController < ApplicationController
       target: @purchaser.orders,
       parent_class: Purchaser,
       parent_action: 'show',
+      controller_name: 'purchasers',
+      controller_action: 'show',
+      controller_name_and_action: 'purchasers#show',
+      search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
     }
     @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @purchaser_resource = Resource::ResourceKlass.get_resource
+    @resource = Resource::ResourceKlass.get_resource
 
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
@@ -130,19 +131,23 @@ class PurchasersController < ApplicationController
       ResourceManager.reload_ivars
     end
 
+    # def set_search_params
+    #   @query = params[:q]
+    #
+    #    if @query.present?
+    #       Purchaser.reindex
+    #       @search_query = Purchaser.search(@query)
+    #       results_arr = Array.new
+    #       @search_query.results.each do |result|
+    #         results_arr << result.id
+    #       end
+    #     end
+    #
+    #   @purchasers_query = Purchaser.where(id: results_arr)
+    # end
+
     def set_search_params
       @query = params[:q]
-
-       if @query.present?
-          Purchaser.reindex
-          @search_query = Purchaser.search(@query)
-          results_arr = Array.new
-          @search_query.results.each do |result|
-            results_arr << result.id
-          end
-        end
-
-      @purchasers_query = Purchaser.where(id: results_arr)
     end
 
 end

@@ -4,7 +4,5 @@
 <%= render 'shared/new_modal' %>
 <br>
 <%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
-<%#= render 'index' %>
 <%= render partial: 'orders/index', locals: { orders: @orders} %>
-<%#= render partial: 'orders/index', locals: { orders: @resource.paginated_target} %>
 <%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>

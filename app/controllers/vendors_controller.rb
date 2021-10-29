@@ -2,7 +2,7 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
-  before_action :set_search_params, only: %i[ index all_orders show]
+  before_action :set_search_params, only: %i[ index show]
   before_action :set_pagination_params, only: %i[ index show ]
   helper_method :sort_option, :sort_direction
   # before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
@@ -10,17 +10,14 @@ class VendorsController < ApplicationController
   def index
     load_resource_files
 
-    if @query.nil?
-      vendors_target = Vendor.all
-    else
-      vendors_target = @vendors_query
-    end
-
     resource_attrs = {
       user: current_user,
-      target: vendors_target,
+      target: Vendor.all,
       parent_class: Vendor,
       parent_action: 'index',
+      controller_name: 'vendors',
+      controller_action: 'index',
+      search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
@@ -28,46 +25,23 @@ class VendorsController < ApplicationController
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
+    @table_option = @resource.table_option
     @vendor = Vendor.new
-    # @vendors = @resource.target
     @vendors = @resource.paginated_target
-
-    # if @resource.parent_class != Vendor
-    #   byebug
-    # end
-
-    # byebug
   end
-
-
-  ####################################################
-  ####################################################
-  ####################################################
-  # # GET /vendors/1 or /vendors/1.json
-  # def show
-  #   autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
-  #   @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
-  #   @order = Order.new
-  #   @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-  #   @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
-  #   @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
-  # end
 
   # GET /vendors/1 or /vendors/1.json
   def show
     load_resource_files
 
-    if @query.nil?
-      vendors_target = @vendor.orders
-    else
-      vendors_target = @vendors_query
-    end
-
     resource_attrs = {
       user: current_user,
-      target: vendors_target,
+      target: @vendor.orders,
       parent_class: Vendor,
       parent_action: 'show',
+      controller_name: 'vendors',
+      controller_action: 'show',
+      search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
@@ -75,17 +49,10 @@ class VendorsController < ApplicationController
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
+    @table_option = @resource.table_option
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
-  ####################################################
-  ####################################################
-  ####################################################
-
-
-
-
-
 
   # GET /vendors/new
   def new
@@ -162,30 +129,21 @@ class VendorsController < ApplicationController
       # ResourceManager.reload_ivars
     end
 
-    def set_search_params(q = nil)
-      @query = params[:q] ||= nil
-       if @query.present?
+    # def set_search_params(q = nil)
+    #   @query = params[:q] ||= nil
+    #    if @query.present?
+    #       Vendor.reindex
+    #       @search_query = Vendor.search(@query)
+    #       results_arr = Array.new
+    #       @search_query.results.each do |result|
+    #         results_arr << result.id
+    #       end
+    #     end
+    #   @vendors_query = Vendor.where(id: results_arr)
+    # end
 
-          Vendor.reindex
-          # Vendor.reindex if action_name == 'index'
-          @search_query = Vendor.search(@query)
-
-          # Order.reindex if action_name == 'show'
-          # Vendor.reindex if action_name == 'index'
-          #
-          # @search_query = Order.search(@query) if action_name == 'show'
-          # @search_query = Vendor.search(@query) if action_name == 'index'
-
-          results_arr = Array.new
-
-          byebug
-
-          @search_query.results.each do |result|
-            results_arr << result.id
-          end
-        end
-
-      @vendors_query = Vendor.where(id: results_arr)
+    def set_search_params
+      @query = params[:q]
     end
 
 end
