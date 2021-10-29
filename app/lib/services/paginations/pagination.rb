@@ -27,19 +27,10 @@ module Pagination
     end
   end
 
-
   module Paginate
     def self.paginate_resource(pagination)
-      # return resource.target.offset(resource.pagination.paginated_offset).limit(resource.pagination.resources_per_page)
-
       return pagination.target.offset(pagination.paginated_offset).limit(pagination.resources_per_page)
-
     end
   end
-
-
-  # module Paginate
-  #   return @target.offset(paginated_offset).limit(@resources_per_page)
-  # end
 
 end

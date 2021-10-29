@@ -1,4 +1,5 @@
 autoload :ResourceCore, "resources/resource_core.rb"
+autoload :ResourceManagerSearch, "resources/resource_managers/resource_manager_searches/resource_manager_search.rb"
 autoload :ResourceManagerTableOption, "resources/resource_managers/resource_manager_table_options/resource_manager_table_option.rb"
 autoload :ResourceManagerPagination, "resources/resource_managers/resource_manager_paginations/resource_manager_pagination.rb"
 autoload :ResourceManagerSort, "resources/resource_managers/resource_manager_sorts/resource_manager_sort.rb"
@@ -6,6 +7,7 @@ autoload :ServiceManager, "service_managers/service_manager.rb"
 
 module ResourceManager
   extend ResourceCore
+  extend ResourceManagerSearch
   extend ResourceManagerTableOption
   extend ResourceManagerPagination
   extend ResourceManagerSort
@@ -19,6 +21,7 @@ module ResourceManager
 
   class ResourceManagerKlass
     extend ResourceCore
+    extend ResourceManagerSearch
     extend ResourceManagerTableOption
     extend ResourceManagerPagination
     extend ResourceManagerSort
@@ -35,6 +38,14 @@ module ResourceManager
       Struct.new(*options.keys).new(*options.values)
     end
 
+    def self.set_search
+      if ServiceManagerSearch::HasSearchQuery.new.is_satisfied_by?(@generic_resource)
+        @search_query = ResourceManagerSearch.manage_search(resource = @generic_resource)
+      else
+        @search_query = @generic_resource.target
+      end
+    end
+
     def self.set_sort
       if ServiceManagerSort::SortDirection.new.is_satisfied_by?(@generic_resource)
           @sorted_resource = ResourceManagerSort.manage_sort(resource = @generic_resource)
@@ -44,31 +55,38 @@ module ResourceManager
       # raise StandardError.new "ResourceManager::ResourceManagerKlass: @sorted_resource is nil, cannot continue to next service." if @sorted_resource == nil
     end
 
-
-
     def self.set_table_option
-      if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
+      # byebug
 
-        @table_option = ResourceManagerTableOption.user_table_option(
-          user = @generic_resource.user,
-          parent_class = @generic_resource.parent_class,
-          parent_action = @generic_resource.parent_action,
-          page = @generic_resource.page
-        )
+      # spec = has_table_option_for_index_action = ServiceManager::Composite.new(
+      # ServiceManagerTableOption::HasTableOption)
+      # .and(ServiceManagerTableOption::IsIndexAction)
+      # .not(ServiceManagerTableOption::IsShowAction)
+      #
+      # spec.is_satisfied_by?(@generic_resource)
+
+
+      # has_table_option_for_show_action = ServiceManager::Composite.new(
+      # ServiceManagerTableOption::HasTableOption)
+      # .and(ServiceManagerTableOption::IsShowAction)
+      # .not(ServiceManagerTableOption::IsIndexAction)
+
+      # ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
+      # ServiceManagerTableOption::IsIndexAction.new.is_satisfied_by?(@generic_resource)
+      # ServiceManagerTableOption::IsShowAction.new.is_satisfied_by?(@generic_resource)
+
+      # byebug
+
+      if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
+        @table_option = ResourceManagerTableOption.user_table_option(resource = @generic_resource)
       else
-        @table_option = ResourceManagerTableOption.new_table_option(
-          user = @generic_resource.user,
-          parent_class = @generic_resource.parent_class,
-          parent_action = @generic_resource.parent_action,
-          page = @generic_resource.page
-          )
+        @table_option = ResourceManagerTableOption.manage_table_option(resource = @generic_resource)
       end
+
+      # byebug
+
     end
 
-
-    ################################################
-    ################################################
-    ################################################
     def self.set_pagination
       @pagination =
         ResourceManagerPagination.new_pagination(
@@ -76,17 +94,6 @@ module ResourceManager
           resources_per_page = @table_option.resources_per_page,
           page = @page
         )
-
-      # byebug
-
-      # @paginated_target = ResourceManagerPagination.paginate_resource(
-      #   target = @pagination.target,
-      #   paginated_offset = @pagination.paginated_offset,
-      #   resources_per_page = @pagination.resources_per_page
-      # )
-
-      # @paginated_target = Pagination::Paginate.paginate_resource(@pagination)
-
     end
 
     def self.paginate_target(pagination)
@@ -96,15 +103,7 @@ module ResourceManager
         paginated_target: @paginated_target,
         has_paginated_target?: true
       )
-
     end
-
-    ################################################
-    ################################################
-    ################################################
-
-
-
 
   end
 end

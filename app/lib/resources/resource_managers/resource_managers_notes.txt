@@ -1,0 +1,9 @@
+ResourceManagers' purposes are to  Manage the @resource data object.
+
+Acts similarly to class methods where as defining a method in one ResourceManager will be extended to app/lib/resources/resource.rb where we are returning what we define as the @resource data object.
+
+The reason for this is because the @resource data object is an instance variable and is being called from multiple controllers that are autoloading the file: app/lib/resources/resource.rb (sometimes directly from one controller to another controller where both have @resource defined).
+
+Since the @resource data object/instance variable is defined in the controllers where they are auto-loaded and controller files are classes using class methods this can sometimes cause a leaky @resource data object. (auto-loaded with Zeitwerk gem, newly added in Rails 6 and is considered new best practice for loading modules as of this current date, as well as, last Rails stable release -v 6.1.4 / June 24 2021)
+
+To stop leakage we are separating the services invoked on @resource data object within their respective services dirs/files and then calling from ResourceManagers

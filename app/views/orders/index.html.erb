@@ -3,8 +3,6 @@
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_modal' %>
 <br>
-<%= render 'shared/top_table_header', total_pages: @order_resource.total_pages %>
-<%#= render 'index' %>
+<%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
 <%= render partial: 'orders/index', locals: { orders: @orders} %>
-<%#= render partial: 'orders/index', locals: { orders: @order_resource.paginated_target} %>
-<%= render "shared/pagination/pagination_buttons", total_pages: @order_resource.total_pages %>
+<%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>

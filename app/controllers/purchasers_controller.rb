@@ -5,112 +5,53 @@ class PurchasersController < ApplicationController
   before_action :set_search_params, only: %i[ index show]
   before_action :set_pagination_params, only: %i[ index show]
   helper_method :sort_option, :sort_direction
-  # before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @purchasers_resource (data object) attrs in resource_attrs hash (local var)
 
-  ###  # BEFORE CURRENT BRANCH
-  ###  # BEFORE CURRENT BRANCH
-  ###  # BEFORE CURRENT BRANCH
-  # # GET /purchasers or /purchasers.json
-  # def index
-  #   autoload :PurchasersIndexTableSortLogic, "purchasers/sort_logic/purchasers_index_table_sort_logic.rb"
-  #
-  #   @purchaser = Purchaser.new
-  #
-  #   if @query.nil?
-  #       @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
-  #       @paginated_purchasers = BusinessLogicPagination.new(@sorted_purchasers, @per_page, @page)
-  #       @purchasers = @paginated_purchasers.paginate
-  #   end
-  # end
-
-
-  ####################################################
-  ####################################################
   # # GET /purchasers or /purchasers.json
   def index
-
     load_resource_files
 
-    # resource_attrs = {
-    #   user: current_user,
-    #   target: Purchaser.all,
-    #   parent_class: Purchaser,
-    #   parent_action: 'index',
-    #   sort_option: sort_option,
-    #   sort_direction: sort_direction,
-    #   page: @page
-    # }
+    resource_attrs = {
+      user: current_user,
+      target: Purchaser.all,
+      parent_class: Purchaser,
+      parent_action: 'index',
+      controller_name: 'purchasers',
+      controller_action: 'index',
+      controller_name_and_action: 'purchasers#index',
+      search_query: @query,
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
 
-    # @init_resource = Resource.init_resource_klass ( resource_attrs )
-    # @purchasers_resource = Resource::ResourceKlass.get_resource
-    # @purchaser = Purchaser.new
-    # @purchasers = @purchasers_resource.paginated_target
-
-    # if @query.nil?
-    #   resource_attrs = {
-    #     user: current_user,
-    #     target: Purchaser.all,
-    #     parent_class: Purchaser,
-    #     parent_action: 'index',
-    #     sort_option: sort_option,
-    #     sort_direction: sort_direction,
-    #     page: @page
-    #   }
-    #   @init_resource = Resource.init_resource_klass ( resource_attrs )
-    #   @purchasers_resource = Resource::ResourceKlass.get_resource
-    #   @purchaser = Purchaser.new
-    #   @purchasers = @purchasers_resource.paginated_target
-    # else
-    #   resource_attrs = {
-    #     user: current_user,
-    #     target: @purchasers_query,
-    #     parent_class: Purchaser,
-    #     parent_action: 'index',
-    #     sort_option: sort_option,
-    #     sort_direction: sort_direction,
-    #     page: @page
-    #   }
-    #   @init_resource = Resource.init_resource_klass ( resource_attrs )
-    #   @purchasers_resource = Resource::ResourceKlass.get_resource
-    #   @purchaser = Purchaser.new
-    #   @purchasers = @purchasers_resource.paginated_target
-    # end
-
-
-      if @query.nil?
-        purchaser_target = Purchaser.all
-      else
-        purchaser_target = @purchasers_query
-      end
-
-      resource_attrs = {
-        user: current_user,
-        target: purchaser_target,
-        parent_class: Purchaser,
-        parent_action: 'index',
-        sort_option: sort_option,
-        sort_direction: sort_direction,
-        page: @page
-      }
-      @init_resource = Resource.init_resource_klass ( resource_attrs )
-      @purchasers_resource = Resource::ResourceKlass.get_resource
-      @purchaser = Purchaser.new
-      @purchasers = @purchasers_resource.paginated_target
-
-
-
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+    @purchaser = Purchaser.new
+    @purchasers = @resource.paginated_target
   end
-  ####################################################
-  ####################################################
 
   # GET /purchasers/1 or /purchasers/1.json
   def show
-    autoload :PurchaserShowTableSortLogic, "purchasers/sort_logic/purchaser_show_table_sort_logic.rb"
-    @sorted_purchaser_orders = PurchaserShowTableSortLogic.sorted_purchaser_orders(@purchaser, sort_option, sort_direction)
+    load_resource_files
+
+    resource_attrs = {
+      user: current_user,
+      target: @purchaser.orders,
+      parent_class: Purchaser,
+      parent_action: 'show',
+      controller_name: 'purchasers',
+      controller_action: 'show',
+      controller_name_and_action: 'purchasers#show',
+      search_query: @query,
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @orders = BusinessLogicPagination.new(@sorted_purchaser_orders, 10, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Purchaser', 'index')
   end
 
   # GET /purchasers/new
@@ -192,34 +133,21 @@ class PurchasersController < ApplicationController
 
     # def set_search_params
     #   @query = params[:q]
-    #   @purchasers = Purchaser.search(@query) unless @query.nil?
     #
-    #   if @query.nil? == false
-    #     @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
-    #     @paginated_purchasers = BusinessLogicPagination.new(@query_purchasers.results, @per_page, @page)
-    #     @purchasers = @paginated_purchasers.paginate
-    #   end
+    #    if @query.present?
+    #       Purchaser.reindex
+    #       @search_query = Purchaser.search(@query)
+    #       results_arr = Array.new
+    #       @search_query.results.each do |result|
+    #         results_arr << result.id
+    #       end
+    #     end
+    #
+    #   @purchasers_query = Purchaser.where(id: results_arr)
     # end
 
-    ####################################################
-    ####################################################
-    ####################################################
     def set_search_params
       @query = params[:q]
-
-       if @query.present?
-          Purchaser.reindex
-          raw_query = Purchaser.search(@query)
-          results_arr = Array.new
-          raw_query.results.each do |result|
-            results_arr << result.id
-          end
-        end
-
-      @purchasers_query = Purchaser.where(id: results_arr)
     end
-    ####################################################
-    ####################################################
-    ####################################################
 
 end

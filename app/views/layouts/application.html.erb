@@ -20,7 +20,6 @@
   </head>
 
   <body class="bg-indigo-100 ">
-
     <%= render "shared/nav"%>
 
       <div class="h-screen">
@@ -37,7 +36,8 @@
                 <div class="p-4">
                 <div class="">
                 <div class="align-center">
-                <%= render "shared/search_on_page" %>
+                  <%#= render "shared/search_on_page" %>
+                  <%= render "searches/search_bar" %>
                 </div>
 
                 </div>
@@ -47,7 +47,7 @@
                 <!-- OUT OF POSITION SEARCH BAR -->
                 <!-- OUT OF POSITION SEARCH BAR -->
 
-                  <div class=" container pt-4">
+                  <div class="container pt-4">
 
                     <!-- POSITIONED SEARCH BAR -->
                     <!-- POSITIONED SEARCH BAR -->
@@ -119,26 +119,31 @@
                   <%= yield %>
                 </div>
 
-
                 <% if main_controllers.include? controller_name %>
-                    <div class="p-2">
+                    <div class="">
                       <%= link_to "Back", :back, class:"btn btn-primary" %>
                     </div>
+                    <br>
+                    <br>
                 <% end  %>
 
               </div>
         </div>
       </div>
 
-    <br>
-
     <!-- https://css-tricks.com/how-to-make-an-unobtrusive-scroll-to-top-button/ -->
-    <nav class="fixed-bottom p-2">
-      <div class=" my-2 my-lg-0 pt-4">
-        <button class="btn btn-outline-success my-2 my-sm-0 float-right" id="scrollToTopBtn">Scroll to Top</button>
-      </div>
-      <br>
-    </nav>
+    <div class="pt-2">
+      <nav class="fixed-bottom py-2">
+        <div class="p-2">
+          <div class=" my-2 my-lg-0 pt-4">
+            <button class="btn btn-outline-success my-2 my-sm-0 float-right" id="scrollToTopBtn">Scroll to Top</button>
+          </div>
+        </div>
+
+        <br>
+      </nav>
+    </div>
+
 
     <!-- <footer>
       <span class=" fixed-bottom">

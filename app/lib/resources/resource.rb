@@ -30,11 +30,12 @@ module Resource
       @options = options
     end
 
-    # def self.update_resource( options = {} )
-    #   Struct.new(*options.keys).new(*options.values)
-    # end
-
     # Setting ivars for individual services from ResourceManager
+
+    def self.set_search
+      super
+    end
+
     def self.set_sort
       super
     end
@@ -52,9 +53,19 @@ module Resource
     end
 
     # Getting ivars for individual services from ResourceManager and merging into @options hash
+    def self.get_search
+      set_search
+      @options.merge!(
+        has_search_query?: true,
+        target: @search_query,
+        search_results: @search_query,
+        results_length: @search_query.size
+      )
+      @generic_resource = update_resource_manager(@options)
+    end
+
     def self.get_sort
       set_sort
-
       @options.merge!(
         has_sorted_target?: true,
         target: @sorted_resource
@@ -62,14 +73,13 @@ module Resource
       @generic_resource = update_resource_manager(@options)
     end
 
-
     def self.get_table_option
       set_table_option
-
       @options.merge!(
         has_table_option?: true,
         table_option: @table_option,
         resource_table_type: @table_option.resource_table_type,
+        resource_table_action: @table_option.resource_table_action,
         option_list: @table_option.option_list,
         selected_options: @table_option.selected_options,
         resources_per_page: @table_option.resources_per_page
@@ -77,46 +87,31 @@ module Resource
       @generic_resource = update_resource_manager(@options)
     end
 
-
-    ################################################
-    ################################################
-    ################################################
     def self.get_pagination
       set_pagination
-
       @options.merge!(
         pagination: @pagination,
         has_pagination?: true,
-        # paginated_target: @paginated_target,
-        # has_paginated_target?: true,
         has_paginated_target?: false,
         total_pages: @pagination.total_pages,
         paginated_offset: @pagination.paginated_offset
       )
-
-      # @unprepared_generic_resource = update_resource_manager(@options)
-      #
-      # trigger_byebug
-      #
-      # @options.merge!(
-      #   paginated_target: Pagination::Paginate.paginate_resource(@unprepared_generic_resource),
-      #   has_paginated_target?: true
-      # )
-      # @generic_resource = update_resource_manager(@options)
-
       @generic_resource = update_resource_manager(@options)
-
     end
 
-    # Setting then Getting services ivars, merging into @options hash, returning updated resource
+    # Setting then Getting services then merging into @options hash, returning updated resource
     def self.get_resource
+      get_search
       get_sort
       get_table_option
       get_pagination
       paginate_target(@pagination)
 
       @generic_resource = update_resource_manager(@options)
-      return @generic_resource
+      @resource = @generic_resource
+      
+      # return @resource
+      return update_resource_manager(@options)
     end
 
   end

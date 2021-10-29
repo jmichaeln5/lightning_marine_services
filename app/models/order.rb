@@ -7,6 +7,8 @@ class Order < ApplicationRecord
   has_many_attached :images
   has_one :order_content, dependent: :destroy
 
+  searchkick
+
   accepts_nested_attributes_for :order_content
 
   validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
@@ -50,5 +52,14 @@ class Order < ApplicationRecord
     self.archived = true if self.date_delivered.present? == true
     self.archived = false if self.date_delivered.present? == false
   end
+
+  def search_data
+    attributes.merge(
+      order_content: self.order_content,
+      ship_name: self.purchaser(&:name),
+      vendor_name: self.vendor(&:name)
+    )
+  end
+
 
 end

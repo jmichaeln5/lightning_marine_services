@@ -9,10 +9,9 @@
         </button>
 
         <% if current_user.has_role? :admin %>
-
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions" id="adminOptions">
-          Admin Options
-        </button>
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions" id="adminOptions">
+            Admin Options
+          </button>
         <% end %>
 
       </h2>
@@ -21,17 +20,25 @@
     <div id="collapseOptions" class="collapse" aria-labelledby="tableOptions" data-parent="#aboveTableAccordionOptions">
       <div class="card-body">
 
-      <% if main_controllers.include? controller_name %>
+        <%# if main_controllers.include? controller_name %>
+        <% if controller_name.in? main_controllers and !display_on_index_action_for_purchaser_and_vendor? and !display_on_order_show? %>
 
-            <div class="p-3">
+            <div class="p-4">
               <%= render "table_options/table_options_modal" %>
             </div>
-            <div class=" text-gray-500 text-sm"> (Select what columns are displayed on Table)</div>
             <hr>
 
-      <% end %>
+        <% else  %>
+            <div class="p-4">
+                <div class="btn btn-outline-primary disabled" role="button" aria-disabled="true">
+                  Table Options: <%= current_controller.titleize%>
+                </div>
+                <div class="text-gray-500 text-sm pt-2"> (Table Options unavailable for this page) </div>
+            </div>
+            <hr>
+        <% end %>
 
-      <% if show_on_order_ship_purchaser_pages? && ("#{controller_name}##{action_name}" != "orders#show") %>
+      <% if display_on_orders_purchasers_vendors? && ("#{controller_name}##{action_name}" != "orders#show") %>
         <a href="#" onclick="return false;">
           <span onclick="reverseTable()"> Reverse Table Content </span>
         </a>

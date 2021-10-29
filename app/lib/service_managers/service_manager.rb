@@ -1,5 +1,7 @@
 autoload :ServiceManagerCore, "service_managers/service_manager_core.rb"
 ####################################################
+autoload :ServiceManagerSearch, "service_managers/service_manager_searches/service_manager_search.rb"
+####################################################
 autoload :ServiceManagerTableOption, "service_managers/service_manager_table_options/service_manager_table_option.rb"
 ####################################################
 autoload :ServiceManagerPagination, "service_managers/service_manager_paginations/service_manager_pagination.rb"
@@ -47,6 +49,10 @@ module ServiceManager # Manages state of @resource data object with services
       self
     end
 
+    # def self.yeet_composite
+    #   "yeet_composite: Big yeets from Composite"
+    # end
+
   end
 
   class ManageServices < Composite
@@ -73,6 +79,14 @@ module ServiceManager # Manages state of @resource data object with services
 
     def self.yeet_manage_service
       "yeet_manage_service: Big yeets from ManageServices"
+    end
+
+    def self.manage_table_option_service(resource)
+      # "yeet_manage_service: Big yeets from ManageServices"
+      # spec = ServiceManager::Composite.new(
+      # ServiceManagerTableOption::HasTableOption)
+      # .and(ServiceManagerTableOption::IsIndexAction)
+      # .and(ServiceManagerTableOption::IsShowAction)
     end
 
   end
