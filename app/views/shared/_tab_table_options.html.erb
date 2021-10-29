@@ -31,9 +31,12 @@
         <% else  %>
             <div class="p-4">
                 <div class="btn btn-outline-primary disabled" role="button" aria-disabled="true">
-                  Table Options: <%= current_controller.titleize%>
+                  Table Options: <%= current_controller.titleize %>
                 </div>
-                <div class="text-gray-500 text-sm pt-2"> (Table Options unavailable for this page) </div>
+                
+                <div class="text-gray-500 text-sm pt-2">
+                    <%= "(Table Options unavailable for this page.) " %>
+                </div>
             </div>
             <hr>
         <% end %>

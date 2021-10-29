@@ -10,8 +10,6 @@ module Search
 
   def self.search_resource(resource)
 
-    # byebug
-
     case get_search_module(resource)
 
     when "SearchOrders::SearchOrdersIndex"
@@ -32,7 +30,7 @@ module Search
     when "SearchPurchasers::SearchPurchasersShow"
       autoload :SearchPurchasers, "services/searches/search_purchasers/search_purchasers.rb"
       extend SearchPurchasers::SearchPurchasersShow
-      return SearchPurchasers::SearchPurchasersShow.search_purchasers_show(resource.search_query)
+      return SearchPurchasers::SearchPurchasersShow.search_purchasers_show(resource)
 
     when "SearchVendors::SearchVendorsIndex"
       autoload :SearchVendors, "services/searches/search_vendors/search_vendors.rb"
@@ -42,7 +40,7 @@ module Search
     when "SearchVendors::SearchVendorsShow"
         autoload :SearchVendors, "services/searches/search_vendors/search_vendors.rb"
         extend SearchVendors::SearchVendorsShow
-        return SearchVendors::SearchVendorsShow.search_vendors_show(resource.search_query)
+        return SearchVendors::SearchVendorsShow.search_vendors_show(resource)
     end
 
   end

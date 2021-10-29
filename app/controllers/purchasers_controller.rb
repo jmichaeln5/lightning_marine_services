@@ -26,6 +26,7 @@ class PurchasersController < ApplicationController
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
+    @table_option = @resource.table_option
     @purchaser = Purchaser.new
     @purchasers = @resource.paginated_target
   end
@@ -47,9 +48,11 @@ class PurchasersController < ApplicationController
       sort_direction: sort_direction,
       page: @page
     }
+
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
+    @table_option = @resource.table_option
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
@@ -118,7 +121,7 @@ class PurchasersController < ApplicationController
     end
 
     def set_pagination_params
-      @per_page = 10
+      # @per_page = 10
       @page = params.fetch(:page, 0).to_i
       @total_purchaser_count = Purchaser.all.count
     end
@@ -130,21 +133,6 @@ class PurchasersController < ApplicationController
       Resource.reload_ivars
       ResourceManager.reload_ivars
     end
-
-    # def set_search_params
-    #   @query = params[:q]
-    #
-    #    if @query.present?
-    #       Purchaser.reindex
-    #       @search_query = Purchaser.search(@query)
-    #       results_arr = Array.new
-    #       @search_query.results.each do |result|
-    #         results_arr << result.id
-    #       end
-    #     end
-    #
-    #   @purchasers_query = Purchaser.where(id: results_arr)
-    # end
 
     def set_search_params
       @query = params[:q]
