@@ -14,9 +14,9 @@ module SortIndex
       when 'date_delivered'
         return Sort.invalid_sort(target, sort_option, sort_direction)
       when 'ship_name'
-        return sort_by_ship_name(target, sort_option, sort_direction)
+        return sort_by_ship_name(sort_option, sort_direction)
       when 'vendor_name'
-        return sort_by_vendor_name(target, sort_option, sort_direction)
+        return sort_by_vendor_name(sort_option, sort_direction)
       else
         return Sort.invalid_sort(target, sort_option, sort_direction)
       end
@@ -26,11 +26,13 @@ module SortIndex
       return target.reorder(sort_option + " " + sort_direction)
     end
 
-    def sort_by_ship_name(target, sort_option, sort_direction)
+    def sort_by_ship_name(sort_option, sort_direction)
+      target = Order.unarchived
       return target.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
     end
 
-    def sort_by_vendor_name(target, sort_option, sort_direction)
+    def sort_by_vendor_name(sort_option, sort_direction)
+      target = Order.unarchived
       return target.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
     end
   end
