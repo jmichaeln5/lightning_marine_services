@@ -6,21 +6,46 @@ class SearchesController < ApplicationController
   before_action :load_resource_files
   # before_action :load_resource_files, only: %i[ index all_orders ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
 
-  def search
+  def index
+    # resource_attrs = {
+    #   user: current_user,
+    #   target: @resource.target,
+    #   parent_class: @resource.parent_class,
+    #   parent_action: @resource.parent_action,
+    #   sort_option: sort_option,
+    #   sort_direction: sort_direction,
+    #   page: @page
+    # }
+    # @init_resource = Resource.init_resource_klass ( resource_attrs )
+    # @resource = Resource::ResourceKlass.get_resource
+    # # @orders = @resource.target
+    # @resource = @resource.paginated_target
+
+    # load_resource_files
+
+    Resource.reload_ivars
+
     resource_attrs = {
       user: current_user,
-      target: @resource.target,
-      parent_class: @resource.parent_class,
-      parent_action: @resource.parent_action,
+      target: Order.all.unarchived,
+      parent_class: Order,
+      parent_action: 'index',
+      controller_name: 'orders',
+      controller_action: 'index',
+      controller_name_and_action: 'orders#index',
+      search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
       page: @page
     }
+
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
-    # @orders = @resource.target
-    @resource = @resource.paginated_target
+    @table_option = @resource.table_option
+    @orders = @resource.paginated_target
+    @order = Order.new
+    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
 
   private
@@ -41,8 +66,8 @@ class SearchesController < ApplicationController
     def load_resource_files
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
-      # Resource.reload_ivars
-      # ResourceManager.reload_ivars
+      Resource.reload_ivars
+      ResourceManager.reload_ivars
     end
 
     def set_search_params

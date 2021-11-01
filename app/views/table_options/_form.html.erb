@@ -37,6 +37,10 @@
 
               <% end %>
             </div>
+
+            <span class="text-lg">
+              <input type="Button" class="btn btn-sm btn-outline-info" onclick="togglecheckboxes('table_option[option_list][]')" value="Select/Unselect All" />
+            </span>
         </div>
 
       <hr>
@@ -71,3 +75,17 @@
   </div>
 
 <% end %>
+
+
+<script type="text/javascript">
+var isAllCheck = false;
+function togglecheckboxes(table_option_cb_array){
+
+  var table_option_cb_array = document.getElementsByName('table_option[option_list][]');
+  for(var i = 0; i < table_option_cb_array.length; i++){
+      table_option_cb_array[i].checked = !isAllCheck
+  }
+
+  isAllCheck = !isAllCheck;
+}
+</script>
