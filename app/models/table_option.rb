@@ -22,6 +22,7 @@ class TableOption < ApplicationRecord
 
   def validate_uniq_table_option
     self.user.table_options.each do |option|
+      # if table_option.resource_table_type.include? (self.resource_table_type && self.resource_table_action)
       if option.resource_table_type.include? (self.resource_table_type || self.resource_table_action)
         self.errors.add(:base, "You already set Table Options for #{self.resource_table_type}. Please update existing options or delete settings for another table.")
         throw(:abort)

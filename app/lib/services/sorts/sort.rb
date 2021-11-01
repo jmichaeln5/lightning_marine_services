@@ -10,7 +10,8 @@ module Sort
 
     # Defining parent and child module method sort_target will be called from
     sort_parent_class_module = "Sort#{parent_class.name.pluralize}"
-    sort_parent_action_module = "Sort#{parent_action.capitalize}"
+    # sort_parent_action_module = "Sort#{parent_action.capitalize}"
+    sort_parent_action_module = "Sort#{parent_action.camelize}"
     sort_module = "#{sort_parent_class_module}::#{sort_parent_action_module}"
 
     case sort_module
@@ -19,6 +20,11 @@ module Sort
       autoload :SortOrders, "services/sorts/sort_orders/sort_orders.rb"
       extend SortOrders
       return SortOrders::SortIndex.sort_target(resource.target, resource.sort_option, resource.sort_direction)
+
+    when "SortOrders::SortAllOrders"
+      autoload :SortOrders, "services/sorts/sort_orders/sort_orders.rb"
+      extend SortOrders
+      return SortOrders::SortAllOrders.sort_target(resource.target, resource.sort_option, resource.sort_direction)
 
     when "SortVendors::SortIndex"
       autoload :SortVendors, "services/sorts/sort_vendors/sort_vendors.rb"

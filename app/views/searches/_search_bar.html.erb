@@ -12,18 +12,12 @@
       <%# text_field_tag :q, nil, placeholder: '(Sample) Search' %>
     <%# end %>
 
+    <%#= link_to "Search", { :controller => :search, :action => :index }, { class: "btn btn-primary btn-lg", style: "width: 100%;" } %>
+
+
     <%= form_tag request.params.merge(q: nil), method: :get do %>
       <% text_field_tag :q, nil, placeholder: 'Search' %>
     <% end %>
-
-
-
-    <%#= form_tag  "yeet", request.params.merge(q: nil) %>
-
-
-    <%#= link_to  "yeet" , request.params.merge(sort_option: 'id', sort_direction: sort_direction ) %>
-
-
 
     <span class="text-xs pt-2">
       This specific Search Bar lives in:
@@ -31,16 +25,6 @@
     </span>
 
   </span>
-
-
-<!-- <form class="form-inline my-lg-0 p-3">
-  <div class="row flex-nowrap pb-2">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-secondary  mr-sm-2" type="submit">Search</button>
-  </div>
-</form>
-
-<br> -->
 
 
 </div>
