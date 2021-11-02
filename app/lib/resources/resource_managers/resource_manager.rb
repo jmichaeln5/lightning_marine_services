@@ -14,7 +14,6 @@ module ResourceManager
   extend ServiceManager
 
   def self.init_resource_manager( options={} ) # Set ivars to be used in when called in classes below
-    # options.each { |k,v| instance_variable_set("@#{k}", v) }
     ResourceManagerKlass.set_resource_manager( options )
     ResourceManagerKlass.init_resource( options ) # method extended from ResourceCore
   end
@@ -52,39 +51,14 @@ module ResourceManager
       else
         @sorted_resource = @generic_resource.target.order("created_at DESC")
       end
-      # raise StandardError.new "ResourceManager::ResourceManagerKlass: @sorted_resource is nil, cannot continue to next service." if @sorted_resource == nil
     end
 
     def self.set_table_option
-      # byebug
-
-      # spec = has_table_option_for_index_action = ServiceManager::Composite.new(
-      # ServiceManagerTableOption::HasTableOption)
-      # .and(ServiceManagerTableOption::IsIndexAction)
-      # .not(ServiceManagerTableOption::IsShowAction)
-      #
-      # spec.is_satisfied_by?(@generic_resource)
-
-
-      # has_table_option_for_show_action = ServiceManager::Composite.new(
-      # ServiceManagerTableOption::HasTableOption)
-      # .and(ServiceManagerTableOption::IsShowAction)
-      # .not(ServiceManagerTableOption::IsIndexAction)
-
-      # ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
-      # ServiceManagerTableOption::IsIndexAction.new.is_satisfied_by?(@generic_resource)
-      # ServiceManagerTableOption::IsShowAction.new.is_satisfied_by?(@generic_resource)
-
-      # byebug
-
       if ServiceManagerTableOption::HasTableOption.new.is_satisfied_by?(@generic_resource)
         @table_option = ResourceManagerTableOption.user_table_option(resource = @generic_resource)
       else
         @table_option = ResourceManagerTableOption.manage_table_option(resource = @generic_resource)
       end
-
-      # byebug
-
     end
 
     def self.set_pagination

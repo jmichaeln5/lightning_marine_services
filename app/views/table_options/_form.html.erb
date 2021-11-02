@@ -5,8 +5,6 @@
     <p class="text-3xl"> <%= "New" if table_option.id.nil? %> <%= current_controller.titleize.singularize %> Table Options </p>
     <%= form.hidden_field :resource_table_type, value: controller_name.downcase %>
     <%= form.hidden_field :resource_table_action, value: action_name %>
-    <h1><%= controller_name %></h1>
-    <h1><%= action_name %></h1>
     <%= form.hidden_field :user_id, value: current_user.id %>
     <%= form.hidden_field :set_default_options, value: "#{controller_name.downcase}##{action_name}" %>
   </div>

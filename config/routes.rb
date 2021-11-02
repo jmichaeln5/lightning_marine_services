@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
 
-  get '/search', to: 'search#index'
+  get '/search', to: 'searches#index'
 
 
   resources :orders do

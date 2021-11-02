@@ -1,7 +1,6 @@
 module SortIndex
 
     def sort_target(target, sort_option, sort_direction)
-
       case sort_option
       when 'id'
         return sort_by_sort_option(target, sort_option, sort_direction)

@@ -1,7 +1,7 @@
 module SearchOrdersAllOrders
 
   def search_orders_all_orders(search_query)
-     Order.reindex
+     # Order.reindex
      search_query = Order.search(search_query)
      results_arr = Array.new
 

@@ -9,8 +9,7 @@ module Sort
     parent_action = resource.parent_action
 
     # Defining parent and child module method sort_target will be called from
-    sort_parent_class_module = "Sort#{parent_class.name.pluralize}"
-    # sort_parent_action_module = "Sort#{parent_action.capitalize}"
+    sort_parent_class_module = "Sort#{resource.controller_name.pluralize.capitalize}"
     sort_parent_action_module = "Sort#{parent_action.camelize}"
     sort_module = "#{sort_parent_class_module}::#{sort_parent_action_module}"
 
@@ -45,6 +44,11 @@ module Sort
       autoload :SortPurchasers, "services/sorts/sort_purchasers/sort_purchasers.rb"
       extend SortPurchasers
       return SortPurchasers::SortShow.sort_target(resource.target, resource.sort_option, resource.sort_direction)
+
+    when "SortSearches::SortIndex"
+      autoload :SortSearches, "services/sorts/sort_searches/sort_searches.rb"
+      extend SortSearches
+      return SortSearches::SortIndex.sort_target(resource.target, resource.sort_option, resource.sort_direction)
 
     else
       return invalid_sort(resource.target, sort_option, sort_direction)

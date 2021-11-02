@@ -1,7 +1,7 @@
 module SearchOrdersIndex
 
   def search_orders_index(search_query)
-     Order.unarchived.reindex
+     # Order.unarchived.reindex
      search_query = Order.unarchived.search(search_query)
      results_arr = Array.new
 

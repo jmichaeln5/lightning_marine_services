@@ -18,13 +18,9 @@ module SortIndex
   end
 
   def sort_vendors_by_order_amount(target, sort_option, sort_direction)
-
     target = nil
-
     target = Vendor.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
-
     return target
-
   end
 
 end
