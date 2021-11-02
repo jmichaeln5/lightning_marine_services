@@ -17,7 +17,7 @@
         </div>
         <div class="text-xl text-gray-600 row">
           <% display_sorted_direction = params[:sort_direction] == 'asc' ? 'descending' : 'ascending' if params[:sort_direction].present? %>
-          
+
           <%= "#{params[:sort_option].titleize}"%>
           <%= "(#{display_sorted_direction})"  if display_sorted_direction.present? %>
         </div>

@@ -1,58 +1,31 @@
-<!-- <form class="form-inline my-lg-0 p-3">
-  <div class="row flex-nowrap pb-2">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-secondary  mr-sm-2" type="submit">Search</button>
+<div class="p-2">
+  <div class="float-right">
+    <span>
+      <% if controller_name.in? main_controllers  %>
+
+          <div class="form-inline my-lg-0 p-3">
+            <div class="row flex-nowrap pb-2">
+            <%= form_tag request.params.merge(q: nil), method: :get do %>
+              <%= text_field_tag :q, nil, placeholder: 'Search', class:'form-control mr-sm-2' %>
+              <%= submit_tag("Search", class:'btn btn-outline-secondary mr-sm-2') %>
+            <% end %>
+          </div>
+        </div>
+
+      <% else %>
+
+          <div class="form-inline my-lg-0 p-3">
+            <div class="row flex-nowrap pb-2">
+            <%= form_tag search_path, method: :get do %>
+              <%= text_field_tag :q, nil, class:'form-control mr-sm-2' %>
+               <%= submit_tag("Search", class:'btn btn-outline-secondary mr-sm-2') %>
+            <% end %>
+          </div>
+        </div>
+
+      <% end %>
+    </span>
   </div>
-</form> -->
-
-<div class="float-right">
-  <span>
-
-    <%#= form_tag orders_path, method: :get do %>
-      <%# text_field_tag :q, nil, placeholder: '(Sample) Search' %>
-    <%# end %>
-
-    Main Controller Search
-
-    <% if controller_name.in? main_controllers  %>
-      Main Controller Search
-      <%= form_tag request.params.merge(q: nil), method: :get do %>
-        <% text_field_tag :q, nil, placeholder: 'Search' %>
-      <% end %>
-
-    <% else %>
-        <%#= form_tag request.params.merge(q: nil), method: :get do %>
-          <%# text_field_tag :q, nil, placeholder: 'Search' %>
-        <%# end %>
-
-
-      Search Controller Search
-
-      <%#= link_to "Search", { :controller => :searches, :action => :index }, { class: "btn btn-primary" } %>
-
-      <%#= form_tag :controller => 'searches', :action => 'index', :method => 'get' do %>
-        <%# text_field_tag :q, nil, placeholder: 'Search' %>
-      <%# end %>
-
-
-      <%= form_tag search_path, method: :get do %>
-        <%= text_field_tag :q, nil %>
-         <%= submit_tag("Search") %>
-      <% end %>
-
-
-    <% end %>
-
-
-
-  </span>
-
-
-
-  <span class="text-xs pt-2">
-    This specific Search Bar lives in:
-    app/views/searches/_search_bar.html.erb
-  </span>
-
-
 </div>
+
+<br>
