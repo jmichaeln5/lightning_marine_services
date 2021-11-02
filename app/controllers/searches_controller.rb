@@ -6,6 +6,20 @@ class SearchesController < ApplicationController
   before_action :load_resource_files
 
   def index
+
+
+    if @query.nil?
+      get_resource_target = Order.all
+    else
+      search_query = Order.search(@query)
+      results_arr = Array.new
+
+      search_query.results.each do |result|
+        results_arr << result.id
+      end
+      get_resource_target = Order.where(id: results_arr)
+    end
+
     resource_attrs = {
       user: current_user,
       target: get_resource_target,
@@ -19,7 +33,7 @@ class SearchesController < ApplicationController
       sort_direction: sort_direction,
       page: @page
     }
-    
+
     @init_resource = Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
@@ -53,20 +67,6 @@ class SearchesController < ApplicationController
 
     def set_search_params
       @query = params[:q]
-    end
-
-    def get_resource_target
-      if @query.nil?
-        return Order.unarchived
-      else
-        search_query = Order.search(@query)
-        results_arr = Array.new
-
-        search_query.results.each do |result|
-          results_arr << result.id
-        end
-        return Order.where(id: results_arr)
-      end
     end
 
 end
