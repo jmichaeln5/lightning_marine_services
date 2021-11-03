@@ -10,6 +10,7 @@ class VendorsController < ApplicationController
     load_resource_files
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: Vendor.all,
       parent_class: Vendor,
@@ -34,6 +35,7 @@ class VendorsController < ApplicationController
     load_resource_files
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: @vendor.orders,
       parent_class: Vendor,

@@ -104,13 +104,11 @@ module Resource
 
         first_page_disabled?: @pagination.first_page_disabled?,
         last_page_disabled?: @pagination.last_page_disabled?,
-        
+
         next_page: @pagination.next_page,
         previous_page: @pagination.previous_page
       )
       @generic_resource = update_resource_manager(@options)
-
-      # byebug
     end
 
     # Setting then Getting services then merging into @options hash, returning updated resource
@@ -121,10 +119,14 @@ module Resource
       get_pagination
       paginate_target(@pagination)
 
+      @options.merge!(
+        returned_at: Time.now
+      )
+
       @generic_resource = update_resource_manager(@options)
       @resource = @generic_resource
 
-      # return @resource
+      # returning ____@resource____
       return update_resource_manager(@options)
     end
 

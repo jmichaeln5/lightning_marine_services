@@ -19,13 +19,14 @@ module Pagination
 
     def total_pages
       resource_amount = @target.ids.count
-
       if (resource_amount.modulo(@resources_per_page) == 0)
         page_result = (resource_amount / @resources_per_page)
-      elsif (resource_amount.modulo(@resources_per_page) > 1 )
-        page_result = (resource_amount / @resources_per_page)
+      elsif (resource_amount.modulo(@resources_per_page) >= 1 )
+          page_result = (resource_amount / @resources_per_page)
       elsif (resource_amount.modulo(@resources_per_page) < 1 )
-        page_result = ((resource_amount / @resources_per_page) - 1)
+          page_result = ((resource_amount / @resources_per_page) - 1)
+      else
+        page_result = (resource_amount / @resources_per_page)
       end
       return page_result
     end

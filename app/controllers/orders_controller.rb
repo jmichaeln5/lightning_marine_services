@@ -9,7 +9,11 @@ class OrdersController < ApplicationController
   def all_orders
     load_resource_files
 
+    Resource.reload_ivars
+    ResourceManager.reload_ivars
+
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: Order.all,
       parent_class: Order,
@@ -39,6 +43,7 @@ class OrdersController < ApplicationController
     ResourceManager.reload_ivars
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: Order.all.unarchived,
       parent_class: Order,
@@ -73,19 +78,17 @@ class OrdersController < ApplicationController
         filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
       }
     end
-
-    Resource.reload_ivars
-    ResourceManager.reload_ivars
   end
 
   # GET /orders/1 or /orders/1.json
   def show
-
     load_resource_files
 
     Resource.reload_ivars
+    ResourceManager.reload_ivars
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: @order,
       parent_class: Order,
@@ -150,7 +153,6 @@ class OrdersController < ApplicationController
   end
 
   def destroy_attachment
-    # byebug
     # image = ActiveStorage::Attachment.find(params[:id])
     image.purge
     redirect_to request.referrer, notice: "Image deleted successfully."

@@ -11,6 +11,7 @@ class PurchasersController < ApplicationController
     load_resource_files
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: Purchaser.all,
       parent_class: Purchaser,
@@ -36,6 +37,7 @@ class PurchasersController < ApplicationController
     load_resource_files
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: @purchaser.orders,
       parent_class: Purchaser,
