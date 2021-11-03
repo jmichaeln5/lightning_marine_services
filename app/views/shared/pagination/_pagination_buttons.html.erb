@@ -9,11 +9,9 @@
               Page 1/1
             </a>
           </li>
-
       <% else %>
 
-
-      <!-- (First Page) Previous Page -->
+      <!-- Previous Page -->
       <%  if 0 >= @page %>
         <span class="d-flex justify-content-center mr-4 mt-2" >
           <span class="no-underline text-gray-600 cursor-default">
@@ -32,32 +30,32 @@
       <% else %>
 
       <!-- (!= First Page) Previous Page -->
-      <%= link_to "First", request.params.merge(page: 0), class:"d-flex justify-content-center mr-4 mt-2" if 0 < @page %>
+      <%= link_to "First", request.params.merge(q: @query, page: 0), class:"d-flex justify-content-center mr-4 mt-2" if 0 < @page %>
 
         <li class="page-item">
-          <%= link_to raw("&laquo;"), request.params.merge(page: @page - 1), class:"page-link"  %>
+          <%= link_to raw("&laquo;"), request.params.merge(q: @query, page: @page - 1), class:"page-link"  %>
         </li>
       <% end %>
 
 
       <!-- (Count) Previous Page-->
       <li class="page-item">
-        <%= link_to "#{@page}", request.params.merge(page: @page - 1), class:"page-link"   if @page > 0 %>
+        <%= link_to "#{@page}", request.params.merge(q: @query, page: @page - 1), class:"page-link"   if @page > 0 %>
       </li>
 
       <!-- (Count) Current Page -->
         <li class="page-item active">
-          <%= link_to "#{@page + 1 }", request.params.merge(page: @page ), class:"page-link" %>
+          <%= link_to "#{@page + 1 }", request.params.merge(q: @query, page: @page ), class:"page-link" %>
         </li>
 
         <!--  (Count) One Page After Current -->
         <li class="page-item">
-          <%= link_to "#{@page + 2}", request.params.merge(page: @page + 1), class:"page-link" if (@page < total_pages && (@page + 1 <= total_pages))  %>
+          <%= link_to "#{@page + 2}", request.params.merge(q: @query, page: @page + 1), class:"page-link" if (@page < total_pages && (@page + 1 <= total_pages))  %>
         </li>
 
         <!--  (First Page) (Count) Two Pages After Current if First Page -->
         <li class="page-item">
-          <%= link_to "#{@page + 3}", request.params.merge(page: @page + 2), class:"page-link" if @page >= 0 && @page + 3 < total_pages %>
+          <%= link_to "#{@page + 3}", request.params.merge(q: @query, page: @page + 2), class:"page-link" if @page >= 0 && @page + 3 < total_pages %>
         </li>
 
         <!-- (Last Page) Next Page -->
@@ -72,10 +70,10 @@
           </li>
         <%  else %>
         <!-- (!= Last Page) Next Page -->
-            <%= link_to raw("&raquo;"), request.params.merge(page: @page + 1), class:"page-link page-item"  %>
+            <%= link_to raw("&raquo;"), request.params.merge(q: @query, page: @page + 1), class:"page-link page-item"  %>
         <% end %>
 
-        <%= link_to "Last", request.params.merge(page: total_pages), class:"d-flex justify-content-center ml-4 mt-2" if @page < total_pages %>
+        <%= link_to "Last", request.params.merge(q: @query, page: total_pages), class:"d-flex justify-content-center ml-4 mt-2" if @page < total_pages %>
 
         <% if @page == total_pages %>
           <span class="d-flex justify-content-center ml-4 mt-2" >

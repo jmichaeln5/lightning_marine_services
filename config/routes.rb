@@ -24,11 +24,6 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
-  get '/exports', to: 'exports#index', as: 'export_csv'
-  # get '/exports', to: 'exports#index', as: 'export_csv'
-  get '/exports/sample_page', to: 'exports#sample_page', as: 'export_sample_page'
-
-
   resources :users
   resources :purchasers
   resources :vendors
@@ -38,7 +33,9 @@ Rails.application.routes.draw do
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
-  # get '/archived_orders', to: 'orders#archived_index', as: 'archieved_orders'
+
+  get '/search', to: 'searches#index'
+
 
   resources :orders do
     resources :attachments do

@@ -1,9 +1,9 @@
 <% content_for :title, "Ship: #{@purchaser.name}" %>
-<% content_for :subtitle, "#{@sorted_purchaser_orders.ids.count} Orders" %>
+<% content_for :subtitle, "#{@purchaser.orders.count} Orders" %>
 
 <%= render 'shared/tab_table_options' %>
 <%= render 'shared/new_order_on_show_modal' %>
 
-<%= render 'shared/top_table_header', resource: @orders %>
-<%= render partial: "show", locals: {resource: @orders} %>
-<%= render "shared/pagination/pagination_buttons", total_pages: @orders.total_pages %>
+<%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
+<%= render partial: "show" %>
+<%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>

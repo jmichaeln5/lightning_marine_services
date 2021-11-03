@@ -7,25 +7,24 @@ class Order < ApplicationRecord
   has_many_attached :images
   has_one :order_content, dependent: :destroy
 
+  searchkick
+
   accepts_nested_attributes_for :order_content
 
   validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
   validates :po_number, uniqueness: true
 
   before_save :order_content_exists?
-  before_save :handle_archive
+  before_update :handle_archive
 
   #  before_save :before_save_methods
 
-  def self.to_csv
-    attributes = %w{ id po_number date_recieved }
-
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
-
-      all.each do |contact|
-        csv << attributes.map{ |attr| contact.send(attr) }
-      end
+  def self.to_csv # Also Formats for XLS
+    CSV.generate do |csv|
+      csv << column_names
+        all.each do |order|
+          csv << order.attributes.values_at(*column_names)
+        end
     end
   end
 
@@ -53,5 +52,14 @@ class Order < ApplicationRecord
     self.archived = true if self.date_delivered.present? == true
     self.archived = false if self.date_delivered.present? == false
   end
+
+  def search_data
+    attributes.merge(
+      order_content: self.order_content,
+      ship_name: self.purchaser,
+      vendor_name: self.vendor
+    )
+  end
+
 
 end

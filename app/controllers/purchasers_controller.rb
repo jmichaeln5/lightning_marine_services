@@ -2,25 +2,61 @@ class PurchasersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_purchaser, only: %i[ show edit update destroy ]
+  before_action :set_search_params, only: %i[ index show]
   before_action :set_pagination_params, only: %i[ index show]
   helper_method :sort_option, :sort_direction
 
   # # GET /purchasers or /purchasers.json
   def index
-    autoload :PurchasersIndexTableSortLogic, "purchasers/sort_logic/purchasers_index_table_sort_logic.rb"
-    @sorted_purchasers = PurchasersIndexTableSortLogic.sorted_purchasers(sort_option, sort_direction)
+    load_resource_files
+
+    resource_attrs = {
+      called_at: Time.now,
+      user: current_user,
+      target: Purchaser.all,
+      parent_class: Purchaser,
+      parent_action: 'index',
+      controller_name: 'purchasers',
+      controller_action: 'index',
+      controller_name_and_action: 'purchasers#index',
+      search_query: @query,
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+    @table_option = @resource.table_option
     @purchaser = Purchaser.new
-    @purchasers = BusinessLogicPagination.new(@sorted_purchasers, @per_page, @page)
+    @purchasers = @resource.paginated_target
   end
 
   # GET /purchasers/1 or /purchasers/1.json
   def show
-    autoload :PurchaserShowTableSortLogic, "purchasers/sort_logic/purchaser_show_table_sort_logic.rb"
-    @sorted_purchaser_orders = PurchaserShowTableSortLogic.sorted_purchaser_orders(@purchaser, sort_option, sort_direction)
+    load_resource_files
+
+    resource_attrs = {
+      called_at: Time.now,
+      user: current_user,
+      target: @purchaser.orders,
+      parent_class: Purchaser,
+      parent_action: 'show',
+      controller_name: 'purchasers',
+      controller_action: 'show',
+      controller_name_and_action: 'purchasers#show',
+      search_query: @query,
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+
+    @table_option = @resource.table_option
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @orders = BusinessLogicPagination.new(@sorted_purchaser_orders, 10, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Purchaser')
   end
 
   # GET /purchasers/new
@@ -87,8 +123,18 @@ class PurchasersController < ApplicationController
     end
 
     def set_pagination_params
-      @per_page = 10
+      # @per_page = 10
       @page = params.fetch(:page, 0).to_i
+      @total_purchaser_count = Purchaser.all.count
+    end
+
+    def load_resource_files
+      autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
+      autoload :Resource, "resources/resource.rb"
+    end
+
+    def set_search_params
+      @query = params[:q]
     end
 
 end

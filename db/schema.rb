@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_21_002400) do
+ActiveRecord::Schema.define(version: 2021_09_26_220616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,9 +56,9 @@ ActiveRecord::Schema.define(version: 2021_09_21_002400) do
   end
 
   create_table "orders", force: :cascade do |t|
+    t.string "dept"
     t.bigint "purchaser_id", null: false
     t.bigint "vendor_id", null: false
-    t.string "dept"
     t.string "po_number"
     t.datetime "date_recieved"
     t.string "courrier"
@@ -88,10 +88,12 @@ ActiveRecord::Schema.define(version: 2021_09_21_002400) do
 
   create_table "table_options", force: :cascade do |t|
     t.string "resource_table_type"
+    t.string "resource_table_action"
     t.text "option_list"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "resources_per_page", default: 10, null: false
     t.index ["user_id"], name: "index_table_options_on_user_id"
   end
 

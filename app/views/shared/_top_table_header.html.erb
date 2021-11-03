@@ -1,6 +1,7 @@
 <nav class="navbar navbar-light bg-white border py-4">
 
-  <div class="w-4/12">
+  <!-- Table Title-->
+  <div class="w-1/4">
     <div class="text-left">
       <span class="text-3xl">
         <%= "#{current_controller.titleize}" %>
@@ -10,26 +11,45 @@
     </div>
   </div>
 
-  <div class=" w-4/12 text-left px-2">
-    <div>
-      <% if params[:sort_option].present? %>
-          <div class="text-xl row">
-            sort options:
-          </div>
-          <div class="text-xl text-gray-600 row">
-            <% display_sorted_direction = params[:sort_direction] == 'asc' ? 'descending' : 'ascending' if params[:sort_direction].present? %>
-            <%= "#{params[:sort_option].titleize}"%>
-            <%= "(#{display_sorted_direction})"  if display_sorted_direction.present? %>
-          </div>
-          <div class="text-sm row">
-             <%= link_to "remove sort", url_for(request.params.slice!(:sort_direction, :sort_option)) %>
-          </div>
-      <% end %>
-    </div>
+  <!-- Search/Filter -->
+  <div class=" w-1/4">
+    <% if params[:sort_option].present? %>
+        <div class="text-xl row">
+          Sort Options:
+        </div>
+        <div class="text-xl text-gray-600 row">
+          <% display_sorted_direction = params[:sort_direction] == 'asc' ? 'descending' : 'ascending' if params[:sort_direction].present? %>
+
+          <%= "#{params[:sort_option].titleize}"%>
+          <%= "(#{display_sorted_direction})"  if display_sorted_direction.present? %>
+        </div>
+        <div class="text-sm row">
+           <%= link_to "remove sort", url_for(request.params.slice!(:sort_direction, :sort_option)) %>
+        </div>
+    <% end %>
   </div>
 
-  <div class="w-4/12 pt-4">
-    <% if 1 >= resource.display_humanized_total_pages  %>
+  <div class=" w-1/4">
+    <% if params[:q].present? %>
+        <div class="text-xl row">
+          <!-- Searching for: -->
+          <%= pluralize(@resource.results_length , 'result') if @resource.results_length > 0 %>
+          <%= 'No results' if @resource.results_length == 0 %>
+
+          for:
+        </div>
+        <div class="text-xl text-gray-600 row">
+          <%= "#{params[:q]}"%>
+        </div>
+        <div class="text-sm row">
+           <%= link_to "remove search", url_for(request.params.slice!(:q)) %>
+        </div>
+    <% end %>
+  </div>
+
+  <!-- Page Select (Dropdown) -->
+  <div class="w-1/4 pt-4">
+    <% if @resource.first_page_disabled? %>
         <div class="nav-link text-gray-500 text-right" type="button">
           <span class="-m-2 ">
             Page 1/1
@@ -39,17 +59,19 @@
       <ul class="text-gray-600 float-right cursor-pointer " id="navbarNavDropdown">
         <li class="nav-item text-right dropdown">
           <span class="nav-link border -m-2 border-gray-500 text-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Page: <%= "#{@page + 1}/#{resource.display_humanized_total_pages}"%>
+            Page: <%= "#{@resource.humanized_current_page}/#{@resource.humanized_total_pages}"%>
           </span>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <% (resource.display_humanized_total_pages).times do | page_number, index | %>
+            <% (@resource.humanized_total_pages).times do | page_number, index | %>
+
               <% display_offset_page_number = page_number += 1 %>
               <% display_selected_current_page = "selected" %>
-              <% selected_page = (@page + 1) == display_offset_page_number ? true : false%>
+              <% selected_page = (@resource.humanized_current_page) == display_offset_page_number ? true : false %>
+
               <% if selected_page == true %>
-                <%= link_to "#{display_offset_page_number}/#{resource.display_humanized_total_pages } (current page)", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
+                <%= link_to "#{display_offset_page_number}/#{total_pages + 1  } (current page)", request.params.merge(q: @query, page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
               <% else %>
-                <%= link_to "#{display_offset_page_number}/#{resource.display_humanized_total_pages}", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
+                <%= link_to "#{display_offset_page_number}/#{total_pages + 1 }", request.params.merge(q: @query, page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
               <% end %>
             <% end %>
           </div>

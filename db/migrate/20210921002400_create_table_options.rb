@@ -2,6 +2,7 @@ class CreateTableOptions < ActiveRecord::Migration[6.1]
   def change
     create_table :table_options do |t|
       t.string :resource_table_type
+      t.string :resource_table_action
       t.text :option_list
       t.belongs_to :user, null: false, foreign_key: true
 

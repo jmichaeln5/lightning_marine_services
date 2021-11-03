@@ -4,12 +4,12 @@ module ApplicationHelper
      data.blank? || data == 0
   end
 
-  def locale_to
-    @locale_to = "#{controller_name.capitalize}##{action_name}"
+  def main_controllers
+    main_controllers = ["orders", "purchasers", "vendors", "table_options"]
   end
 
-  def current_page
-    current_page = "#{controller_name}##{action_name}"
+  def controller_name_and_action
+      "#{controller_name}##{action_name}"
   end
 
   def current_controller
@@ -17,28 +17,42 @@ module ApplicationHelper
   end
 
   def current_action
-    current_page = "#{action_name}"
+    "#{action_name}"
   end
 
-  def show_on_order_ship_purchaser_pages?
+  def display_on_orders_purchasers_vendors?
     ['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? current_controller
   end
 
-  def show_create_order_on_purchaser_and_vendor?
-    if ((current_page == 'purchasers#show' ) || (current_page == 'vendors#show'))
+  def display_create_order_on_purchaser_and_vendor_views?
+    if ((controller_name_and_action == 'purchasers#show' ) || (controller_name_and_action == 'vendors#show'))
       true
     else
-      nil
+      false
     end
   end
 
-  def index_action_purchaser_and_vendor?
-    if ((current_page == 'purchasers#index' ) || (current_page == 'vendors#index'))
+  def display_on_index_action_for_purchaser_and_vendor?
+    if ((controller_name_and_action == 'purchasers#index' ) || (controller_name_and_action == 'vendors#index'))
       true
     else
-      nil
+      false
     end
   end
+
+  def display_on_order_show?
+
+    # (controller_name_and_action == 'orders#show') ? true : false
+
+    if (controller_name_and_action == 'orders#show' )
+      true
+    else
+      false
+    end
+  end
+
+
+
 
   def get_resource(controller_name)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"
@@ -46,21 +60,9 @@ module ApplicationHelper
 
   # Used in app/views/layouts/_edit_toggle.html.erb to get Model Instance on #show action (reason for instansiatied class to be found by params[:id] )
   def get_resource_instance(controller_name)
-      if (show_on_order_ship_purchaser_pages? == true)
+      if (display_on_orders_purchasers_vendors? == true)
         get_resource(controller_name).find(params[:id])
       end
-  end
-
-  def current_url(new_params)
-  end
-
-  # def run_as_sql(arg = nil)
-  #   arg ||= nil
-  #   ActiveRecord::Base.connection.execute(arg.to_s)
-  # end
-
-  def main_controllers
-    main_controllers = ["orders", "purchasers", "vendors", "table_options"]
   end
 
 end

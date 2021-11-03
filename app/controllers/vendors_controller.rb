@@ -2,24 +2,58 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :set_vendor, only: %i[ show edit update destroy ]
-  before_action :set_pagination_params, only: %i[ index show]
+  before_action :set_search_params, only: %i[ index show]
+  before_action :set_pagination_params, only: %i[ index show ]
   helper_method :sort_option, :sort_direction
 
   def index
-    autoload :VendorsIndexTableSortLogic, "vendors/sort_logic/vendors_index_table_sort_logic.rb"
-    @sorted_vendors = VendorsIndexTableSortLogic.sorted_vendors(sort_option, sort_direction)
+    load_resource_files
+
+    resource_attrs = {
+      called_at: Time.now,
+      user: current_user,
+      target: Vendor.all,
+      parent_class: Vendor,
+      parent_action: 'index',
+      controller_name: 'vendors',
+      controller_action: 'index',
+      search_query: @query,
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+    @table_option = @resource.table_option
     @vendor = Vendor.new
-    @vendors = BusinessLogicPagination.new(@sorted_vendors, @per_page, @page)
+    @vendors = @resource.paginated_target
   end
 
   # GET /vendors/1 or /vendors/1.json
   def show
-    autoload :VendorShowTableSortLogic, "vendors/sort_logic/vendor_show_table_sort_logic.rb"
-    @sorted_vendor_orders = VendorShowTableSortLogic.sorted_vendor_orders(@vendor, sort_option, sort_direction)
+    load_resource_files
+
+    resource_attrs = {
+      called_at: Time.now,
+      user: current_user,
+      target: @vendor.orders,
+      parent_class: Vendor,
+      parent_action: 'show',
+      controller_name: 'vendors',
+      controller_action: 'vendors#show',
+      search_query: @query,
+      sort_option: sort_option,
+      sort_direction: sort_direction,
+      page: @page
+    }
+
+    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    @resource = Resource::ResourceKlass.get_resource
+
+    @table_option = @resource.table_option
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-    @orders = BusinessLogicPagination.new(@sorted_vendor_orders, 10, @page)
-    @initialize_table_options = BusinessLogicTableOption.new(current_user, 'Vendor')
   end
 
   # GET /vendors/new
@@ -86,8 +120,21 @@ class VendorsController < ApplicationController
     end
 
     def set_pagination_params
-      @per_page = 10
+      # @per_page = 10
       @page = params.fetch(:page, 0).to_i
+      @total_vendor_count = Vendor.all.count
+    end
+
+    def load_resource_files
+      autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
+      autoload :Resource, "resources/resource.rb"
+
+      # Resource.reload_ivars
+      # ResourceManager.reload_ivars
+    end
+
+    def set_search_params
+      @query = params[:q]
     end
 
 end

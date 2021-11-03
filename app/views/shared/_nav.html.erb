@@ -14,14 +14,12 @@
     <ul class="navbar-nav mr-auto">
       <!-- Left -->
       <% if !user_signed_in? %>
-
         <li class="nav-item">
           <%= link_to 'home', root_path, class:'nav-link' %>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <%= link_to 'about', pages_about_path, class:'nav-link' %>
-        </li>
-
+        </li> -->
       <% end %>
 
       <% if user_signed_in? %>
@@ -32,14 +30,6 @@
 
         <li class="nav-item">
           <%= link_to 'Orders', orders_path, class:'nav-link' %>
-        </li>
-
-        <li class="nav-item">
-          <%#= link_to 'Order Contents', order_contents_path, class:'nav-link' %>
-        </li>
-
-        <li class="nav-item">
-          <%= link_to 'Users#index', users_path, class:'nav-link' %>
         </li>
 
         <li class="nav-item">
@@ -56,15 +46,13 @@
     <div class="navbar-text">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <%= link_to "logout", signout_path, method: :delete, class:"nav-link" if user_signed_in? %>
+          <%= link_to "Logout", signout_path, method: :delete, class:"nav-link" if user_signed_in? %>
         </li>
+        
         <li class="nav-item">
-          <%= link_to 'account settings', edit_user_registration_path, class:'nav-link' if user_signed_in?%>
+          <%= link_to 'Account Settings', edit_user_registration_path, class:'nav-link' if user_signed_in?%>
         </li>
-        <!-- <form class="px-10 form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form> -->
+
         <li class="nav-item">
           <%= link_to 'sign in', sign_in_path, class:'nav-link' if !user_signed_in?%>
         </li>

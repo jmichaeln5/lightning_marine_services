@@ -2,6 +2,8 @@ class Purchaser < ApplicationRecord
   has_many :orders
   has_many :vendors, through: :orders
 
+  searchkick
+
   validates :name, presence: true, uniqueness: true
 
   before_destroy :check_associated_orders
