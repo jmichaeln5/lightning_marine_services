@@ -69,9 +69,9 @@
               <% selected_page = (@resource.humanized_current_page) == display_offset_page_number ? true : false %>
 
               <% if selected_page == true %>
-                <%= link_to "#{display_offset_page_number}/#{total_pages + 1  } (current page)", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
+                <%= link_to "#{display_offset_page_number}/#{total_pages + 1  } (current page)", request.params.merge(q: @query, page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
               <% else %>
-                <%= link_to "#{display_offset_page_number}/#{total_pages + 1 }", request.params.merge(page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
+                <%= link_to "#{display_offset_page_number}/#{total_pages + 1 }", request.params.merge(q: @query, page: (display_offset_page_number - 1) ), class:'dropdown-item mr-8' %>
               <% end %>
             <% end %>
           </div>
