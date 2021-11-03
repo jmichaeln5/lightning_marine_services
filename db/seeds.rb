@@ -1,21 +1,3 @@
-if  ( User.any? == (false || nil) )
-  admin_user = User.new(
-      id: 1,
-      first_name: 'Admin',
-      last_name: "User",
-      phone_number: "954"+[*0..3, *0..4].sample(7).join,
-      email: "admin@gmail.com",
-      username: "adminuser",
-      password: '123456',
-      password_confirmation: "123456"
-  )
-  admin_user.add_role "admin"
-  admin_user.skip_confirmation!
-
-  admin_user.save
-end
-
-#
 # if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
 #
 #   def is_nil_and_zero(data)
