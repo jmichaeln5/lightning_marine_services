@@ -54,12 +54,6 @@ class Order < ApplicationRecord
   end
 
   def search_data
-    # attributes.merge(
-    #   order_content: self.order_content,
-    #   ship_name: self.purchaser(&:name),
-    #   vendor_name: self.vendor(&:name)
-    # )
-
     attributes.merge(
       order_content: self.order_content,
       ship_name: self.purchaser,
