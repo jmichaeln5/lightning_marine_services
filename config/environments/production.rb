@@ -44,7 +44,7 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Devise ***
- config.action_mailer.default_url_options = { :host => "friendfund.herokuapp.com" }
+ config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
  #Mailers
  config.action_mailer.delivery_method = :sendmail
  config.action_mailer.perform_deliveries = true
@@ -55,7 +55,7 @@ Rails.application.configure do
  config.action_mailer.smtp_settings = {
    address:              'smtp.gmail.com',
    port:                 587,
-   domain:               'friendfund.herokuapp.com',
+   domain:               'lightningmarineservice.herokuapp.com',
    user_name:            Rails.application.credentials.production[:gmail][:user_name],
    password:             Rails.application.credentials.production[:gmail][:password],
    authentication:       'plain',
