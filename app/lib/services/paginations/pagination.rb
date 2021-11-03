@@ -19,12 +19,86 @@ module Pagination
 
     def total_pages
       resource_amount = @target.ids.count
-      page_result = (resource_amount.modulo(@resources_per_page) == 0) ? ( (resource_amount / @resources_per_page) - 1 ) : (resource_amount / @resources_per_page)
+      if (resource_amount.modulo(@resources_per_page) == 0)
+        page_result = (resource_amount / @resources_per_page)
+      elsif (resource_amount.modulo(@resources_per_page) >= 1 )
+          page_result = (resource_amount / @resources_per_page)
+      elsif (resource_amount.modulo(@resources_per_page) < 1 )
+          page_result = ((resource_amount / @resources_per_page) - 1)
+      else
+        page_result = (resource_amount / @resources_per_page)
+      end
+      return page_result
     end
 
-    def display_humanized_total_pages
-      total_pages + 1
+    def humanize_page(page_arg)
+      page_arg + 1
     end
+
+    def humanized_total_pages
+      humanize_page(total_pages)
+    end
+
+    def humanized_current_page
+      humanize_page(@page)
+    end
+
+    def current_page
+      @page
+    end
+
+    def first_page
+      0
+    end
+
+    def last_page
+      total_pages
+    end
+
+    def valid_page?(page_arg)
+      (page_arg >= 0 ) && ( total_pages >= page_arg )
+    end
+
+    def first_page_disabled?(page_arg = nil)
+      if page_arg.nil?
+        0 >= total_pages ? true : false
+      else
+        0 >= page_arg ? true : false
+      end
+    end
+
+    def last_page_disabled?(page_arg = nil)
+      if page_arg.nil?
+        @page >= total_pages ? true : false
+      else
+        total_pages >= page_arg ? true : false
+      end
+    end
+
+    def previous_page
+      first_page_disabled?(@page) ? 0 : (@page - 1)
+    end
+
+    def previous_page_left
+      first_page_disabled?(@page) ? 0 : (@page - 2)
+    end
+
+    def previous_page_outter_left
+      first_page_disabled?(@page) ? 0 : (@page - 3)
+    end
+
+    def next_page
+      last_page_disabled?(@page) ? total_pages : (@page + 1)
+    end
+
+    def next_page_right
+      last_page_disabled?(@page) ? total_pages : (@page + 2)
+    end
+
+    def next_page_outter_right
+      last_page_disabled?(@page) ? total_pages : (@page + 3)
+    end
+
   end
 
   module Paginate
@@ -32,5 +106,7 @@ module Pagination
       return pagination.target.offset(pagination.paginated_offset).limit(pagination.resources_per_page)
     end
   end
+
+
 
 end

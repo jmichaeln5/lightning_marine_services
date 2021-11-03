@@ -11,6 +11,7 @@ class PurchasersController < ApplicationController
     load_resource_files
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: Purchaser.all,
       parent_class: Purchaser,
@@ -36,6 +37,7 @@ class PurchasersController < ApplicationController
     load_resource_files
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: @purchaser.orders,
       parent_class: Purchaser,
@@ -129,9 +131,6 @@ class PurchasersController < ApplicationController
     def load_resource_files
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
-
-      Resource.reload_ivars
-      ResourceManager.reload_ivars
     end
 
     def set_search_params

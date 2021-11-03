@@ -26,8 +26,6 @@ class TableOptionsController < ApplicationController
 
     TableOptionsHelper.set_default_options(@table_option, default_table_option_list) if @table_option.option_list.nil?
 
-    # byebug
-
     if @table_option.save
       redirect_to request.referrer, notice: "Table options created successfully."
     else

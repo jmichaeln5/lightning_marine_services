@@ -9,7 +9,6 @@ module Search
   end
 
   def self.search_resource(resource)
-
     case get_search_module(resource)
 
     when "SearchOrders::SearchOrdersIndex"

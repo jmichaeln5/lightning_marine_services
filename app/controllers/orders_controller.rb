@@ -9,7 +9,11 @@ class OrdersController < ApplicationController
   def all_orders
     load_resource_files
 
+    Resource.reload_ivars
+    ResourceManager.reload_ivars
+
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: Order.all,
       parent_class: Order,
@@ -36,8 +40,10 @@ class OrdersController < ApplicationController
     load_resource_files
 
     Resource.reload_ivars
+    ResourceManager.reload_ivars
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: Order.all.unarchived,
       parent_class: Order,
@@ -59,8 +65,6 @@ class OrdersController < ApplicationController
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
-    # byebug
-
     respond_to do |format|
       format.html
       # Donwnload Orders link in app/views/orders/_export_csv_button.html.erb, if link is clicked will be formatted through here
@@ -78,12 +82,13 @@ class OrdersController < ApplicationController
 
   # GET /orders/1 or /orders/1.json
   def show
-
     load_resource_files
 
     Resource.reload_ivars
+    ResourceManager.reload_ivars
 
     resource_attrs = {
+      called_at: Time.now,
       user: current_user,
       target: @order,
       parent_class: Order,
@@ -148,7 +153,6 @@ class OrdersController < ApplicationController
   end
 
   def destroy_attachment
-    # byebug
     # image = ActiveStorage::Attachment.find(params[:id])
     image.purge
     redirect_to request.referrer, notice: "Image deleted successfully."
@@ -182,9 +186,6 @@ class OrdersController < ApplicationController
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
       autoload :OrdersResource, "resources/orders_resource.rb"
-
-      Resource.reload_ivars
-      ResourceManager.reload_ivars
     end
 
     def set_search_params

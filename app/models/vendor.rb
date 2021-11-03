@@ -17,12 +17,12 @@ class Vendor < ApplicationRecord
     end
   end
 
-  def search_data
-    attributes.merge(
-      orders: self.orders(&:orders),
-      order_content: self.orders(&:order_content),
-      purchasers_names: self.purchasers.map(&:name)
-    )
-  end
+  # def search_data
+  #   attributes.merge(
+  #     orders: self.orders(&:orders),
+  #     order_content: self.orders(&:order_content),
+  #     purchasers_names: self.purchasers.map(&:name)
+  #   )
+  # end
 
 end

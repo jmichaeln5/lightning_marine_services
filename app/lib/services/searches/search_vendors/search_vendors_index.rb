@@ -1,7 +1,6 @@
 module SearchVendorsIndex
 
   def search_vendors_index(search_query)
-     Vendor.reindex
      search_query = Vendor.search(search_query)
      results_arr = Array.new
 

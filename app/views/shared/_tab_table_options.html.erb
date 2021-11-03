@@ -20,8 +20,7 @@
     <div id="collapseOptions" class="collapse" aria-labelledby="tableOptions" data-parent="#aboveTableAccordionOptions">
       <div class="card-body">
 
-        <%# if main_controllers.include? controller_name %>
-        <% if controller_name.in? main_controllers and !display_on_index_action_for_purchaser_and_vendor? and !display_on_order_show? %>
+        <% if controller_name.in? main_controllers and !display_on_index_action_for_purchaser_and_vendor? and !display_on_order_show? and action_name != 'all_orders' %>
 
             <div class="p-4">
               <%= render "table_options/table_options_modal" %>
@@ -33,7 +32,7 @@
                 <div class="btn btn-outline-primary disabled" role="button" aria-disabled="true">
                   Table Options: <%= current_controller.titleize %>
                 </div>
-                
+
                 <div class="text-gray-500 text-sm pt-2">
                     <%= "(Table Options unavailable for this page.) " %>
                 </div>

@@ -7,7 +7,6 @@ class SearchesController < ApplicationController
 
   def index
 
-
     if @query.nil?
       get_resource_target = Order.all
     else
