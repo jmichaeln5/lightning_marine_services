@@ -1,6 +1,7 @@
 <div class="p-2">
   <div class="float-right">
     <span>
+
       <% if controller_name.in? main_controllers  %>
 
           <div class="form-inline my-lg-0 p-3">
@@ -12,18 +13,28 @@
           </div>
         </div>
 
-      <% else %>
+      <% end %>
 
+      <!-- <%# if controller_name.in? main_controllers  %>
           <div class="form-inline my-lg-0 p-3">
             <div class="row flex-nowrap pb-2">
-            <%= form_tag search_path, method: :get do %>
-              <%= text_field_tag :q, nil, class:'form-control mr-sm-2' %>
-               <%= submit_tag("Search", class:'btn btn-outline-secondary mr-sm-2') %>
-            <% end %>
+            <%#= form_tag request.params.merge(q: nil), method: :get do %>
+              <%#= text_field_tag :q, nil, placeholder: 'Search', class:'form-control mr-sm-2' %>
+              <%#= submit_tag("Search", class:'btn btn-outline-secondary mr-sm-2') %>
+            <%# end %>
           </div>
         </div>
+      <%# else %>
+          <div class="form-inline my-lg-0 p-3">
+            <div class="row flex-nowrap pb-2">
+            <%#= form_tag search_path, method: :get do %>
+              <%#= text_field_tag :q, nil, class:'form-control mr-sm-2' %>
+               <%#= submit_tag("Search", class:'btn btn-outline-secondary mr-sm-2') %>
+            <%# end %>
+          </div>
+        </div>
+      <%# end %> -->
 
-      <% end %>
     </span>
   </div>
 </div>
