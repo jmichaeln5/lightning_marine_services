@@ -5,7 +5,6 @@ class VendorsController < ApplicationController
   before_action :set_search_params, only: %i[ index show]
   before_action :set_pagination_params, only: %i[ index show ]
   helper_method :sort_option, :sort_direction
-  # before_action :load_resource_files, only: %i[ index show ] # must be after actions/methods that defines @resource (data object) attrs in resource_attrs hash (local var)
 
   def index
     load_resource_files

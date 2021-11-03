@@ -94,9 +94,23 @@ module Resource
         has_pagination?: true,
         has_paginated_target?: false,
         total_pages: @pagination.total_pages,
-        paginated_offset: @pagination.paginated_offset
+        current_page: @pagination.current_page,
+        paginated_offset: @pagination.paginated_offset,
+        humanized_total_pages: @pagination.humanized_total_pages,
+        humanized_current_page: @pagination.humanized_current_page,
+
+        first_page: @pagination.first_page,
+        last_page: @pagination.last_page,
+
+        first_page_disabled?: @pagination.first_page_disabled?,
+        last_page_disabled?: @pagination.last_page_disabled?,
+        
+        next_page: @pagination.next_page,
+        previous_page: @pagination.previous_page
       )
       @generic_resource = update_resource_manager(@options)
+
+      # byebug
     end
 
     # Setting then Getting services then merging into @options hash, returning updated resource
@@ -109,7 +123,7 @@ module Resource
 
       @generic_resource = update_resource_manager(@options)
       @resource = @generic_resource
-      
+
       # return @resource
       return update_resource_manager(@options)
     end

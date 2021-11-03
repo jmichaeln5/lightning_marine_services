@@ -17,10 +17,4 @@ class Purchaser < ApplicationRecord
     end
   end
 
-  # def search_data
-  #   attributes.merge(
-  #     name: self.name
-  #   )
-  # end
-
 end

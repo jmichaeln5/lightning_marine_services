@@ -36,6 +36,7 @@ class OrdersController < ApplicationController
     load_resource_files
 
     Resource.reload_ivars
+    ResourceManager.reload_ivars
 
     resource_attrs = {
       user: current_user,
@@ -59,8 +60,6 @@ class OrdersController < ApplicationController
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
-    # byebug
-
     respond_to do |format|
       format.html
       # Donwnload Orders link in app/views/orders/_export_csv_button.html.erb, if link is clicked will be formatted through here
@@ -74,6 +73,9 @@ class OrdersController < ApplicationController
         filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
       }
     end
+
+    Resource.reload_ivars
+    ResourceManager.reload_ivars
   end
 
   # GET /orders/1 or /orders/1.json
@@ -182,9 +184,6 @@ class OrdersController < ApplicationController
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
       autoload :OrdersResource, "resources/orders_resource.rb"
-
-      Resource.reload_ivars
-      ResourceManager.reload_ivars
     end
 
     def set_search_params
