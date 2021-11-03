@@ -23,7 +23,7 @@
     <%= render "shared/nav"%>
 
       <div class="h-screen">
-        <div class="text-center">
+        <div class="text-center py-18">
               <div>
 
                 <%= render "shared/flash_messages" %>
@@ -115,7 +115,6 @@
 
                       </div>
                   </div>
-
                 <% end %>
 
                 <!-- App -->
@@ -127,42 +126,27 @@
                     <div class="">
                       <%= link_to "Back", :back, class:"btn btn-primary" %>
                     </div>
-                    <br>
-                    <br>
                 <% end  %>
-
               </div>
-        </div>
-      </div>
 
-    <!-- https://css-tricks.com/how-to-make-an-unobtrusive-scroll-to-top-button/ -->
-    <br>
-    <br>
-    <br>
-    <div class="pt-2">
-      <nav class="fixed-bottom py-2">
-        <div class="p-2">
-          <div class=" my-2 my-lg-0 pt-4">
-            <button class="btn btn-outline-success my-2 my-sm-0 float-right" id="scrollToTopBtn">Scroll to Top</button>
+        </div>
+
+        </div>
+        <% if user_signed_in? %>
+          <div class="p-4 fixed-bottom-right float-right">
+            <nav class="p-lg-0">
+                  <button class="btn btn-outline-success my-2 my-sm-0" id="scrollToTopBtn">
+                    Scroll to Top
+                  </button>
+            </nav>
           </div>
-        </div>
-
-        <br>
-      </nav>
-    </div>
-
-
-    <!-- <footer>
-      <span class=" fixed-bottom">
-        <button class="float-right scrollToTop" id="scrollToTopBtn">☝️</button>
-      </span>
-    </footer> -->
+          <br>
+        <% end %>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 
     <script type="text/javascript">
-
       // Flash Message(s) Fade Out
       setTimeout(function(){
         $('.notice-msg-container').fadeOut().remove();
@@ -188,4 +172,5 @@
 
     </script>
   </body>
+
 </html>
