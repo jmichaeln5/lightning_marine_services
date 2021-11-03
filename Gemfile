@@ -58,7 +58,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'humanize', '~> 1.1', '>= 1.1.2'
 gem 'devise', '~> 4.2'
-# gem 'devise_masquerade', '~> 0.1.8'
 gem 'name_of_person'
 gem 'faker', '~> 2.18'
 gem 'possessive', '~> 1.0s', '>= 1.0.1'
@@ -67,4 +66,4 @@ gem 'rolify'
 gem 'mini_magick'
 gem 'image_processing', '~> 1.2'
 gem 'type-humanizer'
-gem 'searchkick', '~> 4.6'
+# gem 'searchkick', '~> 4.6'
