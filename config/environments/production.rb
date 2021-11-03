@@ -43,24 +43,24 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
-  # Devise ***
- config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
- #Mailers
- config.action_mailer.delivery_method = :sendmail
- config.action_mailer.perform_deliveries = true
- config.action_mailer.raise_delivery_errors = false
- config.action_mailer.default_options = {from: Rails.application.credentials.production[:gmail][:user_name]}
-
- config.action_mailer.delivery_method = :smtp
- config.action_mailer.smtp_settings = {
-   address:              'smtp.gmail.com',
-   port:                 587,
-   domain:               'lightningmarineservice.herokuapp.com',
-   user_name:            Rails.application.credentials.production[:gmail][:user_name],
-   password:             Rails.application.credentials.production[:gmail][:password],
-   authentication:       'plain',
-   enable_starttls_auto: true
-}
+#   # Devise ***
+#  config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
+#  #Mailers
+#  config.action_mailer.delivery_method = :sendmail
+#  config.action_mailer.perform_deliveries = true
+#  config.action_mailer.raise_delivery_errors = false
+#  config.action_mailer.default_options = {from: Rails.application.credentials.production[:gmail][:user_name]}
+#
+#  config.action_mailer.delivery_method = :smtp
+#  config.action_mailer.smtp_settings = {
+#    address:              'smtp.gmail.com',
+#    port:                 587,
+#    domain:               'lightningmarineservice.herokuapp.com',
+#    user_name:            Rails.application.credentials.production[:gmail][:user_name],
+#    password:             Rails.application.credentials.production[:gmail][:password],
+#    authentication:       'plain',
+#    enable_starttls_auto: true
+# }
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
