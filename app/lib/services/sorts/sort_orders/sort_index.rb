@@ -17,7 +17,7 @@ module SortIndex
       when 'vendor_name'
         return sort_by_vendor_name(sort_option, sort_direction)
       else
-        return Sort.invalid_sort(target, sort_option, sort_direction)
+        return target
       end
     end
 

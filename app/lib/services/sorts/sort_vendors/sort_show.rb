@@ -17,7 +17,7 @@ module SortShow
     when 'ship_name'
       return sort_by_ship_name(target, sort_option, sort_direction)
     else
-      return Sort.invalid_sort(target, sort_option, sort_direction)
+      return target
     end
   end
 

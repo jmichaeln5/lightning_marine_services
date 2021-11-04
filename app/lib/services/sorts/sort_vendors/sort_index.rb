@@ -9,7 +9,7 @@ module SortIndex
     when 'order_amount'
       return sort_vendors_by_order_amount(target, sort_option, sort_direction)
     else
-      target.order("created_at #{sort_direction}")
+      return target
     end
   end
 

@@ -9,7 +9,7 @@ module SortIndex
     when 'order_amount'
       return sort_purchasers_by_order_amount(target, sort_option, sort_direction)
     else
-      target.order("created_at #{sort_direction}")
+      return target
     end
   end
 
@@ -18,13 +18,9 @@ module SortIndex
   end
 
   def sort_purchasers_by_order_amount(target, sort_option, sort_direction)
-
     target = nil
-
     target = Purchaser.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
-
     return target
-
   end
 
 end
