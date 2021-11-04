@@ -9,9 +9,6 @@ class OrdersController < ApplicationController
   def all_orders
     load_resource_files
 
-    Resource.reload_ivars
-    ResourceManager.reload_ivars
-
     resource_attrs = {
       called_at: Time.now,
       user: current_user,
@@ -38,9 +35,6 @@ class OrdersController < ApplicationController
 
   def index
     load_resource_files
-
-    Resource.reload_ivars
-    ResourceManager.reload_ivars
 
     resource_attrs = {
       called_at: Time.now,
@@ -83,9 +77,6 @@ class OrdersController < ApplicationController
   # GET /orders/1 or /orders/1.json
   def show
     load_resource_files
-
-    Resource.reload_ivars
-    ResourceManager.reload_ivars
 
     resource_attrs = {
       called_at: Time.now,
@@ -183,9 +174,12 @@ class OrdersController < ApplicationController
     end
 
     def load_resource_files
+      clear_cache_for_services
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
-      autoload :OrdersResource, "resources/orders_resource.rb"
+
+      Resource.reload_ivars
+      ResourceManager.reload_ivars
     end
 
     def set_search_params

@@ -41,18 +41,12 @@ module ApplicationHelper
   end
 
   def display_on_order_show?
-
-    # (controller_name_and_action == 'orders#show') ? true : false
-
     if (controller_name_and_action == 'orders#show' )
       true
     else
       false
     end
   end
-
-
-
 
   def get_resource(controller_name)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"
@@ -63,6 +57,23 @@ module ApplicationHelper
       if (display_on_orders_purchasers_vendors? == true)
         get_resource(controller_name).find(params[:id])
       end
+  end
+
+  def clear_cache_for_services
+    Rails.cache.clear
+
+    puts " "
+    puts " "
+    puts "*"*20
+    puts "*"*20
+    puts " "
+    puts "Cache cleared successfully."
+    puts " "
+    puts "*"*20
+    puts "*"*20
+    puts " "
+    puts " "
+    puts " "
   end
 
 end

@@ -129,6 +129,7 @@ class PurchasersController < ApplicationController
     end
 
     def load_resource_files
+      clear_cache_for_services
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
     end
