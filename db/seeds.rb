@@ -33,12 +33,12 @@
     puts "*"*50
     puts " "
     puts " "
-    puts "*"*20
-    puts "#{admin_user.username} created."
-    puts "*"*20
-    puts "#{admin_user.inspect}"
-    puts "*"*20
-    puts " "
+    # puts "*"*20
+    # puts "#{admin_user.username} created."
+    # puts "*"*20
+    # puts "#{admin_user.inspect}"
+    # puts "*"*20
+    # puts " "
     puts "*"*20
     puts "#{sample_user.username} created."
     puts "*"*20
