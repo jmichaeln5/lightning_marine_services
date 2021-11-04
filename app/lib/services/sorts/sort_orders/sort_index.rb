@@ -11,7 +11,7 @@ module SortIndex
       when 'date_recieved'
         return sort_by_sort_option(target, sort_option, sort_direction)
       when 'date_delivered'
-        return Sort.invalid_sort(target, sort_option, sort_direction)
+        return sort_by_sort_option(target, sort_option, sort_direction)
       when 'ship_name'
         return sort_by_ship_name(sort_option, sort_direction)
       when 'vendor_name'

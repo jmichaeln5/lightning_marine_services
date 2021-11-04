@@ -59,21 +59,4 @@ module ApplicationHelper
       end
   end
 
-  def clear_cache_for_services
-    Rails.cache.clear
-
-    puts " "
-    puts " "
-    puts "*"*20
-    puts "*"*20
-    puts " "
-    puts "Cache cleared successfully."
-    puts " "
-    puts "*"*20
-    puts "*"*20
-    puts " "
-    puts " "
-    puts " "
-  end
-
 end

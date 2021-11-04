@@ -12,6 +12,7 @@ module IndependentTableOption
 
   def self.trigger_default_resource_table_option(resource)
     controller_name_and_action = "#{resource.parent_class.name.downcase.pluralize}" + "#" + "#{resource.parent_action.downcase}"
+
     resource_table_type = resource.parent_class.name.downcase.pluralize
     resource_table_action = resource.parent_action
     option_list = TableOptionsHelper.default_table_options_for_form(controller_name_and_action)
@@ -31,6 +32,7 @@ module IndependentTableOption
         user,
         controller_name_and_action
       )
+
     when "IndependentTableOptionVendors::IndependentTableOptionVendorsShow"
       autoload :IndependentTableOptionVendors, "services/table_options/independent_table_options_vendors/independent_table_option_vendors.rb"
       extend IndependentTableOptionVendors::IndependentTableOptionVendorsShow
@@ -55,6 +57,7 @@ module IndependentTableOption
         user,
         controller_name_and_action
       )
+      
     end
   end
 
