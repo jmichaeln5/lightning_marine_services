@@ -1,68 +1,82 @@
 <%= form_with(model: table_option) do |form| %>
 
+<div class="font-bold">
+  <%= @resource.controller_name_and_action %>
+</div>
+
+
+<div class="font-semibold">
+  belongs_to_user? <%= @table_option.belongs_to_user? %>
+</div>
+
+  <div class="font-bold">
+    <%= @table_option.inspect %>
+  </div>
+
   <div class="field">
 
     <p class="text-3xl"> <%= "New" if table_option.id.nil? %> <%= current_controller.titleize.singularize %> Table Options </p>
     <%= form.hidden_field :resource_table_type, value: controller_name.downcase %>
     <%= form.hidden_field :resource_table_action, value: action_name %>
     <%= form.hidden_field :user_id, value: current_user.id %>
-    <%= form.hidden_field :set_default_options, value: "#{controller_name.downcase}##{action_name}" %>
+    <%#= form.hidden_field :set_default_options, value: @resource.controller_name_and_action %>
   </div>
 
-    <div class="container bg-gray-200 p-2 ">
+  <div class="container bg-gray-200 p-2 ">
 
-      <div class="p-1">
-        <p class="text-2xl -mb-1 pb-2">
-          Columns to Display:
-        </p>
+    <div class="p-1">
+      <p class="text-2xl -mb-1 pb-2">
+        Columns to Display:
+      </p>
 
-        <div class="text-xl">
-            <div class="p-2">
-              <% strfy_options = TableOptionsHelper.default_table_options_for_form(controller_name_and_action).to_s %>
-              <% TableOptionsHelper.default_table_options_for_form(controller_name_and_action).each do | option | %>
+      <div class="text-xl">
+          <div class="p-2">
+            <% strfy_options = TableOptionsHelper.default_table_options_for_form(controller_name_and_action).to_s %>
+            <% TableOptionsHelper.default_table_options_for_form(controller_name_and_action).each do | option | %>
 
-                    <% if ((@table_option != nil ) && (@table_option.option_list != nil )) && (option.to_s.in? @table_option.option_list) %>
-                          <div class="p-1">
-                            <%= check_box_tag "table_option[option_list][]", option, {:multiple => true} %>
-                            <%= option %>
-                          </div>
-                    <% else  %>
-                          <div class="p-1">
-                            <%= check_box_tag "table_option[option_list][]", option %>
-                            <%= option %>
-                          </div>
-                    <% end %>
+                  <% if option.to_s.in? @table_option.option_list %>
+                        <div class="p-1">
+                          <%= check_box_tag "table_option[option_list][]", option, {:multiple => true} %>
+                          <%= option %>
+                        </div>
+                  <% else  %>
+                        <div class="p-1">
+                          <%= check_box_tag "table_option[option_list][]", option %>
+                          <%= option %>
+                        </div>
+                  <% end %>
 
-              <% end %>
-            </div>
+            <% end %>
+          </div>
 
-            <span class="text-lg">
-              <input type="Button" class="btn btn-sm btn-outline-info" onclick="togglecheckboxes('table_option[option_list][]')" value="Select/Unselect All" />
-            </span>
-        </div>
-
-      <hr>
-      <div>
-        <p class="text-2xl">
-          Amount of <%= current_controller.titleize %> to display
-        </p>
-        <div class="text-xl">
-          <%= form.select :resources_per_page, options_for_select(TableOptionsHelper.options_for_resources_per_page, @table_option.resources_per_page)  %>
-        </div>
+          <span class="text-lg">
+            <input type="Button" class="btn btn-sm btn-outline-info" onclick="togglecheckboxes('table_option[option_list][]')" value="Select/Unselect All" />
+          </span>
       </div>
 
-      <% if @table_option.belongs_to_user? %>
-        <div class="px-8">
-          <hr>
-        </div>
-        <div class="pt-2">
-        <%= link_to "Remove #{current_controller.titleize} table options", @table_option, method: :delete, data: { confirm: "Are you sure?" } %>
-        </div>
-      <% end %>
+    <hr>
+
+    <div>
+      <p class="text-2xl">
+        Amount of <%= current_controller.titleize %> to display
+      </p>
+      <div class="text-xl">
+        <%= form.select :resources_per_page, options_for_select(TableOptionsHelper.options_for_resources_per_page, @table_option.resources_per_page)  %>
+      </div>
     </div>
 
-    <br>
+    <% if @table_option.belongs_to_user? %>
+      <div class="px-8">
+        <hr>
+      </div>
+      <div class="pt-2">
+      <%= link_to "Remove #{current_controller.titleize} table options", @table_option, method: :delete, data: { confirm: "Are you sure?" } %>
+      </div>
+    <% end %>
   </div>
+
+  <br>
+</div>
 
   <div class="p-4">
     <div class="actions btn btn-outline-primary">
