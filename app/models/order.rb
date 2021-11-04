@@ -7,7 +7,7 @@ class Order < ApplicationRecord
   has_many_attached :images
   has_one :order_content, dependent: :destroy
 
-  searchkick
+  # searchkick
 
   accepts_nested_attributes_for :order_content
 

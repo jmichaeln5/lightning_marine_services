@@ -43,6 +43,10 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
+  ############################################# Commenting out for initial push
+  ############################################# Commenting out for initial push
+  ############################################# Commenting out for initial push
+  ############################################# Commenting out for initial push
 #   # Devise ***
 #  config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
 #  #Mailers
@@ -61,6 +65,8 @@ Rails.application.configure do
 #    authentication:       'plain',
 #    enable_starttls_auto: true
 # }
+#############################################
+
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 

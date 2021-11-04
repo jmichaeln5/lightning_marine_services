@@ -2,7 +2,7 @@ class Vendor < ApplicationRecord
   has_many :orders
   has_many :purchasers, through: :orders
 
-  searchkick
+  # searchkick
 
   validates :name, presence: true, uniqueness: true
 
