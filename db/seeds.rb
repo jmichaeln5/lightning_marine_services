@@ -210,9 +210,9 @@
 #   puts " "
 #   puts "#{Order.all.count} Orders created."
 #   puts " "
-#   puts "#{Order.all.unarchived.count} Unarchived Orders created."
+#   puts "#{Order.unarchived.count} Unarchived Orders created."
 #   puts " "
-#   puts "#{Order.all.archived.count} Archived Orders created."
+#   puts "#{Order.archived.count} Archived Orders created."
 #   puts " "
 #   puts "*"*20
 #   puts "*"*20

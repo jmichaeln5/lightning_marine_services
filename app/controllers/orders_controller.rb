@@ -45,7 +45,7 @@ class OrdersController < ApplicationController
     resource_attrs = {
       called_at: Time.now,
       user: current_user,
-      target: Order.all.unarchived,
+      target: Order.unarchived,
       parent_class: Order,
       parent_action: 'index',
       controller_name: 'orders',

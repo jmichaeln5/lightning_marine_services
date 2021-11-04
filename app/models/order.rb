@@ -14,9 +14,8 @@ class Order < ApplicationRecord
   validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
   validates :po_number, uniqueness: true
 
-  before_save :order_content_exists?
-  before_update :handle_archive
-
+  before_save :order_content_exists?, :handle_archive
+  # before_update :handle_archive
   #  before_save :before_save_methods
 
   def self.to_csv # Also Formats for XLS
