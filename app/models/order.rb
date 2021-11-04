@@ -7,7 +7,7 @@ class Order < ApplicationRecord
   has_many_attached :images
   has_one :order_content, dependent: :destroy
 
-  # searchkick
+  searchkick
 
   accepts_nested_attributes_for :order_content
 
@@ -30,13 +30,6 @@ class Order < ApplicationRecord
 
   private
 
-  if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
-    if content_amount < 1
-      self.errors.add(:base, "Order is missing content.")
-      throw(:abort)
-    end
-  end
-
   def order_content_exists?
     order_content = self.order_content
     order_content_attr_to_count = ["box", "crate", "pallet", "other"]
@@ -46,6 +39,12 @@ class Order < ApplicationRecord
       add_content_amount = order_content.send(attr).to_i
       content_amount = content_amount + add_content_amount
     end
+
+    if content_amount < 1
+      self.errors.add(:base, "Order is missing content.")
+      throw(:abort)
+    end
+
   end
 
   def handle_archive
