@@ -49,7 +49,7 @@ module ResourceManager
       if ServiceManagerSort::SortDirection.new.is_satisfied_by?(@generic_resource)
           @sorted_resource = ResourceManagerSort.manage_sort(resource = @generic_resource)
       else
-        @sorted_resource = @generic_resource.target.order("created_at DESC")
+        @sorted_resource = @generic_resource.target
       end
     end
 

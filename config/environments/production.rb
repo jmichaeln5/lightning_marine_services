@@ -2,13 +2,15 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
-
+  # config.cache_classes = true #Default, changing to false for Zeitwerk auto loading
+  config.cache_classes = false
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
+
   # Rake tasks automatically ignore this option for performance.
-  config.eager_load = true
+  # config.eager_load = true # Default is true, changing to false
+  config.eager_load = false
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
@@ -43,24 +45,30 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
-  # Devise ***
- config.action_mailer.default_url_options = { :host => "friendfund.herokuapp.com" }
- #Mailers
- config.action_mailer.delivery_method = :sendmail
- config.action_mailer.perform_deliveries = true
- config.action_mailer.raise_delivery_errors = false
- config.action_mailer.default_options = {from: Rails.application.credentials.production[:gmail][:user_name]}
+  ############################################# Commenting out for initial push
+  ############################################# Commenting out for initial push
+  ############################################# Commenting out for initial push
+  ############################################# Commenting out for initial push
+#   # Devise ***
+#  config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
+#  #Mailers
+#  config.action_mailer.delivery_method = :sendmail
+#  config.action_mailer.perform_deliveries = true
+#  config.action_mailer.raise_delivery_errors = false
+#  config.action_mailer.default_options = {from: Rails.application.credentials.production[:gmail][:user_name]}
+#
+#  config.action_mailer.delivery_method = :smtp
+#  config.action_mailer.smtp_settings = {
+#    address:              'smtp.gmail.com',
+#    port:                 587,
+#    domain:               'lightningmarineservice.herokuapp.com',
+#    user_name:            Rails.application.credentials.production[:gmail][:user_name],
+#    password:             Rails.application.credentials.production[:gmail][:password],
+#    authentication:       'plain',
+#    enable_starttls_auto: true
+# }
+#############################################
 
- config.action_mailer.delivery_method = :smtp
- config.action_mailer.smtp_settings = {
-   address:              'smtp.gmail.com',
-   port:                 587,
-   domain:               'friendfund.herokuapp.com',
-   user_name:            Rails.application.credentials.production[:gmail][:user_name],
-   password:             Rails.application.credentials.production[:gmail][:password],
-   authentication:       'plain',
-   enable_starttls_auto: true
-}
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 

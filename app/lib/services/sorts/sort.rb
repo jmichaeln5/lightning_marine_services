@@ -1,7 +1,7 @@
 module Sort
 
   def self.invalid_sort(target, sort_option, sort_direction)
-    return target.order("created_at #{sort_direction}")
+    return target
   end
 
   def self.trigger_sort_target(resource)
@@ -51,7 +51,7 @@ module Sort
       return SortSearches::SortIndex.sort_target(resource.target, resource.sort_option, resource.sort_direction)
 
     else
-      return invalid_sort(resource.target, sort_option, sort_direction)
+      return resource.target
     end
 
   end

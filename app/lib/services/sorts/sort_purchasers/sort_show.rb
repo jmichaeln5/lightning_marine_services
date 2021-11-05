@@ -12,16 +12,12 @@ module SortShow
       return sort_by_sort_option(target, sort_option, sort_direction)
     when 'date_delivered'
       return sort_by_sort_option(target, sort_option, sort_direction)
-    # when 'purchaser_name'
-    #   return sort_by_purchaser_name(target, sort_option, sort_direction)
-    # when 'ship_name'
-    #   return sort_by_vendor_name(target, sort_option, sort_direction)
     when 'vendor_name'
       return sort_by_vendor_name(target, sort_option, sort_direction)
     when 'ship_name'
       return sort_by_ship_name(target, sort_option, sort_direction)
     else
-      return Sort.invalid_sort(target, sort_option, sort_direction)
+      return target
     end
   end
 

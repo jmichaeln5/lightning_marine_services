@@ -1,6 +1,6 @@
 <% content_for :title, "Search Page" %>
 <% content_for :subtitle, "#{Order.all.count} Orders" %>
-<% content_for :subtitle_two, "#{ Order.unarchived.all.count} Unarchieved Orders" %>
+<% content_for :subtitle_two, "#{ Order.unarchived.count} Unarchieved Orders" %>
 <% content_for :subtitle_three, "#{Order.archived.count} Archieved Orders" %>
 
 <%= render 'shared/tab_table_options' %>
