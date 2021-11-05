@@ -9,9 +9,6 @@ class OrdersController < ApplicationController
   def all_orders
     load_resource_files
 
-    Resource.reload_ivars
-    ResourceManager.reload_ivars
-
     resource_attrs = {
       called_at: Time.now,
       user: current_user,
@@ -39,13 +36,10 @@ class OrdersController < ApplicationController
   def index
     load_resource_files
 
-    Resource.reload_ivars
-    ResourceManager.reload_ivars
-
     resource_attrs = {
       called_at: Time.now,
       user: current_user,
-      target: Order.all.unarchived,
+      target: Order.unarchived,
       parent_class: Order,
       parent_action: 'index',
       controller_name: 'orders',
@@ -84,17 +78,14 @@ class OrdersController < ApplicationController
   def show
     load_resource_files
 
-    Resource.reload_ivars
-    ResourceManager.reload_ivars
-
     resource_attrs = {
       called_at: Time.now,
       user: current_user,
       target: @order,
       parent_class: Order,
+      parent_action: 'show',
       controller_name: 'orders',
       controller_action: 'show',
-      parent_action: 'show',
       controller_name_and_action: 'orders#show',
       search_query: @query,
       sort_option: sort_option,
@@ -183,9 +174,12 @@ class OrdersController < ApplicationController
     end
 
     def load_resource_files
+      Rails.cache.clear
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
-      autoload :OrdersResource, "resources/orders_resource.rb"
+
+      Resource.reload_ivars
+      ResourceManager.reload_ivars
     end
 
     def set_search_params

@@ -49,10 +49,6 @@ module ServiceManager # Manages state of @resource data object with services
       self
     end
 
-    # def self.yeet_composite
-    #   "yeet_composite: Big yeets from Composite"
-    # end
-
   end
 
   class ManageServices < Composite

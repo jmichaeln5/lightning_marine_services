@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
+  root 'pages#home'
+  get 'pages/about'
+
   namespace :admin do
       resources :users
       resources :roles, only: [:index, :show]
       root to: "users#index"
     end
-
-  root 'pages#home'
-  get 'pages/about'
 
   # devise_for :users
   devise_for :users, :controllers => {

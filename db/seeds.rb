@@ -1,24 +1,12 @@
-if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+# if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+  if  ( (User.all.count <= 1) && (User.all.count < 2) )
 
-  def is_nil_and_zero(data)
-     data.blank? || data == 0
-  end
-
-  if  ( User.any? == (false || nil) ) || ( (User.all.count < 1) && (User.all.count < 5) )
-    admin_user = User.new(
-        id: 1,
-        first_name: 'Admin',
-        last_name: "User",
-        phone_number: "954"+[*0..3, *0..4].sample(7).join,
-        email: "admin@gmail.com",
-        username: "adminuser",
-        password: '123456',
-        password_confirmation: "123456"
-    )
-    admin_user.add_role "admin"
-    admin_user.skip_confirmation!
-
-    admin_user.save
+    # admin_user = User.new( id: 1, first_name: 'Admin', last_name: "User", phone_number: "954"+[*0..3, *0..4].sample(7).join, email: "admin@gmail.com", username: "adminuser", password: '123456', password_confirmation: "123456")
+    #
+    # admin_user.add_role "admin"
+    # admin_user.skip_confirmation!
+    #
+    # admin_user.save
 
     sample_user = User.new(
         id: 2,
@@ -45,12 +33,12 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
     puts "*"*50
     puts " "
     puts " "
-    puts "*"*20
-    puts "#{admin_user.username} created."
-    puts "*"*20
-    puts "#{admin_user.inspect}"
-    puts "*"*20
-    puts " "
+    # puts "*"*20
+    # puts "#{admin_user.username} created."
+    # puts "*"*20
+    # puts "#{admin_user.inspect}"
+    # puts "*"*20
+    # puts " "
     puts "*"*20
     puts "#{sample_user.username} created."
     puts "*"*20
@@ -61,7 +49,8 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
     all_available_roles = ["admin", "staff", "customer"]
     limited_roles = ["staff", "customer"]
 
-    (3..30).each do |id|
+    # (3..30).each do |id|
+    (3..12).each do |id|
         user = User.new(
             id: id,
             first_name: 'User',
@@ -94,7 +83,7 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
     end
   end
 
-  rand(10..50).times do
+  rand(25..40).times do
       purchaser = Purchaser.create(name: Faker::Company.unique.name )
       puts " "
       puts "*"*20
@@ -119,7 +108,7 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
   puts " "
   puts " "
 
-  rand(7..50).times do
+  rand(7..25).times do
     vendor = Vendor.create(name: Faker::Company.unique.name )
       puts " "
       puts "*"*20
@@ -144,17 +133,23 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
   puts " "
   puts " "
 
-  if  ( Order.any? == (false || nil) ) || ( (Order.all.count < 1) && (Order.all.count < 5) )
-    @order = Order.new
+  order_class_false_or_nil = Order.any? == (false || nil)
+
+  if order_class_false_or_nil
+    new_first_order = Order.new
 
     params =  {order: {"id"=> "1", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.unique.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..5)}", "other_description"=>""}}}
 
-    @order.update(params[:order])
-    @order.save
+    new_first_order.update(params[:order])
+    new_first_order.save
 
-    random_order_count = rand(300..2500)
+  elsif  ( (Order.all.count <= 3) && (Order.all.count < 5) )
+    start_ids_from = Order.last.id + 1
+
+    random_order_count = rand(300..500)
+    # random_order_count = rand(300..2500)
     # random_order_count = rand(3000..10000)
-    (2..random_order_count).each do |id|
+    (start_ids_from..random_order_count).each do |id|
 
       archived_options = [true, false]
 
@@ -182,10 +177,10 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
       order.build_order_content(
         id: id,
         order_id: id,
-        box: "#{rand(0..90)}",
-        crate:"#{rand(0..50)}",
-        pallet:"#{rand(0..30)}",
-        other:"#{rand(0..10)}",
+        box: "#{rand(0..15)}",
+        crate:"#{rand(0..20)}",
+        pallet:"#{rand(0..10)}",
+        other:"#{rand(0..5)}",
       )
 
       order.save
@@ -210,9 +205,9 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
   puts " "
   puts "#{Order.all.count} Orders created."
   puts " "
-  puts "#{Order.all.unarchived.count} Unarchived Orders created."
+  puts "#{Order.unarchived.count} Unarchived Orders created."
   puts " "
-  puts "#{Order.all.archived.count} Archived Orders created."
+  puts "#{Order.archived.count} Archived Orders created."
   puts " "
   puts "*"*20
   puts "*"*20
@@ -222,4 +217,4 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
 
   ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
 
-end
+# end

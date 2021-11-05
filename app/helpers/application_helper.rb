@@ -41,18 +41,12 @@ module ApplicationHelper
   end
 
   def display_on_order_show?
-
-    # (controller_name_and_action == 'orders#show') ? true : false
-
     if (controller_name_and_action == 'orders#show' )
       true
     else
       false
     end
   end
-
-
-
 
   def get_resource(controller_name)
       klass = Object.const_get "#{controller_name.singularize.capitalize}"

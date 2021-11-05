@@ -17,6 +17,7 @@ class VendorsController < ApplicationController
       parent_action: 'index',
       controller_name: 'vendors',
       controller_action: 'index',
+      controller_name_and_action: 'vendors#index',
       search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
@@ -41,7 +42,8 @@ class VendorsController < ApplicationController
       parent_class: Vendor,
       parent_action: 'show',
       controller_name: 'vendors',
-      controller_action: 'vendors#show',
+      controller_action: 'show',
+      controller_name_and_action: 'vendors#show',
       search_query: @query,
       sort_option: sort_option,
       sort_direction: sort_direction,
@@ -126,11 +128,12 @@ class VendorsController < ApplicationController
     end
 
     def load_resource_files
+      Rails.cache.clear
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
 
-      # Resource.reload_ivars
-      # ResourceManager.reload_ivars
+      Resource.reload_ivars
+      ResourceManager.reload_ivars
     end
 
     def set_search_params

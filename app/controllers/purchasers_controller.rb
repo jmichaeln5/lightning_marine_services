@@ -129,8 +129,12 @@ class PurchasersController < ApplicationController
     end
 
     def load_resource_files
+      Rails.cache.clear
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
+
+      Resource.reload_ivars
+      ResourceManager.reload_ivars
     end
 
     def set_search_params

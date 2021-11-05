@@ -14,9 +14,8 @@ class Order < ApplicationRecord
   validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
   validates :po_number, uniqueness: true
 
-  before_save :order_content_exists?
-  before_update :handle_archive
-
+  before_save :order_content_exists?, :handle_archive
+  # before_update :handle_archive
   #  before_save :before_save_methods
 
   def self.to_csv # Also Formats for XLS
@@ -30,13 +29,6 @@ class Order < ApplicationRecord
 
   private
 
-  if Rails.env.development? != true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
-    if content_amount < 1
-      self.errors.add(:base, "Order is missing content.")
-      throw(:abort)
-    end
-  end
-
   def order_content_exists?
     order_content = self.order_content
     order_content_attr_to_count = ["box", "crate", "pallet", "other"]
@@ -46,6 +38,12 @@ class Order < ApplicationRecord
       add_content_amount = order_content.send(attr).to_i
       content_amount = content_amount + add_content_amount
     end
+
+    if content_amount < 1
+      self.errors.add(:base, "Order is missing content.")
+      throw(:abort)
+    end
+
   end
 
   def handle_archive
