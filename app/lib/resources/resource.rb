@@ -32,25 +32,6 @@ module Resource
 
     # Setting ivars for individual services from ResourceManager
     def self.set_search
-      puts " "
-      puts " "
-      puts "*"*10
-      puts "*"*10
-      puts " "
-      puts " -- Set Search -- "
-      puts " -- Set Search -- "
-      puts " -- Set Search -- "
-      puts " "
-      puts "*"*10
-      puts "*"*10
-      puts " "
-      puts " "
-      ####################################################
-      ####################################################
-      ####################################################
-      # byebug
-      ####################################################
-      ####################################################
       super
       @options.merge!(
         has_search_query?: true,
@@ -109,95 +90,14 @@ module Resource
       super
     end
 
-    # Getting ivars for individual services from ResourceManager and merging into @options hash
-    # def self.get_search
-    #   set_search
-    #   @options.merge!(
-    #     has_search_query?: true,
-    #     target: @search_query,
-    #     search_results: @search_query,
-    #     results_length: @search_query.size
-    #   )
-    #   @generic_resource = update_resource_manager(@options)
-    # end
-
-    # def self.get_sort
-    #   set_sort
-    #   @options.merge!(
-    #     has_sorted_target?: true,
-    #     target: @sorted_resource
-    #   )
-    #   @generic_resource = update_resource_manager(@options)
-    # end
-
-    # def self.get_table_option
-    #   set_table_option
-    #   @options.merge!(
-    #     has_table_option?: true,
-    #     table_option: @table_option,
-    #     resource_table_type: @table_option.resource_table_type,
-    #     resource_table_action: @table_option.resource_table_action,
-    #     option_list: @table_option.option_list,
-    #     selected_options: @table_option.selected_options,
-    #     resources_per_page: @table_option.resources_per_page
-    #   )
-    #   @generic_resource = update_resource_manager(@options)
-    # end
-
-    # def self.get_pagination
-    #   set_pagination
-    #   @options.merge!(
-    #     pagination: @pagination,
-    #     has_pagination?: true,
-    #     has_paginated_target?: false,
-    #     total_pages: @pagination.total_pages,
-    #     current_page: @pagination.current_page,
-    #     paginated_offset: @pagination.paginated_offset,
-    #     humanized_total_pages: @pagination.humanized_total_pages,
-    #     humanized_current_page: @pagination.humanized_current_page,
-    #     first_page: @pagination.first_page,
-    #     last_page: @pagination.last_page,
-    #     first_page_disabled?: @pagination.first_page_disabled?,
-    #     last_page_disabled?: @pagination.last_page_disabled?,
-    #     next_page: @pagination.next_page,
-    #     previous_page: @pagination.previous_page
-    #   )
-    #   @generic_resource = update_resource_manager(@options)
-    # end
-
-    # Setting then Getting services then merging into @options hash, returning updated resource
-    # def self.get_resource
-    #   get_search
-    #   get_sort
-    #   get_table_option
-    #   get_pagination
-    #   paginate_target(@pagination)
-    #
-    #   @options.merge!(
-    #     returned_at: Time.now
-    #   )
-    #
-    #   @generic_resource = update_resource_manager(@options)
-    #   @resource = @generic_resource
-    #
-    #   # returning ____@resource____
-    #   return update_resource_manager(@options)
-    # end
-
-
     def self.get_resource
 
-      # create composite where @generic_resource satisfies services in truthy arr then run truthy services
+      # TODO create composite where @generic_resource satisfies services in truthy arr then run truthy services
 
       set_search
       set_sort
       set_table_option
       set_pagination
-
-      # self.set_search
-      # self.set_sort
-      # self.set_table_option
-      # self.set_pagination
 
       paginate_target(@pagination)
 
@@ -207,12 +107,9 @@ module Resource
 
       @generic_resource = update_resource_manager(@options)
       @resource = @generic_resource
-
       # returning ____@resource____
       return update_resource_manager(@options)
     end
-
-
 
   end
 end
