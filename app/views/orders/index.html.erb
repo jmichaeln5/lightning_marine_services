@@ -1,6 +1,6 @@
 <% content_for :title, "#{Order.unarchived.count} Orders" %>
 
-<%= render 'shared/tab_table_options' %>
+<%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_modal' %>
 <br>
 <%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
