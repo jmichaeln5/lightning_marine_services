@@ -8,8 +8,7 @@
             <div class="row pb-2">
             <%= form_tag request.params.merge(q: nil), method: :get do %>
               <div class="row flex-nowrap">
-
-              <%= text_field_tag :q, nil, placeholder: 'Search', class:'form-control' %>
+              <%= text_field_tag :q, nil, placeholder: 'Search', class:'form-control mr-1' %>
               <%= submit_tag("Search", class:'btn btn-sm btn-outline-secondary ') %>
               </div>
 
@@ -43,4 +42,6 @@
   </div>
 </div>
 
+<br>
+<br>
 <br>

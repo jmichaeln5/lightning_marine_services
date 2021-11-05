@@ -19,121 +19,102 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body class="bg-indigo-100 ">
+  <body class="bg-indigo-100">
+    <!-- <body class="bg-indigo-100 font-medium	"> -->
     <%= render "shared/nav"%>
+      <div class="h-screen text-center">
+        <div class="">
 
-      <div class="h-screen">
-        <div class="text-center pb-4">
-          <div class="pb-4">
+
             <%= render "shared/flash_messages" %>
-
             <% if user_signed_in? %>
+            <div class="container">
 
-              <div>
-                <div>
-                  <%= render "searches/search_bar" %>
-                </div>
-              </div>
 
-              <br>
+                  <div>
+                    <%= render "searches/search_bar" %>
+                  </div>
 
-              <div class="container pt-4">
-                <div id="scroll-to-top"></div>
+                  <div id="scroll-to-top">
+                  </div>
 
-                <!-- POSITIONED SEARCH BAR -->
-                <!-- POSITIONED SEARCH BAR -->
-                <!-- POSITIONED SEARCH BAR -->
-                <!-- POSITIONED SEARCH BAR -->
-                <!-- <div class="float-right">
-                  <%#= render "shared/search_on_page" %>
-                </div>
-                <br>
-                <br> -->
-                <!-- POSITIONED SEARCH BAR -->
-                <!-- POSITIONED SEARCH BAR -->
-                <!-- POSITIONED SEARCH BAR -->
 
-                  <!-- Top Header Card Tabs -->
-                  <%= render "shared/top_header_card_tabs" %>
-                  <!-- Header Card-->
-                  <div class="card p-4 -mt-4">
-                    <!-- Top Header Content -->
 
-                    <!-- Top Left Header Content -->
-                    <div class=" d-flex justify-content-start">
-                      <div class=" object-left-top">
-                        <div class="p-2">
-                          <span class="">
-                            <%= yield(:top_left_header_content) %>
-                          </span>
+                    <!-- Above Header Nav Tabs -->
+                    <div class="container">
+                      <div class="mb-4">
+                        <div class="-mb-6">
+                          <%= render "shared/top_header_card_tabs" %>
                         </div>
                       </div>
                     </div>
 
-                    <!-- Top Right Header Content -->
-                    <div class=" d-flex justify-content-end">
-                      <div class=" object-right-top">
-                        <div class="">
-                          <span class="">
-                            <%= yield(:top_right_header_content) %>
-                              <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
-                          </span>
+                    <div class="bg-white  p-4 -mt-4">  <!-- Top Header Content Begin-->
+                        <!-- Top Right Header Content -->
+                        <div class="text-right">
+                          <div class="">
+                            <div class="">
+                              <span class="">
+                                <%= yield(:top_right_header_content) %>
+                                  <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <!-- Header Titles -->
-                    <div class="text-4xl pb-4">
-                      <%= yield(:title) %>
+                        <!-- Header Titles -->
+                        <div class="pb-4">
+                              <div class="text-4xl">
+                                <%= yield(:title) %>
+                              </div>
 
-                      <div class="text-3xl">
-                        <%= yield(:subtitle) %>
-                      </div>
+                              <div class="text-3xl">
+                                <%= yield(:subtitle) %>
+                              </div>
 
-                      <div class="text-2xl">
-                        <%= yield(:subtitle_two) %>
-                      </div>
+                              <div class="text-2xl">
+                                <%= yield(:subtitle_two) %>
+                              </div>
 
-                      <div class="text-2xl">
-                        <%= yield(:subtitle_three) %>
-                      </div>
-                    </div>
+                              <div class="text-2xl">
+                                <%= yield(:subtitle_three) %>
+                              </div>
+                          </div>
 
-                    <div class="">
-                      <!-- For edit resource on #show Controller Actions  -->
-                      <%= render 'shared/edit_toggle' %>
-                    </div>
+                          <div class="container">
+                          <%= render 'shared/edit_toggle' %>
+                          </div>
+                  </div>  <!-- Top Header Content End -->
+
 
                   </div>
-              </div>
 
             <% end %>
 
-            <!-- App -->
-            <div class="container">
-              <%= yield %>
+                <!-- App -->
+                <div class="container">
+                  <%= yield %>
+                </div>
+
+                <% if main_controllers.include? controller_name %>
+                    <div class="z-20">
+                      <%= link_to "Back", :back, class:"btn btn-primary" %>
+                    </div>
+                <% end  %>
+                <% if main_controllers.include? controller_name %>
+                      <nav class="">
+                        <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
+                          Scroll to Top
+                        </button>
+                      </nav>
+                      <br>
+                      <br>
+                <% end %>
             </div>
 
-            <% if main_controllers.include? controller_name %>
-                <div class="z-20">
-                  <%= link_to "Back", :back, class:"btn btn-primary" %>
-                </div>
-            <% end  %>
 
-          </div>
-        </div>
-        <% if main_controllers.include? controller_name %>
-            <!-- <div class="mb-2 mr-4 "> -->
-              <nav class="">
-                <!-- <button class="btn btn-outline-success float-right mb-2 mr-2 z-10" id="scrollToTopBtn"> -->
-                <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
-                  Scroll to Top
-                </button>
-              </nav>
-          <!-- </div> -->
-          <br>
-          <br>
-        <% end %>
+
+
       </div>
 
 
