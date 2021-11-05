@@ -1,5 +1,7 @@
 module Sort
 
+  # TODO create sort_options Array and return sort_by_sort_option method with sort_option as paramter (allow target to be nil, for cases like sort_by_ship_name in SortOrders::SortIndex")
+
   def self.invalid_sort(target, sort_option, sort_direction)
     return target
   end

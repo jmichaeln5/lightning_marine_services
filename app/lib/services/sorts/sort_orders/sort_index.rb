@@ -22,14 +22,14 @@ module SortIndex
     end
 
     def sort_by_sort_option(target, sort_option, sort_direction)
-      return Order.unarchived.reorder(sort_option + " " + sort_direction)
+      return Order.unarchived.all.reorder(sort_option + " " + sort_direction)
     end
 
     def sort_by_ship_name(sort_option, sort_direction)
-      return Order.unarchived.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+      return Order.unarchived.all.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
     end
 
     def sort_by_vendor_name(sort_option, sort_direction)
-      return Order.unarchived.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
+      return Order.unarchived.all.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
     end
   end
