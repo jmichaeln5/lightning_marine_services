@@ -1,7 +1,7 @@
 <% content_for :title, "Ship: #{@purchaser.name}" %>
 <% content_for :subtitle, "#{@purchaser.orders.count} Orders" %>
 
-<%= render 'shared/tab_table_options' %>
+<%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_order_on_show_modal' %>
 
 <%= render 'shared/top_table_header', total_pages: @resource.total_pages %>

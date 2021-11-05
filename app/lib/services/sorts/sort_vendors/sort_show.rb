@@ -27,7 +27,6 @@ module SortShow
 
   def sort_by_vendor_name(target, sort_option, sort_direction)
     target.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
-    # target.vendors.reorder("name" + " " + sort_direction)
   end
 
   def sort_by_ship_name(target, sort_option, sort_direction)

@@ -22,14 +22,14 @@ module SortAllOrders
     end
 
     def sort_by_sort_option(target, sort_option, sort_direction)
-      return target.reorder(sort_option + " " + sort_direction)
+      return Order.all.reorder(sort_option + " " + sort_direction)
     end
 
     def sort_by_ship_name(sort_option, sort_direction)
-      return Order.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
+      return Order.all.includes(:purchaser).references(:purchaser).reorder("name" + " " + sort_direction)
     end
 
     def sort_by_vendor_name(sort_option, sort_direction)
-      return Order.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
+      return Order.all.includes(:vendor).references(:vendor).reorder("name" + " " + sort_direction)
     end
   end
