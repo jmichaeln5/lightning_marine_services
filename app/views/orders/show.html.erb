@@ -24,7 +24,7 @@
     <tbody>
 
         <tr>
-          <td class="align-middle font-light">
+          <td class="align-middle font-normal	">
               <% if @order.archived  %>
                 <span class="text-gray-500">archived</span>
                 <br>
@@ -32,31 +32,31 @@
               <%= @order.id %>
           </td>
 
-            <td class="align-middle font-light">
+            <td class="align-middle font-normal	">
               <%= @order.dept ||= "n/a" %>
             </td>
 
-            <td class="align-middle font-light">
+            <td class="align-middle font-normal	">
               <%= link_to "#{@order.vendor.name}", vendor_path(@order.vendor) %>
             </td>
 
-            <td class="align-middle font-light">
+            <td class="align-middle font-normal	">
               <%= @order.po_number ||= "n/a" %>
             </td>
 
-            <td class="align-middle font-light">
+            <td class="align-middle font-normal	">
               <%=  @order.date_recieved ? @order.date_recieved.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="align-middle font-light">
+            <td class="align-middle font-normal	">
               <%= @order.courrier ||= "n/a" %>
             </td>
 
-            <td class="align-middle font-light">
+            <td class="align-middle font-normal	">
               <%=  @order.date_delivered ? @order.date_delivered.try(:strftime,"%m/%d/%Y") : "n/a "%>
             </td>
 
-            <td class="align-middle font-light">
+            <td class="align-middle font-normal	">
               <% if @order.order_content.present? %>
                   Boxes: <%= @order.order_content.box ||= "n/a" %>
                   <br>

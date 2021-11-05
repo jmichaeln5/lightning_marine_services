@@ -27,13 +27,13 @@
         <tr>
 
           <% if @query.present? %>
-              <td class="align-middle font-light">
+              <td class="align-middle font-normal	">
                 <%= "Result: #{@resource.paginated_offset += 1}"%>
               </td>
           <% end %>
 
           <% @resource.table_option.selected_options.each do |option| %>
-                <td class=" align-middle font-light">
+                <td class=" align-middle font-normal	">
                 <% if (option) == 'id' %>
                   <%= link_to "#{order.id}", order_path(order) %>
                 <% elsif (option) == 'ship_name' %>
