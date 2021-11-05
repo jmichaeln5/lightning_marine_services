@@ -24,130 +24,116 @@
 
       <div class="h-screen">
         <div class="text-center pb-4">
-              <div class="pb-4">
+          <div class="pb-4">
+            <%= render "shared/flash_messages" %>
 
-                <%= render "shared/flash_messages" %>
+            <% if user_signed_in? %>
 
-                <% if user_signed_in? %>
-
-                <!-- OUT OF POSITION SEARCH BAR -->
-                <!-- OUT OF POSITION SEARCH BAR -->
-                <!-- OUT OF POSITION SEARCH BAR -->
-                <div class="p-4">
-                <div class="">
-                <div class="align-center">
-                  <%#= render "shared/search_on_page" %>
+              <div>
+                <div>
                   <%= render "searches/search_bar" %>
                 </div>
-
-                </div>
-
-                </div>
-                <!-- OUT OF POSITION SEARCH BAR -->
-                <!-- OUT OF POSITION SEARCH BAR -->
-                <!-- OUT OF POSITION SEARCH BAR -->
-
-                  <div class="container pt-4">
-                    <div id="scroll-to-top"></div>
-
-                    <!-- POSITIONED SEARCH BAR -->
-                    <!-- POSITIONED SEARCH BAR -->
-                    <!-- POSITIONED SEARCH BAR -->
-                    <!-- POSITIONED SEARCH BAR -->
-                    <!-- <div class="float-right">
-                      <%#= render "shared/search_on_page" %>
-                    </div>
-                    <br>
-                    <br> -->
-                    <!-- POSITIONED SEARCH BAR -->
-                    <!-- POSITIONED SEARCH BAR -->
-                    <!-- POSITIONED SEARCH BAR -->
-
-                      <!-- Top Header Card Tabs -->
-                      <%= render "shared/top_header_card_tabs" %>
-                      <!-- Header Card-->
-                      <div class="card p-4 -mt-4">
-                        <!-- Top Header Content -->
-
-                        <!-- Top Left Header Content -->
-                        <div class=" d-flex justify-content-start">
-                          <div class=" object-left-top">
-                            <div class="p-2">
-                              <span class="">
-                                <%= yield(:top_left_header_content) %>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Top Right Header Content -->
-                        <div class=" d-flex justify-content-end">
-                          <div class=" object-right-top">
-                            <div class="">
-                              <span class="">
-                                <%= yield(:top_right_header_content) %>
-                                  <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Header Titles -->
-                        <div class="text-4xl pb-4">
-                          <%= yield(:title) %>
-
-                          <div class="text-3xl">
-                            <%= yield(:subtitle) %>
-                          </div>
-
-                          <div class="text-2xl">
-                            <%= yield(:subtitle_two) %>
-                          </div>
-
-                          <div class="text-2xl">
-                            <%= yield(:subtitle_three) %>
-                          </div>
-                        </div>
-
-                        <div class="">
-                          <!-- For edit resource on #show Controller Actions  -->
-                          <%= render 'shared/edit_toggle' %>
-                        </div>
-
-                      </div>
-                  </div>
-
-                <% end %>
-
-                <!-- App -->
-                <div class="container">
-                  <%= yield %>
-                </div>
-
-                <% if main_controllers.include? controller_name %>
-                    <div class="">
-                      <%= link_to "Back", :back, class:"btn btn-primary" %>
-                    </div>
-                <% end  %>
-
               </div>
-        </div>
 
-        </div>
+              <br>
 
+              <div class="container pt-4">
+                <div id="scroll-to-top"></div>
+
+                <!-- POSITIONED SEARCH BAR -->
+                <!-- POSITIONED SEARCH BAR -->
+                <!-- POSITIONED SEARCH BAR -->
+                <!-- POSITIONED SEARCH BAR -->
+                <!-- <div class="float-right">
+                  <%#= render "shared/search_on_page" %>
+                </div>
+                <br>
+                <br> -->
+                <!-- POSITIONED SEARCH BAR -->
+                <!-- POSITIONED SEARCH BAR -->
+                <!-- POSITIONED SEARCH BAR -->
+
+                  <!-- Top Header Card Tabs -->
+                  <%= render "shared/top_header_card_tabs" %>
+                  <!-- Header Card-->
+                  <div class="card p-4 -mt-4">
+                    <!-- Top Header Content -->
+
+                    <!-- Top Left Header Content -->
+                    <div class=" d-flex justify-content-start">
+                      <div class=" object-left-top">
+                        <div class="p-2">
+                          <span class="">
+                            <%= yield(:top_left_header_content) %>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Top Right Header Content -->
+                    <div class=" d-flex justify-content-end">
+                      <div class=" object-right-top">
+                        <div class="">
+                          <span class="">
+                            <%= yield(:top_right_header_content) %>
+                              <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Header Titles -->
+                    <div class="text-4xl pb-4">
+                      <%= yield(:title) %>
+
+                      <div class="text-3xl">
+                        <%= yield(:subtitle) %>
+                      </div>
+
+                      <div class="text-2xl">
+                        <%= yield(:subtitle_two) %>
+                      </div>
+
+                      <div class="text-2xl">
+                        <%= yield(:subtitle_three) %>
+                      </div>
+                    </div>
+
+                    <div class="">
+                      <!-- For edit resource on #show Controller Actions  -->
+                      <%= render 'shared/edit_toggle' %>
+                    </div>
+
+                  </div>
+              </div>
+
+            <% end %>
+
+            <!-- App -->
+            <div class="container">
+              <%= yield %>
+            </div>
+
+            <% if main_controllers.include? controller_name %>
+                <div class="z-20">
+                  <%= link_to "Back", :back, class:"btn btn-primary" %>
+                </div>
+            <% end  %>
+
+          </div>
+        </div>
         <% if main_controllers.include? controller_name %>
-          <br>
-          <br>
-          <div style="pr-4">
-            <div class="object-right-bottom">
-              <nav class="m-2">
-                    <button class="btn btn-outline-success m-2 float-right" id="scrollToTopBtn">
+            <div class="mb-2 mr-4 ">
+              <nav class="">
+                    <button class="btn btn-outline-success float-right z-10" id="scrollToTopBtn">
                       Scroll to Top
                     </button>
               </nav>
-            </div>
           </div>
+          <br>
         <% end %>
+      </div>
+
 
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -166,7 +152,7 @@
 
       function handleScroll() {
         var scrollableHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        var GOLDEN_RATIO = 0.1;
+        var GOLDEN_RATIO = 0.9;
 
         if ((document.documentElement.scrollTop / scrollableHeight ) > GOLDEN_RATIO) {
           scrollToTopBtn.style.display = "block";
