@@ -3,7 +3,8 @@
 <%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_modal' %>
 <br>
-<%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
+<%= render 'shared/top_table_header' %>
+<%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
 
 <%= render partial: 'orders/index', locals: { orders: @orders} %>
 <%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>

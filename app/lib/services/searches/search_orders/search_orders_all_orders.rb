@@ -1,8 +1,7 @@
 module SearchOrdersAllOrders
 
   def search_orders_all_orders(search_query)
-     # Order.reindex
-     search_query = Order.search(search_query)
+     search_query = Order.search "#{search_query}", where: {archived: false}
      results_arr = Array.new
 
      search_query.results.each do |result|

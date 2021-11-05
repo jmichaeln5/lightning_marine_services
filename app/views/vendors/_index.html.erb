@@ -1,6 +1,13 @@
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr class="col-3">
+      <% if @query.present? %>
+          <% results_counter = 0 %>
+          <th class="align-middle">
+            Search Results
+          </th>
+      <% end %>
+
       <th>  <%= link_to "#{current_controller.singularize.titleize} ID", request.params.merge(q: @query, sort_option: 'id', sort_direction: sort_direction ) %>  </th>
       <th>  <%= link_to "#{current_controller.singularize.titleize}", request.params.merge(q: @query, sort_option: 'name', sort_direction: sort_direction ) %>  </th>
       <th>  <%= link_to "#{current_controller.singularize.titleize} Orders", request.params.merge(q: @query, sort_option: 'order_amount', sort_direction: sort_direction ) %>  </th>
@@ -10,6 +17,12 @@
   <tbody id="table-body">
     <% @vendors.each do |vendor| %>
       <tr class="col-3">
+        <% if @query.present? %>
+            <td class="align-middle font-light">
+              <%= "Result: #{@resource.paginated_offset += 1}"%>
+            </td>
+        <% end %>
+
         <td class=" align-middle font-light">
           <%= vendor.id %>
         </td>

@@ -123,13 +123,15 @@
           </div>
         </div>
         <% if main_controllers.include? controller_name %>
-            <div class="mb-2 mr-4 ">
+            <!-- <div class="mb-2 mr-4 "> -->
               <nav class="">
-                    <button class="btn btn-outline-success float-right z-10" id="scrollToTopBtn">
-                      Scroll to Top
-                    </button>
+                <!-- <button class="btn btn-outline-success float-right mb-2 mr-2 z-10" id="scrollToTopBtn"> -->
+                <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
+                  Scroll to Top
+                </button>
               </nav>
-          </div>
+          <!-- </div> -->
+          <br>
           <br>
         <% end %>
       </div>
@@ -147,19 +149,19 @@
         $('.alert-msg-container').fadeOut().remove();
       }, 8000);
 
-      document.addEventListener("scroll", handleScroll);
-      var scrollToTopBtn = document.getElementById("scrollToTopBtn");
-
-      function handleScroll() {
-        var scrollableHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        var GOLDEN_RATIO = 0.9;
-
-        if ((document.documentElement.scrollTop / scrollableHeight ) > GOLDEN_RATIO) {
-          scrollToTopBtn.style.display = "block";
-        } else {
-          scrollToTopBtn.style.display = "none";
-        }
-      }
+      // document.addEventListener("scroll", handleScroll);
+      // var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      //
+      // function handleScroll() {
+      //   var scrollableHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      //   var GOLDEN_RATIO = 0.9;
+      //
+      //   if ((document.documentElement.scrollTop / scrollableHeight ) > GOLDEN_RATIO) {
+      //     scrollToTopBtn.style.display = "block";
+      //   } else {
+      //     scrollToTopBtn.style.display = "none";
+      //   }
+      // }
 
       scrollToTopBtn.addEventListener("click", scrollToTop);
 

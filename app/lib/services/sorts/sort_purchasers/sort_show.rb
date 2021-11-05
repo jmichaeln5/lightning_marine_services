@@ -1,5 +1,5 @@
 module SortShow
-
+  # TODO Change target to specific purchaser orders
   def sort_target(target, sort_option, sort_direction)
     case sort_option
     when 'id'
