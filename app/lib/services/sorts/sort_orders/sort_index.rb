@@ -22,7 +22,7 @@ module SortIndex
     end
 
     def sort_by_sort_option(target, sort_option, sort_direction)
-      return target.reorder(sort_option + " " + sort_direction)
+      return Order.unarchived.reorder(sort_option + " " + sort_direction)
     end
 
     def sort_by_ship_name(sort_option, sort_direction)

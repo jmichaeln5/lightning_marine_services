@@ -3,7 +3,7 @@
 <% content_for :subtitle_two, "#{ Order.unarchived.count} Unarchieved Orders" %>
 <% content_for :subtitle_three, "#{Order.archived.count} Archieved Orders" %>
 
-<%= render 'shared/tab_table_options' %>
+<%= render 'shared/under_header_card_options' %>
 <br>
 <%= render 'shared/top_table_header', total_pages: @resource.total_pages %>
 <%= render partial: 'orders/index', locals: { orders: @orders} %>

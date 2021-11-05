@@ -22,20 +22,7 @@ class TableOptionsController < ApplicationController
 
   # POST /table_options or /table_options.json
   def create
-
-    puts "*"*10
-    puts "*"*10
-    puts " "
-    puts " -- Creating New TableOption -- "
-    puts " -- Creating New TableOption -- "
-    puts " -- Creating New TableOption -- "
-    puts " "
-    puts "*"*10
-    puts "*"*10
-    # byebug
-
     @table_option = TableOption.new table_option_params
-    # TableOptionsHelper.set_default_options(@table_option, default_table_option_list) if @table_option.option_list.nil?
     if @table_option.save
       redirect_to request.referrer, notice: "Table options created successfully."
     else
@@ -49,19 +36,7 @@ class TableOptionsController < ApplicationController
   # PATCH/PUT /table_options/1 or /table_options/1.json
   def update
 
-    puts "*"*10
-    puts "*"*10
-    puts " "
-    puts " -- Updating TableOption -- "
-    puts " -- Updating TableOption -- "
-    puts " -- Updating TableOption -- "
-    puts " "
-    puts "*"*10
-    puts "*"*10
-    # byebug
-
     if @table_option.update(table_option_params)
-      # TableOptionsHelper.set_default_options(@table_option, default_table_option_list) if @table_option.option_list.nil?
       redirect_to request.referrer, notice: "Table options updated successfully."
     else
       redirect_to request.referrer
