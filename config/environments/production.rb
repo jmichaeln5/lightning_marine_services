@@ -47,7 +47,7 @@ Rails.application.configure do
 
 #   # Devise ***
 # config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
-  config.action_mailer.default_url_options = { :host => "https://lightningmarineservice.herokuapp.com" }
+  config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
 
   #Mailers
   config.action_mailer.delivery_method = :sendmail
@@ -59,7 +59,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
-    domain:               'https://lightningmarineservice.herokuapp.com',
+    # domain:               'https://lightningmarineservice.herokuapp.com',
+    domain:               'heroku',
     # user_name:            Rails.application.credentials.production[:gmail][:user_name],
     # password:             Rails.application.credentials.production[:gmail][:password],
     user_name:            Rails.application.credentials.dig(Rails.env.to_sym, :gmail, :user_name),
@@ -69,7 +70,7 @@ Rails.application.configure do
   }
 #############################################
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
