@@ -45,10 +45,6 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
-  ############################################# Commenting out for initial push
-  ############################################# Commenting out for initial push
-  ############################################# Commenting out for initial push
-  ############################################# Commenting out for initial push
 #   # Devise ***
 # config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
   config.action_mailer.default_url_options = { :host => "https://lightningmarineservice.herokuapp.com" }
@@ -62,8 +58,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
-    # port:                 587,
-    port:                 465,
+    port:                 587,
     domain:               'https://lightningmarineservice.herokuapp.com',
     # user_name:            Rails.application.credentials.production[:gmail][:user_name],
     # password:             Rails.application.credentials.production[:gmail][:password],
@@ -73,9 +68,8 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 #############################################
-
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
