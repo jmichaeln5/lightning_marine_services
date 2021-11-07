@@ -72,6 +72,8 @@ Rails.application.configure do
 ############################################# Update for initial push
 ############################################# Update for initial push
 ############################################# Update for initial push
+
+ config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
 #### * Devise *
 #   #Mailers sent from lightningmarineservices@gmail.com
   config.action_mailer.delivery_method = :sendmail
