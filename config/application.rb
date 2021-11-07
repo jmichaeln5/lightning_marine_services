@@ -10,7 +10,8 @@ Bundler.require(*Rails.groups)
 module LightningMarineServices
   class Application < Rails::Application
     config.load_defaults 6.0
-    config.assets.initialize_on_precompile = false # Note from initial push to prod, Heroku is trying to connect to DB as part of 'rake assets:precompile' but cannot because DB has not been created yet
+    # config.assets.initialize_on_precompile = false # Note from initial push to prod, Heroku is trying to connect to DB as part of 'rake assets:precompile' but cannot because DB has not been created yet
+    config.assets.initialize_on_precompile = true # Note from initial push to prod, Heroku is trying to connect to DB as part of 'rake assets:precompile' but cannot because DB has not been created yet
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
