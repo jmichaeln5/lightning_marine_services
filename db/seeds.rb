@@ -1,12 +1,12 @@
-# if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
+if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
   if  ( (User.all.count <= 1) && (User.all.count < 2) )
 
-    # admin_user = User.new( id: 1, first_name: 'Admin', last_name: "User", phone_number: "954"+[*0..3, *0..4].sample(7).join, email: "admin@gmail.com", username: "adminuser", password: '123456', password_confirmation: "123456")
-    #
-    # admin_user.add_role "admin"
-    # admin_user.skip_confirmation!
-    #
-    # admin_user.save
+    admin_user = User.new( id: 1, first_name: 'Admin', last_name: "User", phone_number: "954"+[*0..3, *0..4].sample(7).join, email: "admin@gmail.com", username: "adminuser", password: '123456', password_confirmation: "123456")
+
+    admin_user.add_role "admin"
+    admin_user.skip_confirmation!
+
+    admin_user.save
 
     sample_user = User.new(
         id: 2,
@@ -133,69 +133,62 @@
   puts " "
   puts " "
 
-  order_class_false_or_nil = Order.any? == (false || nil)
+  start_ids_from = Order.last ? ( Order.last.id + 1) : 1
+  # start_ids_from = Order.last.id + 1
 
-  if order_class_false_or_nil
-    new_first_order = Order.new
+  random_order_count = rand(300..500)
+  # random_order_count = rand(3000..10000)
+  (start_ids_from..random_order_count).each do |id|
 
-    params =  {order: {"id"=> "1", "purchaser_id"=> "#{Purchaser.all.ids.sample}", "vendor_id"=> "#{Vendor.all.ids.sample}", "dept"=>"", "po_number"=> "#{Faker::Company.unique.sic_code}", "courrier"=> "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}", "date_recieved"=>"#{Faker::Date.between(from: '2021-01-23', to: '2021-09-25')}", "date_delivered"=>"", "order_content_attributes"=>{"box"=> "#{rand(0..29)}", "crate"=>"#{rand(0..25)}", "pallet"=>"#{rand(0..10)}", "other"=>"#{rand(0..5)}", "other_description"=>""}}}
+    order_class_false_or_nil = [true, false]
+    archived_options = [true, false]
 
-    new_first_order.update(params[:order])
-    new_first_order.save
+    order_delivery_date = Faker::Date.between(from: '2017-01-23', to: Time.now)
+    order_recieval_date = Faker::Date.between(from: order_delivery_date.prev_month, to: order_delivery_date)
 
-  elsif  ( (Order.all.count <= 3) && (Order.all.count < 5) )
-    start_ids_from = Order.last.id + 1
+    order = Order.new(
+      id: id,
+      purchaser_id: "#{Purchaser.all.ids.sample}",
+      vendor_id: "#{Vendor.all.ids.sample}",
+      po_number: "#{Faker::Number.unique.within(range: 100..9999999999)}",
+      courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
+      date_recieved:"#{order_recieval_date.strftime("%Y-%m-%d")}",
+      archived:  archived_options.sample
+    )
 
-    random_order_count = rand(300..500)
-    # random_order_count = rand(300..2500)
-    # random_order_count = rand(3000..10000)
-    (start_ids_from..random_order_count).each do |id|
-
-      archived_options = [true, false]
-
-      order_delivery_date = Faker::Date.between(from: '2017-01-23', to: Time.now)
-      order_recieval_date = Faker::Date.between(from: order_delivery_date.prev_month, to: order_delivery_date)
-
-      order = Order.new(
-        id: id,
-        purchaser_id: "#{Purchaser.all.ids.sample}",
-        vendor_id: "#{Vendor.all.ids.sample}",
-        po_number: "#{Faker::Number.unique.within(range: 100..9999999999)}",
-        courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
-        date_recieved:"#{order_recieval_date.strftime("%Y-%m-%d")}",
-        archived:  archived_options.sample
-      )
-
-      if [true, false].sample == true
-        order.dept = "#{Faker::Job.field}"
-      end
-
-      if order.archived == true
-        order.date_delivered = "#{order_delivery_date.strftime("%Y-%m-%d")}"
-      end
-
-      order.build_order_content(
-        id: id,
-        order_id: id,
-        box: "#{rand(0..15)}",
-        crate:"#{rand(0..20)}",
-        pallet:"#{rand(0..10)}",
-        other:"#{rand(0..5)}",
-      )
-
-      order.save
-
-      puts " "
-      puts "*"*20
-      puts "#{order} created."
-      puts "*"*20
-      puts "#{order.inspect}"
-      puts "#{order.order_content.inspect}"
-      puts "*"*20
-      puts " "
+    if [true, false].sample == true
+      order.dept = "#{Faker::Job.field}"
     end
 
+    if order.archived == true
+      order.date_delivered = "#{order_delivery_date.strftime("%Y-%m-%d")}"
+    end
+
+    order.build_order_content(
+      id: id,
+      order_id: id,
+      box: "#{rand(0..15)}",
+      crate:"#{rand(0..20)}",
+      pallet:"#{rand(0..10)}",
+      other:"#{rand(0..5)}",
+    )
+
+    order.save
+
+    puts " "
+    puts "*"*20
+    puts "#{order} created."
+    puts "*"*20
+    puts "#{order.inspect}"
+    puts "#{order.order_content.inspect}"
+    puts "*"*20
+    puts " "
   end
+
+
+
+
+
 
   puts " "
   puts " "
@@ -217,4 +210,4 @@
 
   ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
 
-# end
+end
