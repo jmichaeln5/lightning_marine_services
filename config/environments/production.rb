@@ -80,14 +80,14 @@ config.action_mailer.perform_deliveries = true
 config.action_mailer.default :charset => "utf-8" # Found in artice
  #  config.action_mailer.raise_delivery_errors = false
  config.action_mailer.raise_delivery_errors = true # change back to false after mailers work
- config.action_mailer.default_options = {from: ENV['GMAIL_SMTP_USER']} # removed in this article: http://usingname.space/2015/07/25/gmail-smtp-ruby-on-rails-actionmailer-and-you/
+ config.action_mailer.default_options = {from: Rails.application.credentials.config[:GMAIL_SMTP_USER]} # removed in this article: http://usingname.space/2015/07/25/gmail-smtp-ruby-on-rails-actionmailer-and-you/
 
  config.action_mailer.smtp_settings = {
    address:              'smtp.gmail.com',
    port:                 587,
    domain:               'lightningmarineservice.herokuapp.com',
-   user_name:            ENV['GMAIL_SMTP_USER'],
-   password:             ENV['GMAIL_SMTP_PASSWORD'],
+   user_name:            Rails.application.credentials.config[:GMAIL_SMTP_USER],
+   password:             Rails.application.credentials.config[:GMAIL_SMTP_PASSWORD],
    authentication:       'plain',
    enable_starttls_auto: true
 }
