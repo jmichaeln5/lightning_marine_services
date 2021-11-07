@@ -2,8 +2,18 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def after_sign_in_path_for(resource)
-    # dashboard_path
-    root_path
+    puts "*"*10
+    puts "redirect to dashboard_path"
+    puts "*"*10
+    # root_path
+    dashboard_path
+  end
+
+  def after_sign_up_path_for(resource)
+    puts "*"*10
+    puts "redirect back for sign up"
+    puts "*"*10
+    redirect_back
   end
 
   def authenticate_admin
