@@ -67,6 +67,28 @@ Rails.application.configure do
 #    authentication:       'plain',
 #    enable_starttls_auto: true
 # }
+
+############################################# Update for initial push
+############################################# Update for initial push
+############################################# Update for initial push
+############################################# Update for initial push
+#### * Devise *
+#   #Mailers sent from lightningmarineservices@gmail.com
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = {from: 'lightningmarineservices.app@gmail.com'}
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'lightningmarineservice.herokuapp.com',
+    user_name:            Rails.application.credentials[:GMAIL_SMTP_USER],
+    password:             Rails.application.credentials[:GMAIL_SMTP_PASSWORD],
+    authentication:       'plain',
+    enable_starttls_auto: true
+}
 #############################################
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
