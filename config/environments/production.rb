@@ -83,8 +83,8 @@ config.action_mailer.raise_delivery_errors = true
 
  config.action_mailer.smtp_settings = {
    address:              'smtp.gmail.com',
-   # port:                 587,
-   port:                 465,
+   port:                 587,
+   # port:                 465,
    domain:               'lightningmarineservice.herokuapp.com',
    user_name:            ENV['GMAIL_SMTP_USER'],
    password:             ENV['GMAIL_SMTP_PASSWORD'],
