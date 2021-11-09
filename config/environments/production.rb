@@ -57,24 +57,23 @@ Rails.application.configure do
   #   config.action_mailer.raise_delivery_errors = true # change back to false after mailers work
   #   config.action_mailer.default_options = {from: ENV['GMAIL_SMTP_USER']}
   #
-  #   config.action_mailer.delivery_method = :smtp
-  #   # config.action_mailer.delivery_method = :sendmail
-  #   config.action_mailer.smtp_settings = {
-  #     address:              'smtp.gmail.com',
-  #     port:                 587,
-  #     domain:               'lightningmarineservice.herokuapp.com',
-  #     user_name:            ENV['GMAIL_SMTP_USER'],
-  #     password:             ENV['GMAIL_SMTP_PASSWORD'],
-  #     authentication:       'plain',
-  #     enable_starttls_auto: true
-  # }
+ #  config.action_mailer.smtp_settings = {
+ #    address:              'smtp.gmail.com',
+ #    port:                 465,
+ #    domain:               'lightningmarineservice.herokuapp.com',
+ #    user_name:            ENV['GMAIL_SMTP_USER'],
+ #    password:             ENV['GMAIL_SMTP_PASSWORD'],
+ #    authentication:       'plain',
+ #    enable_starttls_auto: true
+ # }
 
 ############################################# Update for initial push
 ############################################# Update for initial push
 ############################################# Update for initial push
 ############################################# Update for initial push
 #### * Devise *
-config.action_mailer.default_url_options = {:host => ENV['HEROKU_URL']}
+# config.action_mailer.default_url_options = {:host => ENV['HEROKU_URL']}
+config.action_mailer.default_url_options = { host: 'lightningmarineservice.herokuapp.com' }
 config.action_mailer.perform_deliveries = true
 config.action_mailer.delivery_method = :smtp
 # config.action_mailer.default :charset => "utf-8" # Found in artice
@@ -84,7 +83,6 @@ config.action_mailer.raise_delivery_errors = true
  config.action_mailer.smtp_settings = {
    address:              'smtp.gmail.com',
    port:                 587,
-   # port:                 465,
    domain:               'lightningmarineservice.herokuapp.com',
    user_name:            ENV['GMAIL_SMTP_USER'],
    password:             ENV['GMAIL_SMTP_PASSWORD'],
