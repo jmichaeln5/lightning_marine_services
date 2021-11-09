@@ -179,6 +179,7 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
       crate:"#{rand(0..20)}",
       pallet:"#{rand(0..10)}",
       other:"#{rand(0..5)}",
+      other_description: 'test data'
     )
 
     order.save

@@ -28,6 +28,13 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  #### **** Adding from Devise Docs (section titled: Handling of Unpermitted Keys)
+  # ****  https://github.com/rails/strong_parameters#nested-parameters
+  # config.action_controller.action_on_unpermitted_parameters :log # Or raise exception
+  config.action_controller.action_on_unpermitted_parameters :raise # Or log to log  unpermitted attributes
+  ### ******
+
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
@@ -36,10 +43,10 @@ Rails.application.configure do
   ##### From tut to fix upd8 issue
 
 
-  #### * Devise/ Letter Opener *
+  #### * Devise/ Letter Opener (Development Mailer) *
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  #### * Letter Opener *
+  #### * Letter Opener (Development Mailer)  *
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
 
