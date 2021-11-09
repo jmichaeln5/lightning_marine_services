@@ -1,79 +1,28 @@
-<style>
-  .btn-space {
-    padding-top: 1em;
-    padding-bottom: 1em;
-  }
-
-  .red {
-    background-color: #ff0000;
-  }
-
-  .red:hover{
-       background: #d40404;
-  }
-
-  .red:focus {
-    background-color: #d24a4a;
-  }
-
-
-  @media (min-width: 768px) {
-    .text {
-      display: none;
-    }
-  }
-  @media (min-width: 992px) {
-    .text {
-      display: block;
-    }
-  }
-</style>
-
-
-<div class="field-unit__label" style="padding-bottom: 5em;">
-   <strong>Select Roles</strong>
+<div class="field-unit__label">
+  <%= f.label field.attribute_key, field.attribute %>
 </div>
 
 <div class="field-unit__field">
-  <strong>  (User already has Role if highlighted) </strong>
+  <% if (controller_name == 'users') and ((action_name == 'new') or (action_name == 'edit')) %>
+      <% @user = User.where(id: params[:id]).first %>
 
-  <%= f.select :roles, options_for_select( Role.all.order(:name).collect  { |role| [ role.name, role.id ] }, field.selected_options ), {}, multiple: true, class:'form-control' %>
+      <% Role.generic_roles.each do | role | %>
 
-  Current Role(s):
-  <% if params[:id].present? %>
-    <% User.find(params[:id]).roles.each do |role| %>
-      <span>
-        <%= role.name.to_s[0..-1].capitalize  %>
-      </span>
-    <% end %>
+          <% if @user and (@user.roles.include? role) %>
+
+                <div class="p-1">
+                  <%= check_box_tag 'role_ids[]', role.id, {:multiple => true} %>
+                  <%= h role.name %>
+                </div>
+
+          <% else  %>
+
+                <div class="p-1">
+                  <%= check_box_tag 'role_ids[]', role.id  %>
+                  <%= h role.name %>
+                </div>
+
+          <% end %>
+      <% end %>
   <% end %>
-
-  <div class="btn-space">
-    <button type="button" name="button" class="red" onclick="clearSelected()">
-      Unselect Roles
-    </button>
-  </div>
 </div>
-
-<span class="text"style="color:gray;">
-  <div class="field-unit__field" style="padding-bottom: 5em;">
-      <br>
-      To select multiple Roles
-      <br>
-      <strong>Windows:</strong> hold ctrl + click role
-      <br>
-      <strong>Mac:</strong> hold cmd + click role
-      <br>
-  </div>
-</span>
-
-<script>
-  function clearSelected()
-      {
-  	    var elements = document.getElementById("user_roles").options;
-      for(var i = 0; i < elements.length; i++){
-        if(elements[i].selected)
-  	    elements[i].selected = false;
-      }
-  }
-</script>

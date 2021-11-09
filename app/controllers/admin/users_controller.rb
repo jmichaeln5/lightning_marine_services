@@ -1,6 +1,6 @@
 module Admin
   class UsersController < Admin::ApplicationController
-    before_action :remove_password_params_if_blank, :update_role, only: [:update]
+    before_action :remove_password_params_if_blank, only: [:update]
 
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
@@ -16,18 +16,6 @@ module Admin
         params[:user].delete(:password_confirmation)
       end
     end
-
-    def update_role
-      @user = User.where(id: params[:id]).first
-      @user.roles = [] if @user.roles.any?
-      submitted_roles = params[:user][:roles].reject!(&:empty?)
-
-      submitted_roles.each do |role|
-        new_role = Role.find(role).name
-        @user.add_role new_role if ((@user.has_role? new_role) == false)
-      end
-    end
-
 
     # Override this method to specify custom lookup behavior.
     # This will be used to set the resource for the `show`, `edit`, and `update`
@@ -55,11 +43,67 @@ module Admin
     # empty values into nil values. It uses other APIs such as `resource_class`
     # and `dashboard`:
     #
-    # def resource_params
-    #   params.require(resource_class.model_name.param_key).
-    #     permit(dashboard.permitted_attributes).
-    #     transform_values { |value| value == "" ? nil : value }
-    # end
+
+    def target_resource_params
+      self.dashboard.permitted_attributes
+    end
+
+    def generic_role_ids_arr
+      generic_role_ids_arr = Array.new
+      Role.generic_roles.map {|r| generic_role_ids_arr << r.id.to_s}
+      return generic_role_ids_arr
+    end
+
+    def params_role_ids_arr
+      if params[:role_ids].present?
+        params[:role_ids].reject!(&:empty?)
+        generic_role_ids_arr
+        params_role_ids_arr = Array.new
+
+        params[:role_ids].each do |role_id|
+          valid_role_id = (
+              ((role_id.to_i.is_a? Numeric) and (role_id.to_i > 0 )) ?
+              true : false
+          )
+          params_role_ids_arr << role_id if valid_role_id
+        end
+        params_role_ids_arr
+      end
+    end
+
+    def sanatized_params_role_ids_arr
+      generic_role_ids_arr
+      params_role_ids_arr
+      if params_role_ids_arr.present? and generic_role_ids_arr.present?
+        sanatized_params_role_ids_arr = Array.new
+        params_role_ids_arr.each do |role_id|
+          sanatized_params_role_ids_arr << role_id if generic_role_ids_arr.include? role_id
+        end
+      end
+      sanatized_params_role_ids_arr
+    end
+
+    def merge_sanitized_user_roles( options = {} )
+      params = options
+      sanatized_params_role_ids_arr
+
+      if sanatized_params_role_ids_arr.present?
+        params[:user][:role_ids] = sanatized_params_role_ids_arr
+      end
+    end
+
+
+    def resource_params
+      if (controller_name == 'users') and (
+        action_name == 'create' or action_name == 'update'
+      )
+        merge_sanitized_user_roles(params)
+      end
+
+      sanatized_params = params.require(resource_class.model_name.param_key).
+        permit(dashboard.permitted_attributes).
+        transform_values { |value| value == "" ? nil : value }
+    end
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information

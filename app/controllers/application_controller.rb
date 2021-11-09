@@ -2,17 +2,25 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def after_sign_in_path_for(resource)
+    puts " "
     puts "*"*10
-    puts "redirect to dashboard_path"
+    puts " "
+    puts "redirecting to dashboard_path"
+    puts " "
     puts "*"*10
+    puts " "
     # root_path
     dashboard_path
   end
 
   def after_sign_up_path_for(resource)
+    puts " "
     puts "*"*10
-    puts "redirect back for sign up"
+    puts " "
+    puts "redirecting back for sign up"
+    puts " "
     puts "*"*10
+    puts " "
     redirect_back
   end
 
@@ -28,11 +36,9 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    # devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :phone_number, :email, :username])
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :phone_number, :email, :username, :password, :password_confirmation])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :phone_number, :email, :username, role_ids: []])
 
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone_number, :email, :username])
-    # devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number])
   end
 
 end

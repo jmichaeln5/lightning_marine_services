@@ -46,20 +46,23 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
     puts "*"*20
     puts " "
 
-    all_available_roles = ["admin", "staff", "customer"]
+    all_available_roles = Role.defined_roles
     limited_roles = ["staff", "customer"]
 
     # (3..30).each do |id|
     (3..12).each do |id|
+    # (3..4).each do |id|
+        # id = User.last.id + 1
+
         user = User.new(
-            id: id,
-            first_name: 'User',
-            last_name: "#{id.humanize.capitalize}",
-            phone_number: "305"+[*0..3, *0..4].sample(7).join,
-            email: "user#{id}@gmail.com",
-            username: "user#{id.humanize}",
-            password: '123456',
-            password_confirmation: "123456"
+          id: id,
+          first_name: 'User',
+          last_name: "#{id.humanize.capitalize}",
+          phone_number: "305"+[*0..3, *0..4].sample(7).join,
+          email: "user#{id}@gmail.com",
+          username: "user#{id.humanize}",
+          password: '123456',
+          password_confirmation: "123456"
         )
 
         if Role.first.users.count > 5
@@ -83,6 +86,7 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
     end
   end
 
+  # rand(3..10).times do
   rand(25..40).times do
       purchaser = Purchaser.create(name: Faker::Company.unique.name )
       puts " "
@@ -108,6 +112,7 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
   puts " "
   puts " "
 
+  # rand(7..15).times do
   rand(7..25).times do
     vendor = Vendor.create(name: Faker::Company.unique.name )
       puts " "
@@ -136,7 +141,10 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
   start_ids_from = Order.last ? ( Order.last.id + 1) : 1
   # start_ids_from = Order.last.id + 1
 
-  random_order_count = rand(300..500)
+  # random_order_count = rand(100..300)
+  # random_order_count = rand(300..500)
+  # random_order_count = rand(500..1000)
+  random_order_count = rand(750..1500)
   # random_order_count = rand(3000..10000)
   (start_ids_from..random_order_count).each do |id|
 
@@ -184,11 +192,6 @@ if Rails.env.development? == true # COMMENT OUT UNLESS BEFORE Prod PUSH!!!
     puts "*"*20
     puts " "
   end
-
-
-
-
-
 
   puts " "
   puts " "
