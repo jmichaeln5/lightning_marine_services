@@ -49,45 +49,41 @@ Rails.application.configure do
   ############################################# Commenting out for initial push
   ############################################# Commenting out for initial push
   ############################################# Commenting out for initial push
-  #  config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
   # #### * Devise *
-  # #   #Mailers sent from lightningmarineservices@gmail.com
-  #   config.action_mailer.perform_deliveries = true
-  #   #  config.action_mailer.raise_delivery_errors = false
-  #   config.action_mailer.raise_delivery_errors = true # change back to false after mailers work
-  #   config.action_mailer.default_options = {from: ENV['GMAIL_SMTP_USER']}
-  #
- #  config.action_mailer.smtp_settings = {
- #    address:              'smtp.gmail.com',
- #    port:                 465,
- #    domain:               'lightningmarineservice.herokuapp.com',
- #    user_name:            ENV['GMAIL_SMTP_USER'],
- #    password:             ENV['GMAIL_SMTP_PASSWORD'],
- #    authentication:       'plain',
- #    enable_starttls_auto: true
- # }
+
+  # config.action_mailer.default_url_options = {:host => ENV['HEROKU_URL']}
+  # config.action_mailer.default_url_options = { :host => "lightningmarineservice.herokuapp.com" }
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.default :charset => "utf-8" # Found in artice
+   # config.action_mailer.default_options = {from: ENV['GMAIL_SMTP_USER']} # removed in this article: http://usingname.space/2015/07/25/gmail-smtp-ruby-on-rails-actionmailer-and-you/
+
+  #  config.action_mailer.smtp_settings = {
+  #    address:              'smtp.gmail.com',
+  #    port:                 587,
+  #    domain:               'lightningmarineservice.herokuapp.com',
+  #    user_name:            ENV['GMAIL_SMTP_USER'],
+  #    password:             ENV['GMAIL_SMTP_PASSWORD'],
+  #    authentication:       'plain',
+  #    enable_starttls_auto: true
+  # }
 
 ############################################# Update for initial push
 ############################################# Update for initial push
 ############################################# Update for initial push
 ############################################# Update for initial push
 #### * Devise *
-# config.action_mailer.default_url_options = {:host => ENV['HEROKU_URL']}
-config.action_mailer.default_url_options = { host: 'lightningmarineservice.herokuapp.com' }
+config.action_mailer.default_url_options = { :host => "lightningmarineservice.com" }
 config.action_mailer.perform_deliveries = true
 config.action_mailer.delivery_method = :smtp
-# config.action_mailer.default :charset => "utf-8" # Found in artice
-config.action_mailer.raise_delivery_errors = true
- # config.action_mailer.default_options = {from: ENV['GMAIL_SMTP_USER']} # removed in this article: http://usingname.space/2015/07/25/gmail-smtp-ruby-on-rails-actionmailer-and-you/
-
- config.action_mailer.smtp_settings = {
-   address:              'smtp.gmail.com',
-   port:                 587,
-   domain:               'lightningmarineservice.herokuapp.com',
-   user_name:            ENV['GMAIL_SMTP_USER'],
-   password:             ENV['GMAIL_SMTP_PASSWORD'],
-   authentication:       'plain',
-   enable_starttls_auto: true
+config.action_mailer.smtp_settings = {
+  address:              'smtp.gmail.com',
+  port:                 587,
+  domain:               'lightningmarineservice.com',
+  user_name:            ENV['GMAIL_SMTP_USER'],
+  password:             ENV['GMAIL_SMTP_PASSWORD'],
+  authentication:       'plain',
+  enable_starttls_auto: true
 }
 #############################################
 
@@ -112,7 +108,7 @@ config.action_mailer.raise_delivery_errors = true
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

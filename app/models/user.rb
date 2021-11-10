@@ -8,7 +8,8 @@ class User < ApplicationRecord
 
   has_many :table_options
 
-  validates :first_name, :last_name, :phone_number, :email, presence: true, length: { minimum: 2, maximum: 30 }
+  validates :first_name, :last_name, :phone_number, presence: true, length: { minimum: 2, maximum: 30 }
+  validates :email, presence: true, length: { minimum: 8, maximum: 100 }
 
   validates :username, :email, uniqueness: true
 
