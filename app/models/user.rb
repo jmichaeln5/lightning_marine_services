@@ -11,11 +11,22 @@ class User < ApplicationRecord
   validates :first_name, :last_name, :phone_number, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, length: { minimum: 8, maximum: 100 }
 
-  validates :username, :email, uniqueness: true
+  validates :username, uniqueness: true, length: { minimum: 3, maximum: 30 }
 
   before_create :set_default_role, if: :new_record?
 
+
+  def bypass_email_confirmation
+    # if self.roles.any? == false
+    #   self.add_role(:customer)
+    # end
+  end
+
   private
+
+  def name
+    "#{first_name} #{last_name}"
+  end
 
   def set_default_role
     if self.roles.any? == false
@@ -34,9 +45,5 @@ class User < ApplicationRecord
   #     end
   #   end
   # end
-
-  def name
-    "#{first_name} #{last_name}"
-  end
 
 end

@@ -1,0 +1,29 @@
+<!-- <div class="field-unit__label">
+  <%#= f.label field.attribute %>
+</div> -->
+
+<!-- <div class="field-unit__field">
+  <%#= f.text_field field.attribute %>
+</div> -->
+
+<!-- Skip Email Confirmation -->
+<% if (controller_name == 'users') and ((action_name == 'new') or (action_name == 'edit')) %>
+  <% if (action_name == 'new') or (@user.present? and (@user.confirmed? == false)) %>
+    <div class="field-unit__label">
+      <%= f.label field.attribute, '  Skip Email Confirmation?' %>
+    </div>
+
+    <div class="field-unit__field">
+      <div class="p-1">
+        <%= f.check_box 'bypass_email_confirmation', {}, true  %>
+        Yes
+      </div>
+
+      <div class="p-1">
+        <%= f.check_box 'bypass_email_confirmation', {}, false  %>
+        No
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<!-- Skip Email Confirmation -->

@@ -30,8 +30,8 @@ Rails.application.configure do
 
   #### **** Adding from Devise Docs (section titled: Handling of Unpermitted Keys)
   # ****  https://github.com/rails/strong_parameters#nested-parameters
-  # config.action_controller.action_on_unpermitted_parameters :log # Or raise exception
-  config.action_controller.action_on_unpermitted_parameters :raise # Or log to log  unpermitted attributes
+  config.action_controller.action_on_unpermitted_parameters :log # Or raise exception
+  # config.action_controller.action_on_unpermitted_parameters :raise # Or log to log  unpermitted attributes
   ### ******
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
@@ -46,24 +46,24 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   #### * Letter Opener (Development Mailer)  *
-  # config.action_mailer.delivery_method = :letter_opener
-  # config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
 
   #### * Devise *
     #Mailers to send from sample_email_address@gmail.com
-    config.action_mailer.perform_deliveries = true
-    config.action_mailer.default_options = {from: Rails.application.credentials[:gmail][:GMAIL_SMTP_USER]}
-
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-      address:              'smtp.gmail.com',
-      port:                 587,
-      domain:               'localhost:3000',
-      user_name:            Rails.application.credentials[:gmail][:GMAIL_SMTP_USER],
-      password:             Rails.application.credentials[:gmail][:GMAIL_SMTP_PASSWORD],
-      authentication:       'plain',
-      enable_starttls_auto: true
-  }
+  #   config.action_mailer.perform_deliveries = true
+  #   config.action_mailer.default_options = {from: Rails.application.credentials[:gmail][:GMAIL_SMTP_USER]}
+  #
+  #   config.action_mailer.delivery_method = :smtp
+  #   config.action_mailer.smtp_settings = {
+  #     address:              'smtp.gmail.com',
+  #     port:                 587,
+  #     domain:               'localhost:3000',
+  #     user_name:            Rails.application.credentials[:gmail][:GMAIL_SMTP_USER],
+  #     password:             Rails.application.credentials[:gmail][:GMAIL_SMTP_PASSWORD],
+  #     authentication:       'plain',
+  #     enable_starttls_auto: true
+  # }
 
   # Don't care if the mailer can't send.
   # config.action_mailer.raise_delivery_errors = false

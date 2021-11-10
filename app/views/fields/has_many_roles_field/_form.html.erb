@@ -2,10 +2,8 @@
   <%= f.label field.attribute_key, field.attribute %>
 </div>
 
-<div class="field-unit__field">
   <% if (controller_name == 'users') and ((action_name == 'new') or (action_name == 'edit')) %>
-      <% @user = User.where(id: params[:id]).first %>
-
+    <div class="field-unit__field">
       <% Role.generic_roles.each do | role | %>
 
           <% if @user and (@user.roles.include? role) %>
@@ -24,5 +22,5 @@
 
           <% end %>
       <% end %>
+    </div>
   <% end %>
-</div>

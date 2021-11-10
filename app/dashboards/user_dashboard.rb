@@ -31,7 +31,8 @@ class UserDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     password: PasswordField,
     password_confirmation: PasswordField,
-    roles: HasManyRolesField
+    roles: HasManyRolesField,
+    bypass_email_confirmation: BypassEmailConfirmationField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -88,7 +89,6 @@ class UserDashboard < Administrate::BaseDashboard
     last_sign_in_at
     confirmed_at
     confirmation_sent_at
-
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -125,6 +125,7 @@ class UserDashboard < Administrate::BaseDashboard
     password
     password_confirmation
     roles
+    bypass_email_confirmation
   ].freeze
 
   # COLLECTION_FILTERS

@@ -1,6 +1,12 @@
+autoload :AdminHelpers, "admin_helpers/admin_helpers.rb"
+
 module Admin
+  extend AdminHelpers
   class UsersController < Admin::ApplicationController
+    extend AdminHelpers
+
     before_action :remove_password_params_if_blank, only: [:update]
+    before_action :set_user, only: [:edit]
 
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
@@ -9,6 +15,26 @@ module Admin
     #   super
     #   send_foo_updated_email(requested_resource)
     # end
+
+    def new
+      AdminHelpers.get_admin_helpers_users
+      AdminHelpersUsers.admin_helpers_users_yeet_self
+      AdminHelpersUsers.get_admin_helpers_users_new
+      AdminUsersHelpersNew.admin_users_helpers_new_yeet_self
+      # byebug
+      super
+    end
+
+    def create
+
+      # AdminHelpers.get_admin_helpers_users
+      # AdminHelpersUsers.admin_helpers_users_yeet_self
+      # byebug
+      # AdminHelpersUsers.get_admin_helpers_users_create
+      # AdminUsersHelpersCreate.admin_users_helpers_create_yeet_self
+
+      super
+    end
 
     def remove_password_params_if_blank
       if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
@@ -43,6 +69,12 @@ module Admin
     # empty values into nil values. It uses other APIs such as `resource_class`
     # and `dashboard`:
     #
+
+    private
+
+    def set_user
+      @user = User.find(params[:id])
+    end
 
     def target_resource_params
       self.dashboard.permitted_attributes
