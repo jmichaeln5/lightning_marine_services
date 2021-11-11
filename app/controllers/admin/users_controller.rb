@@ -1,9 +1,6 @@
-### TODO  AdminHelpersUsers are NOT being used, can remove and delete
-### TODO  AdminHelpersUsers are NOT being used, can remove and delete
-### TODO  AdminHelpersUsers are NOT being used, can remove and delete
-### TODO  AdminHelpersUsers are NOT being used, can remove and delete
-### TODO  AdminHelpersUsers are NOT being used, can remove and delete
-
+### TODO  AdminHelpersUsers are NOT being used, time crunch, MUST REFACTOR
+### TODO  AdminHelpersUsers are NOT being used, time crunch, MUST REFACTOR
+### TODO  AdminHelpersUsers are NOT being used, time crunch, MUST REFACTOR
 
 autoload :AdminHelpersUsers, "admin_helpers/admin_helpers_users/admin_helpers_users.rb"
 
@@ -14,7 +11,6 @@ module Admin
 
     before_action :remove_password_params_if_blank, only: [:update]
     before_action :set_user, only: [:show, :edit, :update, :destroy]
-    # before_save :set_user, only: [:edit]
 
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
@@ -42,7 +38,6 @@ module Admin
     end
 
     def show
-      # byebug
       super
     end
 
@@ -68,32 +63,13 @@ module Admin
       end
     end
 
-    # def create
-      # resource = resource_class.new(resource_params)
-      # authorize_resource(resource)
-      #
-      # # super
-      # if resource.save
-      #   # byebug
-      #   redirect_to(
-      #     admin_user_path(resource.id),
-      #     notice: translate_with_resource("create.success"),
-      #   )
-      # else
-      #   render :new, locals: {
-      #     page: Administrate::Page::Form.new(dashboard, resource),
-      #   }, status: :unprocessable_entity
-      # end
-    # end
-
-
     def update
       continue_skip_user_email_confirmation = resolve_email_confirmation( params ) ? true : false
       @skip_user_email_confirmation = continue_skip_user_email_confirmation
       delete_user_bypass_email_confirmation_params( params )
 
       resource_before_update = User.find(params[:id])
-      
+
       if @skip_user_email_confirmation == true and (resource_before_update.update(resource_params))
         update_resource = resource_before_update.update(confirmed_at: Time.now.utc)
         authorize_resource(update_resource)
