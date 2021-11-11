@@ -19,16 +19,15 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body class="bg-indigo-100">
-    <!-- <body class="bg-indigo-100 font-medium	"> -->
+  <body class="h-screen bg-indigo-100">
+    <div class="">
+          <!-- <body class="bg-indigo-100 font-medium	"> -->
     <%= render "shared/nav"%>
-      <div class="h-screen text-center">
-        <div class="">
-
-
-            <%= render "shared/flash_messages" %>
+      <!-- <div class="h-screen text-center"> -->
+      <div class="text-center">
+          <%= render "shared/flash_messages" %>
             <% if user_signed_in? %>
-            <div class="container">
+              <div class="container">
 
 
                   <div class="pt-8">
@@ -49,10 +48,11 @@
                       </div>
                     </div>
 
-                    <div class="bg-white  p-4 -mt-4">  <!-- Top Header Content Begin-->
+                    <!-- Top Header Content Begin-->
+                    <div class="bg-white pl-4 pr-4 pt-5 pb-4 -mt-4 container">
                         <!-- Top Right Header Content -->
                         <div class="text-right">
-                          <div class="">
+                          <div class="pb-3">
                             <br>
                             <div class="">
                               <span class="">
@@ -64,7 +64,7 @@
                         </div>
 
                         <!-- Header Titles -->
-                        <div class="pb-4">
+                        <div class="pb-5">
                               <div class="text-4xl">
                                 <%= yield(:title) %>
                               </div>
@@ -87,38 +87,41 @@
                           </div>
                   </div>  <!-- Top Header Content End -->
 
-
-                  </div>
-
+              </div>
             <% end %>
 
-                <!-- App -->
-                <div class="container">
-                  <%= yield %>
-                </div>
-
-                <% if main_controllers.include? controller_name %>
-                    <div class="z-20">
-                      <%= link_to "Back", :back, class:"btn btn-primary" %>
-                    </div>
-                <% end  %>
-                <% if main_controllers.include? controller_name %>
-                      <nav class="">
-                        <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
-                          Scroll to Top
-                        </button>
-                      </nav>
-                      <br>
-                      <br>
-                <% end %>
+            <!-- App -->
+            <div class="container pb-4">
+              <%= yield %>
             </div>
+            <br>
+
+
+            <% if main_controllers.include? controller_name %>
+                <div class="z-20">
+                  <%= link_to "Back", :back, class:"btn btn-primary" %>
+                </div>
+            <% end  %>
+
+
+            <% if main_controllers.include? controller_name %>
+              <br>
+              <br>
+              <nav class="pb-2">
+                <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
+                  Scroll to Top
+                </button>
+              </nav>
+              <br>
+              <br>
+            <% end %>
 
 
 
 
-      </div>
 
-
+          </div>
+        </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -154,6 +157,8 @@
         });
       }
     </script>
-  </body>
 
+
+
+  </body>
 </html>
