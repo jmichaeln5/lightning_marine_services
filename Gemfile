@@ -67,3 +67,4 @@ gem 'mini_magick'
 gem 'image_processing', '~> 1.2'
 gem 'type-humanizer'
 gem 'searchkick', '~> 4.6'
+gem "aws-sdk-s3", require: false

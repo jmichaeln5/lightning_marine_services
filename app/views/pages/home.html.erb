@@ -3,7 +3,9 @@
   <% if user_signed_in? %>
     <% content_for :title, "Pages#Home" %>
     <br>
-    Welcome <%= current_user.email %>
+    <div class="text-2xl">
+      Welcome <%= current_user.email %>
+    </div>
   <% else %>
     <% content_for :title, "Pages#Home" %>
   <% end %>
