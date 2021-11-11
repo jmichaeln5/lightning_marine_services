@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  # before_save :trigger_resolve_email_confirmation, only: [:create, :update]
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
@@ -11,9 +12,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   ### *** Before  # # POST /resource ### *** Before Customizing Create Method
-  def create
-    super
-  end
+  # def create
+  #   super
+  # end
 
   # ### *** After  # # POST /resource ### *** After Customizing Create Method
   # def create

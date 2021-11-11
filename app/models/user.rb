@@ -14,12 +14,10 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, length: { minimum: 3, maximum: 30 }
 
   before_create :set_default_role, if: :new_record?
+  # before_save :bypass_email_confirmation
 
-
-  def bypass_email_confirmation
-    # if self.roles.any? == false
-    #   self.add_role(:customer)
-    # end
+  def bypass_email_confirmation # Needed to prevent error in UsersController < Admin::ApplicationController
+    # self.confirmed_at = Time.now.utc
   end
 
   private

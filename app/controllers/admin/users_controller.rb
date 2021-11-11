@@ -13,23 +13,24 @@ module Admin
     extend AdminHelpersUsers
 
     before_action :remove_password_params_if_blank, only: [:update]
-    before_action :set_user, only: [:edit]
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
+    # before_save :set_user, only: [:edit]
 
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
-    #
+
     # def update
     #   super
     #   send_foo_updated_email(requested_resource)
     # end
 
-    # def new
-    #   # AdminHelpers.get_admin_helpers_users
-    #   # AdminHelpersUsers.admin_helpers_users_yeet_self
-    #   # AdminHelpersUsers.get_admin_helpers_users_new
-    #   # AdminUsersHelpersNew.admin_users_helpers_new_yeet_self
-    #   super
-    # end
+    def new
+      # AdminHelpers.get_admin_helpers_users
+      # AdminHelpersUsers.admin_helpers_users_yeet_self
+      # AdminHelpersUsers.get_admin_helpers_users_new
+      # AdminUsersHelpersNew.admin_users_helpers_new_yeet_self
+      super
+    end
 
     def resolve_email_confirmation( options = {})
       return true if params[:user][:bypass_email_confirmation] == 'true'
@@ -40,11 +41,51 @@ module Admin
       params[:user].delete(:bypass_email_confirmation)
     end
 
-    def create
-      @skip_user_email_confirmation = resolve_email_confirmation( params ) ? true : false
-      delete_user_bypass_email_confirmation_params( params )
+    def show
+      # byebug
       super
     end
+
+
+    def create
+      continue_skip_user_email_confirmation = resolve_email_confirmation( params ) ? true : false
+      @skip_user_email_confirmation = continue_skip_user_email_confirmation
+      delete_user_bypass_email_confirmation_params( params )
+
+      resource = resource_class.new(resource_params)
+      authorize_resource(resource)
+
+      if @skip_user_email_confirmation == true and resource.save
+        resource.update(confirmed_at: Time.now.utc)
+        authorize_resource(resource)
+
+        redirect_to(
+          admin_user_path(resource.id),
+          notice: translate_with_resource("create.success")
+        )
+      else
+        super
+      end
+    end
+
+    # def create
+      # resource = resource_class.new(resource_params)
+      # authorize_resource(resource)
+      #
+      # # super
+      # if resource.save
+      #   # byebug
+      #   redirect_to(
+      #     admin_user_path(resource.id),
+      #     notice: translate_with_resource("create.success"),
+      #   )
+      # else
+      #   render :new, locals: {
+      #     page: Administrate::Page::Form.new(dashboard, resource),
+      #   }, status: :unprocessable_entity
+      # end
+    # end
+
 
     def remove_password_params_if_blank
       if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
@@ -134,16 +175,12 @@ module Admin
       end
     end
 
-
     def resource_params
       if (controller_name == 'users') and (
         action_name == 'create' or action_name == 'update'
       )
         merge_sanitized_user_roles(params)
       end
-
-
-      # byebug
 
       sanatized_params = params.require(resource_class.model_name.param_key).
         permit(dashboard.permitted_attributes).
