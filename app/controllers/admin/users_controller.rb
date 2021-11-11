@@ -87,6 +87,23 @@ module Admin
     # end
 
 
+    def update
+      continue_skip_user_email_confirmation = resolve_email_confirmation( params ) ? true : false
+      @skip_user_email_confirmation = continue_skip_user_email_confirmation
+      delete_user_bypass_email_confirmation_params( params )
+
+      resource_before_update = User.find(params[:id])
+      
+      if @skip_user_email_confirmation == true and (resource_before_update.update(resource_params))
+        update_resource = resource_before_update.update(confirmed_at: Time.now.utc)
+        authorize_resource(update_resource)
+        super
+      else
+        super
+      end
+    end
+
+
     def remove_password_params_if_blank
       if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
         params[:user].delete(:password)
