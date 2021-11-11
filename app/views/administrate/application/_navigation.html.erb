@@ -12,7 +12,9 @@ as defined by the routes in the `admin/` namespace
 
   <% Administrate::Namespace.new(namespace).resources_with_index_route.each do |resource| %>
 
-  <%= link_to(t("#{resource}"), resource_index_route(resource), class: "button button--alt button--nav") %>
+  <% if resource == 'users' %>
+    <%= link_to(t("#{resource}"), resource_index_route(resource), class: "button button--alt button--nav") %>
+  <% end %>
   <!-- <%= link_to(
     display_resource_name(resource),
     # "Admin Options",
