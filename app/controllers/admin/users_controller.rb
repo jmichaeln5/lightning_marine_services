@@ -1,9 +1,16 @@
-autoload :AdminHelpers, "admin_helpers/admin_helpers.rb"
+### TODO  AdminHelpersUsers are NOT being used, can remove and delete
+### TODO  AdminHelpersUsers are NOT being used, can remove and delete
+### TODO  AdminHelpersUsers are NOT being used, can remove and delete
+### TODO  AdminHelpersUsers are NOT being used, can remove and delete
+### TODO  AdminHelpersUsers are NOT being used, can remove and delete
+
+
+autoload :AdminHelpersUsers, "admin_helpers/admin_helpers_users/admin_helpers_users.rb"
 
 module Admin
-  extend AdminHelpers
+  extend AdminHelpersUsers
   class UsersController < Admin::ApplicationController
-    extend AdminHelpers
+    extend AdminHelpersUsers
 
     before_action :remove_password_params_if_blank, only: [:update]
     before_action :set_user, only: [:edit]
@@ -16,23 +23,26 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
-    def new
-      AdminHelpers.get_admin_helpers_users
-      AdminHelpersUsers.admin_helpers_users_yeet_self
-      AdminHelpersUsers.get_admin_helpers_users_new
-      AdminUsersHelpersNew.admin_users_helpers_new_yeet_self
-      # byebug
-      super
+    # def new
+    #   # AdminHelpers.get_admin_helpers_users
+    #   # AdminHelpersUsers.admin_helpers_users_yeet_self
+    #   # AdminHelpersUsers.get_admin_helpers_users_new
+    #   # AdminUsersHelpersNew.admin_users_helpers_new_yeet_self
+    #   super
+    # end
+
+    def resolve_email_confirmation( options = {})
+      return true if params[:user][:bypass_email_confirmation] == 'true'
+      return false
+    end
+
+    def delete_user_bypass_email_confirmation_params( options = {})
+      params[:user].delete(:bypass_email_confirmation)
     end
 
     def create
-
-      # AdminHelpers.get_admin_helpers_users
-      # AdminHelpersUsers.admin_helpers_users_yeet_self
-      # byebug
-      # AdminHelpersUsers.get_admin_helpers_users_create
-      # AdminUsersHelpersCreate.admin_users_helpers_create_yeet_self
-
+      @skip_user_email_confirmation = resolve_email_confirmation( params ) ? true : false
+      delete_user_bypass_email_confirmation_params( params )
       super
     end
 
@@ -131,6 +141,9 @@ module Admin
       )
         merge_sanitized_user_roles(params)
       end
+
+
+      # byebug
 
       sanatized_params = params.require(resource_class.model_name.param_key).
         permit(dashboard.permitted_attributes).

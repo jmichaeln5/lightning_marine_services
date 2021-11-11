@@ -35,7 +35,6 @@ task :create_fake_users => :environment do
             first_name: Faker::Name.first_name,
             last_name: Faker::Name.last_name,
             phone_number: Faker::PhoneNumber.unique.cell_phone,
-            # email: Faker::Internet.unique.email,
             email: "user#{id}@gmail.com",
             username: Faker::Internet.unique.username,
             password: '123456',

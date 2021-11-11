@@ -13,6 +13,4 @@ module AdminHelpersUsers
     extend AdminUsersHelpersCreate
   end
 
-
-
 end
