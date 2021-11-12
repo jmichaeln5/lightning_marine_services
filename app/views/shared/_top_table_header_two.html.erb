@@ -14,11 +14,13 @@
   <!-- Page Select (Dropdown) -->
   <div class="w-2/4 pt-4">
     <% if @resource.first_page_disabled? %>
-        <div class="nav-link text-gray-500 text-right" type="button">
-          <span class="-m-2 ">
-            Page 1/1
-          </span>
-        </div>
+        <ul class="text-gray-600 float-right" id="navbarNavDropdown">
+          <li class="nav-item text-right dropdown">
+            <span class="nav-link border -m-2 border-gray-500 text-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Page: 1/1
+            </span>
+          </li>
+        </ul>
     <% else %>
       <ul class="text-gray-600 float-right cursor-pointer " id="navbarNavDropdown">
         <li class="nav-item text-right dropdown">

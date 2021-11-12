@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
-  resources :users
+  # resources :users
   resources :purchasers
   resources :vendors
   resources :orders
