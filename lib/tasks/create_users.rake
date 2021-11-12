@@ -19,6 +19,7 @@ task :create_users => :environment do
           password: '123456',
           password_confirmation: "123456"
       )
+      user.add_role(:admin)
       user.skip_confirmation!
       user.save
       puts "*"*20
