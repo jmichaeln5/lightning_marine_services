@@ -1,159 +1,145 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>LightningMarineServices</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<% if (user_signed_in? == false) and (controller_name == 'pages') and (action_name == 'home')  %>
+  <%= render "shared/flash_messages" %>
+  <%= render "landing_page/landing_page"%>
+<% else %>
 
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>LightningMarineServices</title>
+      <%= csrf_meta_tags %>
+      <%= csp_meta_tag %>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js">
+      <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
-  <body class="bg-indigo-100">
-    <!-- <body class="bg-indigo-100 font-medium	"> -->
+    </head>
+    <body class="bg-indigo-100">
     <%= render "shared/nav"%>
-      <div class="h-screen text-center">
-        <div class="">
-
-
-            <%= render "shared/flash_messages" %>
-            <% if user_signed_in? %>
-            <div class="container">
-
-
-                  <div class="pt-8">
-                    <%= render "searches/search_bar" %>
-                  </div>
-
-                  <div id="scroll-to-top">
-                  </div>
-
-
-
-                    <!-- Above Header Nav Tabs -->
-                    <div class="container">
-                      <div class="mb-4">
-                        <div class="-mb-6">
-                          <%= render "shared/top_header_card_tabs" %>
-                        </div>
-                      </div>
+    <div class="h-screen text-center">
+          <%#= render "shared/flash_messages" %>
+      <!-- If user is user_signed_in? begin -->
+      <% if user_signed_in? %>
+        <div class="container">
+          <div class="pt-8">
+            <%= render "searches/search_bar" %>
+          </div>
+          <div id="scroll-to-top">
+          </div>
+          <!-- Above Header Nav Tabs -->
+          <div class="container">
+            <div class="mb-4">
+              <div class="-mb-6">
+                <%= render "shared/top_header_card_tabs" %>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white  p-4 -mt-4">  <!-- Top Header Content Begin-->
+                <!-- Top Right Header Content -->
+                <div class="text-right">
+                  <div class="">
+                    <br>
+                    <div class="">
+                      <span class="">
+                        <%= yield(:top_right_header_content) %>
+                          <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
+                      </span>
                     </div>
-
-                    <div class="bg-white  p-4 -mt-4">  <!-- Top Header Content Begin-->
-                        <!-- Top Right Header Content -->
-                        <div class="text-right">
-                          <div class="">
-                            <br>
-                            <div class="">
-                              <span class="">
-                                <%= yield(:top_right_header_content) %>
-                                  <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Header Titles -->
-                        <div class="pb-4">
-                              <div class="text-4xl">
-                                <%= yield(:title) %>
-                              </div>
-
-                              <div class="text-3xl">
-                                <%= yield(:subtitle) %>
-                              </div>
-
-                              <div class="text-2xl">
-                                <%= yield(:subtitle_two) %>
-                              </div>
-
-                              <div class="text-2xl">
-                                <%= yield(:subtitle_three) %>
-                              </div>
-                          </div>
-
-                          <div class="container">
-                          <%= render 'shared/edit_toggle' %>
-                          </div>
-                  </div>  <!-- Top Header Content End -->
-
-
                   </div>
-
-            <% end %>
-
-                <!-- App -->
-                <div class="container">
-                  <%= yield %>
                 </div>
+                <!-- Header Titles -->
+                <div class="pb-4">
+                      <div class="text-4xl">
+                        <%= yield(:title) %>
+                      </div>
 
-                <% if main_controllers.include? controller_name %>
-                    <div class="z-20">
-                      <%= link_to "Back", :back, class:"btn btn-primary" %>
-                    </div>
-                <% end  %>
-                <% if main_controllers.include? controller_name %>
-                      <nav class="">
-                        <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
-                          Scroll to Top
-                        </button>
-                      </nav>
-                      <br>
-                      <br>
-                <% end %>
+                      <div class="text-3xl">
+                        <%= yield(:subtitle) %>
+                      </div>
+
+                      <div class="text-2xl">
+                        <%= yield(:subtitle_two) %>
+                      </div>
+
+                      <div class="text-2xl">
+                        <%= yield(:subtitle_three) %>
+                      </div>
+                  </div>
+
+                  <div class="container">
+                  <%= render 'shared/edit_toggle' %>
+                  </div>
+          </div>  <!-- Top Header Content End -->
+        </div>
+      <% end %> <!-- If user is user_signed_in? End -->
+
+            <!-- App -->
+            <div class="container">
+              <%= yield %>
             </div>
 
-
-
+            <% if main_controllers.include? controller_name %>
+                <div class="z-20">
+                  <%= link_to "Back", :back, class:"btn btn-primary" %>
+                </div>
+            <% end  %>
+            <% if main_controllers.include? controller_name %>
+                  <nav class="">
+                    <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
+                      Scroll to Top
+                    </button>
+                  </nav>
+                  <br>
+                  <br>
+            <% end %>
 
       </div>
 
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <script type="text/javascript">
+        setTimeout(function(){
+          $('.notice-msg-container').fadeOut().remove();
+        }, 8000);
 
+        setTimeout(function(){
+          $('.alert-msg-container').fadeOut().remove();
+        }, 8000);
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script type="text/javascript">
-      setTimeout(function(){
-        $('.notice-msg-container').fadeOut().remove();
-      }, 8000);
+        // document.addEventListener("scroll", handleScroll);
+        // var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        //
+        // function handleScroll() {
+        //   var scrollableHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        //   var GOLDEN_RATIO = 0.9;
+        //
+        //   if ((document.documentElement.scrollTop / scrollableHeight ) > GOLDEN_RATIO) {
+        //     scrollToTopBtn.style.display = "block";
+        //   } else {
+        //     scrollToTopBtn.style.display = "none";
+        //   }
+        // }
 
-      setTimeout(function(){
-        $('.alert-msg-container').fadeOut().remove();
-      }, 8000);
+        scrollToTopBtn.addEventListener("click", scrollToTop);
 
-      // document.addEventListener("scroll", handleScroll);
-      // var scrollToTopBtn = document.getElementById("scrollToTopBtn");
-      //
-      // function handleScroll() {
-      //   var scrollableHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      //   var GOLDEN_RATIO = 0.9;
-      //
-      //   if ((document.documentElement.scrollTop / scrollableHeight ) > GOLDEN_RATIO) {
-      //     scrollToTopBtn.style.display = "block";
-      //   } else {
-      //     scrollToTopBtn.style.display = "none";
-      //   }
-      // }
+        function scrollToTop() {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        }
+      </script>
+    </body>
 
-      scrollToTopBtn.addEventListener("click", scrollToTop);
+  </html>
 
-      function scrollToTop() {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      }
-    </script>
-  </body>
-
-</html>
+<% end %>
