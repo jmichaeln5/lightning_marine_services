@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :users
       resources :roles, only: [:index, :show]
       root to: "users#index"
-    end
+  end
 
   # devise_for :users
   devise_for :users, :controllers => {
