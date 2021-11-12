@@ -15,14 +15,36 @@ class Order < ApplicationRecord
   validates :po_number, uniqueness: true
 
   before_save :order_content_exists?, :handle_archive
-  # before_update :handle_archive
+  before_update :handle_archive
   #  before_save :before_save_methods
 
+
   def self.to_csv # Also Formats for XLS
+    csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'PO Number', 'Date Recieved', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
+
     CSV.generate do |csv|
-      csv << column_names
+      csv << csv_header
         all.each do |order|
-          csv << order.attributes.values_at(*column_names)
+          dept = order.try(:dept) || 'n/a'
+          boxes = order.try(:order_content).box || '0'
+          crates = order.try(:order_content).crate || '0'
+          pallet = order.try(:order_content).pallet || '0'
+          rec_date = order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a'
+          del_date = order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a'
+
+          csv << [
+            order.id,
+            dept,
+            order.purchaser.name,
+            order.vendor.name,
+            order.po_number,
+            rec_date,
+            boxes,
+            crates,
+            pallet,
+            order.courrier,
+            del_date
+          ]
         end
     end
   end
