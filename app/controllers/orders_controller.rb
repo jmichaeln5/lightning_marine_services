@@ -61,9 +61,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       format.html
-      # Donwnload Orders link in app/views/orders/_export_csv_button.html.erb, if link is clicked will be formatted through here
       format.csv {
-        # send_data @orders.resource.to_csv,
         send_data (Order.all).to_csv,
         filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
         type: 'text/csv; charset=utf-8'
