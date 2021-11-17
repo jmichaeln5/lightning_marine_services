@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable, :trackable, :validatable
 
-  has_many :table_options
+  has_many :table_options, dependent: :destroy
 
   validates :first_name, :last_name, :phone_number, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, length: { minimum: 8, maximum: 100 }
@@ -17,7 +17,6 @@ class User < ApplicationRecord
   # before_save :bypass_email_confirmation
 
   def bypass_email_confirmation # Needed to prevent error in UsersController < Admin::ApplicationController
-    # self.confirmed_at = Time.now.utc
   end
 
   private
@@ -31,17 +30,5 @@ class User < ApplicationRecord
       self.add_role(:customer)
     end
   end
-
-  # def self.to_csv
-  #   attributes = %w{id email name}
-  #
-  #   CSV.generate(headers: true) do |csv|
-  #     csv << attributes
-  #
-  #     all.each do |user|
-  #       csv << attributes.map{ |attr| user.send(attr) }
-  #     end
-  #   end
-  # end
 
 end
