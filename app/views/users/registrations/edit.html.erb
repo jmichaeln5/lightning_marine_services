@@ -33,35 +33,51 @@
       <% end %>
 
 
-      <div class="field pb-8">
-        <div class="px-4">
-          <div class="mx-8">
-            <span class="text-2xl font-normal">
-               <%= f.label :password, "Password" %> <i>(leave blank if you don't want to change it)</i><br />
-            </span>
-            <%= f.password_field :password, autocomplete: "new-password", class:"form-control text-center" %>
-            <% if @minimum_password_length %>
-              <em><%= @minimum_password_length %> characters minimum</em>
-            <% end %>
 
+
+
+
+      <p>
+        <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Edit Password
+        </button>
+      </p>
+
+      <div class="collapse" id="collapseExample">
+        <div class="p-4">
+          <div class="card p-4">
+            <div class="field pb-8">
+              <div class="px-4">
+                <div class="mx-8">
+                  <span class="text-2xl font-normal">
+                     <%= f.label :password, "New Password" %><br />
+                  </span>
+                  <%= f.password_field :password, autocomplete: "new-password", class:"form-control text-center" %>
+                  <% if @minimum_password_length %>
+                    <em><%= @minimum_password_length %> characters minimum</em>
+                  <% end %>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="field pb-8">
+              <span class="text-2xl font-normal">
+                 <%= f.label :password_confirmation, 'New Password Confirmation' %><br />
+              </span>
+              <div class="px-4">
+                <div class="mx-8">
+                  <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"form-control text-center" %>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="field pb-8">
         <span class="text-2xl font-normal">
-           <%= f.label :password_confirmation %><br />
-        </span>
-        <div class="px-4">
-          <div class="mx-8">
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"form-control" %>
-          </div>
-        </div>
-      </div>
-
-      <div class="field pb-8">
-        <span class="text-2xl font-normal">
-           <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+           <%= f.label :current_password, 'Current Password' %> <i>(to confirm your changes)</i><br />
         </span>
         <div class="px-4">
           <div class="mx-8">
@@ -78,9 +94,6 @@
     <hr>
 
     <div class="py-8">
-      <div class="text-2xl font-normal">
-        Cancel my account
-      </div>
 
       <p>
         <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure? Once canceled you will need to be reinvited to join this application again." }, method: :delete %>
