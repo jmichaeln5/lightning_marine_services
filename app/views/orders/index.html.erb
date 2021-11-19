@@ -1,4 +1,4 @@
-<% content_for :title, "#{Order.unarchived.count} Orders" %>
+<% content_for :title, "#{Order.unarchived.count}" + ' Order'.pluralize(Order.unarchived.count) %>
 
 <%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_modal' %>
