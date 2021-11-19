@@ -1,4 +1,5 @@
 class DirectoryLinksController < ApplicationController
+  # before_action :authenticate_admin_for_directory_links
   before_action :authenticate_admin
   before_action :set_directory_link, only: %i[ show edit update destroy ]
 
@@ -35,20 +36,8 @@ class DirectoryLinksController < ApplicationController
       end
     end
   end
+
   # PATCH/PUT /directory_links/1 or /directory_links/1.json
-  # def update
-  #   respond_to do |format|
-  #     if @directory_link.update(directory_link_params)
-  #       format.html { redirect_to @directory_link, notice: "Directory Link was successfully updated." }
-  #       format.json { render :show, status: :ok, location: @directory_link }
-  #     else
-  #       format.html { render :edit, status: :unprocessable_entity }
-  #       format.json { render json: @directory_link.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
-
-
   def update
     @directory_link = DirectoryLink.find(params[:id])
     if @directory_link.update(directory_link_params)
@@ -71,6 +60,11 @@ class DirectoryLinksController < ApplicationController
   end
 
   private
+
+    # def authenticate_admin_for_directory_links
+    #   redirect_back fallback_location: root_path, alert: 'Not authorized.'
+    # end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_directory_link
       @directory_link = DirectoryLink.find(params[:id])
