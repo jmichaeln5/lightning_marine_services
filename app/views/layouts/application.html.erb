@@ -79,6 +79,10 @@
                   <div class="container">
                   <%= render 'shared/edit_toggle' %>
                   </div>
+
+                  <div class="container">
+                    <%= yield(:edit_toggle) %>
+                  </div>
           </div>  <!-- Top Header Content End -->
         </div>
       <% end %> <!-- If user is user_signed_in? End -->

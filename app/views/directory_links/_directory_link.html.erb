@@ -1,0 +1,35 @@
+<div class="p-4">
+  <div class="p-4 border-2 border-gray-200">
+      <div>
+        <% if directory_link.in? DirectoryLink.predefined_directory_links %>
+          <div class="text-left text-gray-500 text-sm font-bold -ml-4 -mt-2">
+            <% if directory_link == DirectoryLink.heroku_directory_link %>
+              <span class="text-green-600 opacity-50">
+                (Most important)
+              </span>
+            <% end %>
+            Default Service
+          </div>
+        <% end %>
+        <% if directory_link.link.present? %>
+          <span class="text-3xl">
+            <%= "#{directory_link.title}" %>
+            <br>
+            <div class="py-2 ">
+              <%= link_to "open #{directory_link.title} in new tab", "#{directory_link.link}", :target => "_blank", class:'btn btn-sm btn-outline-secondary ', style:'white-space:normal !important; word-wrap: break-word; word-break: normal;'%>
+            </div>
+          </span>
+        <% else %>
+          <span class="text-3xl">
+            <%= directory_link.title %>
+          </span>
+        <% end %>
+        <div>
+          <%= directory_link.desc %>
+        </div>
+        <div class="m-2">
+          <%= link_to 'view', directory_link, class:'btn btn-outline-success' %>
+        </div>
+      </div>
+  </div>
+</div>
