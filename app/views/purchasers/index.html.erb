@@ -1,4 +1,4 @@
-<% content_for :title, "#{Purchaser.all.count} Ships" %>
+<% content_for :title, "#{Purchaser.all.count}" + ' Ship'.pluralize(Purchaser.all.count) %>
 
 <%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_modal' %>

@@ -1,6 +1,6 @@
-<% content_for :title, "All #{Order.all.count} Orders" %>
-<% content_for :subtitle, "#{ Order.unarchived.count} Unarchieved Orders" %>
-<% content_for :subtitle_two, "#{Order.archived.count} Archieved Orders" %>
+<% content_for :title, "#{Order.all.count} Total" + ' Order'.pluralize(Order.all.count) %>
+<% content_for :subtitle, "#{Order.unarchived.count} Unarchived" + ' Order'.pluralize(Order.unarchived.count) %>
+<% content_for :subtitle_two, "#{Order.archived.count} Archived" + ' Order'.pluralize(Order.archived.count) %>
 
 <%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_modal' %>

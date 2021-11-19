@@ -1,5 +1,5 @@
 <% content_for :title, "Vendor: #{@vendor.name}" %>
-<% content_for :subtitle, "#{@vendor.orders.count} Orders" %>
+<% content_for :subtitle, "#{@vendor.orders.count}" + ' Order'.pluralize(@vendor.orders.count) %>
 
 <%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_order_on_show_modal' %>
