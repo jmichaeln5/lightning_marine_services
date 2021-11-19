@@ -17,4 +17,6 @@ task :create_admin_if_nil => :environment do
   admin_user.add_role "admin"
   admin_user.skip_confirmation!
   admin_user.save
+
+  ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
 end

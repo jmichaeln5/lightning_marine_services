@@ -18,5 +18,6 @@ namespace :db do
       Rake::Task["create_default_directory_links"].execute
     end
 
+    ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
   end
 end
