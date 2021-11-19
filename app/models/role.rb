@@ -29,16 +29,9 @@ class Role < ApplicationRecord
   # end
 
   def self.generic_roles
-
-    customer = Role.where(name: 'customer').present? ? Role.where(name: 'customer').first : Role.create(name: 'customer')
-
-    staff = Role.where(name: 'staff').present? ? Role.where(name: 'staff').first : Role.create(name: 'staff')
-
-    admin = Role.where(name: 'admin').present? ? Role.where(name: 'admin').first : Role.create(name: 'admin')
-
-
-    admin = Role.where(name: 'admin').first
-
+    customer = Role.where(name: 'customer').first_or_create
+    staff = Role.where(name: 'staff').first_or_create
+    admin = Role.where(name: 'admin').first_or_create
     return [customer, staff, admin]
   end
 

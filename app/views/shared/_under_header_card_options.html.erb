@@ -1,71 +1,78 @@
 <div class="accordion" id="aboveTableAccordionOptions">
-
   <div class="card">
 
-    <div class="card-header">
-      <h2 class="mb-0">
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOptions" aria-expanded="false" aria-controls="collapseOptions" id="tableOptions">
-          Options
-        </button>
-
-        <% if current_user.has_role? :admin %>
-          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions" id="adminOptions">
-            Admin Options
+      <div class="card-header">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOptions" aria-expanded="false" aria-controls="collapseOptions" id="tableOptions">
+            Options
           </button>
-        <% end %>
-
-      </h2>
-    </div>
-
-    <div id="collapseOptions" class="collapse" aria-labelledby="tableOptions" data-parent="#aboveTableAccordionOptions">
-      <div class="card-body">
-
-        <% if controller_name.in? main_controllers and !display_on_index_action_for_purchaser_and_vendor? and !display_on_order_show? and action_name != 'all_orders' %>
-
-            <div class="p-4">
-              <%= render "table_options/table_options_modal" %>
-            </div>
-            <hr>
-
-        <% else  %>
-            <div class="p-4">
-                <div class="btn btn-outline-primary disabled" role="button" aria-disabled="true">
-                  Table Options: <%= current_controller.titleize %>
-                </div>
-
-                <div class="text-gray-500 text-sm pt-2">
-                    <%= "(Table Options unavailable for this page.) " %>
-                </div>
-            </div>
-            <hr>
-        <% end %>
-
-      <% if display_on_orders_purchasers_vendors? && ("#{controller_name}##{action_name}" != "orders#show") %>
-        <a href="#" onclick="return false;">
-          <span onclick="reverseTable()"> Reverse Table Content </span>
-        </a>
-        <hr>
-      <% end %>
-
-      <%= link_to "All Orders Page", all_orders_path %>
-      <hr>
-      <!-- Download All Orders-->
-      <%= render "orders/export_csv_button"%>
-
+          <% if current_user.has_role? :admin %>
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseAdminOptions" aria-expanded="false" aria-controls="collapseAdminOptions" id="adminOptions">
+              Admin Options
+            </button>
+          <% end %>
+        </h2>
       </div>
-    </div>
 
+      <div id="collapseOptions" class="collapse" aria-labelledby="tableOptions" data-parent="#aboveTableAccordionOptions">
+        <div class="card-body">
+
+          <% if controller_name.in? main_controllers and !display_on_index_action_for_purchaser_and_vendor? and !display_on_order_show? and action_name != 'all_orders' %>
+              <div class="p-4">
+                <%= render "table_options/table_options_modal" %>
+              </div>
+              <hr>
+          <% else  %>
+              <!-- Old disabled modal btn -->
+              <!-- <div class="p-4">
+                  <div class="btn btn-outline-primary disabled" role="button" aria-disabled="true">
+                    Table Options: <%= current_controller.titleize %>
+                  </div>
+
+                  <div class="text-gray-500 text-sm pt-2">
+                      <%= "(Table Options unavailable for this page.) " %>
+                  </div>
+              </div> -->
+              <div class="p-4">
+                  <button class="btn btn-outline-primary disabled" role="button" aria-disabled="true">
+                    Table Options: <%= current_controller.titleize %>
+                  </button>
+
+                  <div class="text-gray-500 -mt-8 opacity-0 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-125 hover:opacity-100 hover:text-3xl hover:text-gray-600 hover:rounded">
+                    <span class="hover:bg-red-200 py-3 px-2">
+                      Table Options are unavailable for this page.
+                    </span>
+                  </div>
+              </div>
+              <hr>
+          <% end %>
+
+          <% if display_on_orders_purchasers_vendors? && ("#{controller_name}##{action_name}" != "orders#show") %>
+            <a href="#" onclick="return false;">
+              <span onclick="reverseTable()"> Reverse Table Content </span>
+            </a>
+            <hr>
+          <% end %>
+
+          <%= link_to "All Orders Page", all_orders_path %>
+          <hr>
+          <%= render "orders/export_csv_button"%>
+
+        </div>
+      </div>
   </div>
 
+  <% if current_user.has_role? :admin %>
   <div class="card">
     <div id="collapseAdminOptions" class="collapse" aria-labelledby="adminOptions" data-parent="#aboveTableAccordionOptions">
       <div class="card-body">
-        <%= link_to 'Admin Dashboard', admin_users_path if current_user.has_role? :admin %>
+        <%= link_to 'Admin Dashboard', admin_users_path %>
+        <hr>
+        <%= link_to 'Application Service Links', directory_links_path %>
       </div>
     </div>
-
   </div>
-
+  <% end %>
 
 </div>
 

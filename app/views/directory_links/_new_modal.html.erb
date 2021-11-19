@@ -1,0 +1,43 @@
+<div class="py-4">
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-block btn-outline-primary " data-toggle="modal" data-target="#newModalAppInfo">
+    <span class="align-middle">
+      Add New App Link/Info/Service
+    </span>
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="newModalAppInfo" tabindex="-1" role="dialog" aria-labelledby="newModalAppInfoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="newModalAppInfoLabel">
+            Add New App Info
+          </h5>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="text-4xl font-semibold">
+            New App Info
+          </div>
+          <hr>
+
+          <%= render 'form', directory_link: @new_directory_link %>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

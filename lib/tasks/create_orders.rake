@@ -75,9 +75,6 @@ task :create_orders => :environment do
     puts " "
   end
 
-
-
-
   start_ids_from = Order.last ? ( Order.last.id + 1) : 1
   random_order_count = rand(350..550)
   # random_order_count = rand(750..1500)
