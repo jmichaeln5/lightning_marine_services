@@ -1,4 +1,4 @@
-<% if (display_on_orders_purchasers_vendors? == true) && (current_action == 'show') %>
+<% if display_edit_toggle? %>
   <div class="container p-2">
     <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseEditToggle" aria-expanded="false" aria-controls="collapseEditToggle">
       <%= "Edit #{current_controller.capitalize.singularize}" %>
@@ -24,7 +24,7 @@
       <%= render form_path %>
 
       <div class="container">
-        
+
         <% if current_user.has_role? :admin %>
           <br>
           <span class="pt-4">

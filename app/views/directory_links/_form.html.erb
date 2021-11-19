@@ -1,0 +1,35 @@
+<%= form_with(model: directory_link) do |form| %>
+
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Title </p>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Link
+      <div class="text-md text-gray-500">
+        Paste Link here, must include http:// or https://
+      </div>
+    </p>
+    <%= form.text_field :link, placeholder: 'https://www.google.com/' , class: "form-control" %>
+  </div>
+
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Description </p>
+    <%= form.text_area :desc, class: "form-control" %>
+  </div>
+
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Additional Info </p>
+    <%= form.text_field :info, class: "form-control" %>
+  </div>
+
+  <div class="p-2">
+    <div class="actions btn btn-outline-primary">
+      <%= button_tag(type: 'submit') do %>
+        Save
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

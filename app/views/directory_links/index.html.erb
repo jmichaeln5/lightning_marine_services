@@ -1,0 +1,52 @@
+<% content_for :title, "Service Links/App Info" %>
+
+<%= render 'shared/under_header_card_options' %>
+<%= render 'directory_links/new_modal' %>
+
+  <div class="card py-4 text-xl">
+
+    <%#= DirectoryLink.predefined_directory_links.map {|l| DirectoryLink.first == l} %>
+    <%#= DirectoryLink.predefined_directory_links %>
+
+  <%= render partial: "directory_link", collection: @directory_links %>
+  <!-- <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Desc</th>
+        <th>Info</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @directory_links.each do |directory_link| %>
+        <tr>
+          <td><%= directory_link.title %></td>
+          <td><%= directory_link.desc %></td>
+          <td><%= directory_link.info %></td>
+          <td><%= link_to 'Show', directory_link %></td>
+          <td><%= link_to 'Edit', edit_directory_link_path(directory_link) %></td>
+          <td><%= link_to 'Destroy', directory_link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table> -->
+
+
+  </div>
+
+<!-- <%= link_to 'New Directory Link', new_directory_link_path %> -->
+
+
+<div class="py-12">
+  <%= link_to "Back", :back, class:"btn btn-primary" %>
+</div>
+
+<nav class="">
+  <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
+    Scroll to Top
+  </button>
+</nav>
+<br>
+<br>

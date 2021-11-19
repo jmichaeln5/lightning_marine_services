@@ -24,6 +24,11 @@ module ApplicationHelper
     ['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? current_controller
   end
 
+  def display_edit_toggle?
+    (['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? current_controller) and (current_action == 'show')
+
+  end
+
   def display_create_order_on_purchaser_and_vendor_views?
     if ((controller_name_and_action == 'purchasers#show' ) || (controller_name_and_action == 'vendors#show'))
       true

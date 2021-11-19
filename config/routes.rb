@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :directory_links
   root 'pages#home'
   get 'pages/about'
 
@@ -42,6 +43,8 @@ Rails.application.routes.draw do
       delete :destroy_attachment
     end
   end
+
+
 
   # Redirects to root if invalid path BUT, fucks up search params
   # match '*path' => redirect('/'), :via => [:get, :post]
