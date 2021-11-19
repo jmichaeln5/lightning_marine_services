@@ -25,7 +25,8 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_admin
-    redirect_to root_path, alert: 'Not authorized.' unless current_user.has_role?(:admin)
+    # redirect_back fallback_location: root_path, alert: 'Not authorized.' unless current_user.has_role?(:admin)
+    redirect_back fallback_location: root_path, alert: 'Not authorized.' unless current_user.has_role? 'admin'
   end
 
   def authenticate_staff
