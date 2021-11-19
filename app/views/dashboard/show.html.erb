@@ -6,7 +6,7 @@
   <br>
   <div class=" card">
     <div class="p-4">
-    <p class="text-3xl"> Welcome <%=current_user.email if current_user%> </p>
+    <p class="text-3xl"> Welcome <%=current_user.first_name if current_user %> </p>
 
       <%= "#{Order.all.count} Total Orders" %>
       <br>
