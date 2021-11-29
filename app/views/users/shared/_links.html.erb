@@ -3,11 +3,15 @@
 <% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-<% end %>
+  <a href="#" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"> Forgot your email/password?</a>
 
-<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
+  <div class="collapse" id="collapseExample">
+    <div class="pt-4">
+      We are no longer resetting account credentials via email as of November 2021. If you have forgotten your email/password please reach out to a manager directly to have them re-enable access to your account.
+    </div>
+  </div>
+
+  <br />
 <% end %>
 
 <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
