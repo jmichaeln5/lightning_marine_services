@@ -1,8 +1,37 @@
 desc 'Create Users (skips Devise user confirmation)'
 task :create_users => :environment do
 
-  starting_id_to_create = User.last ? ( User.last.id + 1) : 1
+  if User.last.nil?
+      puts "*"*50
+      puts " "
+      puts "No Users in DB, creating adminuser..."
+      puts " "
+      puts "*"*50
+      puts " "
+
+      user = User.new(
+          id: 1,
+          first_name: 'admin',
+          last_name: "user",
+          phone_number: "954"+[*0..3, *0..4].sample(7).join,
+          email: "admin@gmail.com",
+          username: "adminuser",
+          password: '123456',
+          password_confirmation: "123456"
+      )
+      user.skip_confirmation!
+      user.save
+      puts "*"*20
+      puts "#{user.username} created."
+      puts "*"*20
+      puts "#{user.inspect}"
+      puts "*"*20
+      puts " "
+  end
+
   users_to_create = 10
+
+  starting_id_to_create = User.last ? ( User.last.id + 1) : 1
   ending_id_to_create = starting_id_to_create + users_to_create
 
   puts " "
@@ -13,7 +42,7 @@ task :create_users => :environment do
 
   puts "*"*50
   puts " "
-  puts "Staarting User's ID to create: #{starting_id_to_create}"
+  puts "Starting User's ID to create: #{starting_id_to_create}"
   puts " "
   puts "*"*50
   puts " "
@@ -25,9 +54,8 @@ task :create_users => :environment do
   puts "*"*50
   puts " "
 
-
   (starting_id_to_create..ending_id_to_create).each do |id|
-        @user = User.new(
+        user = User.new(
             id: id,
             first_name: 'User',
             last_name: "#{id.humanize.capitalize}",
@@ -37,15 +65,15 @@ task :create_users => :environment do
             password: '123456',
             password_confirmation: "123456"
         )
-        @user.skip_confirmation!
-        @user.save
+        user.skip_confirmation!
+        user.save
         puts "*"*20
-        puts "#{@user.username} created."
+        puts "#{user.username} created."
         puts "*"*20
-        puts "#{@user.inspect}"
+        puts "#{user.inspect}"
         puts "*"*20
         puts " "
-    end
+  end
 
     puts "*"*50
     puts " "
