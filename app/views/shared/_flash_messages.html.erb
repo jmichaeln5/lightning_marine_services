@@ -1,17 +1,35 @@
-<% if notice %>
-  <div class="notice-msg-container alert alert-success text-center p-4">
-    <span class="notice text-green-700 text-2xl">
-      <%= flash[:notice] %>
-    </span>
+<% if flash[:notice]  || flash[:alert]  %>
+  <div id="msg-container">
+    <% if flash[:notice] %>
+      <div class="alert text-center bg-green-200" id="notice-msg-container">
+        <div class="notice text-green-600 text-3xl z-40 py-12">
+          <%= flash[:notice] %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="alert text-center bg-red-200" id="alert-msg-container">
+        <div class="alert text-red-600 text-3xl z-40 py-12">
+          <%= flash[:alert].class == String ? flash[:alert].humanize : flash[:alert].to_sentence %>
+        </div>
+      </div>
+    <% end %>
   </div>
 <% end %>
 
-<% if flash[:alert] %>
-  <div class="alert-msg-container alert alert-danger text-center p-4">
-    <span class="alert text-red-700 text-2xl">
+<script type="text/javascript">
 
-      <%= flash[:alert].class == String ? flash[:alert].humanize : flash[:alert].to_sentence   %>
+  var notNullandNotUndefined = (element) => {
+    return element != null && element !== undefined;
+  }
 
-    </span>
-  </div>
-<% end %>
+  notNullandNotUndefined(document.getElementById('msg-container')) ? fadeMsgContainer() : null
+
+  function fadeMsgContainer(){
+    var msgContainer = document.getElementById('msg-container').style;
+    msgContainer.opacity = 1;
+    (function fade(){(msgContainer.opacity-=.1) < 0 ? msgContainer.display="none" : setTimeout(fade,500)})();
+  }
+
+</script>

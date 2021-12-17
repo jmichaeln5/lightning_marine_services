@@ -24,9 +24,13 @@ module ApplicationHelper
     ['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? current_controller
   end
 
+  def display_header_content?
+    ['purchasers', 'ships', 'vendors', 'orders', 'order_contents', 'registrations', 'dashboard'].include? current_controller
+  end
+
+
   def display_edit_toggle?
     (['purchasers', 'ships', 'vendors', 'orders', 'order_contents'].include? current_controller) and (current_action == 'show')
-
   end
 
   def display_create_order_on_purchaser_and_vendor_views?
@@ -59,9 +63,9 @@ module ApplicationHelper
 
   # Used in app/views/layouts/_edit_toggle.html.erb to get Model Instance on #show action (reason for instansiatied class to be found by params[:id] )
   def get_resource_instance(controller_name)
-      if (display_on_orders_purchasers_vendors? == true)
-        get_resource(controller_name).find(params[:id])
-      end
+    if (display_on_orders_purchasers_vendors? == true)
+      get_resource(controller_name).find(params[:id])
+    end
   end
 
 end

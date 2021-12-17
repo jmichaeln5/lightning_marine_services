@@ -63,15 +63,15 @@
   </div>
 
   <% if current_user.has_role? :admin %>
-  <div class="card">
-    <div id="collapseAdminOptions" class="collapse" aria-labelledby="adminOptions" data-parent="#aboveTableAccordionOptions">
-      <div class="card-body">
-        <%= link_to 'Admin Dashboard', admin_users_path %>
-        <hr>
-        <%= link_to 'Application Service Links', directory_links_path %>
+    <div class="card">
+      <div id="collapseAdminOptions" class="collapse" aria-labelledby="adminOptions" data-parent="#aboveTableAccordionOptions">
+        <div class="card-body">
+          <%= link_to 'Admin Dashboard', admin_users_path %>
+          <hr>
+          <%= link_to 'Application Service Links', directory_links_path %>
+        </div>
       </div>
     </div>
-  </div>
   <% end %>
 
 </div>

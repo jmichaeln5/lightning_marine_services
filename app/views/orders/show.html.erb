@@ -1,3 +1,4 @@
+
 <% content_for :title, "Order: #{@order.id}" %>
 
 <% content_for :subtitle do %>
@@ -77,15 +78,15 @@
   <div class="card p-4">
 
   <% if @order.order_content.other_description.present? %>
-  <div class="px-4">
-    <div class="pb-2 px-2 font-bold">
-      Description
-    </div>
+    <div class="px-4">
+      <div class="pb-2 px-2 font-bold">
+        Description
+      </div>
 
-    <td class="pb-4 px-2">
-      <%= "Description: #{@order.order_content.other_description}" %>
-    </td>
-  </div>
+      <td class="pb-4 px-2">
+        <%= "Description: #{@order.order_content.other_description}" %>
+      </td>
+    </div>
   <% end %>
 
       <div>

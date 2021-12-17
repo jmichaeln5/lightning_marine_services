@@ -1,8 +1,6 @@
 desc 'Create default admin acc if nil using email and pass(env vars in prod)'
 task :create_admin_if_nil => :environment do
   if Rails.env.development?
-    # admin_email = Rails.application.credentials[:gmail][:GMAIL_SMTP_USER]
-    # admin_pass = Rails.application.credentials[:gmail][:GMAIL_SMTP_PASSWORD]
     admin_email = 'admin@gmail.com'
     admin_pass = '123456'
   else
