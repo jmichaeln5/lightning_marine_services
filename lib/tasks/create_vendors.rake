@@ -30,4 +30,5 @@ task :create_vendors => :environment do
 
   ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
   Vendor.reindex
+
 end
