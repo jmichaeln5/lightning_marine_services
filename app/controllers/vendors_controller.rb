@@ -122,7 +122,6 @@ class VendorsController < ApplicationController
     end
 
     def set_pagination_params
-      # @per_page = 10
       @page = params.fetch(:page, 0).to_i
       @total_vendor_count = Vendor.all.count
     end

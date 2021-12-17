@@ -12,45 +12,45 @@
     </div>
   </div>
 
-  <div class="bg-white p-4 -mt-4">  <!-- Top Header Content Begin-->
-        <!-- Top Right Header Content -->
-        <div class="text-right">
-          <div class="">
-            <br>
-            <div class="">
-              <span class="">
-                <%= yield(:top_right_header_content) %>
-                  <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
-              </span>
-            </div>
+  <div class="bg-white p-4 -mt-4">
+      <!-- Top Right Header Content -->
+      <div class="text-right">
+        <div>
+          <br>
+          <div>
+            <span>
+              <%= yield(:top_right_header_content) %>
+                <%= link_to "#{current_user.email  }", dashboard_path, class:"text-gray-500" %>
+            </span>
           </div>
         </div>
-        <!-- Header Titles -->
-        <div class="pb-4">
-              <div class="text-4xl">
-                <%= yield(:title) %>
-              </div>
-
-              <div class="text-3xl">
-                <%= yield(:subtitle) %>
-              </div>
-
-              <div class="text-2xl">
-                <%= yield(:subtitle_two) %>
-              </div>
-
-              <div class="text-2xl">
-                <%= yield(:subtitle_three) %>
-              </div>
-          </div>
-
-          <% if display_edit_toggle? %>
-            <div class="container">
-            <%= render 'shared/edit_toggle' %>
+      </div>
+      <!-- Header Titles -->
+      <div class="pb-4">
+            <div class="text-4xl">
+              <%= yield(:title) %>
             </div>
-          <% end %>
 
+            <div class="text-3xl">
+              <%= yield(:subtitle) %>
+            </div>
+
+            <div class="text-2xl">
+              <%= yield(:subtitle_two) %>
+            </div>
+
+            <div class="text-2xl">
+              <%= yield(:subtitle_three) %>
+            </div>
+        </div>
+
+        <% if display_edit_toggle? %>
           <div class="container">
-            <%= yield(:edit_toggle) %>
+          <%= render 'shared/edit_toggle' %>
           </div>
-  </div>  <!-- Top Header Content End -->
+        <% end %>
+
+        <div class="container">
+          <%= yield(:edit_toggle) %>
+        </div>
+  </div>

@@ -72,7 +72,6 @@
   </div>
   <section class="bg-gradient-to-b from-white via-gray-100 to-white py-8">
     <div class="container  mx-auto m-8">
-
       <!-- Top Text w SVG -->
       <div class="flex flex-wrap -mb-18">
         <div class="w-full sm:w-1/2 p-6 mt-6">
@@ -233,9 +232,10 @@
       }
       header.classList.add("shadow");
       navcontent.classList.remove("bg-gray-100");
-      navcontent.classList.add("bg-white");
+      navaction.classList.remove("bg-white");
     } else {
       header.classList.remove("bg-white");
+      navcontent.classList.remove("bg-white");
       navaction.classList.remove("gradient");
       navaction.classList.add("bg-white");
       navaction.classList.remove("text-white");
@@ -248,7 +248,7 @@
 
       header.classList.remove("shadow");
       navcontent.classList.remove("bg-white");
-      navcontent.classList.add("bg-gray-100");
+      // navcontent.classList.add("bg-gray-100");
     }
   });
 </script>

@@ -13,9 +13,9 @@ module ResourceManager
   extend ResourceManagerSort
   extend ServiceManager
 
-  def self.init_resource_manager( options={} ) # Set ivars to be used in when called in classes below
+  def self.init_resource_manager( options={} )
     ResourceManagerKlass.set_resource_manager( options )
-    ResourceManagerKlass.init_resource( options ) # method extended from ResourceCore
+    ResourceManagerKlass.init_resource( options )
   end
 
   class ResourceManagerKlass

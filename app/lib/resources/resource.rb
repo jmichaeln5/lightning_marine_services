@@ -10,10 +10,8 @@ module Resource
   # Initializing ivars and structs  needed to create @resource data object
   def self.init_resource_klass( options={} )
      # Setting options hash as ivars and structs
-    ResourceManager.init_resource_manager( options )
-    # method extended from ResourceCore
-    @init_resource = init_resource(options)
-    # method defined in ResourceKlass below
+    ResourceManager.init_resource_manager( options ) # method extended from ResourceCore
+    @init_resource = init_resource(options) # method defined in ResourceKlass below
     @resource = ResourceKlass.set_resource( options )
     @options = options
   end
