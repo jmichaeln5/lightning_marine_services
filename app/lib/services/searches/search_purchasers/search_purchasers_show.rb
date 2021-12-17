@@ -15,23 +15,4 @@ module SearchPurchasersShow
     return purchaser_instance.orders.where(id: results_arr)
   end
 
-  # def search_purchasers_show(resource)
-  #   # byebug
-  #   purchaser_instance = Purchaser.find(resource.target.first.purchaser.id)
-  #   # search_directory = Order.all.search "#{resource.search_query}", where: {purchaser_id: purchaser_instance}
-  #
-  #   search_directory = Order.search "#{resource.search_query}"
-  #
-  #   results_arr = Array.new
-  #   search_directory.results.each do |result|
-  #     # byebug
-  #    results_arr << result.id if result.purchaser.id == purchaser_instance
-  #   end
-  #
-  #   return Order.where(id: results_arr)
-  # end
-
-
-
-
 end
