@@ -9,24 +9,13 @@ class Role < ApplicationRecord
             :inclusion => { :in => Rolify.resource_types },
             :allow_nil => true
 
-  # validates :name,
-  #         inclusion: { in: ["normal", "admin", "staff", "customer"] },
-  #         uniqueness: true
-
-
   def self.all_roles
-    self.all.map { |role| role.name  }
+    self.all.map { |role| role.name }
   end
 
   def self.defined_roles
     self.generic_roles.map { |role| role.name  }
   end
-  # def self.generic_roles
-  #   customer = Role.where(name: 'customer').first
-  #   staff = Role.where(name: 'staff').first
-  #   admin = Role.where(name: 'admin').first
-  #   return [customer, staff, admin]
-  # end
 
   def self.generic_roles
     customer = Role.where(name: 'customer').first_or_create
