@@ -11,13 +11,10 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :order_content
 
-  validates :purchaser_id, :vendor_id, :courrier, :po_number, presence: true
-  validates :po_number, uniqueness: true
+  validates :purchaser_id, :vendor_id, :courrier, presence: true
 
   before_save :order_content_exists?, :handle_archive
   before_update :handle_archive
-  #  before_save :before_save_methods
-
 
   def self.to_csv # Also Formats for XLS
     csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'PO Number', 'Date Recieved', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
