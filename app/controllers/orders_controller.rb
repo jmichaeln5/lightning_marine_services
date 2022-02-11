@@ -110,6 +110,8 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new order_params
+    @order.po_number = 'n/a' if @order.po_number == ""
+    @order.dept = 'n/a' if @order.dept == ""
     @order_content = @order.order_content
     if @order.save
       redirect_to order_path(@order), notice: "Order Created Successfully."

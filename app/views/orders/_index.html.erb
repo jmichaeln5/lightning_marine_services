@@ -28,7 +28,6 @@
         <tr>
           <% if @query.present? %>
               <td class="align-middle font-normal	">
-                <%#= "Result: #{results_counter += 1}"%>
                 <%= "Result: #{@resource.paginated_offset += 1}"%>
               </td>
           <% end %>
