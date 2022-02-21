@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 jobs:
   test:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     services:
       db:
         # image: postgres:14
