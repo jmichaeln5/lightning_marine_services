@@ -16,8 +16,8 @@ RSpec.describe Purchaser, type: :model do
       expect(purchaser).to be_valid
     end
 
-    it "has a maximum length of 30 characters" do
-      expect(purchaser.name.length).to be <= 30
+    it "has a maximum length of 50 characters" do
+      expect(purchaser.name.length).to be <= 50
       expect(purchaser).to be_valid
     end
   end
@@ -34,8 +34,8 @@ RSpec.describe Purchaser, type: :model do
       expect(purchaser).to_not be_valid
     end
 
-    it "has more than 30 characters" do
-      purchaser.name = 'x'*31
+    it "has more than 50 characters" do
+      purchaser.name = 'x'*51
       expect(purchaser).to_not be_valid
     end
   end

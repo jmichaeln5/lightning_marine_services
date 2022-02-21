@@ -1,0 +1,51 @@
+name: CI
+# on: [push, pull_request] # # Triggers the workflow on push or pull request events
+on:
+  # # Triggers the workflow on push or pull request events ONLY on main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  test:
+    run-on: ubuntu-latest
+    services:
+      db:
+        # image: postgres:14
+        image: postgres:11
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      # redis:
+      #   image: redis
+      #   ports: ['6379:6379']
+      #   options: --entrypoint redis-server
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.0.x
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      - name: Build and run tests
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          # REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          sudo apt-get -yqq install libpq-dev
+        # ### cp path/to/file.rb ### example of running a file if necessary
+        # ### Another example: # cp config/secrets.yml.example config.secrets.yml
+          gem install bundler
+          bundle install --jobs 4 --retry 3 # can run 4 installs in parallel # running bundle install 4 times to make it faster
+          bundle exec rails db:setup # depreciated for Rails 6+ BUT STILL HAVE RAKE TASK DO NOT DELETE
+          bundle exec rails db:prepare
+          # bundle exec rails test
+          bundle exec rspec spec

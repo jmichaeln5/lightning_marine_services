@@ -5,7 +5,7 @@ class Purchaser < ApplicationRecord
   searchkick
 
   # validates :name, presence: true, uniqueness: true
-  validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 30 }
+  validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 50 }
 
   before_destroy :check_associated_orders
 

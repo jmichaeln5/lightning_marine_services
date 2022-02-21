@@ -16,8 +16,8 @@ RSpec.describe Vendor, type: :model do
       expect(vendor).to be_valid
     end
 
-    it "has a maximum length of 30 characters" do
-      expect(vendor.name.length).to be <= 30
+    it "has a maximum length of 50 characters" do
+      expect(vendor.name.length).to be <= 50
       expect(vendor).to be_valid
     end
   end
@@ -34,8 +34,8 @@ RSpec.describe Vendor, type: :model do
       expect(vendor).to_not be_valid
     end
 
-    it "has more than 30 characters" do
-      vendor.name = 'x'*31
+    it "has more than 50 characters" do
+      vendor.name = 'x'*51
       expect(vendor).to_not be_valid
     end
   end
