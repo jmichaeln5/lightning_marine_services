@@ -30,9 +30,9 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 3.0.1
-      # - uses: borales/actions-yarn@v2.0.0
-      #   with:
-      #     cmd: install
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
       - name: Build and run tests
         env:
           DATABASE_URL: postgres://postgres:@localhost:5432/test
@@ -41,11 +41,8 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
           sudo apt-get -yqq install libpq-dev
-        # ### cp path/to/file.rb ### example of running a file if necessary
-        # ### Another example: # cp config/secrets.yml.example config.secrets.yml
           gem install bundler
           bundle install --jobs 4 --retry 3 # can run 4 installs in parallel # running bundle install 4 times to make it faster
           bundle exec rails db:setup # depreciated for Rails 6+ BUT STILL HAVE RAKE TASK DO NOT DELETE
           bundle exec rails db:prepare
-          # bundle exec rails test
           bundle exec rspec spec
