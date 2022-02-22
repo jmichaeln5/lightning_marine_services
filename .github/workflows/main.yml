@@ -8,16 +8,28 @@ on:
     branches: [ main ]
 jobs:
   test:
-
     runs-on: ubuntu-latest
     services:
+      # db:
+      #   image: postgres:14
+      #   # image: postgres:11
+      #   env:
+      #     POSTGRES_PASSWORD: <%= ENV['lightning_marine_services_DATABASE_PASSWORD'] %>
+      #   ports: ['5432:5432']
+      #   options: >-
+      #     --health-cmd pg_isready
+      #     --health-interval 10s
+      #     --health-timeout 5s
+      #     --health-retries 5
 
-      db:
+      postgres:
         image: postgres:14
         # image: postgres:11
         env:
-          POSTGRES_PASSWORD: <%= ENV['lightning_marine_services_DATABASE_PASSWORD'] %>
-        ports: ['5432:5432']
+          POSTGRES_USER: lightning_marine_services
+          POSTGRES_DB: lightning_marine_services_test
+          POSTGRES_PASSWORD: ""
+        ports: ["5432:5432"]
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -30,27 +42,43 @@ jobs:
         options: --entrypoint redis-server
 
     steps:
-      - uses: actions/checkout@v2
 
-      - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0.3
+          bundler-cache: true
+      # - uses: borales/actions-yarn@v2.0.0
+      #   with:
+      #     cmd: install
 
-      - uses: borales/actions-yarn@v2.0.0
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
-          cmd: install
-
-      - name: Build and run tests
-        env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/test
-          REDIS_URL: redis://localhost:6379/0
-          RAILS_ENV: test
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          node-version: 10.13.0
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: JS package cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install packages
         run: |
-          sudo apt-get -yqq install libpq-dev
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-          bundle exec rails db:prepare
-          bundle exec rails db:setup
-          bundle exec rspec spec
+          yarn install --pure-lockfile
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: lightning_marine_services
+        run: |
+          bin/rails db:setup
+
+      - name: Run tests
+        run: bin/rspec
