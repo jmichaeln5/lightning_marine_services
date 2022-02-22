@@ -8,127 +8,44 @@ on:
     branches: [ main ]
 jobs:
   test:
-
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ruby-version:
-        - '3.0.3'
-        node-version:
-        - '17.5.0'
-        # database-name:
-        # - lightning_marine_services_test
-        # database-password:
-        # - postgres
-        # database-user:
-        # - postgres
-        # database-host:
-        # - 127.0.0.1
-        database-port:
-        - 5432
-
     services:
       db:
         image: postgres:14
+        # image: postgres:11
         env:
-          POSTGRES_DB: ${{ matrix.database-name }}
-          POSTGRES_USER: ${{ matrix.database-user }}
-          POSTGRES_PASSWORD: ${{ matrix.database-password }}
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options:
+          POSTGRES_PASSWORD: <%= ENV['lightning_marine_services_DATABASE_PASSWORD'] %>
+        ports: ['5432:5432']
+        options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
       redis:
         image: redis
         ports: ['6379:6379']
         options: --entrypoint redis-server
 
     steps:
+      - uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.0.3
 
-    - name: Check out Git Repository
-      uses: actions/checkout@v2
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
 
-    - name: Set up Ruby, Bundler and Rails
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-
-    - name: Set up Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Setup test database
-      env:
-        # RAILS_ENV: test
-        # DATABASE_NAME_TEST: ${{ matrix.database-name }}
-        # DATABASE_USER: ${{ matrix.database-user }}
-        # DATABASE_HOST: ${{ matrix.database-host }}
-        # DATABASE_PORT: ${{ matrix.database-port }}
-        # POSTGRES_DB: ${{ matrix.database-name }}
-        DATABASE_URL: postgres://postgres:@localhost:5432/test
-        # DATABASE_PASSWORD: ${{ matrix.database-password }}
-        REDIS_URL: redis://localhost:6379/0
-        RAILS_ENV: test
-        # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-      run: |
-        sudo apt-get -yqq install libpq-dev
-        bundle exec rails db:migrate
-        bundle exec rails db:seed
-
-
-
-# name: CI
-# # on: [push, pull_request] # # Triggers the workflow on push or pull request events
-# on:
-#   # # Triggers the workflow on push or pull request events ONLY on main branch
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
-# jobs:
-#   test:
-#     services:
-#       db:
-#         image: postgres:14
-#         # image: postgres:11
-#         env:
-#           POSTGRES_PASSWORD: <%= ENV['lightning_marine_services_DATABASE_PASSWORD'] %>
-#         ports: ['5432:5432']
-#         options: >-
-#           --health-cmd pg_isready
-#           --health-interval 10s
-#           --health-timeout 5s
-#           --health-retries 5
-#       redis:
-#         image: redis
-#         ports: ['6379:6379']
-#         options: --entrypoint redis-server
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Setup Ruby
-#         uses: actions/setup-ruby@v1
-#         with:
-#           ruby-version: 3.0.3
-#       - uses: borales/actions-yarn@v2.0.0
-#         with:
-#           cmd: install
-#       - name: Build and run tests
-#         env:
-#           DATABASE_URL: postgres://postgres:@localhost:5432/test
-#           REDIS_URL: redis://localhost:6379/0
-#           RAILS_ENV: test
-#           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-#         run: |
-#           sudo apt-get -yqq install libpq-dev
-#           gem install bundler
-#           bundle install --jobs 4 --retry 3
-#           bundle exec rails db:prepare
-#           bundle exec rails db:setup
-#           bundle exec rspec spec
+      - name: Build and run tests
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rails db:prepare
+          bundle exec rails db:setup
+          bundle exec rspec spec
