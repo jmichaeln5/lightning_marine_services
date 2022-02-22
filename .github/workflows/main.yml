@@ -10,7 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-
       db:
         image: postgres:14
         # image: postgres:11
@@ -22,6 +21,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
       redis:
         image: redis
         ports: ['6379:6379']
@@ -64,6 +64,7 @@ jobs:
           RAILS_ENV: test
           PGHOST: localhost
           PGUSER: lightning_marine_services
+          PGPASSWORD: ""
         run: |
           bin/rails db:setup
 
