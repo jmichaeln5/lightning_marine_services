@@ -18,12 +18,12 @@ jobs:
         - '17.5.0'
         # database-name:
         # - lightning_marine_services_test
-        database-password:
-        - postgres
-        database-user:
-        - postgres
-        database-host:
-        - 127.0.0.1
+        # database-password:
+        # - postgres
+        # database-user:
+        # - postgres
+        # database-host:
+        # - 127.0.0.1
         database-port:
         - 5432
 
@@ -73,7 +73,7 @@ jobs:
         # DATABASE_PORT: ${{ matrix.database-port }}
         # POSTGRES_DB: ${{ matrix.database-name }}
         DATABASE_URL: postgres://postgres:@localhost:5432/test
-        DATABASE_PASSWORD: ${{ matrix.database-password }}
+        # DATABASE_PASSWORD: ${{ matrix.database-password }}
         REDIS_URL: redis://localhost:6379/0
         RAILS_ENV: test
         # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
