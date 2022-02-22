@@ -10,23 +10,22 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-      strategy:
-        # matrix:
-        initial-setup:
-          ruby-version:
-          - '3.0.3'
-          node-version:
-          - '12.22'
-          database-name:
-          - lightning_marine_services_test
-          database-password:
-          - postgres
-          database-user:
-          - postgres
-          database-host:
-          - 127.0.0.1
-          database-port:
-          - 5432
+    strategy:
+      initial-setup:
+        ruby-version:
+        - '3.0.3'
+        node-version:
+        - '12.22'
+        database-name:
+        - lightning_marine_services_test
+        database-password:
+        - postgres
+        database-user:
+        - postgres
+        database-host:
+        - 127.0.0.1
+        database-port:
+        - 5432
 
     services:
       postgres:
