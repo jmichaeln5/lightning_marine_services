@@ -58,6 +58,7 @@ development:
 test:
   <<: *default
   database: lightning_marine_services_test
+    password: <%= ENV['lightning_marine_services_test_DATABASE_PASSWORD'] %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
