@@ -60,7 +60,7 @@ jobs:
 
       - name: Setup test database
         env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/bb_test
+          DATABASE_URL: postgres://postgres:@localhost:5432/lightning_marine_services_test
           REDIS_URL: redis://localhost:6379/0
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -68,6 +68,6 @@ jobs:
           POSTGRES_PASSWORD: postgres
         run: |
           bin/rails db:setup
-          
+
       - name: Run tests
         run: bin/rspec
