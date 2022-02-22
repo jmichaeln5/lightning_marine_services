@@ -77,6 +77,7 @@ jobs:
         DATABASE_PORT: ${{ matrix.database-port }}
         POSTGRES_DB: ${{ matrix.database-name }}
       run: |
+        sudo apt-get -yqq install libpq-dev
         bundle exec rails db:migrate
         bundle exec rails db:seed
 
