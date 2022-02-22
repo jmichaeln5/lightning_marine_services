@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     strategy:
-      initial-setup:
+      matrix:
         ruby-version:
         - '3.0.3'
         node-version:
@@ -31,9 +31,9 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_DB: ${{ initial-setup.database-name }}
-          POSTGRES_USER: ${{ initial-setup.database-user }}
-          POSTGRES_PASSWORD: ${{ initial-setup.database-password }}
+          POSTGRES_DB: ${{ matrix.database-name }}
+          POSTGRES_USER: ${{ matrix.database-user }}
+          POSTGRES_PASSWORD: ${{ matrix.database-password }}
         ports:
           - 5432:5432
         # Set health checks to wait until postgres has started
@@ -55,13 +55,13 @@ jobs:
     - name: Set up Ruby, Bundler and Rails
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: ${{ initial-setup.ruby-version }}
+        ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
     - name: Set up Node
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ initial-setup.node-version }}
+        node-version: ${{ matrix.node-version }}
 
     - name: Install packages
       run: |
@@ -70,12 +70,12 @@ jobs:
     - name: Setup test database
       env:
         RAILS_ENV: test
-        DATABASE_NAME_TEST: ${{ initial-setup.database-name }}
-        DATABASE_USER: ${{ initial-setup.database-user }}
-        DATABASE_PASSWORD: ${{ initial-setup.database-password }}
-        DATABASE_HOST: ${{ initial-setup.database-host }}
-        DATABASE_PORT: ${{ initial-setup.database-port }}
-        POSTGRES_DB: ${{ initial-setup.database-name }}
+        DATABASE_NAME_TEST: ${{ matrix.database-name }}
+        DATABASE_USER: ${{ matrix.database-user }}
+        DATABASE_PASSWORD: ${{ matrix.database-password }}
+        DATABASE_HOST: ${{ matrix.database-host }}
+        DATABASE_PORT: ${{ matrix.database-port }}
+        POSTGRES_DB: ${{ matrix.database-name }}
       run: |
         bundle exec rails db:migrate
         bundle exec rails db:seed
