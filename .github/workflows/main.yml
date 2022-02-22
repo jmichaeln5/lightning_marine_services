@@ -23,8 +23,8 @@ jobs:
       #     --health-retries 5
 
       postgres:
-        image: postgres:14
-        # image: postgres:11
+        # image: postgres:14
+        image: postgres:11
         env:
           POSTGRES_USER: lightning_marine_services
           POSTGRES_DB: lightning_marine_services_test
