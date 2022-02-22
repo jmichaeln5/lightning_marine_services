@@ -10,6 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
+
       # db:
       #   image: postgres:14
       #   # image: postgres:11
@@ -22,9 +23,9 @@ jobs:
       #     --health-timeout 5s
       #     --health-retries 5
 
-      postgres:
-        # image: postgres:14
-        image: postgres:11
+      db:
+        image: postgres:14
+        # image: postgres:11
         env:
           POSTGRES_USER: lightning_marine_services
           POSTGRES_DB: lightning_marine_services_test
@@ -53,6 +54,7 @@ jobs:
       # - uses: borales/actions-yarn@v2.0.0
       #   with:
       #     cmd: install
+
 
       - name: Setup Node
         uses: actions/setup-node@v1
