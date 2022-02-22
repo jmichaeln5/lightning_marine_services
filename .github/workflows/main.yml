@@ -15,9 +15,9 @@ jobs:
         ruby-version:
         - '3.0.3'
         node-version:
-        - '12.22'
-        database-name:
-        - lightning_marine_services_test
+        - '17.5.0'
+        # database-name:
+        # - lightning_marine_services_test
         database-password:
         - postgres
         database-user:
@@ -28,10 +28,15 @@ jobs:
         - 5432
 
     services:
-      postgres:
+      db:
         image: postgres:14
+        env:
+          POSTGRES_DB: ${{ matrix.database-name }}
+          POSTGRES_USER: ${{ matrix.database-user }}
+          POSTGRES_PASSWORD: ${{ matrix.database-password }}
         ports:
           - 5432:5432
+        # Set health checks to wait until postgres has started
         options:
           --health-cmd pg_isready
           --health-interval 10s
@@ -62,18 +67,23 @@ jobs:
       run: |
         yarn install --check-files
 
-    - name: Build and Test
+    - name: Setup test database
       env:
-        PG_DATABASE: postgres
-        PG_HOST: localhost
-        PG_PORT: 5432
-        PG_USER: postgres
-        PG_PASSWORD: postgres
+        # RAILS_ENV: test
+        # DATABASE_NAME_TEST: ${{ matrix.database-name }}
+        # DATABASE_USER: ${{ matrix.database-user }}
+        DATABASE_PASSWORD: ${{ matrix.database-password }}
+        # DATABASE_HOST: ${{ matrix.database-host }}
+        # DATABASE_PORT: ${{ matrix.database-port }}
+        # POSTGRES_DB: ${{ matrix.database-name }}
+        DATABASE_URL: postgres://postgres:@localhost:5432/test
+        REDIS_URL: redis://localhost:6379/0
         RAILS_ENV: test
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       run: |
-        sudo apt-get -yqq install libpq-dev
-        bundle exec rake db:migrate
-        bundle exec rake test
+        bundle exec rails db:migrate
+        bundle exec rails db:seed
+
 
 
 # name: CI
