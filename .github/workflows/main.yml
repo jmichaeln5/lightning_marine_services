@@ -46,6 +46,6 @@ jobs:
           sudo apt-get -yqq install libpq-dev
           gem install bundler
           bundle install --jobs 4 --retry 3 # can run 4 installs in parallel # running bundle install 4 times to make it faster
-          bundle exec rails db:setup # depreciated for Rails 6+ BUT STILL HAVE RAKE TASK DO NOT DELETE
+          bundle exec rails db:setup # depreciated for Rails 6+ STILL HAVE RAKE TASK DO NOT DELETE
           bundle exec rails db:prepare
           bundle exec rspec spec
