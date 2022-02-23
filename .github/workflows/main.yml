@@ -29,11 +29,11 @@ jobs:
       #   - 6379:6379
       #   options: --entrypoint redis-server
 
-      # elasticsearch:
-      #   image: elasticsearch:6.8.3
-      #   ports:
-      #   - 9200/tcp
-      #   options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
+      elasticsearch:
+        image: elasticsearch:6.8.3
+        ports:
+        - 9200/tcp
+        options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
       - name: Checkout
@@ -52,6 +52,13 @@ jobs:
         with:
           node-version: 10.13.0
 
+      - name: Verify Elasticsearch connection from host
+        env:
+          ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
+        run: |
+          echo $ELASTIC_SEARCH_URL
+          curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
+          
       - name: Bundle install gems and dependencies
         run: |
           sudo apt-get -yqq install libpq-dev
