@@ -2,12 +2,12 @@
 ### TODO  AdminHelpersUsers are NOT being used, time crunch, MUST REFACTOR
 ### TODO  AdminHelpersUsers are NOT being used, time crunch, MUST REFACTOR
 
-autoload :AdminHelpersUsers, "admin_helpers/admin_helpers_users/admin_helpers_users.rb"
+# autoload :AdminHelpersUsers, "admin_helpers/admin_helpers_users/admin_helpers_users.rb"
 
 module Admin
-  extend AdminHelpersUsers
+  # extend AdminHelpersUsers
   class UsersController < Admin::ApplicationController
-    extend AdminHelpersUsers
+    # extend AdminHelpersUsers
 
     before_action :remove_password_params_if_blank, only: [:update]
     before_action :set_user, only: [:show, :edit, :update, :destroy]
