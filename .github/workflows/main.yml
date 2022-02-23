@@ -41,17 +41,36 @@ jobs:
         with:
           node-version: 10.13.0
 
-      - name: Build and run test
+      - name: Bundle gems and install dependencies
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler:1.17.3
+          bundle install --jobs 4 --retry 3
+
+      - name: Create/Prepare Test DB
         env:
           DATABASE_URL: postgres://postgres:@localhost:5432/test
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         run: |
-          sudo apt-get -yqq install libpq-dev
-          gem install bundler:1.17.3
-          bundle install --jobs 4 --retry 3
           bundle exec rails db:create
           bundle exec rails db:migrate
           bundle exec rake searchkick:reindex:all
+
+
+      - name: Run Tests
+        # env:
+        #   DATABASE_URL: postgres://postgres:@localhost:5432/test
+        #   RAILS_ENV: test
+        #   POSTGRES_USER: postgres
+        #   POSTGRES_PASSWORD: postgres
+        run: |
+        # sudo apt-get -yqq install libpq-dev
+        # gem install bundler:1.17.3
+        # bundle install --jobs 4 --retry 3
+        # bundle exec rails db:create
+        # bundle exec rails db:migrate
+        # bundle exec rake searchkick:reindex:all
           RAILS_ENV=test bundle exec rake
+          bundle exec rspec spec
