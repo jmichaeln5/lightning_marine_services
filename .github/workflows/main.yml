@@ -14,9 +14,9 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_USER: lightning_marine_services
-          POSTGRES_DB: lightning_marine_services_test
-          POSTGRES_PASSWORD: postgres
+          # POSTGRES_USER: lightning_marine_services
+          # POSTGRES_DB: lightning_marine_services_test
+          # POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
         # Set health checks to wait until postgres has started
         options: >-
@@ -54,11 +54,20 @@ jobs:
 
       - name: Setup test database
         env:
+          # RAILS_ENV: test
+          # PGHOST: localhost
+          # POSTGRES_DB: lightning_marine_services_test
+          # POSTGRES_USER: lightning_marine_services
+          # POSTGRES_PASSWORD: postgres
+
           RAILS_ENV: test
-          PGHOST: localhost
-          POSTGRES_DB: lightning_marine_services_test
-          POSTGRES_USER: lightning_marine_services
-          POSTGRES_PASSWORD: postgres
+          database-host: localhost
+          database-port: 5432
+          # adapter: postgresql
+          # encoding: unicode
+          database: lightning_marine_services_test
+          username: lightning_marine_services
+          password: postgres
         # run: |
         #   cp config/database.ci.yml config/database.yml
         #   rake db:create db:migrate
