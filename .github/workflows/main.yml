@@ -16,11 +16,11 @@ jobs:
       postgres:
         image: postgres:14
         # image: postgres:11
+        ports:
+          - 5432:5432
         env:
-          POSTGRES_USER: lightning_marine_services
-          POSTGRES_DB: lightning_marine_services_test
-          POSTGRES_PASSWORD: ""
-        ports: ["5432:5432"]
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -28,14 +28,10 @@ jobs:
           --health-retries 5
 
     steps:
+      - uses: actions/checkout@v2
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+      - name: Set up Ruby version (using project .ruby-version)
+        uses: eregon/use-ruby-action@master
 
       - name: Install dependent libraries
         run: sudo apt-get install libpq-dev
@@ -45,9 +41,31 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
 
-      - name: setup databases
-        env:
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_USER: postgres
-        RAILS_ENV: test
+      - name: Setup the postgres database
         run: bundle exec rake db:setup
+
+      - name: Run RSpec tests
+        run: bundle exec rspec
+
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
+      #
+      # - name: Setup Ruby and install gems
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     bundler-cache: true
+      #
+      # - name: Install dependent libraries
+      #   run: sudo apt-get install libpq-dev
+      #
+      # - name: Bundle install
+      #   run: |
+      #     gem install bundler
+      #     bundle install --jobs 4 --retry 3
+      #
+      # - name: setup databases
+      #   env:
+      #   POSTGRES_PASSWORD: postgres
+      #   POSTGRES_USER: postgres
+      #   RAILS_ENV: test
+      #   run: bundle exec rake db:setup
