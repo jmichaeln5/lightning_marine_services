@@ -1,69 +1,50 @@
-name: CI
-# on: [push, pull_request] # # Triggers the workflow on push or pull request events
+name: Ruby
+
 on:
-  # # Triggers the workflow on push or pull request events ONLY on main branch
   push:
-    branches: [ main ]
+    branches:
+    - main
   pull_request:
-    branches: [ main ]
+    branches:
+    - main
+
 jobs:
   test:
     runs-on: ubuntu-latest
+
     services:
-      db:
+      postgres:
         image: postgres:14
         # image: postgres:11
         env:
-          POSTGRES_PASSWORD: postgres
-        ports: ['5432:5432']
+          POSTGRES_USER: lightning_marine_services
+          POSTGRES_DB: lightning_marine_services_test
+          POSTGRES_PASSWORD: ""
+        ports: ["5432:5432"]
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
-      redis:
-        image: redis
-        ports: ['6379:6379']
-        options: --entrypoint redis-server
-
     steps:
+    - uses: actions/checkout@v1
 
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/setup-ruby@v1
+      with:
+      ruby-version: 3.0.3
 
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      # - uses: borales/actions-yarn@v2.0.0
-      #   with:
-      #     cmd: install
+    - name: Install dependent libraries
+      run: sudo apt-get install libpq-dev
 
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 10.13.0
-      - name: Find yarn cache location
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: JS package cache
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install packages
-        run: |
-          yarn install --pure-lockfile
+    - name: Bundle install
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
 
-     - name: setup databases
-       env:
-         POSTGRES_PASSWORD: postgres
-         POSTGRES_USER: postgres
-         RAILS_ENV: test
-       run: bundle exec rake db:setup
-
-      - name: Run tests
-        run: bin/rspec
+    - name: setup databases
+      env:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      RAILS_ENV: test
+      run: bundle exec rake db:setup
