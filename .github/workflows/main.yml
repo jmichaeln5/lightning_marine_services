@@ -53,13 +53,18 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        run: |
-          bundle exec rails db:create
-          bundle exec rails db:migrate
-          RAILS_ENV=test bundle exec rake
 
-      - name: Prepare ElasticSearch and Searchkick
-        run: bundle exec rake searchkick:reindex:all
+          uses: ankane/setup-elasticsearch@v1
+          with:
+            elasticsearch-version: 8
+
+        run: |
+          RAILS_ENV=test bundle exec rails db:create
+          RAILS_ENV=test bundle exec rails db:migrate
+          RAILS_ENV=test bundle exec rake
+          RAILS_ENV=test bundle exec rake searchkick:reindex:all
+      # - name: Prepare ElasticSearch and Searchkick
+      #   run: bundle exec rake searchkick:reindex:all
 
       - name: Run Tests
         run: bundle exec rspec spec
