@@ -62,18 +62,65 @@ jobs:
         # with:
         #   elasticsearch-version: 8
 
-      - name: Bundle Install and Create DB
+      # - name: Bundle Install and Create Test DB
+      #   env:
+      #     RAILS_ENV: test
+      #     DATABASE_URL: postgres://postgres:@localhost:5432/test
+      #     POSTGRES_USER: postgres
+      #     POSTGRES_PASSWORD: postgres
+      #   run: |
+      #     sudo apt-get -yqq install libpq-dev
+      #     gem install bundler:1.17.3
+      #     bundle install --jobs 4 --retry 3
+      #     bin/rails db:create
+      #     bin/rails db:migrate
+      #   # bin/rails db:prepare
+      #   # bin/rails db:setup
+      #
+
+      # - name: Run tests
+      #   env:
+      #     RAILS_ENV: test
+      #     DATABASE_URL: postgres://postgres:@localhost:5432/test
+      #     POSTGRES_USER: postgres
+      #     POSTGRES_PASSWORD: postgres
+      #     # REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+      #     ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
+      #   run: |
+      #     bundle exec rake searchkick:reindex:all
+      #     RAILS_ENV=test bundle exec rake
+      #     rspec spec
+
+      - name: Bundle Install
         env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/test
           RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         run: |
           sudo apt-get -yqq install libpq-dev
           gem install bundler:1.17.3
           bundle install --jobs 4 --retry 3
-          bin/rails db:prepare
-        # bin/rails db:setup
+
+      - name: Create and Migrate Test DB
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        run: |
+          bin/rails db:create
+          bin/rails db:migrate
+
+      - name: Reindex ElasticSearch and Searchkick
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        run: |
+          bundle exec rake searchkick:reindex:all
+          RAILS_ENV=test bundle exec rake
 
       - name: Run tests
         env:
@@ -81,41 +128,10 @@ jobs:
           DATABASE_URL: postgres://postgres:@localhost:5432/test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          # REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
-        run: |
-          bundle exec rake searchkick:reindex:all
-          RAILS_ENV=test bundle exec rake
-          rspec spec
+        run: rspec spec
 
 
-        #   DB_PASSWORD: root
-        #   DB_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
-        #   REDIS_PORT: ${{ job.services.redis.ports[6379] }}
-        #   ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
-        #   RAILS_ENV: test
-        #   # You need to set API tokens in GitHub repository Settings -> Secrets
-        #   KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC: ${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_RSPEC }}
-        #   KNAPSACK_PRO_TEST_SUITE_TOKEN_CUCUMBER: ${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_CUCUMBER }}
-        #   KNAPSACK_PRO_TEST_SUITE_TOKEN_MINITEST: ${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_MINITEST }}
-        #   KNAPSACK_PRO_TEST_SUITE_TEST_UNIT: ${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_TEST_UNIT }}
-        #   KNAPSACK_PRO_TEST_SUITE_TOKEN_SPINACH: ${{ secrets.KNAPSACK_PRO_TEST_SUITE_TOKEN_SPINACH }}
-        #   KNAPSACK_PRO_CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
-        #   KNAPSACK_PRO_CI_NODE_INDEX: ${{ matrix.ci_node_index }}
-        #   # if you use Knapsack Pro Queue Mode you must set below env variable
-        #   # to be able to retry CI build and run previously recorded tests
-        #   KNAPSACK_PRO_FIXED_QUEUE_SPLIT: true
-        # run: |
-        #   # run tests in Knapsack Pro Regular Mode
-        #   bundle exec rake knapsack_pro:rspec
-        #   bundle exec rake knapsack_pro:cucumber
-        #   bundle exec rake knapsack_pro:minitest
-        #   bundle exec rake knapsack_pro:test_unit
-        #   bundle exec rake knapsack_pro:spinach
-        #   # you can use Knapsack Pro in Queue Mode once recorded first CI build with Regular Mode
-        #   bundle exec rake knapsack_pro:queue:rspec
-        #   bundle exec rake knapsack_pro:queue:cucumber
-        #   bundle exec rake knapsack_pro:queue:minitest
 
 
       # - name: Bundle install gems and dependencies
