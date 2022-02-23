@@ -59,9 +59,12 @@ jobs:
           POSTGRES_DB: lightning_marine_services_test
           POSTGRES_USER: lightning_marine_services
           POSTGRES_PASSWORD: postgres
+        # run: |
+        #   cp config/database.ci.yml config/database.yml
+        #   rake db:create db:migrate
         run: |
-          cp config/database.ci.yml config/database.yml
-          rake db:create db:migrate
+          rake db:create
+          db:migrate
 
       - name: Run tests
         env:
