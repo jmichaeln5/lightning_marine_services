@@ -11,9 +11,9 @@ module LightningMarineServices
   class Application < Rails::Application
     config.load_defaults 6.0
 
-    if Rails.env.test?
-      config.autoloader = :classic
-    end
+    # if Rails.env.test?
+    #   config.autoloader = :classic
+    # end
 
     # config.assets.initialize_on_precompile = false # Note from initial push to prod, Heroku is trying to connect to DB as part of 'rake assets:precompile' but cannot because DB has not been created yet
     config.assets.initialize_on_precompile = true
