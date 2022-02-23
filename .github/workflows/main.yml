@@ -1,52 +1,74 @@
-name: CI
-
-on:
-  push:
-    branches:
-    - main
-  pull_request:
-    branches:
-    - main
+name: Rails
+on: push
 
 jobs:
-  test:
+  verify:
+    name: Build
     runs-on: ubuntu-latest
 
+    # Service containers to run with `container-job`
     services:
-      db:
-        # image: postgres:14
-        image: postgres:11
-        ports:
-          - 5432:5432
-        # env:
-        #   POSTGRES_USER: postgres
-        #   POSTGRES_PASSWORD: postgres
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: lightning_marine_services
+          POSTGRES_DB: lightning_marine_services_test
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
+      # if you need redis
+      # redis:
+      #   image: redis
+      #   ports:
+      #   - 6379:6379
+      #   options: --entrypoint redis-server
+
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Ruby version (using project .ruby-version)
-        uses: eregon/use-ruby-action@master
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.0.3
 
-      - name: Install dependent libraries
-        run: sudo apt-get install libpq-dev
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.13.0
 
-      - name: Bundle install
+      - name: Install dependencies
         run: |
+          sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev
           gem install bundler
           bundle install --jobs 4 --retry 3
+          yarn install
 
-      - name: Setup the postgres database
+      - name: Setup test database
         env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/test
           RAILS_ENV: test
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec rake db:setup
+          PGHOST: localhost
+          POSTGRES_DB: lightning_marine_services_test
+          POSTGRES_USER: lightning_marine_services
+          POSTGRES_PASSWORD: postgres
+        run: |
+          cp config/database.ci.yml config/database.yml
+          rake db:create db:migrate
 
-      - name: Run RSpec tests
-        run: bundle exec rspec
+      - name: Run tests
+        env:
+          PGHOST: localhost
+          POSTGRES_DB: lightning_marine_services_test
+          POSTGRES_USER: lightning_marine_services
+          POSTGRES_PASSWORD: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
+          RAILS_ENV: test
+        run: rspec
