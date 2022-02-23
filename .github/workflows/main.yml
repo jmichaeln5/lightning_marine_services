@@ -59,7 +59,7 @@ jobs:
           RAILS_ENV=test bundle exec rake
 
       - name: Prepare ElasticSearch and Searchkick
-          bundle exec rake searchkick:reindex:all
+        run: bundle exec rake searchkick:reindex:all
 
       - name: Run Tests
         run: bundle exec rspec spec
