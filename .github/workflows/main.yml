@@ -29,15 +29,23 @@ jobs:
       #   - 6379:6379
       #   options: --entrypoint redis-server
 
-    steps:
-      - uses: actions/checkout@v1
+      # elasticsearch:
+      #   image: elasticsearch:6.8.3
+      #   ports:
+      #   - 9200/tcp
+      #   options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
 
-      - name: Set up Ruby
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      # - uses: actions/checkout@v1
+
+      - name: Set up Ruby -v 3.0.3
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 3.0.3
 
-      - name: Set up Node
+      - name: Set up Node -v 10.13.0
         uses: actions/setup-node@v1
         with:
           node-version: 10.13.0
