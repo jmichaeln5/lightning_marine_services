@@ -46,7 +46,8 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
-          PGHOST: localhost
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
           POSTGRES_DB: lightning_marine_services_test
           POSTGRES_USER: lightning_marine_services
           POSTGRES_PASSWORD: postgres
@@ -59,10 +60,10 @@ jobs:
 
       - name: Run tests
         env:
-          PGHOST: localhost
+          POSTGRES_HOST: localhost
           POSTGRES_DB: lightning_marine_services_test
           POSTGRES_USER: lightning_marine_services
           POSTGRES_PASSWORD: postgres
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
+          POSTGRES_PORT: 5432
           RAILS_ENV: test
         run: rspec
