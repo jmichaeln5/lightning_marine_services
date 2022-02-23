@@ -46,7 +46,7 @@ jobs:
           DATABASE_URL: postgres://postgres:@localhost:5432/test
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          run: bundle exec rake db:setup
-          
+        run: bundle exec rake db:setup
+
       - name: Run RSpec tests
         run: bundle exec rspec
