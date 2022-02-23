@@ -360,6 +360,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   database_cleaner-active_record
   devise (~> 4.2)
+  elasticsearch
   factory_bot_rails
   faker (~> 2.18)
   humanize (~> 1.1, >= 1.1.2)
