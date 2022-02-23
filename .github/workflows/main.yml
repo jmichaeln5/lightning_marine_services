@@ -73,6 +73,7 @@ jobs:
           bundle install --jobs 4 --retry 3
           bundle exec rails db:create
           bundle exec rails db:migrate
+          echo db_name="$(bundle exec rails runner "puts ActiveRecord::Base.connection.current_database")"
           bundle exec rake searchkick:reindex:all
           RAILS_ENV=test bundle exec rake
           rspec spec
