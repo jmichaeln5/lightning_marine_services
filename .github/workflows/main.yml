@@ -38,6 +38,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
       # - uses: actions/checkout@v1
 
       - name: Set up Ruby -v 3.0.3
@@ -50,7 +52,7 @@ jobs:
         with:
           node-version: 10.13.0
 
-      - name: Bundle gems and install dependencies
+      - name: Bundle install gems and dependencies
         run: |
           sudo apt-get -yqq install libpq-dev
           gem install bundler
