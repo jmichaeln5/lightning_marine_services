@@ -6,22 +6,14 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
-    # Service containers to run with `container-job`
     services:
-      # Label used to access the service container
       postgres:
-        # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
+        image: postgres:11
         env:
-          database: lightning_marine_services_test
-          username: lightning_marine_services
-          password: postgres
-          # POSTGRES_USER: lightning_marine_services
-          # POSTGRES_DB: lightning_marine_services_test
-          # POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: lightning_marine_services
+          POSTGRES_DB: lightning_marine_services_test
+          POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
-        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -36,40 +28,31 @@ jobs:
       #   options: --entrypoint redis-server
 
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v1
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 3.0.3
-
       - name: Set up Node
         uses: actions/setup-node@v1
         with:
           node-version: 10.13.0
-
       - name: Install dependencies
         run: |
           sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev
           gem install bundler
           bundle install --jobs 4 --retry 3
           yarn install
-
       - name: Setup test database
         env:
           RAILS_ENV: test
-          database-host: localhost
-          database-port: 5432
-          # adapter: postgresql
-          # encoding: unicode
-          database: lightning_marine_services_test
-          username: lightning_marine_services
-          password: postgres
-          # RAILS_ENV: test
-          # PGHOST: localhost
-          # POSTGRES_DB: lightning_marine_services_test
-          # POSTGRES_USER: lightning_marine_services
-          # POSTGRES_PASSWORD: postgres
+          PGHOST: localhost
+          POSTGRES_DB: lightning_marine_services_test
+          POSTGRES_USER: lightning_marine_services
+          POSTGRES_PASSWORD: postgres
+        # run: |
+        #   cp config/database.ci.yml config/database.yml
+        #   rake db:create db:migrate
         run: |
           rake db:create
           rake db:migrate
