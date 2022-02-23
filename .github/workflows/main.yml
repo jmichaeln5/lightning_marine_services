@@ -55,38 +55,3 @@ jobs:
           bundle exec rails db:migrate
           bundle exec rake searchkick:reindex:all
           RAILS_ENV=test bundle exec rake
-
-
-      # - name: Install dependencies
-      #   run: |
-      #     sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev
-      #     gem install bundler
-      #     bundle install --jobs 4 --retry 3
-      #     yarn install
-      #
-      # - name: Setup test database
-      #   env:
-      #     RAILS_ENV: test
-      #     POSTGRES_HOST: localhost
-      #     POSTGRES_PORT: 5432
-      #     # POSTGRES_DB: lightning_marine_services_test
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      #     # POSTGRES_USER: lightning_marine_services
-      #     # POSTGRES_PASSWORD: postgres
-      #   # run: |
-      #   #   cp config/database.ci.yml config/database.yml
-      #   #   rake db:create db:migrate
-      #   run: |
-      #     rake db:create
-      #     rake db:migrate
-      #
-      # - name: Run tests
-      #   env:
-      #     POSTGRES_HOST: localhost
-      #     POSTGRES_DB: lightning_marine_services_test
-      #     POSTGRES_USER: lightning_marine_services
-      #     POSTGRES_PASSWORD: postgres
-      #     POSTGRES_PORT: 5432
-      #     RAILS_ENV: test
-      #   run: rspec
