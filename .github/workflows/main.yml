@@ -58,44 +58,22 @@ jobs:
         run: |
           echo $ELASTIC_SEARCH_URL
           curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
-        # uses: ankane/setup-elasticsearch@v1
-        # with:
-        #   elasticsearch-version: 8
 
-      # - name: Bundle Install and Create Test DB
-      #   env:
-      #     RAILS_ENV: test
-      #     DATABASE_URL: postgres://postgres:@localhost:5432/test
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      #   run: |
-      #     sudo apt-get -yqq install libpq-dev
-      #     gem install bundler:1.17.3
-      #     bundle install --jobs 4 --retry 3
-      #     bin/rails db:create
-      #     bin/rails db:migrate
-      #   # bin/rails db:prepare
-      #   # bin/rails db:setup
-      #
-
-      # - name: Run tests
-      #   env:
-      #     RAILS_ENV: test
-      #     DATABASE_URL: postgres://postgres:@localhost:5432/test
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      #     # REDIS_PORT: ${{ job.services.redis.ports[6379] }}
-      #     ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}
-      #   run: |
-      #     bundle exec rake searchkick:reindex:all
-      #     RAILS_ENV=test bundle exec rake
-      #     rspec spec
-
-
-
-
-
-
+      - name: Build and run tests
+        env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler:1.17.3
+          bundle install --jobs 4 --retry 3
+          bundle exec rails db:create
+          bundle exec rails db:migrate
+          bundle exec rake searchkick:reindex:all
+          RAILS_ENV=test bundle exec rake
+          rspec spec
 
 
       # - name: Bundle Install
@@ -147,6 +125,8 @@ jobs:
 
 
 
+
+
       # - name: Bundle install gems and dependencies
       #   run: |
       #     sudo apt-get -yqq install libpq-dev
@@ -178,20 +158,3 @@ jobs:
 
       # - name: Run Tests
       #   run: bundle exec rspec spec
-
-
-      - name: Build and run tests
-        env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/test
-          RAILS_ENV: test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        run: |
-          sudo apt-get -yqq install libpq-dev
-          gem install bundler:1.17.3
-          bundle install --jobs 4 --retry 3
-          bundle exec rails db:create
-          bundle exec rails db:migrate
-          bundle exec rake searchkick:reindex:all
-          RAILS_ENV=test bundle exec rake
-          rspec spec
