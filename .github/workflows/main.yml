@@ -14,7 +14,7 @@ jobs:
         image: postgres:14
         # image: postgres:11
         env:
-          POSTGRES_PASSWORD: <%= ENV['lightning_marine_services_test_DATABASE_PASSWORD'] %>
+          POSTGRES_PASSWORD: postgres
         ports: ['5432:5432']
         options: >-
           --health-cmd pg_isready
@@ -58,16 +58,12 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
-      - name: Setup test database
-        env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/lightning_marine_services_test
-          REDIS_URL: redis://localhost:6379/0
-          RAILS_ENV: test
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        run: |
-          bin/rails db:setup
+     - name: setup databases
+       env:
+         POSTGRES_PASSWORD: postgres
+         POSTGRES_USER: postgres
+         RAILS_ENV: test
+       run: bundle exec rake db:setup
 
       - name: Run tests
         run: bin/rspec
