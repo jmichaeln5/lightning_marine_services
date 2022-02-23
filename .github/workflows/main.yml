@@ -59,6 +59,8 @@ jobs:
           echo $ELASTIC_SEARCH_URL
           curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
 
+
+
       - name: Build and run tests
         env:
           DATABASE_URL: postgres://postgres:@localhost:5432/test
@@ -76,6 +78,8 @@ jobs:
           rspec spec
 
 
+
+      #
       # - name: Bundle Install
       #   env:
       #     RAILS_ENV: test
