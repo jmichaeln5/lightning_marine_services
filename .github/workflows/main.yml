@@ -56,12 +56,13 @@ jobs:
         run: |
           bundle exec rails db:create
           bundle exec rails db:migrate
-          bundle exec rake searchkick:reindex:all
-          
-      - name: Run Tests
-        run: |
           RAILS_ENV=test bundle exec rake
-          bundle exec rspec spec
+
+      - name: Prepare ElasticSearch and Searchkick
+          bundle exec rake searchkick:reindex:all
+
+      - name: Run Tests
+        run: bundle exec rspec spec
 
       # - name: Build and run tests
       #   env:
