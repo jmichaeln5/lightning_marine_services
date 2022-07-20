@@ -17,7 +17,7 @@ class Order < ApplicationRecord
   before_update :handle_archive
 
   def self.to_csv # Also Formats for XLS
-    csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'PO Number', 'Date Recieved', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
+    csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
 
     CSV.generate do |csv|
       csv << csv_header
@@ -35,6 +35,7 @@ class Order < ApplicationRecord
             order.purchaser.name,
             order.vendor.name,
             order.po_number,
+            order.tracking_number,
             rec_date,
             boxes,
             crates,

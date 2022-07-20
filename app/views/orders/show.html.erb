@@ -15,6 +15,7 @@
         <th class="align-middle"> Dept </th>
         <th class="align-middle"> Vendor </th>
         <th class="align-middle"> PO# </th>
+        <th class="align-middle"> Tacking# </th>
         <th class="align-middle"> Date Recieved </th>
         <th class="align-middle"> Courrier </th>
         <th class="align-middle"> Date Delivered </th>
@@ -43,6 +44,10 @@
 
           <td class="align-middle font-normal	">
             <%= @order.po_number ||= "n/a" %>
+          </td>
+
+          <td class="align-middle font-normal	">
+            <%= @order.tracking_number ||= "n/a" %>
           </td>
 
           <td class="align-middle font-normal	">

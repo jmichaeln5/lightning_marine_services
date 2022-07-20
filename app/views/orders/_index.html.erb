@@ -45,6 +45,9 @@
                     <%= order.try(:vendor) ? (link_to "#{order.vendor.name}", vendor_path(order.vendor)) : 'n/a' %>
                   <% when 'po_number' %>
                   <%= order.try(:po_number) || 'n/a' %>
+                    <%= order.try(:po_number) || 'n/a' %>
+                  <% when 'tracking_number' %>
+                    <%= order.try(:tracking_number) || 'n/a' %>
                   <% when 'date_recieved' %>
                   <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
                   <% when 'order_content' %>
