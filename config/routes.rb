@@ -35,6 +35,9 @@ Rails.application.routes.draw do
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
 
+  get '/purchasers_all', to: 'purchasers#show_all'
+
+  #get '/all_ship_orders/:id', to: 'purchasers#show_all'
   get '/search', to: 'searches#index'
 
 
