@@ -1,7 +1,11 @@
 <% content_for :title, "#{Order.unarchived.count}" + ' Order'.pluralize(Order.unarchived.count) %>
-
+<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
 <%= render 'shared/under_header_card_options' %>
+
 <%= render 'shared/new_modal' %>
+<% else %>
+<%= link_to "All Orders Page", all_orders_path %>
+<% end %>
 <br>
 <%= render 'shared/top_table_header' %>
 <%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>

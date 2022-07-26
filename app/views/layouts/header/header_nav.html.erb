@@ -13,18 +13,19 @@
         <%= class_names(selectedTopHeaderNavTab: controller_name == 'orders') %>">
           <%= link_to "Orders", orders_path, class:"-mr-2 px-1 hover:pr-1" %>
         </li>
+        <% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+          <li class="nav-link my-auto -mb-2 -mx-2 topHeaderNavTab transition duration-500 ease-in-out bg-indigo-100 hover:bg-white transform hover:-translate-y-1 hover:scale-110 hover:font-bold hover:opacity-100
+          <%= class_names(active: controller_name == 'purchasers') %>
+          <%= class_names(selectedTopHeaderNavTab: controller_name == 'purchasers') %>">
+            <%= link_to "Ships", purchasers_path, class:"-mr-2 px-1 hover:pr-1" %>
+          </li>
 
-        <li class="nav-link my-auto -mb-2 -mx-2 topHeaderNavTab transition duration-500 ease-in-out bg-indigo-100 hover:bg-white transform hover:-translate-y-1 hover:scale-110 hover:font-bold hover:opacity-100
-        <%= class_names(active: controller_name == 'purchasers') %>
-        <%= class_names(selectedTopHeaderNavTab: controller_name == 'purchasers') %>">
-          <%= link_to "Ships", purchasers_path, class:"-mr-2 px-1 hover:pr-1" %>
-        </li>
-
-        <li class="nav-link my-auto -mb-2 -mx-2 topHeaderNavTab transition duration-500 ease-in-out bg-indigo-100 hover:bg-white transform hover:-translate-y-1 hover:scale-110 hover:pr-4 hover:mr-4 hover:font-bold hover:opacity-100
-        <%= class_names(active: controller_name == 'vendors') %>
-        <%= class_names(selectedTopHeaderNavTab: controller_name == 'vendors') %>">
-          <%= link_to "Vendors", vendors_path, class:"-mr-2 px-1 hover:pr-1" %>
-        </li>
+          <li class="nav-link my-auto -mb-2 -mx-2 topHeaderNavTab transition duration-500 ease-in-out bg-indigo-100 hover:bg-white transform hover:-translate-y-1 hover:scale-110 hover:pr-4 hover:mr-4 hover:font-bold hover:opacity-100
+          <%= class_names(active: controller_name == 'vendors') %>
+          <%= class_names(selectedTopHeaderNavTab: controller_name == 'vendors') %>">
+            <%= link_to "Vendors", vendors_path, class:"-mr-2 px-1 hover:pr-1" %>
+          </li>
+        <% end %>
     </ul>
   </div>
 </div>

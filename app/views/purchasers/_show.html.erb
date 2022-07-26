@@ -1,4 +1,8 @@
-<%= link_to "Show all Orders", :controller => "purchasers", :action => "show", :id => @purchaser, :all => "1" %>
+<% if params["all"] == "1" %>
+  <%= link_to "Show Open Orders", :controller => "purchasers", :action => "show", :id => @purchaser, :all => "0" %>
+<% else %>
+  <%= link_to "Show all Orders", :controller => "purchasers", :action => "show", :id => @purchaser, :all => "1" %>
+<% end %>
 <table class="bg-white table table-striped border border-2">
   <thead>
     <tr>

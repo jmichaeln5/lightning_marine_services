@@ -34,3 +34,8 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/lightning_marine_services.iml

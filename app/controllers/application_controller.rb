@@ -14,11 +14,18 @@ class ApplicationController < ActionController::Base
     redirect_back fallback_location: root_path, alert: 'Not authorized.' unless current_user.has_role? 'admin'
   end
 
-  def authenticate_staff
-    redirect_to root_path, alert: 'Not authorized.' unless current_user.has_role?(:staff)
+  def exclude_customer
+    if current_user.has_role?('customer')
+      redirect_to root_path, alert: 'Not authorized.' 
+    end
   end
 
-
+  def check_read_write
+    # Admins and Staff have Read Write Access
+    if ! (current_user.has_role?('admin') || current_user.has_role?('staff'))
+      redirect_to root_path, alert: 'Not authorized.' 
+    end
+  end
   protected
 
   def configure_permitted_parameters

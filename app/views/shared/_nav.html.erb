@@ -31,7 +31,7 @@
         <li class="nav-item">
           <%= link_to 'Orders', orders_path, class:'nav-link' %>
         </li>
-
+        <% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
         <li class="nav-item">
           <%= link_to 'Ships', purchasers_path, class:'nav-link' %>
         </li>
@@ -39,7 +39,7 @@
         <li class="nav-item">
           <%= link_to 'Vendors', vendors_path, class:'nav-link' %>
         </li>
-
+````````<% end %>
       <% end %>
     </ul>
 

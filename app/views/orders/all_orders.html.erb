@@ -1,9 +1,12 @@
 <% content_for :title, "#{Order.all.count} Total" + ' Order'.pluralize(Order.all.count) %>
 <% content_for :subtitle, "#{Order.unarchived.count} Unarchived" + ' Order'.pluralize(Order.unarchived.count) %>
 <% content_for :subtitle_two, "#{Order.archived.count} Archived" + ' Order'.pluralize(Order.archived.count) %>
-
+<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
 <%= render 'shared/under_header_card_options' %>
 <%= render 'shared/new_modal' %>
+<% else %>
+<%= link_to "Open Orders Page", orders_path %>
+<% end %>
 <br>
 <%= render 'shared/top_table_header' %>
 <%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>

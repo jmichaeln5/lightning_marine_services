@@ -1,6 +1,7 @@
 class PurchasersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
+  before_action :exclude_customer
   before_action :set_purchaser, only: %i[ show edit update destroy ]
   before_action :set_search_params, only: %i[ index show]
   before_action :set_pagination_params, only: %i[ index show]
@@ -65,6 +66,8 @@ class PurchasersController < ApplicationController
         sort_direction: sort_direction,
         page: @page
       }
+
+
     end
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
@@ -73,34 +76,9 @@ class PurchasersController < ApplicationController
     @table_option = @resource.table_option
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+
   end
 
-  def show_all
-    #@purchaser = Purchaser.find(params[:ship_id])
-    load_resource_files
-
-    resource_attrs = {
-      called_at: Time.now,
-      user: current_user,
-      target: @purchaser.orders.all,
-      parent_class: Purchaser,
-      parent_action: 'show',
-      controller_name: 'purchasers',
-      controller_action: 'show',
-      controller_name_and_action: 'purchasers#show',
-      search_query: @query,
-      sort_option: sort_option,
-      sort_direction: sort_direction,
-      page: @page
-    }
-
-    @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @resource = Resource::ResourceKlass.get_resource
-
-    @table_option = @resource.table_option
-    @order = Order.new
-    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-  end
   # GET /purchasers/new
   def new
     @purchaser = Purchaser.new

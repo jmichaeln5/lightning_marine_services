@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
+  before_action :check_read_write, only: %i[ new, edit, create , update]
   before_action :set_order, only: %i[ show destroy ]
   before_action :set_search_params, only: %i[ index all_orders]
   before_action :set_pagination_params, only: %i[ index all_orders ]
