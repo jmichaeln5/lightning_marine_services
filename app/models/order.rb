@@ -7,7 +7,7 @@ class Order < ApplicationRecord
   has_many_attached :images
   has_one :order_content, dependent: :destroy
 
-  searchkick word_middle: [:dept, :purchaser.name, :vendor.name, :po_number, :tracking_number, ]
+  searchkick word_middle: [:dept, :po_number, :tracking_number ]
 
   accepts_nested_attributes_for :order_content
 
