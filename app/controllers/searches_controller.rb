@@ -10,7 +10,7 @@ class SearchesController < ApplicationController
     if @query.nil?
       get_resource_target = Order.all
     else
-      search_query = Order.search(@query,fields[:dept, :po_number, :tracking_number ], match: :text_middle)
+      search_query = Order.search(@query,fields[:po_number], match: :word_middle)
       results_arr = Array.new
 
       search_query.results.each do |result|
