@@ -159,7 +159,7 @@ class OrdersController < ApplicationController
     end
 
     def order_params
-      params.require(:order).permit(:id, :purchaser_id, :vendor_id, :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
+      params.require(:order).permit(:id, :purchaser_id, :vendor_id, :order_sequence, :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
     end
 
     def sort_option(sort_option = nil)
