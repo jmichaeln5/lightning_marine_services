@@ -7,7 +7,7 @@ class Order < ApplicationRecord
   has_many_attached :images
   has_one :order_content, dependent: :destroy
 
-  searchkick word_middle: [:po_number]
+  searchkick
 
   accepts_nested_attributes_for :order_content
 
@@ -17,7 +17,7 @@ class Order < ApplicationRecord
   before_update :handle_archive
 
   def self.to_csv # Also Formats for XLS
-    csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
+    csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'Sequence','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
 
     CSV.generate do |csv|
       csv << csv_header
@@ -34,6 +34,7 @@ class Order < ApplicationRecord
             dept,
             order.purchaser.name,
             order.vendor.name,
+            order.order_sequence,
             order.po_number,
             order.tracking_number,
             rec_date,

@@ -1,15 +1,15 @@
 module TableOptionsHelper
 
   def self.sortable_ths
-    sortable_ths = ["id", "dept", "ship_name", "vendor_name", "date_recieved", "courrier", "date_delivered"]
+    sortable_ths = ["id", "order_sequence","dept", "ship_name", "vendor_name", "date_recieved", "courrier", "date_delivered"]
   end
 
   def self.order_options_for_select_arr
-    [ ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Tracking Number','tracking_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
+    [ ['Order ID', 'id'], ['Seq', 'order_sequence'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Tracking Number','tracking_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
   end
 
   def self.order_index_options_for_select_arr
-    [ ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Tracking Number','tracking_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
+    [ ['Order ID', 'id'], ['Seq', 'order_sequence'],['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Tracking Number','tracking_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
   end
   # def self.order_all_orders_options_for_select_arr
   #   [ ['Order ID', 'id'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}

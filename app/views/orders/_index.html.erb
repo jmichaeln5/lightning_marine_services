@@ -37,6 +37,8 @@
                   <% case option %>
                   <% when 'id' %>
                     <%= link_to "#{order.id}", order_path(order) %>
+                  <% when 'order_sequence' %>
+                    <%= order.try(:order_sequence) || 0 %>
                   <% when 'dept' %>
                     <%= order.try(:dept) || 'n/a' %>
                   <% when 'ship_name' %>

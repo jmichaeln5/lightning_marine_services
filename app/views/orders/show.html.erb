@@ -12,6 +12,7 @@
     <thead>
       <tr>
         <th class="align-middle"> Order ID </th>
+        <th class="align-middle"> Seq </th>
         <th class="align-middle"> Dept </th>
         <th class="align-middle"> Vendor </th>
         <th class="align-middle"> PO# </th>
@@ -32,6 +33,10 @@
                 <br>
               <% end %>
               <%= @order.id %>
+          </td>
+
+          <td class="align-middle font-normal	">
+            <%= @order.order_sequence ||= 0 %>
           </td>
 
           <td class="align-middle font-normal	">

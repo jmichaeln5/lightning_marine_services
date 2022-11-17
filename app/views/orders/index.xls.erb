@@ -1,6 +1,7 @@
 <table border="1">
     <tr>
       <th scope="col">Order ID</th>
+      <th scope="col">Seq</th>
       <th scope="col">Dept</th>
       <th scope="col">Ship</th>
       <th scope="col"> Vendor</th>
@@ -14,6 +15,7 @@
     <tr>
       <th scope="row">1</th>
       <td> <%= order.id %> </td>
+      <td> <%= order.order_sequence %> </td>
       <td> <%= order.dept %> </td>
       <td> <%= order.ship.name %> </td>
       <td> <%= order.date_recieved ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %> </td>
