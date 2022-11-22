@@ -122,6 +122,28 @@ class PurchasersController < ApplicationController
     end
   end
 
+  def export
+
+    ship = Purchaser.find(params[:id])
+    filePrefix = ship.name + "_"
+    @orders = ship.orders.unarchived
+    respond_to do |format|
+      format.html {
+        render :export }
+      format.xls {
+        send_data @orders.to_csv,
+        filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      } 
+    end
+  end 
+
+  def deliver
+    ship = Purchaser.find(params[:id])
+    @orders = ship.orders.unarchived
+    @orders.deliver_all
+    redirect_to dashboard_path
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_purchaser

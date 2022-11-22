@@ -47,6 +47,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :purchasers do
+    member do
+      get :export
+      get :deliver
+    end
+  end
+
 
 
   # Redirects to root if invalid path BUT, fucks up search params

@@ -1,4 +1,21 @@
 <% content_for :title, "Ship: #{@purchaser.name}" %>
+
+
+<div class="accordion" id="aboveTableAccordionOptions">
+    <div class="card">
+        <div class="card-header">
+            <%= link_to "Export to Excel", export_purchaser_path(@purchaser, format: :xls) %>
+        </div>
+        <div class="card-header">
+            <%= link_to "Deliver Open Orders", deliver_purchaser_path(@purchaser) %>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <% content_for :subtitle, "#{@purchaser.orders.unarchived.count}" + ' Open Order'.pluralize(@purchaser.orders.unarchived.count) %>
 <% content_for :subtitle_two, "#{@purchaser.orders.archived.count}" + ' Archived Order'.pluralize(@purchaser.orders.archived.count) %>
 
