@@ -1,5 +1,6 @@
 <%= form_for @order do |f| %>
 
+<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
   <div class="field">
     <p class="text-3xl"> Ship </p>
     <% if @purchaser.present? %>
@@ -17,6 +18,8 @@
       <%= f.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, {class: "form-control"} %>
     <% end %>
   </div>
+
+
 
   <div class="container p-2">
 
@@ -131,6 +134,15 @@
         <%= p.label 'Description', class:"text-2xl" %>
         <%= p.text_area :other_description,rows: 3, class: 'form-control' %>
       </div>
+    <% end %>
+
+    <% else%>
+  <div class="container p-2">
+      <div class="field pb-2 pt-2">
+      <p class="text-2xl"> Dept. </p>
+      <%= f.text_field :dept, class: "form-control" %>
+    </div>
+  </div>
     <% end %>
   <br>
   <div class="p-2">

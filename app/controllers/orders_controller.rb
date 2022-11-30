@@ -1,7 +1,8 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
-  before_action :check_read_write, only: %i[ new, edit, create , update]
+  before_action :check_read_write, only: %i[ new, create ]
+  #before_action :check_read_write, only: %i[ new, edit, create , update]
   before_action :set_order, only: %i[ show destroy ]
   before_action :set_search_params, only: %i[ index all_orders]
   before_action :set_pagination_params, only: %i[ index all_orders ]
@@ -159,7 +160,12 @@ class OrdersController < ApplicationController
     end
 
     def order_params
+      # Only Guest account to update Department Only
+      if (current_user.has_role?('admin') || current_user.has_role?('staff')) 
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :order_sequence, :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
+      else
+        params.require(:order).permit(:dept)
+      end
     end
 
     def sort_option(sort_option = nil)
