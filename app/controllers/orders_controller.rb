@@ -7,6 +7,7 @@ class OrdersController < ApplicationController
   before_action :set_search_params, only: %i[ index all_orders]
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
+  
 
   def all_orders
     load_resource_files
@@ -127,6 +128,9 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
+    #logic to default number
+    #@order.order_sequence = @order.sequence
+    
     if @order.update(order_params)
       redirect_to request.referrer, notice: "Order Updated Successfully."
     else

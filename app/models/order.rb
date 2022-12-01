@@ -13,13 +13,31 @@ class Order < ApplicationRecord
 
   validates :purchaser_id, :vendor_id, :courrier, presence: true
 
-  before_save :order_content_exists?, :handle_archive
-  before_update :handle_archive
+  before_save :order_content_exists?, :handle_archive, :default_sequence
+  before_update :handle_archive, :default_sequence
+
 
   def self.deliver_all
     all.each do |order|
       order.date_delivered = DateTime.now
       order.save
+    end
+  end
+
+
+  def default_sequence
+    if self.purchaser_id
+      ship = Purchaser.find(self.purchaser_id)
+      shipOrders = ship.orders.unarchived
+      seq = 1
+      #shipOrders = Order.find_by_purchaser_id(self.purchaser_id).unarchived
+      shipOrders.each do |ord|
+        iSeq = ord.try(:order_sequence)|| 0
+        if iSeq >= seq 
+          seq = iSeq + 1
+        end
+      end
+      self.order_sequence = seq
     end
   end
 
