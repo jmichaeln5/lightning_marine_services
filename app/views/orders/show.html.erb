@@ -6,7 +6,9 @@
 <% end %>
 
 <%= render 'shared/under_header_card_options' %>
+<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
 <%= render "shared/new_modal" %>
+<% end %>
 
 <table class="bg-white table table-striped border border-2">
     <thead>

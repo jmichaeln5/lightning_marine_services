@@ -1,5 +1,6 @@
 <% content_for :title, "Ship: #{@purchaser.name}" %>
 
+<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
 
 <div class="accordion" id="aboveTableAccordionOptions">
     <div class="card">
@@ -11,7 +12,7 @@
         </div>
     </div>
 </div>
-
+<% end %>
 
 
 
@@ -20,7 +21,9 @@
 <% content_for :subtitle_two, "#{@purchaser.orders.archived.count}" + ' Archived Order'.pluralize(@purchaser.orders.archived.count) %>
 
 <%= render 'shared/under_header_card_options' %>
-<%= render 'shared/new_order_on_show_modal' %>
+<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+    <%= render 'shared/new_order_on_show_modal' %>
+<% end %>
 <hr>
 <%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
 <%= render partial: "show" %>

@@ -1,7 +1,7 @@
 class PurchasersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
-  before_action :exclude_customer
+  before_action :exclude_customer, only: %i[new edit create update destroy]
   before_action :set_purchaser, only: %i[ show edit update destroy ]
   before_action :set_search_params, only: %i[ index show]
   before_action :set_pagination_params, only: %i[ index show]

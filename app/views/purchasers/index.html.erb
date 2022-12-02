@@ -1,7 +1,9 @@
 <% content_for :title, "#{Purchaser.all.count}" + ' Ship'.pluralize(Purchaser.all.count) %>
 
 <%= render 'shared/under_header_card_options' %>
-<%= render 'shared/new_modal' %>
+<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+    <%= render 'shared/new_modal' %>
+<% end %>
 <%= render 'shared/top_table_header' %>
 <%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
 <%= render partial: 'purchasers/index', locals: { purchasers: @resource} %>
