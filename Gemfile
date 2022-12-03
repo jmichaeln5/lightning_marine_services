@@ -74,3 +74,6 @@ gem 'type-humanizer'
 gem 'searchkick', '~> 4.6'
 gem 'elasticsearch'
 gem "aws-sdk-s3", require: false
+
+gem 'caxlsx'
+gem 'caxlsx_rails'

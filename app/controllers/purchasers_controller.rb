@@ -124,15 +124,23 @@ class PurchasersController < ApplicationController
 
   def export
 
-    ship = Purchaser.find(params[:id])
-    filePrefix = ship.name + "_"
-    @orders = ship.orders.unarchived
+    @ship = Purchaser.find(params[:id])
+    filePrefix = (@ship.name + "_").parameterize(separator: '_')
+    @orders = @ship.orders.unarchived
     respond_to do |format|
       format.html {
         render :export }
       format.xls {
         send_data @orders.to_csv,
         filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      } 
+      format.xlsx {
+        fName = filePrefix + "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
+        #response.headers['Content-Disposition'] = 'attachment; ' + fName
+        response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
+
+        #send_data @orders,
+        #filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
       } 
     end
   end 
