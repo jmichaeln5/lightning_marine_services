@@ -117,7 +117,7 @@ class OrdersController < ApplicationController
     @order.dept = 'n/a' if @order.dept == ""
     @order_content = @order.order_content
     if @order.save
-      redirect_to order_path(@order), notice: "Order Created Successfully."
+      redirect_back(fallback_location: order_path(@order),notice: "Order Created Successfully.")
     else
       redirect_to request.referrer
       @order.errors.each do |error|
@@ -132,7 +132,7 @@ class OrdersController < ApplicationController
     #@order.order_sequence = @order.sequence
     
     if @order.update(order_params)
-      redirect_to request.referrer, notice: "Order Updated Successfully."
+      redirect_back(fallback_location: order_path(@order),notice: "Order Updated Successfully.")
     else
       redirect_to request.referrer
       @order.errors.each do |error|

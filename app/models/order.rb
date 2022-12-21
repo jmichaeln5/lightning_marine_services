@@ -26,18 +26,20 @@ class Order < ApplicationRecord
 
 
   def default_sequence
-    if self.purchaser_id
-      ship = Purchaser.find(self.purchaser_id)
-      shipOrders = ship.orders.unarchived
-      seq = 1
-      #shipOrders = Order.find_by_purchaser_id(self.purchaser_id).unarchived
-      shipOrders.each do |ord|
-        iSeq = ord.try(:order_sequence)|| 0
-        if iSeq >= seq 
-          seq = iSeq + 1
+    if self.order_sequence.blank?
+      if self.purchaser_id
+        ship = Purchaser.find(self.purchaser_id)
+        shipOrders = ship.orders.unarchived
+        seq = 1
+        #shipOrders = Order.find_by_purchaser_id(self.purchaser_id).unarchived
+        shipOrders.each do |ord|
+          iSeq = ord.try(:order_sequence)|| 0
+          if iSeq >= seq 
+            seq = iSeq + 1
+          end
         end
+        self.order_sequence = seq
       end
-      self.order_sequence = seq
     end
   end
 

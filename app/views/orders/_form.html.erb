@@ -116,19 +116,19 @@
     <%= f.fields_for :order_content, @order.order_content do |p| %>
       <div class="field pb-2">
         <%= p.label'Boxes', class:"text-2xl" %>
-        <%= p.number_field :box, class: 'form-control' %>
+        <%= p.text_field :box, class: 'form-control' %>
       </div>
       <div class="field pb-2">
         <%= p.label 'Crates', class:"text-2xl" %>
-        <%= p.number_field :crate, class: 'form-control' %>
+        <%= p.text_field :crate, class: 'form-control' %>
       </div>
       <div class="field pb-2">
         <%= p.label 'Pallets', class:"text-2xl" %>
-        <%= p.number_field :pallet, class: 'form-control' %>
+        <%= p.text_field :pallet, class: 'form-control' %>
       </div>
       <div class="field pb-2">
         <%= p.label 'Other', class:"text-2xl" %>
-        <%= p.number_field :other, class: 'form-control' %>
+        <%= p.text_field :other, class: 'form-control' %>
       </div>
       <div class="field pb-2">
         <%= p.label 'Description', class:"text-2xl" %>
