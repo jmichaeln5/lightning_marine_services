@@ -8,6 +8,10 @@ module TableOptionsHelper
     [ ['Order ID', 'id'], ['Seq', 'order_sequence'], ['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Tracking Number','tracking_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
   end
 
+  def self.order_show_options_for_select_arr
+    [ ['Seq', 'order_sequence'],['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Tracking Number','tracking_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
+  end
+
   def self.order_index_options_for_select_arr
     [ ['Order ID', 'id'], ['Seq', 'order_sequence'],['Dept', 'dept'], ['Ship', 'ship_name'], ['Vendor', 'vendor_name'], ['PO Number', 'po_number'], ['Tracking Number','tracking_number'], ['Date Received', 'date_recieved'], ['Order Content', 'order_content'],['Courrier', 'courrier'], ['Date Delivered', 'date_delivered'] ].map {|option| option[1]}
   end
