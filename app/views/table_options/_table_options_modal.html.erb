@@ -17,10 +17,12 @@
         </button>
       </div>
       <div class="modal-body">
-
+        <% if @table_option %>  
         <% @form_table_option = TableOption.new unless @table_option.belongs_to_user? %>
         <% @form_table_option = @table_option if @table_option.belongs_to_user? %>
-
+        <% else %>
+            <% @form_table_option = TableOption.new  %>
+        <% end %>
         <%= render 'table_options/form', table_option: @form_table_option %>
       </div>
       <div class="modal-footer">
