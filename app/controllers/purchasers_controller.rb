@@ -37,10 +37,12 @@ class PurchasersController < ApplicationController
   def show
     load_resource_files
     if params["all"] != "1"
+      @tgt = @purchaser.orders.order("order_sequence ASC").unarchived
       resource_attrs = {
         called_at: Time.now,
         user: current_user,
-        target: @purchaser.orders.unarchived,
+        #target: @purchaser.orders.unarchived,
+        target: @tgt,
         parent_class: Purchaser,
         parent_action: 'show',
         controller_name: 'purchasers',
@@ -51,6 +53,7 @@ class PurchasersController < ApplicationController
         sort_direction: sort_direction,
         page: @page
       }
+
     else
       resource_attrs = {
         called_at: Time.now,
@@ -66,8 +69,6 @@ class PurchasersController < ApplicationController
         sort_direction: sort_direction,
         page: @page
       }
-
-
     end
 
     @init_resource = Resource.init_resource_klass ( resource_attrs )
