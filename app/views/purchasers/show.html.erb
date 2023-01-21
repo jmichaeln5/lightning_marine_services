@@ -1,18 +1,20 @@
 <% content_for :title, "Ship: #{@purchaser.name}" %>
 
-<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+
 
 <div class="accordion" id="aboveTableAccordionOptions">
     <div class="card">
         <div class="card-header">
             <%= link_to "Export to Excel", export_purchaser_path(@purchaser, format: :xlsx) %>
         </div>
+        <% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
         <div class="card-header">
             <%= link_to "Deliver Open Orders", deliver_purchaser_path(@purchaser) %>
         </div>
+        <% end %>
     </div>
 </div>
-<% end %>
+
 
 
 
