@@ -5,69 +5,22 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
   <body class="bg-indigo-100">
-
-    <%= render "shared/nav"%>
     <%= render "shared/flash_messages" %>
-
-    <div class="text-center">
-      <div class="container">
-        <% if (current_user and current_controller.in? main_controllers) or (current_user and display_header_content?) %>
-          <div id="header-content">
-            <%= render "layouts/header/header_content" %>
-          </div>
-        <% end %>
-        <div id="main">
-        <%= yield %>
-        </div>
-      </div>
-
-      <% if main_controllers.include? controller_name %>
-          <div class="z-20">
-            <%= link_to "Back", :back, class:"btn btn-primary" %>
-          </div>
-      <% end  %>
-
-      <% if main_controllers.include? controller_name %>
-        <div class="mt-1">
-          <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
-            Scroll to Top
-          </button>
-        </div>
-      <% end %>
+    <div id="main">
+    <%= yield %>
     </div>
-
-    <script type="text/javascript">
-      if (document.getElementById("scrollToTopBtn")) {
-        var scrollToTopBtn = document.getElementById("scrollToTopBtn");
-        scrollToTopBtn.addEventListener("click", scrollToTop);
-
-        function scrollToTop() {
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
-        };
-
-      }
-    </script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-
   </body>
-
 </html>
