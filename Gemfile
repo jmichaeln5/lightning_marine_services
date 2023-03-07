@@ -77,3 +77,5 @@ gem "aws-sdk-s3", require: false
 
 gem 'caxlsx'
 gem 'caxlsx_rails'
+
+gem "numbers_and_words", "~> 0.11.11"
