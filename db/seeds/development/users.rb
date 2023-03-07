@@ -19,13 +19,18 @@ def create_user_by_role(users_to_create, role)
     )
     user.skip_confirmation_notification!
     user.skip_confirmation!
-    user.save
 
     if role.name != "customer"
       user.remove_role :customer if user.has_role?(:customer)
       user.add_role :admin if role.name == "admin"
       user.add_role :staff if role.name == "staff"
       user.save
+    end
+
+    if user.save
+      puts "User #{user.id} created\n#{user.inspect}\n\n"
+    else
+      puts "Invalid User\n#{user.inspect}\nCould not save User\n"
     end
 
   end
