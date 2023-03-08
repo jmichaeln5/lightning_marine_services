@@ -26,26 +26,28 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
   resources :users
+  resources :table_options
   resources :purchasers
   resources :vendors
+
+  namespace :orders do
+    resource :bulk, controller: :bulk
+  end
+
   resources :orders
-
-  resources :table_options
-
-  get '/archived_orders', to: 'orders#archived_index'
-  get '/all_orders', to: 'orders#all_orders'
-
-  get '/purchasers_all', to: 'purchasers#show_all'
-
-  #get '/all_ship_orders/:id', to: 'purchasers#show_all'
-  get '/search', to: 'searches#index'
-
 
   resources :orders do
     resources :attachments do
       delete :destroy_attachment
     end
   end
+
+  get '/archived_orders', to: 'orders#archived_index'
+  get '/all_orders', to: 'orders#all_orders'
+
+  get '/purchasers_all', to: 'purchasers#show_all'
+  #get '/all_ship_orders/:id', to: 'purchasers#show_all'
+  get '/search', to: 'searches#index'
 
   resources :purchasers do
     member do
