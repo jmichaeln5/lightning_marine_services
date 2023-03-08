@@ -79,3 +79,7 @@ gem 'caxlsx'
 gem 'caxlsx_rails'
 
 gem "numbers_and_words", "~> 0.11.11"
+
+gem "stimulus-rails", "~> 1.2"
+
+gem "turbo-rails", "~> 1.4"

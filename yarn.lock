@@ -6324,6 +6324,11 @@ statuses@2.0.1:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==
 
+stimulus-checkbox-select-all@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/stimulus-checkbox-select-all/-/stimulus-checkbox-select-all-2.1.0.tgz#f375d63073fa90b25fa26310af741fe17943459a"
+  integrity sha512-CaaE0z1HZD7JU+WbfikrkXG88GIJ/atJGVo6pZqTtTzqzVD77eRkff4EBxUL3YB8qJKTip0zQbqmYYhS/Uy7Ew==
+
 stimulus@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npmjs.org/stimulus/-/stimulus-3.2.1.tgz#bf049a4379ed4ff7475515acce1f0b6fa15a0187"
