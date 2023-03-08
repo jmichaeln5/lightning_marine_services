@@ -28,7 +28,7 @@ def create_user_by_role(users_to_create, role)
     end
 
     if user.save
-      puts "User #{user.id} created\n#{user.inspect}\n\n"
+      puts "User #{user.id} created\n#{user.inspect}\nRole: #{role.name}\n\n"
     else
       puts "Invalid User\n#{user.inspect}\nCould not save User\n"
     end
