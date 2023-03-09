@@ -10,14 +10,16 @@ export default class extends CheckboxSelectAll {
 
   destroy(event) {
     event.preventDefault()
-
     if (this.checked.length === 0 ) {
       alert("No orders selected")
       return
     }
+    if (this.checked.length > 10 ) {
+      alert("Action Rejected :(\nBulk deletion limited to 10 orders per action for security purposes.")
+      return
+    }
 
     let data = new FormData()
-
     if (this.checked.length == this.checkboxTargets.length) {
       data.append("all", true)
     } else {

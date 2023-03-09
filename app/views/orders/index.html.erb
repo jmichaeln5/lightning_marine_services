@@ -27,7 +27,7 @@
     <div class="w-2/4 pt-3">
       <div>
         <!-- bulk operations if admin or staff -->
-        <% if (current_user.has_role?('admin') || current_user.has_role?('staff')) && ("orders".in? current_controller) %>
+        <% if current_user.has_role?(:admin) && ("orders".in? current_controller) %>
           <div class="-mt-2 text-right mb-3">
               <div class="ml-3 inline-flex">
                 <div  data-visibility-target="hideable" hidden class="inline-flex">
@@ -104,7 +104,7 @@
             </th>
           <% end %>
         <% end %>
-        <% if (current_user.has_role?('admin') || current_user.has_role?('staff'))  %>
+        <% if current_user.has_role?(:admin) %>
           <th data-visibility-target="hideable" hidden class="align-middle">
            <%= check_box_tag nil, nil, false, data: { "orders-bulk-target": "checkboxAll" }, class:"inline-block ml-2 mr-1 mb-1 mt-1 h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" %>
           </th>
@@ -176,7 +176,7 @@
               <% end %>
             </td>
           <% end %>
-          <% if (current_user.has_role?('admin') || current_user.has_role?('staff'))  %>
+          <% if current_user.has_role?(:admin) %>
             <td data-visibility-target="hideable" hidden class="align-middle font-normal	">
               <%= check_box_tag "ids[]", order.id, false, data: { "orders-bulk-target": "checkbox"}, class:"inline-block ml-2 mr-1 mb-1 mt-1 h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"  %>
             </td>
