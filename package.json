@@ -2,13 +2,14 @@
   "name": "lightning_marine_services",
   "private": true,
   "dependencies": {
+    "@hotwired/stimulus": "^3.2.1",
+    "@hotwired/turbo-rails": "^7.3.0",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/request.js": "^0.0.8",
     "esbuild": "^0.17.11",
     "stimulus": "^3.2.1",
-    "stimulus-checkbox-select-all": "^2.1.0",
-    "turbolinks": "^5.2.0"
+    "stimulus-checkbox-select-all": "^2.1.0"
   },
   "version": "0.1.0",
   "scripts": {

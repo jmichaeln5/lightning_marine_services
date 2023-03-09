@@ -52,6 +52,9 @@ jobs:
         with:
           node-version: 10.13.0
 
+      - name: Build Esbuild
+        run: yarn build
+
       - name: Verify Elasticsearch connection from host
         env:
           ELASTIC_SEARCH_URL: http://localhost:${{ job.services.elasticsearch.ports[9200] }}

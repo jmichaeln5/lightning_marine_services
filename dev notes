@@ -9,6 +9,20 @@
   -Sort Options in Controllers
 the sort_option helper_method uses ship instead of default namespace
 
+###########################################################################
+###########################################################################
+
+MIGRATING FROM WEBPACK TO ESBUILD:
+MIGRATING FROM WEBPACK TO ESBUILD:
+MIGRATING FROM WEBPACK TO ESBUILD:
+MIGRATING FROM WEBPACK TO ESBUILD:
+
+https://dev.to/thomasvanholder/how-to-migrate-from-webpacker-to-jsbundling-rails-esbuild-5f2
+STEPS 6 AND 7 ^^^^ VERY OBSCURE
+
+https://github.com/Nexmo/nexmo-oas-renderer/issues/57#issue-570117359
+
+https://bugcrowd.engineering/blogs/webpacker-to-esbuild-migration
 
 ###########################################################################
 ###########################################################################
