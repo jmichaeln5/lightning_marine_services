@@ -111,6 +111,8 @@ GEM
       caxlsx (>= 3.0)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
+    cssbundling-rails (1.1.2)
+      railties (>= 6.0.0)
     database_cleaner-active_record (2.1.0)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -375,6 +377,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   caxlsx
   caxlsx_rails
+  cssbundling-rails (~> 1.1)
   database_cleaner-active_record
   devise (~> 4.2)
   elasticsearch

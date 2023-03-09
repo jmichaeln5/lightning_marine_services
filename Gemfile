@@ -24,6 +24,9 @@ gem "turbo-rails", "~> 1.4"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails", "~> 1.2"
 
+# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+gem "cssbundling-rails", "~> 1.1"
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 
