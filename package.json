@@ -5,16 +5,13 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/request.js": "^0.0.8",
-    "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5.4.3",
+    "esbuild": "^0.17.11",
     "stimulus": "^3.2.1",
     "stimulus-checkbox-select-all": "^2.1.0",
-    "turbolinks": "^5.2.0",
-    "webpack": "^4.46.0"
+    "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
-  "devDependencies": {
-    "webpack": "^4.41.0",
-    "webpack-dev-server": "^3"
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets"
   }
 }
