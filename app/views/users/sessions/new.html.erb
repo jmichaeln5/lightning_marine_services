@@ -1,28 +1,20 @@
-<br>
-<br>
-<div class="">
-
+<div class="pt-24">
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 <div class="wrapper fadeInDown m-auto">
   <div id="formContent">
     <div class="fadeIn first">
       <div class="container">
         <br>
-        <p class="text-3xl"> Welcome Back👋  </p>
-        <hr/>
+        <p class="text-3xl mb-3"> Welcome Back👋  </p>
       </div>
     </div>
-
     <div class="field" name="login" placeholder="login" id="login">
       <%= f.email_field :email, autocomplete: 'email', placeholder:' email', class:"fadeIn third widerTextField border border-4  inputText" %>
     </div>
-
-
     <br/>
     <div class="field" id="password" name="login" >
       <%= f.password_field :password, autocomplete: 'password', placeholder:'password', class:"field fadeIn fourth widerTextField border border-4  inputText" %>
     </div>
-
     <% if devise_mapping.rememberable? %>
       <br/>
       <div class="field fadeIn fifth">
@@ -30,17 +22,13 @@
         <%= f.label :remember_me %>
       </div>
     <% end %>
-
     <div class="actions fadeIn sixth">
       <%= f.submit "Log in", id:"formBtn", class:'cursor-pointer' %>
     </div>
     <% end %>
-
     <div id="formFooter" class="fadeIn seventh">
       <%= render "users/shared/links" %>
     </div>
-
   </div>
 </div>
-
 </div>
