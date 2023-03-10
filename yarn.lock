@@ -614,6 +614,11 @@ stimulus-checkbox-select-all@^2.1.0:
   resolved "https://registry.npmjs.org/stimulus-checkbox-select-all/-/stimulus-checkbox-select-all-2.1.0.tgz#f375d63073fa90b25fa26310af741fe17943459a"
   integrity sha512-CaaE0z1HZD7JU+WbfikrkXG88GIJ/atJGVo6pZqTtTzqzVD77eRkff4EBxUL3YB8qJKTip0zQbqmYYhS/Uy7Ew==
 
+stimulus-use@^0.52.0:
+  version "0.52.0"
+  resolved "https://registry.npmjs.org/stimulus-use/-/stimulus-use-0.52.0.tgz#a52df4e2b59f3273fc6941f98fa173f0892d4e9d"
+  integrity sha512-b2Z2krSSIqKvG9ncrjMlxbX3SYg9mgL0g/1Zc25jTZjTr0//wgg7szUi9G67amBs/yLqO12GAEnudybZgYNnjA==
+
 stimulus@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npmjs.org/stimulus/-/stimulus-3.2.1.tgz#bf049a4379ed4ff7475515acce1f0b6fa15a0187"

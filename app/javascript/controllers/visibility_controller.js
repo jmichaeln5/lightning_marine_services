@@ -4,9 +4,9 @@ export default class extends Controller {
   static values = { toggled: Boolean }
   static targets = [ "hideable" ]
 
-  // connect() {
-  //   console.log("visibility#connect()")
-  // }
+  connect() {
+    console.log("visibility#connect()")
+  }
 
   showTargets() {
     console.log("visibility#showTargets()")
