@@ -36,15 +36,15 @@
                 <td class="align-middle font-normal	">
                   <% case option %>
                   <% when 'id' %>
-                    <%= link_to "#{order.id}", order_path(order) %>
+                    <%= link_to "#{order.id}", order_path(order), class:"text-blue-500" %>
                   <% when 'order_sequence' %>
                     <%= order.try(:order_sequence) || 0 %>
                   <% when 'dept' %>
                     <%= order.try(:dept) || 'n/a' %>
                   <% when 'ship_name' %>
-                    <%= order.try(:purchaser) ? (link_to "#{order.purchaser.name}", purchaser_path(order.purchaser)) : 'n/a' %>
+                    <%= order.try(:purchaser) ? (link_to "#{order.purchaser.name}", purchaser_path(order.purchaser), class:"text-blue-500") : 'n/a' %>
                   <% when 'vendor_name' %>
-                    <%= order.try(:vendor) ? (link_to "#{order.vendor.name}", vendor_path(order.vendor)) : 'n/a' %>
+                    <%= order.try(:vendor) ? (link_to "#{order.vendor.name}", vendor_path(order.vendor), class:"text-blue-500") : 'n/a' %>
                   <% when 'po_number' %>
                   <%= order.try(:po_number) || 'n/a' %>
                   <% when 'tracking_number' %>
@@ -53,7 +53,7 @@
                   <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
                   <% when 'order_content' %>
                     <% if order.try(:order_content).present?%>
-                          <%= link_to(order_path(order)) do %>
+                          <%= link_to(order_path(order), class:"text-blue-500") do %>
                               Boxes: <%= order.try(:order_content).box || 'n/a' %>
                               <br>
                               Crates: <%= order.try(:order_content).crate || 'n/a' %>

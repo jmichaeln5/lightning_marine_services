@@ -5,42 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <%= stylesheet_link_tag "users" if controller_path.include? "users" %>
+    <%= stylesheet_link_tag "app" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
   <body class="bg-indigo-50">
-    <%= render "shared/nav"%>
+
+    <%= render "shared/nav" unless controller_path.include? "pages"  %>
     <%= render "shared/flash_messages" %>
 
-    <div class="text-center">
-      <div class="container">
+    <% if controller_path.include? "pages" %>
+      <div id="main">
+      <%= yield %>
+      </div>
+    <% end %>
+
+    <% if !controller_path.include? "pages" %>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <% if (current_user and current_controller.in? main_controllers) or (current_user and display_header_content?) %>
           <div id="header-content">
             <%= render "layouts/header/header_content" %>
           </div>
         <% end %>
+
         <div id="main">
-        <%= yield %>
+          <%= yield %>
         </div>
-      </div>
 
-      <% if main_controllers.include? controller_name %>
-          <div class="z-20">
-            <%= link_to "Back", :back, class:"btn btn-primary" %>
+        <% if main_controllers.include? controller_name %>
+            <div class="z-20">
+              <%= link_to "Back", :back, class:"btn btn-primary" %>
+            </div>
+        <% end  %>
+
+        <% if main_controllers.include? controller_name %>
+          <div class="mt-1">
+            <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
+              Scroll to Top
+            </button>
           </div>
-      <% end  %>
+        <% end %>
 
-      <% if main_controllers.include? controller_name %>
-        <div class="mt-1">
-          <button class="btn btn-outline-success float-right mr-4 mb-2 z-10" id="scrollToTopBtn">
-            Scroll to Top
-          </button>
-        </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
 
     <script type="text/javascript">
       if (document.getElementById("scrollToTopBtn")) {
@@ -56,10 +65,8 @@
 
       }
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
   </body>
 </html>

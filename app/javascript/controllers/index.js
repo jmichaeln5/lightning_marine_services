@@ -10,8 +10,5 @@ application.register("hello", HelloController)
 import OrdersBulkController from "./orders_bulk_controller"
 application.register("orders-bulk", OrdersBulkController)
 
-import ToggleController from "./toggle_controller"
-application.register("toggle", ToggleController)
-
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)

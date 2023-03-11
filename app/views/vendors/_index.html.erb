@@ -27,10 +27,10 @@
           <%= vendor.id %>
         </td>
         <td class=" align-middle font-normal	">
-          <%= link_to "#{vendor.name}", vendor %>
+          <%= link_to "#{vendor.name}", vendor, class:"text-blue-500" %>
         </td>
         <td class=" align-middle font-normal	">
-         <%= link_to "#{vendor.orders.count}", vendor %>
+         <%= link_to "#{vendor.orders.count}", vendor, class:"text-blue-500" %>
         </td>
       </tr>
     <% end %>

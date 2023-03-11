@@ -29,10 +29,10 @@
           <%= purchaser.id %>
         </td>
         <td class=" align-middle font-normal	">
-          <%= link_to "#{purchaser.name}", purchaser %>
+          <%= link_to "#{purchaser.name}", purchaser, class:"text-blue-500" %>
         </td>
         <td class=" align-middle font-normal	">
-         <%= link_to "#{purchaser.orders.count}", purchaser %>
+         <%= link_to "#{purchaser.orders.count}", purchaser, class:"text-blue-500" %>
         </td>
       </tr>
     <% end %>
