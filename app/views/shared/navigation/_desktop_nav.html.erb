@@ -1,4 +1,4 @@
-<nav class="bg-white shadow">
+<nav  id="shared-desktop-nav"class="bg-white shadow">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 justify-between">
       <div class="flex">
@@ -13,6 +13,9 @@
           <% desktop_navigation_resource_css_classes_current = "inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm text-gray-900 " %>
 
           <% if current_user %>
+            <%= link_to "Dashboard", dashboard_path, class: desktop_navigation_resource_css_classes_current if current_page?(dashboard_path) %>
+            <%= link_to "Dashboard", dashboard_path, class: desktop_navigation_resource_css_classes if !current_page?(dashboard_path) %>
+
             <%= link_to "Orders", orders_path, class: desktop_navigation_resource_css_classes_current if current_page?(orders_path) %>
             <%= link_to "Orders", orders_path, class: desktop_navigation_resource_css_classes if !current_page?(orders_path) %>
 
@@ -47,6 +50,7 @@
               To: "transform opacity-0 scale-95"
           -->
           <div data-visibility-target="hideable" hidden class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+
             <% profile_dropdown_navigation_css_classes = "block px-4 py-2 text-sm text-gray-400 hover:text-gray-500" %>
             <% profile_dropdown_navigation_css_classes_current = "#{profile_dropdown_navigation_css_classes} bg-gray-100 text-gray-500" %>
 

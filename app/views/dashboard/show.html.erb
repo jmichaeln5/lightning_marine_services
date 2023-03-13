@@ -1,16 +1,144 @@
-<% content_for :title, 'Dashboard' %>
-<%= render 'shared/under_header_card_options' %>
+<!-- ************************************ -->
+<!-- ************************************ -->
+<!-- ************************************ -->
+<!-- Before esbuiild (webpack dashboard) -->
+<!-- ************************************ -->
+
+<!-- <%# content_for :title, 'Dashboard' %>
+<%#= render 'shared/under_header_card_options' %>
+<div class="text-center mt-20">
+  <div class="card">
+    <div class="p-4">
+    <p class="text-3xl"> Welcome <%#=current_user.first_name if current_user %> </p>
+
+      <%#= "#{Order.all.count} Total Orders" %>
+      <br>
+      <%#= "#{@unarchived_orders.unarchived.all.count} Unarchived Orders" %>
+      <br>
+      <%#= "#{@archived_orders.count} Archived Orders" %>
+    </div>
+  </div>
+</div> -->
+<!-- <%# content_for :title, 'Dashboard' %>
+<%#= render 'shared/under_header_card_options' %>
 <div class="text-center mt-20">
   <div class="card">
     <div class="p-4">
     <p class="text-3xl"> Welcome <%=current_user.first_name if current_user %> </p>
-
-      <%= "#{Order.all.count} Total Orders" %>
+      <%#= "#{Order.all.count} Total Orders" %>
       <br>
-      <%= "#{@unarchived_orders.unarchived.all.count} Unarchived Orders" %>
+      <%#= "#{@unarchived_orders.unarchived.all.count} Unarchived Orders" %>
       <br>
-      <%= "#{@archived_orders.count} Archived Orders" %>
-
+      <%#= "#{@archived_orders.count} Archived Orders" %>
     </div>
   </div>
+</div> -->
+<!-- ************************************ -->
+<!-- ************************************ -->
+<!-- ************************************ -->
+
+<% content_for :header_button do %>
+  <span class="add-order-button">
+    <a href="#_" class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
+      <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+      <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+      <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
+        <span class="tracking-wide"> Add Order </span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-2 ml-1 w-6 h-6 font-extrabold">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+      </span>
+      <span class="absolute inset-0 border-2 border-white rounded-full"></span>
+    </a>
+  </span>
+  <!-- <span class="add-order-button">
+    <%#= link_to new_order_path do %>
+      <button class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
+        <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+        <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+        <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
+          <span class="tracking-wide"> Add Order</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-2 ml-1 w-6 h-6 font-extrabold">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </span>
+        <span class="absolute inset-0 border-2 border-white rounded-full"></span>
+      </button>
+    <%# end %>
+  </span> -->
+<% end %>
+
+<h2 class="text-xl font-medium leading-6 text-gray-900">Overview</h2>
+<div class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+  <% content_for :all_orders_icon do %>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v16.5M2.25 12h19.5M6.375 17.25a4.875 4.875 0 004.875-4.875V12m6.375 5.25a4.875 4.875 0 01-4.875-4.875V12m-9 8.25h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v13.5a1.5 1.5 0 001.5 1.5zm12.621-9.44c-1.409 1.41-4.242 1.061-4.242 1.061s-.349-2.833 1.06-4.242a2.25 2.25 0 013.182 3.182zM10.773 7.63c1.409 1.409 1.06 4.242 1.06 4.242S9 12.22 7.592 10.811a2.25 2.25 0 113.182-3.182z" />
+    </svg>
+  <% end %>
+
+  <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+    card_title: "All Orders",
+    card_description: @orders.count,
+    card_link: (link_to "View All Orders", all_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+    card_icon: yield(:all_orders_icon),
+  } %>
+
+  <% content_for :active_orders_icon do %>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+    </svg>
+  <% end %>
+  <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+    card_title: "Active Orders",
+    card_description: @unarchived_orders.count,
+    card_link: (link_to "View Active Orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+    card_icon: yield(:active_orders_icon),
+  } %>
+
+  <% content_for :archived_orders_icon do %>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+    </svg>
+  <% end %>
+  <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+    card_title: "Completed Orders",
+    card_description: @archived_orders.count,
+    card_link: (link_to "(placeholder)View Completed Orders", root_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+    card_icon: yield(:archived_orders_icon),
+  } %>
+  <!-- More items... -->
 </div>
+
+<% content_for :under_main_content do %>
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+        Recent Orders
+      </h1>
+      <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of recent orders that have not yet been completed.</p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <span class="bulk-order-button">
+        <a href="#_" class="mr-2 relative px-4 py-2 overflow-hidden font-medium text-gray-600 bg-gray-50 border border-gray-700 rounded-lg shadow-inner group">
+          <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
+          <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
+          <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+          <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+          <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
+          <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
+              <span class="text-base">Bulk Edit </span>
+          </span>
+        </a>
+      </span>
+    </div>
+  </div>
+  <div class="rounded-md bg-white">
+    <div class="flex-1">
+      <%#= render partial: "dashboard/stacked_list" %>
+      <%#= render partial: "dashboard/stacked_list" %>
+      <%#= render partial: "dashboard/stacked_list" %>
+      <%#= render partial: "dashboard/table" %>
+    </div>
+  </div>
+<% end %>

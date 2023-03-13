@@ -1,5 +1,8 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_card_title
+
+  layout "stacked_shell"
 
   #  # http://tutorials.jumpstartlab.com/topics/models/facade_pattern.html
   # Keep Controller Skinny!! By creating a new class for Dashboard in Models
@@ -9,5 +12,11 @@ class DashboardController < ApplicationController
     @unarchived_orders = Order.unarchived.order("created_at DESC")
     @orders = Order.all
   end
+
+  private
+
+    def set_card_title
+      @card_title = "Dashboard"
+    end
 
 end

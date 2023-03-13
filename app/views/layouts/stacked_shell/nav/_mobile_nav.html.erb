@@ -1,0 +1,99 @@
+<nav id="mobile-nav" data-controller="visibility" data-visibility-value-toggled="false" class="border-b border-gray-700 bg-gray-800 lg:border-none">
+  <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
+    <div class="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
+      <div class="flex items-center px-2 lg:px-0">
+        <div class="flex-shrink-0">
+          <div class="h-8 w-auto">
+            <% navbar_brand_url = user_signed_in? ? dashboard_path : root_path %>
+            <%= link_to "LMS", navbar_brand_url, class:"mt-0.5 text-slate-200 hover:text-slate-100 text-lg sm:text-xl lg:text-2xl inline-block h-8 w-auto" %>
+          </div>
+        </div>
+      </div>
+      <!-- search input -->
+      <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
+        <div class="w-full max-w-lg lg:max-w-xs">
+          <label for="search" class="sr-only">Search</label>
+          <div class="relative text-gray-400 focus-within:text-gray-600">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+
+            <!--
+            NOTE : search_input_placeholder_text (tmp) defined in: layouts/stacked_shell
+           -->
+            <input id="search" class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600 sm:text-sm sm:leading-6" placeholder="<%= search_input_placeholder_text %>" type="search" name="search">
+          </div>
+        </div>
+      </div>
+      <!-- Mobile menu button -->
+      <div class="flex lg:hidden">
+        <button type="button" data-action="visibility#toggleTargets" class="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-controls="mobile-menu" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="mobile-menu" data-visibility-target="hideable" hidden>
+    <div class="space-y-1 px-2 pt-2 pb-3">
+
+      <% mobile_navigation_resource_css_classes = "text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" %>
+
+      <% mobile_navigation_resource_css_classes_current = "bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" %>
+
+      <% if user_signed_in? %>
+        <%= link_to "Dashboard", dashboard_path, class: mobile_navigation_resource_css_classes_current if current_page?(dashboard_path) %>
+        <%= link_to "Dashboard", dashboard_path, class: mobile_navigation_resource_css_classes if !current_page?(dashboard_path) %>
+
+        <%= link_to "Orders", orders_path, class: mobile_navigation_resource_css_classes_current if current_page?(orders_path) %>
+        <%= link_to "Orders", orders_path, class: mobile_navigation_resource_css_classes if !current_page?(orders_path) %>
+
+        <%= link_to "Ships", purchasers_path, class: mobile_navigation_resource_css_classes_current if current_page?(purchasers_path) %>
+        <%= link_to "Ships", purchasers_path, class: mobile_navigation_resource_css_classes if !current_page?(purchasers_path) %>
+
+        <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes_current if current_page?(vendors_path) %>
+        <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes if !current_page?(vendors_path) %>
+      <% end %>
+    </div>
+    <div class="border-t border-gray-700 pt-4 pb-3">
+      <div class="flex items-center px-5">
+        <% if user_signed_in? %>
+        <!-- <div class="cursor-default text-md font-bold text-gray-500">
+          Welcome <%#= "#{current_user.email}" %>
+        </div> -->
+        <!-- <button type="button" class="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600">
+          <span class="sr-only">View notifications</span>
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+          </svg>
+        </button> -->
+        <% end %>
+      </div>
+      <div class="mt-3 space-y-1 px-2">
+        <% if user_signed_in? %>
+          <%= link_to "Account Settings", edit_user_registration_path, class: mobile_navigation_resource_css_classes_current if current_page?(edit_user_registration_path) %>
+          <%= link_to "Account Settings", edit_user_registration_path, class: mobile_navigation_resource_css_classes if !current_page?(edit_user_registration_path) %>
+
+          <%= link_to "Logout", signout_path, method: :delete, class: mobile_navigation_resource_css_classes_current if current_page?(signout_path) %>
+          <%= link_to "Logout", signout_path, method: :delete, class: mobile_navigation_resource_css_classes if !current_page?(signout_path) %>
+        <% else %>
+          <%= link_to "Home", root_path, class: mobile_navigation_resource_css_classes_current if current_page?(root_path) %>
+          <%= link_to "Home", root_path, class: mobile_navigation_resource_css_classes if !current_page?(root_path) %>
+
+          <%= link_to "Sign In", sign_in_path, class: mobile_navigation_resource_css_classes_current if current_page?(sign_in_path) %>
+          <%= link_to "Sign In", sign_in_path, class: mobile_navigation_resource_css_classes if !current_page?(sign_in_path) %>
+          <div class="-mt-6">
+            <!-- placeholder to adjust extra padding on top -->
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

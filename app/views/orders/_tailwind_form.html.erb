@@ -1,0 +1,12 @@
+<%= form_with(model: order, local: true) do |form| %>
+
+<%= form.label :purchaser, "Ship" %>
+<%= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, {class: "form-control"} %>
+
+<%= form.label :vendor %>
+<%= form.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, {class: "form-control"} %>
+
+
+ <%= form.submit "Sign Up" %>
+
+<% end %>

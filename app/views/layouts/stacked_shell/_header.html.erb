@@ -1,0 +1,26 @@
+<header>
+  <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+
+    <% content_for :header_title do %>
+      <h1 id="add-order-button" class="mb-3 sm:mb-0 sm:mt-2 text-3xl font-bold tracking-tight text-white"> <%= card_title %> </h1>
+    <% end %>
+
+    <% if card_title %>
+      <div class="flex flex-wrap justify-around sm:justify-between">
+        <div class="mx-12 sm:mx-0">
+          <%= yield :header_title %>
+        </div>
+        <div class="mx-12 sm:mx-0">
+          <%= yield :header_button %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if !card_title && content_for?(:header_button) %>
+      <div class="ml-3 text-center sm:text-left sm:ml-0">
+        <%= yield :header_button %>
+      </div>
+    <% end %>
+
+  </div>
+</header>

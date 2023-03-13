@@ -1,0 +1,47 @@
+<nav id="secondary-nav" class="rounded-t-md bg-slate-200 py-3  mx-auto px-4 sm:px-6 lg:px-8">
+
+  <% if user_signed_in? %>
+    <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
+    <!-- Current: "bg-gray-200 text-gray-800", Default: "text-gray-600 hover:text-gray-800" -->
+    <div class="sm:hidden">
+      <label for="tabs" class="sr-only">Select a tab</label>
+      <select id="tabs" name="tabs" class="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+        <option selected>Dashboard</option>
+        <option>Orders</option>
+        <option>All Orders</option>
+        <option>Ships</option>
+        <option>Vendors</option>
+      </select>
+    </div>
+  <% end %>
+
+  <div class="hidden sm:block">
+    <nav class="flex space-x-4 inline-flex" aria-label="Tabs">
+      <% secondary_desktop_navigation_resource_css_classes = "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-200 rounded-md px-3 py-2 text-sm font-medium" %>
+      <% secondary_desktop_navigation_resource_css_classes_current = "bg-slate-50 text-gray-900 rounded-md px-3 py-2 text-sm font-semibold"  %>
+
+      <% if user_signed_in? %>
+        <%= link_to "Dashboard", dashboard_path, class: secondary_desktop_navigation_resource_css_classes_current if current_page?(dashboard_path) %>
+        <%= link_to "Dashboard", dashboard_path, class: secondary_desktop_navigation_resource_css_classes if !current_page?(dashboard_path) %>
+
+        <%= link_to "Orders", orders_path, class: secondary_desktop_navigation_resource_css_classes_current if current_page?(orders_path) %>
+        <%= link_to "Orders", orders_path, class: secondary_desktop_navigation_resource_css_classes if !current_page?(orders_path) %>
+
+        <%= link_to "Ships", purchasers_path, class: secondary_desktop_navigation_resource_css_classes_current if current_page?(purchasers_path) %>
+        <%= link_to "Ships", purchasers_path, class: secondary_desktop_navigation_resource_css_classes if !current_page?(purchasers_path) %>
+
+        <%= link_to "Vendors", vendors_path, class: secondary_desktop_navigation_resource_css_classes_current if current_page?(vendors_path) %>
+        <%= link_to "Vendors", vendors_path, class: secondary_desktop_navigation_resource_css_classes if !current_page?(vendors_path) %>
+      <% end %>
+
+      <% if !user_signed_in? %>
+        <%= link_to "Home", root_path, class: secondary_desktop_navigation_resource_css_classes_current if current_page?(root_path) %>
+        <%= link_to "Home", root_path, class: secondary_desktop_navigation_resource_css_classes if !current_page?(root_path) %>
+
+        <%= link_to "Sign in", sign_in_path, class: secondary_desktop_navigation_resource_css_classes_current if current_page?(sign_in_path) %>
+        <%= link_to "Sign in", sign_in_path, class: secondary_desktop_navigation_resource_css_classes if !current_page?(sign_in_path) %>
+      <% end %>
+
+    </nav>
+  </div>
+</nav>
