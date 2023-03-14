@@ -1,10 +1,14 @@
 <div id="desktop-nav-wrapper" class="hidden lg:block">
-  <%= render partial: "layouts/stacked_shell/nav/desktop_nav", locals:{
+  <section id="stacked-shell-nav-desktop-section">
+  <%= render partial: "layouts/stacked_shell/nav/desktop", locals:{
     search_input_placeholder_text: search_input_placeholder_text,
   } %>
+  </section>
 </div>
 <div id="mobile-nav-wrapper" class="block lg:hidden">
-  <%= render partial: "layouts/stacked_shell/nav/mobile_nav", locals:{
+  <section id="stacked-shell-nav-mobile-section">
+  <%= render partial: "layouts/stacked_shell/nav/mobile", locals:{
     search_input_placeholder_text: search_input_placeholder_text,
   } %>
+  </section>
 </div>
