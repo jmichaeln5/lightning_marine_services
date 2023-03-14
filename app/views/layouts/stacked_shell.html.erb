@@ -20,8 +20,8 @@
     <div class="min-h-full">
       <%= render "shared/flash_messages" %>
       <div class="bg-gray-800 pb-32">
-        <!-- Navigation -->
         <!-- NOTE  / TODO : Add admin links to navs! -->
+        <!-- Navigation -->
         <div id="top-level-navbar-wrapper">
           <% tmp_search_input_placeholder_text = "Sorry, search not availible on the page" %>
           <%# tmp_search_input_placeholder_text = "Search" %>
@@ -31,27 +31,46 @@
         </div>
         <!-- Page title & actions -->
         <div id="top-level-header-wrapper" class="py-9">
+
           <%= render partial: "layouts/stacked_shell/header", locals:{
             card_title: @card_title,
           } %>
+
         </div>
       </div>
       <div class="-mt-32">
         <div class="rounded-md mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div class="rounded-md bg-white">
+
             <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
-            <section>
+
+            <!-- <section>
               <main id="stacked-shell-main" class="flex-1 mt-4 md:mt-6 pb-8">
                 <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
-                  <%= yield %>
+                  <%#= yield %>
                 </div>
               </main>
-            </section>
+            </section> -->
+            <div class="flex-1 mt-4 md:mt-6 pb-8">
+              <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
+                <main id="stacked-shell-main">
+                  <section id="stacked-shell-main-section">
+
+                    <%= yield %>
+
+                  </section>
+                </main>
+              </div>
+            </div>
           </div>
         </div>
-        <section class="after-main -mt-3 rounded-md mx-auto max-w-7xl pb-12 px-4 sm:px-6 lg:px-8">
-          <%= yield :under_main_content if content_for?(:under_main_content) %>
-        </section>
+        <div class="after-main -mt-3 rounded-md mx-auto max-w-7xl pb-12 px-4 sm:px-6 lg:px-8">
+          <section id="stacked-shell-main-section-under">
+
+            <%= yield :main_content_under if content_for?(:main_content_under) %>
+
+          </section>
+        </div>
       </div>
     </div>
   </body>
