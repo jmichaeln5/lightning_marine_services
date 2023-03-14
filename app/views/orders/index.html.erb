@@ -6,7 +6,7 @@
   <%= link_to "All Orders Page", all_orders_path %>
 <% end %>
 <br>
-<span data-controller="visibility orders-bulk">
+<span data-controller="visibility orders-bulk" data-visibility-close-on-outside-click-value="false">
   <%= render 'shared/top_table_header' %> <!-- Sort options display when present -->
   <%#= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
   <nav class="navbar navbar-light bg-white border py-4">
