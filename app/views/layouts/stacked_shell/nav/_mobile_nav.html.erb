@@ -45,26 +45,17 @@
     <div class="space-y-1 px-2 pt-2 pb-3">
 
       <% mobile_navigation_resource_css_classes = "text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" %>
-
       <% mobile_navigation_resource_css_classes_current = "bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" %>
 
-      <% if user_signed_in? %>
-        <%= link_to "Dashboard", dashboard_path, class: mobile_navigation_resource_css_classes_current if current_page?(dashboard_path) %>
-        <%= link_to "Dashboard", dashboard_path, class: mobile_navigation_resource_css_classes if !current_page?(dashboard_path) %>
+      <%= render partial: "layouts/stacked_shell/nav/resource_links", locals:{
+        resource_links_css_classes_current: mobile_navigation_resource_css_classes_current,
+        resource_links_css_classes: mobile_navigation_resource_css_classes,
+      } %>
 
-        <%= link_to "Orders", orders_path, class: mobile_navigation_resource_css_classes_current if current_page?(orders_path) %>
-        <%= link_to "Orders", orders_path, class: mobile_navigation_resource_css_classes if !current_page?(orders_path) %>
-
-        <%= link_to "Ships", purchasers_path, class: mobile_navigation_resource_css_classes_current if current_page?(purchasers_path) %>
-        <%= link_to "Ships", purchasers_path, class: mobile_navigation_resource_css_classes if !current_page?(purchasers_path) %>
-
-        <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes_current if current_page?(vendors_path) %>
-        <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes if !current_page?(vendors_path) %>
-      <% end %>
     </div>
     <div class="border-t border-gray-700 pt-4 pb-3">
       <div class="flex items-center px-5">
-        <% if user_signed_in? %>
+        <%# if user_signed_in? %>
         <!-- <div class="cursor-default text-md font-bold text-gray-500">
           Welcome <%#= "#{current_user.email}" %>
         </div> -->
@@ -74,25 +65,17 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
           </svg>
         </button> -->
-        <% end %>
+        <%# end %>
       </div>
       <div class="mt-3 space-y-1 px-2">
-        <% if user_signed_in? %>
-          <%= link_to "Account Settings", edit_user_registration_path, class: mobile_navigation_resource_css_classes_current if current_page?(edit_user_registration_path) %>
-          <%= link_to "Account Settings", edit_user_registration_path, class: mobile_navigation_resource_css_classes if !current_page?(edit_user_registration_path) %>
+        <div class="-mt-6">
+          <!-- placeholder to adjust extra padding on top -->
+        </div>
+        <%= render partial: "layouts/stacked_shell/nav/user_links", locals:{
+          user_links_css_classes_current: mobile_navigation_resource_css_classes_current,
+          user_links_css_classes: mobile_navigation_resource_css_classes,
+        } %>
 
-          <%= link_to "Logout", signout_path, method: :delete, class: mobile_navigation_resource_css_classes_current if current_page?(signout_path) %>
-          <%= link_to "Logout", signout_path, method: :delete, class: mobile_navigation_resource_css_classes if !current_page?(signout_path) %>
-        <% else %>
-          <%= link_to "Home", root_path, class: mobile_navigation_resource_css_classes_current if current_page?(root_path) %>
-          <%= link_to "Home", root_path, class: mobile_navigation_resource_css_classes if !current_page?(root_path) %>
-
-          <%= link_to "Sign In", sign_in_path, class: mobile_navigation_resource_css_classes_current if current_page?(sign_in_path) %>
-          <%= link_to "Sign In", sign_in_path, class: mobile_navigation_resource_css_classes if !current_page?(sign_in_path) %>
-          <div class="-mt-6">
-            <!-- placeholder to adjust extra padding on top -->
-          </div>
-        <% end %>
       </div>
     </div>
   </div>

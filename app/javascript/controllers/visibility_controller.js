@@ -9,8 +9,14 @@ export default class extends Controller {
   static targets = [ "hideable" ]
 
   connect() {
-    console.log("visibility#connect()")
+    // console.log("visibility#connect()")
     useClickOutside(this)
+  };
+
+  disconnect() {
+    // console.log("visibility#disconnect()")
+    useClickOutside(this)
+    // this.hideTargets()
   };
 
   showTargets() {
@@ -53,7 +59,7 @@ export default class extends Controller {
   // };
 
   clickOutside(event) {
-    console.log("visibility#clickOutside()")
+    // console.log("visibility#clickOutside()")
     if (this.data.get("clickOutside") === "add") {
       this.toggleableTargets.forEach((target) => {
         target.classList.add(target.dataset.cssClass);
