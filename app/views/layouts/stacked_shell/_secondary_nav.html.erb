@@ -6,11 +6,48 @@
     <div class="sm:hidden">
       <label for="tabs" class="sr-only">Select a tab</label>
       <select id="tabs" name="tabs" class="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-        <option selected>Dashboard</option>
+        <!-- <option selected>Dashboard</option>
         <option>Orders</option>
         <option>All Orders</option>
         <option>Ships</option>
-        <option>Vendors</option>
+        <option>Vendors</option> -->
+
+        <% if current_page?(dashboard_path) %>
+          <option selected>Dashboard</option>
+        <% else %>
+          <option>Dashboard</option>
+        <% end %>
+
+        <% if current_page?(all_orders_path) %>
+          <option selected>All Orders</option>
+        <% else %>
+          <option>All Orders</option>
+        <% end %>
+
+        <% if current_page?(orders_path) %>
+          <option selected>Active Orders</option>
+        <% else %>
+          <option>Active Orders</option>
+        <% end %>
+
+        <% if current_page?(archived_orders_path) %>
+          <option selected>Completed Orders</option>
+        <% else %>
+          <option>Completed Orders</option>
+        <% end %>
+
+        <% if current_page?(purchasers_path) %>
+          <option selected>Ship</option>
+        <% else %>
+          <option>Ship</option>
+        <% end %>
+
+        <% if current_page?(vendors_path) %>
+          <option selected>Vendor</option>
+        <% else %>
+          <option>Vendor</option>
+        <% end %>
+
       </select>
     </div>
   <% end %>

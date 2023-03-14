@@ -1,0 +1,85 @@
+<% col_css_classes = "whitespace-nowrap px-2 py-2 text-sm" %>
+
+<%# first_col_css_classes = "whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0" %>
+<%# last_col_css_classes = "relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0" %>
+<% first_col_css_classes = "#{col_css_classes} -px-2 py-2 pl-4 pr-3 sm:pl-0 text-gray-500" %>
+<% last_col_css_classes = "relative #{col_css_classes} py-2 -px-2 pl-3 pr-4 text-right font-medium sm:pr-0" %>
+
+<% primary_col_css_classes = "#{col_css_classes} font-medium text-gray-900" %>
+<% secondary_col_css_classes = "#{col_css_classes} text-gray-500 cursor-default" %>
+
+<% td_link_css_classes = "text-indigo-600 hover:text-indigo-800" %>
+
+<!-- FIRST COL -->
+<td class="<%= first_col_css_classes %>">
+    <%= link_to "#{order.id}", order_path(order), class: td_link_css_classes %>
+</td>
+
+<td class="<%= secondary_col_css_classes %>">
+  <%= order.dept.present? ? order.dept : "n/a" %>
+</td>
+
+<td class="<%= primary_col_css_classes %>">
+  <%#= link_to "purchaser- #{order.purchaser.name}", purchaser_path(order.purchaser), class: td_link_css_classes %>
+  <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser), class: td_link_css_classes %>
+</td>
+
+<td class="<%= primary_col_css_classes %>">
+  <%#= link_to "vendor- #{order.vendor.name}", vendor_path(order.vendor), class: td_link_css_classes %>
+  <%= link_to "#{order.vendor.name}", vendor_path(order.vendor), class: td_link_css_classes %>
+</td>
+
+<td class="<%= secondary_col_css_classes %>">
+  <%= order.po_number %>
+</td>
+
+<td class="<%= secondary_col_css_classes %>">
+  <%= order.tracking_number %>
+</td>
+
+<td class="<%= secondary_col_css_classes %>">
+  <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : ' ' %>
+</td>
+
+<td class="<%= primary_col_css_classes %>">
+  <% if order.order_content.present? %>
+    <% content = order.order_content %>
+    <%= link_to order_path(order) do %>
+      <span class="<%= td_link_css_classes %>">
+        Boxes: <%= content.box.present? ? content.box : "0" %>
+        <br>
+        Crates: <%= content.crate.present? ? content.crate : "0" %>
+        <br>
+        Pallets: <%= content.pallet.present? ? content.pallet : "0" %>
+        <br>
+        Other: <%= content.other.present? ? content.other : "0" %>
+
+        <% if content.other.present? && content.other_description.present?   %>
+          <br>
+          <div class="inline-block">
+            <div class="whitespace-normal">
+              <span class="<%= td_link_css_classes %>">Other Desc:</span>
+              <span class="text-gray-500">
+                <%= content.other_description.length >= 25 ? "#{content.other_description[0..25]...}" : "Description: #{content.other_description}" if content.other_description %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+
+      </span>
+    <% end %>
+  <% end %>
+</td>
+
+<td class="<%= secondary_col_css_classes %>">
+  <%= order.courrier %>
+</td>
+
+<td class="<%= secondary_col_css_classes %>">
+  <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : ' ' %>
+</td>
+
+<!-- LAST COL -->
+<td class="<%= last_col_css_classes %>">
+  <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, AAPS0L</span></a>
+</td>

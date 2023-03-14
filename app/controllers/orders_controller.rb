@@ -7,7 +7,9 @@ class OrdersController < ApplicationController
   before_action :set_search_params, only: %i[ index all_orders]
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
-  
+
+  before_action :set_card_title, only: %i[ index]
+  layout "stacked_shell", only: [:index]
 
   def all_orders
     load_resource_files
@@ -130,7 +132,7 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     #logic to default number
     #@order.order_sequence = @order.sequence
-    
+
     if @order.update(order_params)
       redirect_back(fallback_location: order_path(@order),notice: "Order Updated Successfully.")
     else
@@ -165,7 +167,7 @@ class OrdersController < ApplicationController
 
     def order_params
       # Only Guest account to update Department Only
-      if (current_user.has_role?('admin') || current_user.has_role?('staff')) 
+      if (current_user.has_role?('admin') || current_user.has_role?('staff'))
       params.require(:order).permit(:id, :purchaser_id, :vendor_id, :order_sequence, :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
       else
         params.require(:order).permit(:dept)
@@ -196,6 +198,10 @@ class OrdersController < ApplicationController
 
     def set_search_params
       @query = params[:q]
+    end
+
+    def set_card_title
+      @card_title = "Orders"
     end
 
 end
