@@ -90,6 +90,8 @@
     <div class="flex-1">
 
       <%= render partial: "/orders/remix/table", locals:{
+        resource: @resource,
+        query: @query,
         orders: @orders,
         } %>
 

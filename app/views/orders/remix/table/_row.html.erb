@@ -1,7 +1,5 @@
 <% col_css_classes = "whitespace-nowrap px-2 py-2 text-sm" %>
 
-<%# first_col_css_classes = "whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0" %>
-<%# last_col_css_classes = "relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0" %>
 <% first_col_css_classes = "#{col_css_classes} -px-2 py-2 pl-4 pr-3 sm:pl-0 text-gray-500" %>
 <% last_col_css_classes = "relative #{col_css_classes} py-2 -px-2 pl-3 pr-4 text-right font-medium sm:pr-0" %>
 
@@ -16,25 +14,24 @@
 </td>
 
 <td class="<%= secondary_col_css_classes %>">
-  <%= order.dept.present? ? order.dept : "n/a" %>
+  <%= order.try(:dept) || 'n/a' %>
 </td>
 
 <td class="<%= primary_col_css_classes %>">
-  <%#= link_to "purchaser- #{order.purchaser.name}", purchaser_path(order.purchaser), class: td_link_css_classes %>
-  <%= link_to "#{order.purchaser.name}", purchaser_path(order.purchaser), class: td_link_css_classes %>
+  <%= order.try(:purchaser) ? (link_to "#{order.purchaser.name}", purchaser_path(order.purchaser), class: td_link_css_classes) : '' %>
+
 </td>
 
 <td class="<%= primary_col_css_classes %>">
-  <%#= link_to "vendor- #{order.vendor.name}", vendor_path(order.vendor), class: td_link_css_classes %>
-  <%= link_to "#{order.vendor.name}", vendor_path(order.vendor), class: td_link_css_classes %>
+  <%= order.try(:vendor) ? (link_to "#{order.vendor.name}", vendor_path(order.vendor), class: td_link_css_classes) : '' %>
 </td>
 
 <td class="<%= secondary_col_css_classes %>">
-  <%= order.po_number %>
+  <%= order.try(:po_number) || '' %>
 </td>
 
 <td class="<%= secondary_col_css_classes %>">
-  <%= order.tracking_number %>
+  <%= order.try(:tracking_number) || 'n/a' %>
 </td>
 
 <td class="<%= secondary_col_css_classes %>">
@@ -42,7 +39,7 @@
 </td>
 
 <td class="<%= primary_col_css_classes %>">
-  <% if order.order_content.present? %>
+  <% if order.try(:order_content).present?%>
     <% content = order.order_content %>
     <%= link_to order_path(order) do %>
       <span class="<%= td_link_css_classes %>">
@@ -72,7 +69,7 @@
 </td>
 
 <td class="<%= secondary_col_css_classes %>">
-  <%= order.courrier %>
+  <%= order.try(:courrier) || '' %>
 </td>
 
 <td class="<%= secondary_col_css_classes %>">
