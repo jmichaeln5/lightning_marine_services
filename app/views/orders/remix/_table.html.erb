@@ -94,7 +94,7 @@
           <tbody class="divide-y divide-gray-200 bg-white">
             <% orders.each do |order| %>
               <tr class="hover:bg-gray-100">
-                <%= render partial: "/orders/remix/table/sticky_condensed_row", locals:{
+                <%= render partial: "/orders/remix/table/row", locals:{
                   order: order,
                   } %>
               </tr>

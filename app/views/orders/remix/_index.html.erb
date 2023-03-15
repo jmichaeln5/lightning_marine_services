@@ -89,10 +89,10 @@
   <div class="rounded-md bg-white">
     <div class="flex-1">
 
-      <%#= render partial: "/orders/remix/sticky_table" %>
-      <%= render partial: "/orders/remix/sticky_condensed_table", locals:{
+      <%= render partial: "/orders/remix/table", locals:{
         orders: @orders,
         } %>
+
     </div>
   </div>
 <% end %>
