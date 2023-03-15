@@ -34,7 +34,7 @@ class Order < ApplicationRecord
         #shipOrders = Order.find_by_purchaser_id(self.purchaser_id).unarchived
         shipOrders.each do |ord|
           iSeq = ord.try(:order_sequence)|| 0
-          if iSeq >= seq 
+          if iSeq >= seq
             seq = iSeq + 1
           end
         end
@@ -142,6 +142,14 @@ class Order < ApplicationRecord
       tracking_number: self.tracking_number
     )
 
+  end
+
+  def ship_name
+    return self.purchaser.name
+  end
+
+  def vendor_name
+    return self.vendor.name
   end
 
 

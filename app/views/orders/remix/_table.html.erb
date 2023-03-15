@@ -107,9 +107,14 @@
           <tbody class="divide-y divide-gray-200 bg-white">
             <% orders.each do |order| %>
               <tr class="hover:bg-gray-100">
+
                 <%= render partial: "/orders/remix/table/row", locals:{
+                  resource: resource,
+                  selected_table_options: selected_table_options,
                   order: order,
-                  } %>
+                  query: query,
+                } %>
+
               </tr>
             <% end %>
           </tbody>
@@ -119,7 +124,10 @@
   </div>
 </div>
 <div>
+
   <%= render partial:"/orders/remix/table/pagination", locals:{
     orders: orders,
-    }  %>
+    resource: resource,
+  }  %>
+  
 </div>
