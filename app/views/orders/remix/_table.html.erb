@@ -11,7 +11,7 @@
     <div class="flex-auto">
       <!-- <h1 class="text-base font-semibold leading-6 text-gray-900">Sticky condensed Orders</h1>
       <p class="mt-2 text-sm text-gray-700">A table of placeholder stock market data that does not make any sense.</p> -->
-      <h1 class="text-3xl font-semibold leading-6 text-gray-900">Orders</h1>
+      <h1 class="text-3xl font-semibold leading-6 text-gray-900"> <%= table_title %> </h1>
     </div>
     <div data-controller="dropdown" class="relative inline-block text-right">
       <div class="">
@@ -126,8 +126,9 @@
 <div>
 
   <%= render partial:"/orders/remix/table/pagination", locals:{
-    orders: orders,
+    order_count: order_count,
     resource: resource,
+    total_order_count: total_order_count,
   }  %>
-  
+
 </div>

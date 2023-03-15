@@ -188,5 +188,10 @@
 </span>
 <%#= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %> -->
 
-
-<%= render partial: "/orders/remix/index" %>
+<%= render partial: "/orders/remix/index", locals:{
+  resource: @resource,
+  query: @query,
+  orders: @orders,
+  table_title: "Active Orders Table",
+},
+cached: false %>

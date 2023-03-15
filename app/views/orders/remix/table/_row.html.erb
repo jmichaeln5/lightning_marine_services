@@ -75,7 +75,10 @@
       <%= order.try(:courrier) || '' %>
 
     <% when 'date_delivered' %>
-      <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+      <%#= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+      <div class="text-center">
+        <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+      </div>
 
     <% end %>
   </td>

@@ -1,4 +1,4 @@
-<% @card_title = "Active Orders" %>
+<% @card_title = "All Orders" %>
 
 <% content_for :header_button do %>
   <span class="add-order-button">
@@ -16,7 +16,6 @@
   </span>
 <% end %>
 
-
 <h2 class="text-xl font-medium leading-6 text-gray-900">Overview</h2>
 <div class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
@@ -25,27 +24,26 @@
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v16.5M2.25 12h19.5M6.375 17.25a4.875 4.875 0 004.875-4.875V12m6.375 5.25a4.875 4.875 0 01-4.875-4.875V12m-9 8.25h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v13.5a1.5 1.5 0 001.5 1.5zm12.621-9.44c-1.409 1.41-4.242 1.061-4.242 1.061s-.349-2.833 1.06-4.242a2.25 2.25 0 013.182 3.182zM10.773 7.63c1.409 1.409 1.06 4.242 1.06 4.242S9 12.22 7.592 10.811a2.25 2.25 0 113.182-3.182z" />
     </svg>
   <% end %>
-
+  <div class="mt-1 rounded bg-slate-100 outline outline-offset-4 outline-slate-300">
   <%= render partial: "/shared/data_display/stats/overview_card", locals: {
     card_title: "All Orders",
     card_description: Order.all.count,
     card_link: (link_to "View All Orders", all_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
     card_icon: yield(:all_orders_icon),
   } %>
+  </div>
 
   <% content_for :active_orders_icon do %>
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
     </svg>
   <% end %>
-  <div class="rounded bg-slate-100 outline outline-offset-4 outline-slate-300">
-    <%= render partial: "/shared/data_display/stats/overview_card", locals: {
-      card_title: "Active Orders",
-      card_description: Order.all.unarchived.count,
-      card_link: (link_to "View Active Orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
-      card_icon: yield(:active_orders_icon),
-    } %>
-  </div>
+  <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+    card_title: "Active Orders",
+    card_description: Order.all.unarchived.count,
+    card_link: (link_to "View Active Orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+    card_icon: yield(:active_orders_icon),
+  } %>
 
   <% content_for :archived_orders_icon do %>
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
@@ -65,9 +63,9 @@
     <div class="sm:flex-auto">
       <div class="text-center sm:text-left">
         <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
-          Active Orders
+          All Orders
         </h1>
-        <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of recent orders that have not yet been completed.</p>
+        <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of all open and completed orders.</p>
       </div>
     </div>
 
@@ -95,7 +93,7 @@
         query: query,
         orders: orders,
         order_count: orders.count,
-        total_order_count: Order.all.unarchived.count,
+        total_order_count: Order.all.count,
       } %>
 
     </div>

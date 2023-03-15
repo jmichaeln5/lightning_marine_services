@@ -8,8 +8,7 @@ class OrdersController < ApplicationController
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
 
-  before_action :set_card_title, only: %i[ index]
-  layout "stacked_shell", only: [:index]
+  layout "stacked_shell", only: %i[ all_orders index]
 
   def all_orders
     load_resource_files
@@ -198,10 +197,6 @@ class OrdersController < ApplicationController
 
     def set_search_params
       @query = params[:q]
-    end
-
-    def set_card_title
-      @card_title = "Orders"
     end
 
 end
