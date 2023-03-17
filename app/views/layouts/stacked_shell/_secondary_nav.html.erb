@@ -30,24 +30,31 @@
           <option>Active Orders</option>
         <% end %>
 
+        <% if  !current_page?(all_orders_path) && !current_page?(archived_orders_path) && (!action_name.include? 'index')  %>
+          <% if (controller_path.include? 'orders') %>
+            <option selected>Orders</option>
+          <% else %>
+            <option>Orders</option>
+          <% end %>
+        <% end %>
+
         <% if current_page?(archived_orders_path) %>
           <option selected>Completed Orders</option>
         <% else %>
           <option>Completed Orders</option>
         <% end %>
 
-        <% if current_page?(purchasers_path) %>
-          <option selected>Ship</option>
+        <% if controller_path.include? 'purchasers' %>
+          <option selected>Ships</option>
         <% else %>
-          <option>Ship</option>
+          <option>Ships</option>
         <% end %>
 
-        <% if current_page?(vendors_path) %>
-          <option selected>Vendor</option>
+        <% if controller_path.include? 'vendors' %>
+          <option selected>Vendors</option>
         <% else %>
-          <option>Vendor</option>
+          <option>Vendors</option>
         <% end %>
-
       </select>
     </div>
   <% end %>

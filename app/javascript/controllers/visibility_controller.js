@@ -15,8 +15,9 @@ export default class extends Controller {
 
   disconnect() {
     // console.log("visibility#disconnect()")
-    useClickOutside(this)
     // this.hideTargets()
+    useClickOutside(this)
+    this.hideTargets()
   };
 
   showTargets() {

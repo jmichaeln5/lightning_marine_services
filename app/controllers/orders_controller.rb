@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
   before_action :set_pagination_params, only: %i[ index all_orders ]
   helper_method :sort_option, :sort_direction
 
-  layout "stacked_shell", only: %i[ all_orders index]
+  layout "stacked_shell", only: %i[ all_orders index show ]
 
   def all_orders
     load_resource_files
