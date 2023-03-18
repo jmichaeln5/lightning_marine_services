@@ -17,7 +17,14 @@
 <% end %>
 
 <section id="orders-index-section">
-  <h2 class="text-xl font-medium leading-6 text-gray-900">Overview</h2>
+  <!-- <h2 class="text-xl font-medium leading-6 text-gray-900">Overview</h2> -->
+  <div class="-mt-1 mb-2 flex justify-center sm:justify-start">
+    <div class="text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
+      <div class="mr-1 sm:mr-2">Overview: </div>
+      <div class="text-gray-900 font-medium"> Active Orders </div>
+    </div>
+  </div>
+
   <div class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
     <span>
       <% content_for :all_orders_icon do %>
@@ -101,16 +108,19 @@
   </div>
   <div class="rounded-md bg-white">
     <div class="flex-1">
+
       <%= render partial: "/orders/remix/table", locals:{
-        table_title: table_title,
+        table_title: "Orders",
         resource: resource,
         query: query,
         orders: orders,
-        # orders: Order.where(archived: false).first(@orders.length),
-        # orders: Order.where(archived: false).reverse.first(@orders.length),
+        # orders: resource.paginated_target,
+        # orders: resource.search_results,
+        # orders: resource.target,
         order_count: orders.count,
-        total_order_count: Order.all.unarchived.count,
-      } %>
+        total_order_count: Order.all.where(archived: false).count,
+      }, cached: false %>
     </div>
   </div>
+
 <% end %>

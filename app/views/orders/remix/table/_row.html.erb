@@ -29,7 +29,7 @@
       <%= order.try(:order_sequence) || 0 %>
 
     <% when 'dept' %>
-      <%= order.try(:dept) || 'n/a' %>
+      <%= order.try(:dept).present? ? order.try(:dept) : 'n/a' %>
 
     <% when 'ship_name' %>
       <%= order.try(:purchaser) ? (link_to "#{order.purchaser.name}", purchaser_path(order.purchaser), class: td_link_css_classes) : 'n/a' %>
@@ -42,7 +42,7 @@
 
     <% when 'tracking_number' %>
       <%= order.try(:tracking_number) || '' %>
-
+  
     <% when 'date_recieved' %>
       <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
 
