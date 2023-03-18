@@ -16,12 +16,32 @@
 <% end %>
 
 <td class="<%= primary_col_css_classes %>">
-  <%#= link_to "#{purchaser.id}", purchaser, class:"text-blue-500" %>
   <%= purchaser.id %>
 </td>
 <td class="<%= primary_col_css_classes %>">
-  <%= link_to "#{purchaser.name}", purchaser, class:"text-blue-500" %>
+  <%#= link_to "#{purchaser.name}", purchaser, class:"text-blue-500" %>
+  <% purchaser_name = purchaser.try(:name) %>
+
+  <% if purchaser_name.nil?%>
+    <%= link_to "#{purchaser.purchaser.name}", purchaser.purchaser, class:"text-blue-500" %>
+  <% end %>
+
+  <% if !purchaser_name.nil?%>
+    <%= link_to "#{purchaser.name}", purchaser, class:"text-blue-500" %>
+  <% end %>
 </td>
+
 <td class="<%= primary_col_css_classes %>">
- <%= link_to "#{purchaser.orders.count}", purchaser, class:"text-blue-500" %>
+ <%#= link_to "#{purchaser.orders.count}", purchaser, class:"text-blue-500" %>
+ <% purchaser_orders = purchaser.try(:orders) %>
+
+ <% if purchaser_orders.nil?%>
+   <%= link_to "#{purchaser.purchaser.orders.count}", purchaser.purchaser, class:"text-blue-500" %>
+ <% end %>
+
+ <% if !purchaser_orders.nil?%>
+   <%= link_to "#{purchaser.orders.count}", purchaser, class:"text-blue-500" %>
+ <% end %>
+
+
 </td>

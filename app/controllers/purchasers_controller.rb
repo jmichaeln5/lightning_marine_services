@@ -9,7 +9,11 @@ class PurchasersController < ApplicationController
 
   # # GET /purchasers or /purchasers.json
   def index
-    load_resource_files
+    # load_resource_files
+
+    ResourceManager.reload_ivars
+    Resource.reload_ivars
+    Resource::ResourceKlass.reload_ivars
 
     resource_attrs = {
       called_at: Time.now,
@@ -26,12 +30,15 @@ class PurchasersController < ApplicationController
       page: @page
     }
 
-    @init_resource = Resource.init_resource_klass ( resource_attrs )
-    @resource = Resource::ResourceKlass.get_resource
-    @table_option = @resource.table_option
-    @purchaser = Purchaser.new
-    @purchasers = @resource.paginated_target
+    # @init_resource = Resource.init_resource_klass ( resource_attrs )
+    Resource.init_resource_klass ( resource_attrs )
+    @table_option = Resource::ResourceKlass.get_resource.table_option
+    @purchasers = Resource::ResourceKlass.get_resource.paginated_target
 
+    @resource = Resource::ResourceKlass.get_resource
+
+
+    @purchaser = Purchaser.new
     render layout: "stacked_shell"
   end
 
@@ -60,7 +67,7 @@ class PurchasersController < ApplicationController
       resource_attrs = {
         called_at: Time.now,
         user: current_user,
-        target: @purchaser.orders.all,
+        target: Purchaser.find(params[:id]).orders.all,
         parent_class: Purchaser,
         parent_action: 'show',
         controller_name: 'purchasers',
@@ -73,13 +80,17 @@ class PurchasersController < ApplicationController
       }
     end
 
-    @init_resource = Resource.init_resource_klass ( resource_attrs )
+    # @init_resource = Resource.init_resource_klass ( resource_attrs )
+    Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
     @table_option = @resource.table_option
     @order = Order.new
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
 
+    ################################################
+    render layout: "stacked_shell"
+    ################################################
   end
 
   # GET /purchasers/new
