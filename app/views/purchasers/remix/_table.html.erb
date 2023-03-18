@@ -1,0 +1,126 @@
+<div class="pt-7 px-4 sm:px-6 lg:px-8">
+  <div class="flex sm:items-center">
+    <div class="flex-auto">
+      <h1 class="text-3xl font-semibold leading-6 text-gray-900"> <%= table_title %> </h1>
+    </div>
+    <div data-controller="dropdown" class="relative inline-block text-right">
+      <div class="">
+        <% if resource.first_page_disabled? %>
+          <button type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+            Page 1/1
+            <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        <% else %>
+        <button type="button" type="button" data-action="dropdown#toggle click@window->dropdown#hide" class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+          Page: <%= "#{resource.humanized_current_page}/#{resource.humanized_total_pages}"%>
+          <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <% end %>
+      </div>
+      <div data-dropdown-target="menu" class="hidden transition transform origin-top-right absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" data-transition-enter-from="opacity-0 scale-95" data-transition-enter-to="opacity-100 scale-100" data-transition-leave-from="opacity-100 scale-100" data-transition-leave-to="opacity-0 scale-95">
+        <div class="p-1 text-sm whitespace-nowrap">
+          <% (resource.humanized_total_pages).times do | page_number, index | %>
+            <% display_offset_page_number = page_number += 1 %>
+            <% display_selected_current_page = "selected" %>
+            <% selected_page = (resource.humanized_current_page) == display_offset_page_number ? true : false %>
+
+            <% if selected_page == true %>
+              <%= link_to "#{display_offset_page_number}/#{resource.total_pages + 1  } (current page)", request.params.merge(q: query, page: (display_offset_page_number - 1) ), class:'bg-gray-100 block px-4 py-2 text-sm text-gray-700 font-semibold "' %>
+            <% else %>
+              <%= link_to "#{display_offset_page_number}/#{resource.total_pages + 1 }", request.params.merge(q: query, page: (display_offset_page_number - 1) ), class:'text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-8 flow-root">
+    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <% first_th_css_classes = "whitespace-nowrap py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-0" %>
+              <% th_css_classes = "whitespace-nowrap px-2 py-3.5 text-sm font-semibold text-gray-900" %>
+              <% last_th_css_class = "whitespace-nowrap py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-0" %>
+
+              <% if query.present? %>
+                <% results_counter = 0 %>
+                <th scope="col" class="<%= first_th_css_classes %>">
+                  <span class="text-xl">query.present? == true</span>
+                  Search Results
+                </th>
+              <% end %>
+
+              <th scope="col" class="<%= first_th_css_classes %>">
+              <%= link_to(request.params.merge(q: query, sort_option: "id", sort_direction: sort_direction)) do %>
+                <div class="group inline-flex">
+                  ID
+                  <span class="ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+              <% end %>
+              </th>
+              <th scope="col" class="<%= th_css_classes %>">
+              <%= link_to(request.params.merge(q: query, sort_option: "name", sort_direction: sort_direction)) do %>
+                <div class="group inline-flex">
+                  Ship Name
+                  <span class="ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+              <% end %>
+              </th>
+              <th scope="col" class="<%= last_th_css_class %>">
+              <%= link_to(request.params.merge(q: query, sort_option: "order_amount", sort_direction: sort_direction)) do %>
+                <div class="group inline-flex">
+                  Order Amount
+                  <span class="ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </div>
+              <% end %>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% purchasers.each do |purchaser| %>
+              <tr class="hover:bg-gray-100">
+
+                <%= render partial: "/purchasers/remix/table/row", locals:{
+                  resource: resource,
+                  purchaser: purchaser,
+                  query: query,
+                } %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <!-- error w pagination <br>
+  sort by order amount and look @ showing x - y purchasers of z results -->
+  <%#= render partial:"/purchasers/remix/table/pagination", locals:{
+    purchasers_count: purchasers_count,
+    resource: resource,
+    total_purchasers_count: total_purchasers_count,
+  }  %>
+</div>
+
+<%#= TableOptionsHelper.purchaser_index_options_for_select_arr %>
+<%#= selected_table_options %>

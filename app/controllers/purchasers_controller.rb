@@ -31,6 +31,8 @@ class PurchasersController < ApplicationController
     @table_option = @resource.table_option
     @purchaser = Purchaser.new
     @purchasers = @resource.paginated_target
+
+    render layout: "stacked_shell"
   end
 
   # GET /purchasers/1 or /purchasers/1.json
@@ -134,7 +136,7 @@ class PurchasersController < ApplicationController
       format.xls {
         send_data @orders.to_csv,
         filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
-      } 
+      }
       format.xlsx {
         fName = filePrefix + "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
         #response.headers['Content-Disposition'] = 'attachment; ' + fName
@@ -142,9 +144,9 @@ class PurchasersController < ApplicationController
 
         #send_data @orders,
         #filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
-      } 
+      }
     end
-  end 
+  end
 
   def deliver
     ship = Purchaser.find(params[:id])

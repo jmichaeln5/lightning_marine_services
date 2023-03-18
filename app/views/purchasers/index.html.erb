@@ -1,10 +1,18 @@
-<% content_for :title, "#{Purchaser.all.count}" + ' Ship'.pluralize(Purchaser.all.count) %>
+<%# content_for :title, "#{Purchaser.all.count}" + ' Ship'.pluralize(Purchaser.all.count) %>
 
-<%= render 'shared/under_header_card_options' %>
-<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
-    <%= render 'shared/new_modal' %>
-<% end %>
-<%= render 'shared/top_table_header' %>
-<%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
-<%= render partial: 'purchasers/index', locals: { purchasers: @resource} %>
-<%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>
+<%#= render 'shared/under_header_card_options' %>
+<%# if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+    <%#= render 'shared/new_modal' %>
+<%# end %>
+<%#= render 'shared/top_table_header' %>
+<%#= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
+<%#= render partial: 'purchasers/index', locals: { purchasers: @resource} %>
+<%#= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>
+
+<%= render partial: "/purchasers/remix/index", locals:{
+  resource: @resource,
+  query: @query,
+  purchasers: @purchasers,
+  table_title: "Ships",
+},
+cached: false %>

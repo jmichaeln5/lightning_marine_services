@@ -1,0 +1,27 @@
+<% col_css_classes = "whitespace-nowrap px-2 py-2 text-sm text-center" %>
+
+<% first_col_css_classes = "#{col_css_classes} -px-2 py-2 pl-4 pr-3 sm:pl-0 text-gray-500" %>
+<% last_col_css_classes = "relative #{col_css_classes} py-2 -px-2 pl-3 pr-4 text-right font-medium sm:pr-0" %>
+
+<% primary_col_css_classes = "#{col_css_classes} font-medium text-gray-900" %>
+<% secondary_col_css_classes = "#{col_css_classes} text-gray-500 cursor-default" %>
+
+<% td_link_css_classes = "text-indigo-600 hover:text-indigo-800" %>
+
+<!-- FIRST COL -->
+<% if query.present? %>
+  <td class="<%= first_col_css_classes %>">
+    <%= "Result: #{resource.paginated_offset += 1}"%>
+  </td>
+<% end %>
+
+<td class="<%= primary_col_css_classes %>">
+  <%#= link_to "#{purchaser.id}", purchaser, class:"text-blue-500" %>
+  <%= purchaser.id %>
+</td>
+<td class="<%= primary_col_css_classes %>">
+  <%= link_to "#{purchaser.name}", purchaser, class:"text-blue-500" %>
+</td>
+<td class="<%= primary_col_css_classes %>">
+ <%= link_to "#{purchaser.orders.count}", purchaser, class:"text-blue-500" %>
+</td>
