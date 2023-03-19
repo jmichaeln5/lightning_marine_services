@@ -1,0 +1,72 @@
+<div id="<%= dom_id order %>" class="table-row">
+
+
+  <div class="table-cell pr-4">
+    <%#= order.id %>
+    <%= link_to order.id, order, class:'text-indigo-600 hover:text-indigo-800' %>
+  </div>
+
+  <div class="table-cell pr-4">
+    <%= order.dept.present? ? order.dept : 'n/a' %>
+  </div>
+
+  <div class="table-cell pr-4">
+    <%#= order.purchaser.name %>
+    <%= link_to order.purchaser.name, order.purchaser, class:'text-indigo-600 hover:text-indigo-800' %>
+  </div>
+
+  <div class="table-cell pr-4">
+    <%= link_to order.vendor.name, order.vendor, class:'text-indigo-600 hover:text-indigo-800' %>
+  </div>
+
+  <div class="table-cell pr-4">
+    <%= order.po_number.present? ? order.po_number : 'n/a' %>
+  </div>
+
+  <div class="table-cell pr-4">
+    <%= order.tracking_number.present? ? order.tracking_number : 'n/a' %>
+  </div>
+
+  <div class="table-cell pr-4">
+    <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+  </div>
+
+
+  <div class="table-cell pr-4">
+    <% if order.try(:order_content).present?%>
+      <% content = order.order_content %>
+
+      <%= link_to order do %>
+        <span class="text-indigo-600 hover:text-indigo-800">
+          Boxes: <%= content.try(:box) || '0' %>
+          <br>
+          Crates: <%= content.try(:crate) || '0' %>
+          <br>
+          Pallets: <%= content.try(:pallet) || '0' %>
+          <br>
+          Other: <%= content.try(:other) || '0' %>
+          <br>
+          <%  if content.other.present? && content.other_description.present? %>
+          Other Desc:
+          <% end %>
+          <% if content.other.present? && content.other_description.present? %>
+            <span class=" whitespace-normal text-gray-500">
+              <%= content.other_description.length >= 25 ? "#{content.other_description[0..25]...}" : "#{content.other_description}" if content.other_description %>
+            </span>
+          <% end %>
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="table-cell pr-4">
+    <%= order.courrier.present? ? order.courrier : 'n/a' %>
+  </div>
+
+
+  <div class="table-cell pr-4">
+    <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+  </div>
+
+
+</div>

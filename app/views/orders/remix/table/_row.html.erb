@@ -42,7 +42,7 @@
 
     <% when 'tracking_number' %>
       <%= order.try(:tracking_number) || '' %>
-  
+
     <% when 'date_recieved' %>
       <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
 

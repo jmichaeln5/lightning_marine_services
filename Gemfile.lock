@@ -240,6 +240,7 @@ GEM
     numbers_and_words (0.11.11)
       i18n (<= 2)
     orm_adapter (0.5.0)
+    pagy (6.0.2)
     pg (1.4.6)
     possessive (1.0.1)
     public_suffix (5.0.1)
@@ -392,6 +393,7 @@ DEPENDENCIES
   mini_magick
   name_of_person
   numbers_and_words (~> 0.11.11)
+  pagy (~> 6.0)
   pg (~> 1.1)
   possessive (~> 1.0s, >= 1.0.1)
   puma (~> 5.0)

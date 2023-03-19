@@ -1,4 +1,7 @@
 class Order < ApplicationRecord
+  # searchkick
+  # searchkick searchable: [:name]
+
   scope :unarchived, -> { where(archived: false) }
   scope :archived, -> { where(archived: true) }
 
@@ -8,6 +11,22 @@ class Order < ApplicationRecord
   has_one :order_content, dependent: :destroy
 
   searchkick
+  ############################################################
+  ############################################################
+  ############################################################
+  ### https://github.com/ankane/searchkick
+
+  ####### In console
+  # Order.reindex
+  # orders = Order.search("llc")
+  # orders.each do |order|
+  #   puts "#{order.inspect}\n\n"
+  # end
+  ############################################################
+  ############################################################
+  ############################################################
+
+
 
   accepts_nested_attributes_for :order_content
 
@@ -22,6 +41,14 @@ class Order < ApplicationRecord
       order.date_delivered = DateTime.now
       order.save
     end
+  end
+
+  def ship_name
+    self.purchaser.name
+  end
+
+  def vendor_name
+    self.vendor.name
   end
 
 
@@ -108,7 +135,6 @@ class Order < ApplicationRecord
     end
   end
 
-
   private
 
   def order_content_exists?
@@ -141,16 +167,17 @@ class Order < ApplicationRecord
       po_number: self.po_number,
       tracking_number: self.tracking_number
     )
-
   end
 
-  def ship_name
-    return self.purchaser.name
-  end
-
-  def vendor_name
-    return self.vendor.name
-  end
-
+  # def search_data
+  #   # byebug
+  #   attributes.merge(
+  #     order_content: self.order_content,
+  #     ship_name: self.ship_name,
+  #     vendor_name: self.vendor_name,
+  #     po_number: self.po_number,
+  #     tracking_number: self.tracking_number
+  #   )
+  # end
 
 end

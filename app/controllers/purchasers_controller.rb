@@ -9,11 +9,7 @@ class PurchasersController < ApplicationController
 
   # # GET /purchasers or /purchasers.json
   def index
-    # load_resource_files
-
-    ResourceManager.reload_ivars
-    Resource.reload_ivars
-    Resource::ResourceKlass.reload_ivars
+    load_resource_files
 
     resource_attrs = {
       called_at: Time.now,
@@ -30,13 +26,15 @@ class PurchasersController < ApplicationController
       page: @page
     }
 
-    # @init_resource = Resource.init_resource_klass ( resource_attrs )
+
     Resource.init_resource_klass ( resource_attrs )
+    # @resource = Resource::ResourceKlass.get_resource
+    # @init_resource = Resource.init_resource_klass ( resource_attrs )
+    # Resource.init_resource_klass ( resource_attrs )
     @table_option = Resource::ResourceKlass.get_resource.table_option
     @purchasers = Resource::ResourceKlass.get_resource.paginated_target
 
     @resource = Resource::ResourceKlass.get_resource
-
 
     @purchaser = Purchaser.new
     render layout: "stacked_shell"
@@ -80,7 +78,6 @@ class PurchasersController < ApplicationController
       }
     end
 
-    # @init_resource = Resource.init_resource_klass ( resource_attrs )
     Resource.init_resource_klass ( resource_attrs )
     @resource = Resource::ResourceKlass.get_resource
 
@@ -196,7 +193,6 @@ class PurchasersController < ApplicationController
       Rails.cache.clear
       autoload :ResourceManager, "resources/resource_managers/resource_manager.rb"
       autoload :Resource, "resources/resource.rb"
-
       Resource.reload_ivars
       ResourceManager.reload_ivars
     end

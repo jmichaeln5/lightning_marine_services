@@ -92,3 +92,5 @@ gem 'caxlsx'
 gem 'caxlsx_rails'
 
 gem "numbers_and_words", "~> 0.11.11"
+
+gem "pagy", "~> 6.0"

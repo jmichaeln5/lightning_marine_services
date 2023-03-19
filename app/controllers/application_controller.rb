@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
+  
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def after_sign_in_path_for(resource)
@@ -16,14 +18,14 @@ class ApplicationController < ActionController::Base
 
   def exclude_customer
     if current_user.has_role?('customer')
-      redirect_to root_path, alert: 'Not authorized.' 
+      redirect_to root_path, alert: 'Not authorized.'
     end
   end
 
   def check_read_write
     # Admins and Staff have Read Write Access
     if ! (current_user.has_role?('admin') || current_user.has_role?('staff'))
-      redirect_to root_path, alert: 'Not authorized.' 
+      redirect_to root_path, alert: 'Not authorized.'
     end
   end
   protected
