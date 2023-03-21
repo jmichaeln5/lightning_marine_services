@@ -1,56 +1,75 @@
-<div id="<%= dom_id order %>" class="table-row">
+<div id="<%= dom_id order %>" class="table-row odd:bg-white even:bg-slate-50 hover:bg-slate-100">
 
+  <% primary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-900 align-middle text-center" %>
 
-  <div class="table-cell pr-4">
-    <%#= order.id %>
-    <%= link_to order.id, order, class:'text-indigo-600 hover:text-indigo-800' %>
+  <% secondary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-500 cursor-default align-middle text-center" %>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= link_to order.id, order, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
   </div>
 
-  <div class="table-cell pr-4">
-    <%= order.dept.present? ? order.dept : 'n/a' %>
+  <!-- <div class="<%#= secondary_col_css_classes %>">
+    <%##= order.dept.present? ? order.dept : '' %>
+    <%##= order.dept if order.dept.present? %>
+    <%#= order.dept.present? ? order.dept : '' %>
+  </div> -->
+  <div class="<%= secondary_col_css_classes %> h-full group">
+    <%= order.dept if order.dept.present? %>
+
+    <% if order.dept.present? %>
+      <br>
+      <div class="hidden group-hover:inline-flex text-center">
+        <button class="inline-flex items-center justify-center w-8 h-8 text-gray-700 transition-colors duration-25 bg-white rounded-full focus:shadow-outline hover:bg-gray-200">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>
+        </button>
+      </div>
+    <% end %>
+
+    <% if !order.dept.present? %>
+    <div class="hidden group-hover:inline-flex text-center">
+      <button class="inline-flex items-center justify-center w-8 h-8 text-gray-700 transition-colors duration-25 bg-white rounded-full focus:shadow-outline hover:bg-gray-200">
+      <div class="">
+        +
+      </div>
+      </button>
+    </div>
+    <% end %>
   </div>
 
-  <div class="table-cell pr-4">
-    <%#= order.purchaser.name %>
-    <%= link_to order.purchaser.name, order.purchaser, class:'text-indigo-600 hover:text-indigo-800' %>
+  <div class="<%= primary_col_css_classes %>">
+    <%= link_to order.purchaser.name, order.purchaser, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
   </div>
-
-  <div class="table-cell pr-4">
-    <%= link_to order.vendor.name, order.vendor, class:'text-indigo-600 hover:text-indigo-800' %>
+  <div class="<%= primary_col_css_classes %>">
+    <%= link_to order.vendor.name, order.vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
   </div>
-
-  <div class="table-cell pr-4">
+  <div class="<%= secondary_col_css_classes %>">
     <%= order.po_number.present? ? order.po_number : 'n/a' %>
   </div>
-
-  <div class="table-cell pr-4">
+  <div class="<%= secondary_col_css_classes %>">
     <%= order.tracking_number.present? ? order.tracking_number : 'n/a' %>
   </div>
-
-  <div class="table-cell pr-4">
+  <div class="<%= secondary_col_css_classes %>">
     <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
   </div>
-
-
-  <div class="table-cell pr-4">
+  <div class="<%= primary_col_css_classes %>">
     <% if order.try(:order_content).present?%>
       <% content = order.order_content %>
 
-      <%= link_to order do %>
+      <%= link_to order, target: "_top"  do %>
         <span class="text-indigo-600 hover:text-indigo-800">
-          Boxes: <%= content.try(:box) || '0' %>
+          Boxes: <%= order.order_content.try(:box) || '0' %>
           <br>
-          Crates: <%= content.try(:crate) || '0' %>
+          Crates: <%= order.order_content.try(:crate) || '0' %>
           <br>
-          Pallets: <%= content.try(:pallet) || '0' %>
+          Pallets: <%= order.order_content.try(:pallet) || '0' %>
           <br>
-          Other: <%= content.try(:other) || '0' %>
+          Other: <%= order.order_content.try(:other) || '0' %>
           <br>
           <%  if content.other.present? && content.other_description.present? %>
           Other Desc:
           <% end %>
           <% if content.other.present? && content.other_description.present? %>
-            <span class=" whitespace-normal text-gray-500">
+            <span class="whitespace-normal text-gray-500">
               <%= content.other_description.length >= 25 ? "#{content.other_description[0..25]...}" : "#{content.other_description}" if content.other_description %>
             </span>
           <% end %>
@@ -58,15 +77,10 @@
       <% end %>
     <% end %>
   </div>
-
-  <div class="table-cell pr-4">
+  <div class=" <%= secondary_col_css_classes %>">
     <%= order.courrier.present? ? order.courrier : 'n/a' %>
   </div>
-
-
-  <div class="table-cell pr-4">
+  <div class=" <%= secondary_col_css_classes %>">
     <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
   </div>
-
-
 </div>

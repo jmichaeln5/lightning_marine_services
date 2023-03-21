@@ -1,40 +1,24 @@
 class Order < ApplicationRecord
-  # searchkick
+  searchkick
   # searchkick searchable: [:name]
-
-  scope :unarchived, -> { where(archived: false) }
-  scope :archived, -> { where(archived: true) }
 
   belongs_to :purchaser
   belongs_to :vendor
   has_many_attached :images
   has_one :order_content, dependent: :destroy
 
-  searchkick
-  ############################################################
-  ############################################################
-  ############################################################
-  ### https://github.com/ankane/searchkick
-
-  ####### In console
-  # Order.reindex
-  # orders = Order.search("llc")
-  # orders.each do |order|
-  #   puts "#{order.inspect}\n\n"
-  # end
-  ############################################################
-  ############################################################
-  ############################################################
-
-
-
   accepts_nested_attributes_for :order_content
+
+  scope :archived, -> { where(archived: true) }
+  scope :unarchived, -> { where(archived: false) }
+
+  scope :filter_by_purchasers, ->(sort_direction) { includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction) }
+  scope :filter_by_vendors, ->(sort_direction) { includes(:vendor).references(:vendor).order("name" + " " + sort_direction) }
 
   validates :purchaser_id, :vendor_id, :courrier, presence: true
 
   before_save :order_content_exists?, :handle_archive, :default_sequence
   before_update :handle_archive, :default_sequence
-
 
   def self.deliver_all
     all.each do |order|
@@ -47,10 +31,13 @@ class Order < ApplicationRecord
     self.purchaser.name
   end
 
+  def purchaser_name
+    self.purchaser.name
+  end
+
   def vendor_name
     self.vendor.name
   end
-
 
   def default_sequence
     if self.order_sequence.blank?
@@ -69,7 +56,6 @@ class Order < ApplicationRecord
       end
     end
   end
-
 
   def self.to_csv # Also Formats for XLS
     csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'Sequence','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']

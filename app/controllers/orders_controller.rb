@@ -1,23 +1,12 @@
 class OrdersController < ApplicationController
-  # before_action :authenticate_user!
-  # before_action :authenticate_admin, only: %i[ destroy ]
-  # before_action :check_read_write, only: %i[ new, create ]
-  # #before_action :check_read_write, only: %i[ new, edit, create , update]
-  # before_action :set_order, only: %i[ show destroy ]
-  # before_action :set_search_params, only: %i[ index all_orders]
-  # before_action :set_pagination_params, only: %i[ index all_orders ]
-  # helper_method :sort_option, :sort_direction
-
-
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :check_read_write, only: %i[ new, create ]
   #before_action :check_read_write, only: %i[ new, edit, create , update]
   before_action :set_order, only: %i[ show destroy ]
-  # before_action :set_search_params, only: %i[ all_orders]
-  # before_action :set_pagination_params, only: %i[ all_orders ]
-  # helper_method :sort_option, :sort_direction
-
+  before_action :set_search_params, only: %i[ all_orders]
+  before_action :set_pagination_params, only: %i[ all_orders ]
+  helper_method :sort_option, :sort_direction
 
   layout "stacked_shell", only: %i[ all_orders index show ]
 
@@ -87,88 +76,59 @@ class OrdersController < ApplicationController
   #     }
   #   end
   # end
-
-
-
-  ############################################################
-  ############################################################
-  ############################################################
   def index
+    # # orders = Order.where(archived: false)
     # orders = Order.unarchived
-    orders = Order.where(archived: false)
+    # orders = Order.where(archived: false).includes(:purchaser, :vendor)
+    orders = Order.unarchived.includes(:purchaser, :vendor, :order_content)
 
     if params[:query].present?
       query_str = params[:query]
-
       # results = orders.search(query_str).results
       results = orders.search(query_str, misspellings: {below: 5}).results
-
       results_arr = Array.new
       results.each do |result|
         results_arr << result.id if (result.archived? == false)
       end
+      orders = nil
+      orders = Order.unarchived.reorder('id ASC')
+      @orders = nil
       orders = orders.where(id: results_arr)
-      # if results_arr.length < 5
-      #   included_results = Order.where(archived: false).search( query_str, includes: [:purchaser, :vendor]).results
-      #
-      #   included_results_arr = Array.new
-      #   included_results.each do |included_result|
-      #     included_results_arr << included_result.id if (included_result.archived? == false)
-      #   end
-      #   orders = Order.unarchived.where(id: included_results_arr)
-      # end
     end
-    # @orders = orders
-    # @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
 
     if params[:sort]
-      old_order_ids = orders.pluck(:id)
-      old_orders = orders
+      sort_col = %w{ id dept date_recieved courrier date_delivered }.include?(params[:sort]) ? params[:sort] : "id"
+      sort_dir = %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
 
-      if params[:sort] == "ship_name"
-        sorted_included_query_orders = orders.includes(:purchaser).references(:purchaser).order("name" + " " + sort_dir)
-        new_order_ids = sorted_included_query_orders.pluck(:id)
-      end
+      if ((params[:sort] == "ship_name") || ( params[:sort] == "vendor_name" ))
+        clear_active_record_query_cache
 
-      if params[:sort] == "vendor_name"
-        sorted_included_query_orders = orders.includes(:vendor).references(:vendor).order("name" + " " + sort_dir)
-        new_order_ids = sorted_included_query_orders.pluck(:id)
-      end
+        sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "ship_name"
+        sorted_orders = Order.where(id: orders.ids).filter_by_vendors(sort_dir) if params[:sort] == "vendor_name"
 
-      if new_order_ids && ( (params[:sort] == "ship_name") || ( params[:sort] == "vendor_name" ) )
+        sorted_orders_ids = sorted_orders.ids
+        sorted_orders_ids_arr = Array.new
+        sorted_orders_ids.each do |order_id|
+          sorted_orders_ids_arr << order_id
+        end
+        # https://stackoverflow.com/a/61267426
         order_query = <<-SQL
           CASE orders.id
-            #{new_order_ids.map.with_index { |id, index| "WHEN #{id} THEN #{index}" } .join(' ')}
-            ELSE #{new_order_ids.length}
+            #{sorted_orders_ids_arr.map.with_index { |id, index| "WHEN #{id} THEN #{index}" } .join(' ')}
+            ELSE #{sorted_orders_ids_arr.length}
           END
         SQL
-        satisfied_sorted_orders = Order.where(id: new_order_ids).order(Arel.sql(order_query))
-
+        newly_sorted_orders = Order.unarchived.where(id: sorted_orders_ids_arr).order(Arel.sql(order_query))
         @orders = nil
         orders = nil
-
-        orders = satisfied_sorted_orders
-        sorted_orders = orders
-        @sorted_orders = orders
-        @orders = orders
       end
 
       if ((params[:sort] != "ship_name") && ( params[:sort] != "vendor_name" ))
-        orders = orders.reorder(sort_col => sort_dir)
-        @orders = orders
+        newly_sorted_orders = orders.reorder(sort_col => sort_dir)
       end
-    end
 
-    ### Good for testing/debugging atm
-    #############################################
-    # if ( (params[:sort] == "ship_name") || ( params[:sort] == "vendor_name" ) )
-      # byebug
-    # end
-    # old_orders.map {|o| o.id }
-    # @orders.map {|o| o.id }
-    # orders.map {|o| o.id }
-    # @sorted_orders.map {|o| o.id }
-    #############################################
+      orders = newly_sorted_orders
+    end
 
     @orders ||= orders
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
@@ -186,27 +146,6 @@ class OrdersController < ApplicationController
       }
     end
   end
-
-  def sort_col
-    %w{ id dept date_recieved courrier date_delivered }.include?(params[:sort]) ? params[:sort] : "id"
-  end
-
-  def sort_dir
-    %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
-  end
-  ############################################################
-  ############################################################
-  ############################################################
-
-
-
-
-
-
-
-
-
-
 
   # GET /orders/1 or /orders/1.json
   def show
@@ -328,6 +267,16 @@ class OrdersController < ApplicationController
 
     def set_search_params
       @query = params[:q]
+    end
+
+    def clear_active_record_query_cache
+      puts (" \n")*5
+      puts ("*"*50 + "\n")*10
+      puts ("clearing ActiveRecord query_cache \n")*5
+      puts ("*"*50 + "\n")*10
+      puts (" \n")*5
+
+      ActiveRecord::Base.connection.query_cache.clear
     end
 
 end

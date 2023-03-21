@@ -2,6 +2,12 @@
 <% user_links_css_classes_current = "" unless defined?(user_links_css_classes_current) %>
 
 <% if current_user %>
+  <div class="<%= user_links_css_classes %> divide-y divide-gray-200 lg:py-1 rounded-none border-b border-gray-700 lg:border-gray-200">
+    <div class="font-bold lg:text-center cursor-default">
+      Hello <%= current_user.email %>
+    </div>
+  </div>
+
   <%= link_to "Account Settings", edit_user_registration_path, class: user_links_css_classes_current if current_page?(edit_user_registration_path) %>
   <%= link_to "Account Settings", edit_user_registration_path, class: user_links_css_classes if !current_page?(edit_user_registration_path) %>
 
