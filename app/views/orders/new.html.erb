@@ -1,5 +1,29 @@
-<% content_for :title, 'New Order' %>
+<%# content_for :title, 'New Order' %>
 
 <%= render 'form', order: @order %>
 
-<%= link_to 'Back', orders_path %>
+<%#= link_to 'Back', orders_path %>
+
+<!-- <%#= turbo_frame_tag 'modal' do %>
+  <div id="new_order_modal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">
+    </div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+        <%##= render partial:'orders/tailwind_form', locals:{
+          order: @order,
+          order_content: @order.order_content,
+          } %>
+          <div class="bg-white">
+          <%##= render 'form', order: @order %>
+          </div>
+          <%##= render 'tailwind_form', order: @order %>
+
+      </div>
+    </div>
+  </div>
+<%# end %> -->
+<%#= render 'form', order: @order, order_content: @order_content %>

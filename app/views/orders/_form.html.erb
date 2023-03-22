@@ -1,119 +1,137 @@
-<%= form_for @order do |f| %>
+<% @card_title = "New Order" %>
 
-<% if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+<%= form_with model: order, id: "order_form" do |form| %>
+
+<% if form.object.errors.any? %>
+  <div class="rounded-md bg-red-100 p-4">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-red-800">
+          There was <%= pluralize(form.object.errors.count, "error") %> with your submission
+        </h3>
+        <div class="mt-2 text-sm text-red-700">
+          <ul role="list" class="list-disc space-y-1 pl-5">
+            <% form.object.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%# if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
   <div class="field">
     <p class="text-3xl"> Ship </p>
-    <% if @purchaser.present? %>
-      <%= f.select :purchaser_id, options_for_select(Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, :selected => params[:id] ), {}, class:'form-control' %>
-    <% else %>
-      <%= f.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, {class: "form-control"} %>
-    <% end %>
+    <%= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, {class: "form-control"} %>
   </div>
 
   <div class="field pb-2">
     <p class="text-3xl"> Vendor </p>
-    <% if @vendor.present? %>
-      <%= f.select :vendor_id, options_for_select(Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, :selected => params[:id] ), {}, class:'form-control' %>
-    <% else %>
-      <%= f.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, {class: "form-control"} %>
-    <% end %>
+    <%= form.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, {class: "form-control"} %>
   </div>
 
+  <div class="field pb-2">
+    <p class="text-2xl"> Seq. </p>
+    <%= form.number_field :order_sequence, class: "form-control" %>
+  </div>
 
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Dept. </p>
+    <%= form.text_field :dept, class: "form-control" %>
+  </div>
 
-  <div class="container p-2">
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> PO# </p>
+    <%= form.text_field :po_number, class: "form-control" %>
+  </div>
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Tracking Number</p>
+    <%= form.text_field :tracking_number, class: "form-control" %>
+  </div>
 
-    <div class="field pb-2">
-      <p class="text-2xl"> Seq. </p>
-      <%= f.number_field :order_sequence, class: "form-control" %>
-    </div>
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Courrier </p>
+    <%= form.text_field :courrier, class: "form-control" %>
+  </div>
 
-    <div class="field pb-2 pt-2">
-      <p class="text-2xl"> Dept. </p>
-      <%= f.text_field :dept, class: "form-control" %>
-    </div>
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> Date Recieved </p>
+    <%= form.date_field :date_recieved, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
+  </div>
 
-    <div class="field pb-2 pt-2">
-      <p class="text-2xl"> PO# </p>
-      <%= f.text_field :po_number, class: "form-control" %>
-      <%#= f.text_field :po_number, value: Faker::IDNumber.valid_south_african_id_number[1..5], class: "form-control" %>
-    </div>
-    <div class="field pb-2 pt-2">
-      <p class="text-2xl"> Tracking Number</p>
-      <%= f.text_field :tracking_number, class: "form-control" %>
-    </div>
+  <div class="field pb-2 pt-2">
+    <span class="text-2xl justify-content-center">
+      Date Delivered
+    </span>
+    <%= form.date_field :date_delivered, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
+  </div>
 
-    <div class="field pb-2 pt-2">
-      <p class="text-2xl"> Courrier </p>
-      <%= f.text_field :courrier, class: "form-control" %>
-      <%#= f.text_field :courrier, value: ['Fedex', 'UPS', 'USPS', 'DHL'].sample, class: "form-control" %>
-    </div>
+  <!-- <div class="p-3 bg-red-100 border-4 border-red-400">
+  <%# if (current_user.has_role? :admin) && (order.archived) %>
+    <span class="border-2 ">
+      <p class="font-bold text-2xl text-red-400">
+        app/views/orders/_form.html.erb
+      </p>
+      <p class="font-bold text-2xl text-red-700">Remove this element</p>
 
-    <div class="field pb-2 pt-2">
-      <p class="text-2xl"> Date Recieved </p>
-      <%= f.date_field :date_recieved, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
-      <%#= f.date_field :date_recieved, as: :date, value: Faker::Date.between(from: '2021-01-23', to: '2021-09-25'), class: 'form-control'  %>
-    </div>
-
-    <div class="field pb-2 pt-2">
-
-      <span class="text-2xl justify-content-center">
-        Date Delivered
+      <span class="">
+        <p class="font-bold text-2xl text-red-400">
+          shared/confirmation_modal
+        </p>
+      <%#= render 'shared/confirmation_modal' %>
       </span>
+    </span>
+  <%# end %>
+  </div> -->
 
-      <% if (current_user.has_role? :admin) && (@order.archived) %>
-        <br>
-        <span class="float-right text-md">
-              <%= render 'shared/confirmation_modal' %>
-        </span>
-      <% end %>
+  <div class="field pb-2 pt-2">
+    <p class="text-2xl"> <%= form.label "Upload(s)" %> </p>
+    <%= form.file_field :images, multiple: true, class: 'form-control' %>
+  </div>
 
-      <%= f.date_field :date_delivered, as: :date, value: f.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
+  <% if order.images.each do |image| %>
+    <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
 
-    </div>
+    <div class="border p-3 mt-4">
+      <div class="p-3">
+        <div class="row justify-between">
 
-    <div class="field pb-2 pt-2">
-      <p class="text-2xl"> <%= f.label "Upload(s)" %> </p>
-      <%= f.file_field :images, multiple: true, class: 'form-control' %>
-    </div>
+          <div class="align-middle">
+            <% if image.image?  %>
+              <%= image_tag(image.variant(resize: "300x300")) %>
+            <% elsif image.blob.content_type == "video/mp4" %>
+              <div class="max-w-xs">
+                <%= video_tag rails_blob_path(image), controls: true %>
+              </div>
+              <% else %>
+              <div class="max-w-xs bg-red-200" >
+                <p class="p-12">
+                  <span class="float-left text-red-400 max-w-xs" style="">
+                    Content Unavailable
+                  </span>
+                </p>
+                <br>
+              </div>
+            <% end %>
+          </div>
 
-    <% if @order.images.each do |image| %>
-      <%= f.hidden_field :images, multiple: true, value: image.signed_id %>
+            <%= link_to 'Remove',  order_attachment_destroy_attachment_path(order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400 align-middle" %>
 
-      <div class="border p-3 mt-4">
-        <div class="p-3">
-          <div class="row justify-between">
-
-            <div class="align-middle">
-              <% if image.image?  %>
-                <%= image_tag(image.variant(resize: "300x300")) %>
-              <% elsif image.blob.content_type == "video/mp4" %>
-                <div class="max-w-xs">
-                  <%= video_tag rails_blob_path(image), controls: true %>
-                </div>
-                <% else %>
-                <div class="max-w-xs bg-red-200" >
-                  <p class="p-12">
-                    <span class="float-left text-red-400 max-w-xs" style="">
-                      Content Unavailable
-                    </span>
-                  </p>
-                  <br>
-                </div>
-              <% end %>
-            </div>
-
-              <%= link_to 'Remove',  order_attachment_destroy_attachment_path(@order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400 align-middle" %>
-
-            </div>
           </div>
         </div>
       </div>
-      <% end %>
-    <% end %>
+  <% end %>
+<%# end %>
 
   <p class="text-4xl font-semibold p-2"> Order Contents </p>
-    <%= f.fields_for :order_content, @order.order_content do |p| %>
+    <%= form.fields_for :order_content, order.order_content do |p| %>
       <div class="field pb-2">
         <%= p.label'Boxes', class:"text-2xl" %>
         <%= p.text_field :box, class: 'form-control' %>
@@ -140,17 +158,22 @@
   <div class="container p-2">
       <div class="field pb-2 pt-2">
       <p class="text-2xl"> Dept. </p>
-      <%= f.text_field :dept, class: "form-control" %>
+      <%= form.text_field :dept, class: "form-control" %>
     </div>
   </div>
     <% end %>
   <br>
   <div class="p-2">
-    <div class="actions btn btn-outline-primary">
-      <%= button_tag(type: 'submit') do %>
+    <!-- <div class="actions btn btn-outline-primary">
+      <%#= button_tag(type: 'submit') do %>
         Save
-      <% end %>
-    </div>
+      <%# end %>
+    </div> -->
+
+    <%= form.submit 'Save', class: 'actions inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2' %>
+
+
+    <%#= form.submit 'Save', class: 'inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2' %>
   </div>
 
 <% end %>

@@ -1,14 +1,15 @@
 class OrdersController < ApplicationController
+ #  layout "stacked_shell", only: %i[ all_orders index show new]
+ layout "stacked_shell"
+
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
-  before_action :check_read_write, only: %i[ new, create ]
+  # before_action :check_read_write, only: %i[ new, create ]
   #before_action :check_read_write, only: %i[ new, edit, create , update]
   before_action :set_order, only: %i[ show destroy ]
   before_action :set_search_params, only: %i[ all_orders]
   before_action :set_pagination_params, only: %i[ all_orders ]
   helper_method :sort_option, :sort_direction
-
-  layout "stacked_shell", only: %i[ all_orders index show ]
 
   def all_orders
     load_resource_files
@@ -133,6 +134,9 @@ class OrdersController < ApplicationController
     @orders ||= orders
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
 
+    @order = Order.new
+    @order.build_order_content
+
     respond_to do |format|
       format.html
       format.csv {
@@ -174,6 +178,8 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = Order.new
+    @order.build_order_content
+    # # @order_content = @order.order_content
   end
 
   # GET /orders/1/edit
@@ -183,16 +189,15 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new order_params
-    @order.po_number = 'n/a' if @order.po_number == ""
-    @order.dept = 'n/a' if @order.dept == ""
-    @order_content = @order.order_content
-    if @order.save
-      redirect_back(fallback_location: order_path(@order),notice: "Order Created Successfully.")
-    else
-      redirect_to request.referrer
-      @order.errors.each do |error|
-        flash[:alert] = @order.errors.full_messages.map {|message| message}
+    @order = Order.new(order_params)
+
+    respond_to do |format|
+      if @order.save
+        format.html { redirect_to @order, notice: "Order was successfully created." }
+        format.json { render :show, status: :created, location: @order }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -234,13 +239,35 @@ class OrdersController < ApplicationController
       @order_content = @order.order_content
     end
 
+    # def order_params
+    #   # Only Guest account to update Department Only
+    #   if (current_user.has_role?('admin') || current_user.has_role?('staff'))
+    #   params.require(:order).permit(:id, :purchaser_id, :vendor_id, :order_sequence, :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
+    #   else
+    #     params.require(:order).permit(:dept)
+    #   end
+    # end
     def order_params
-      # Only Guest account to update Department Only
-      if (current_user.has_role?('admin') || current_user.has_role?('staff'))
-      params.require(:order).permit(:id, :purchaser_id, :vendor_id, :order_sequence, :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, images: [], order_content_attributes: [ :id, :box, :crate, :pallet, :other, :other_description])
-      else
-        params.require(:order).permit(:dept)
-      end
+      params.require(:order).permit(
+        :dept,
+        :po_number,
+        :tracking_number,
+        :date_recieved,
+        :courrier,
+        :date_delivered,
+        :purchaser_id,
+        :vendor_id,
+        :order_sequence,
+        images: [],
+        order_content_attributes: [
+          :id,
+          :box,
+          :crate,
+          :pallet,
+          :other,
+          :other_description
+        ]
+      )
     end
 
     def sort_option(sort_option = nil)

@@ -16,9 +16,9 @@ class Order < ApplicationRecord
   scope :filter_by_vendors, ->(sort_direction) { includes(:vendor).references(:vendor).order("name" + " " + sort_direction) }
 
   validates :purchaser_id, :vendor_id, :courrier, presence: true
-
-  before_save :order_content_exists?, :handle_archive, :default_sequence
-  before_update :handle_archive, :default_sequence
+  # validates_associated :order_content
+  validate :before_validationz
+  # validates_associated :order_content
 
   def self.deliver_all
     all.each do |order|
@@ -123,21 +123,14 @@ class Order < ApplicationRecord
 
   private
 
+  def before_validationz
+    default_sequence
+    order_content_exists?
+    handle_archive
+  end
+
   def order_content_exists?
-    order_content = self.order_content
-    order_content_attr_to_count = ["box", "crate", "pallet", "other"]
-    content_amount = 0
-
-    order_content_attr_to_count.each do |attr|
-      add_content_amount = order_content.send(attr).to_i
-      content_amount = content_amount + add_content_amount
-    end
-
-    if content_amount < 1
-      self.errors.add(:base, "Order is missing content.")
-      throw(:abort)
-    end
-
+    self.errors.add(:order_content,  "missing" ) if self.order_content.nil?
   end
 
   def handle_archive
