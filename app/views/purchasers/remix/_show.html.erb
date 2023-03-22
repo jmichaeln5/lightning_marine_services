@@ -1,4 +1,4 @@
-<% @card_title = "Viewing Ship" %>
+<% @card_title = "Ships" %>
 
 <% content_for :header_button do %>
   <span class="add-order-button">
@@ -60,7 +60,7 @@
       <%= render partial: "/shared/data_display/stats/overview_card", locals: {
         card_title: "All Ship Orders",
         card_description: "#{active_orders.count + completed_orders.count}",
-        card_link: (link_to "View All Ship Orders", purchasers_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_link: (link_to "View All Ship Orders - placeholder", purchasers_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: yield(:ship_icon),
       } %>
     </span>

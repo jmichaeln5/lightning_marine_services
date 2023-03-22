@@ -11,14 +11,11 @@ class Order < ApplicationRecord
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }
-
   scope :filter_by_purchasers, ->(sort_direction) { includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction) }
   scope :filter_by_vendors, ->(sort_direction) { includes(:vendor).references(:vendor).order("name" + " " + sort_direction) }
 
   validates :purchaser_id, :vendor_id, :courrier, presence: true
-  # validates_associated :order_content
   validate :before_validationz
-  # validates_associated :order_content
 
   def self.deliver_all
     all.each do |order|
@@ -125,12 +122,20 @@ class Order < ApplicationRecord
 
   def before_validationz
     default_sequence
-    order_content_exists?
     handle_archive
+    order_content_exists?
   end
 
   def order_content_exists?
-    self.errors.add(:order_content,  "missing" ) if self.order_content.nil?
+    blank_attrs_count = 0
+    blank_attrs_count +=1 if self.order_content.box.blank?
+    blank_attrs_count +=1 if self.order_content.crate.blank?
+    blank_attrs_count +=1 if self.order_content.pallet.blank?
+    blank_attrs_count +=1 if self.order_content.other.blank?
+
+    if blank_attrs_count >= 4
+      self.errors.add(:order_content,  "missing" ) unless self.errors[:order_content].any?
+    end
   end
 
   def handle_archive

@@ -1,18 +1,22 @@
-<% @card_title = "Viewing Order" %>
+<% @card_title = "Orders" %>
 
 <% content_for :header_button do %>
-  <span class="add-order-button">
-    <a href="#_" class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
-      <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
-      <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
-      <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
-        <span class="tracking-wide"> Add Order </span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-2 ml-1 w-6 h-6 font-extrabold">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
+  <span class="add-order-button-html">
+    <%= link_to edit_order_path(order) do %>
+      <span class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
+        <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+        <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+        <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
+          <span class="tracking-wide"> Edit Order </span>
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mt-1 stroke-2 ml-1 w-4 h-4 font-extrabold">
+            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+          </svg>
+        </span>
+
+        <span class="absolute inset-0 border-2 border-white rounded-full"></span>
       </span>
-      <span class="absolute inset-0 border-2 border-white rounded-full"></span>
-    </a>
+    <% end %>
   </span>
 <% end %>
 
@@ -98,6 +102,16 @@
           </span>
         </div>
       </div>
+      <% if order.order_content.other.present? %>
+      <div class="my-3 mt-2 flex rounded-md shadow-sm">
+        <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Other</span>
+        <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          <span class="ml-3">
+            <%= order.order_content.other.present? ? order.order_content.other : '0' %>
+          </span>
+        </div>
+      </div>
+      <% end %>
     </div>
   </span>
   <span>
@@ -242,7 +256,7 @@
                           <span class="ml-2 w-0 flex-1 text-red-600 truncate"> <%= "ERROR: #{image.blob.filename}" %> </span>
                         </div>
                         <div class="ml-4 flex-shrink">
-                          <%= link_to "Remove - placeholder", rails_blob_path(image, disposition: :attachment), class:" mx-2 font-medium text-red-600 hover:text-indigo-500" %>
+                          <%= link_to "Remove - placeholder", rails_blob_path(image, disposition: :attachment), class:" mx-2 font-medium text-red-600 hover:text-red-700" %>
                           <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:" mx-2 font-medium text-indigo-600 hover:text-indigo-500" %>
                         </div>
                       </div>

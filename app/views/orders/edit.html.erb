@@ -1,5 +1,39 @@
-<%= content_for :title, 'Editing Order'%>
-<%= render 'form', order: @order %>
+<% @card_title = "Orders" %>
 
-<%= link_to 'Show', @order %> |
-<%= link_to 'Back', orders_path %>
+<% content_for :header_button do %>
+  <% if request.path.in? request.referrer.pathmap %>
+    <%= link_to order_path(@order) do %>
+      <span class="scale-90 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-gray-200 rounded-full shadow-md group">
+      <span class="absolute inset-0 flex items-center justify-center w-full h-full text-gray-900 duration-300 -translate-x-full bg-gray-100 group-hover:translate-x-0 ease">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      </svg>
+      </span>
+      <span class="absolute flex items-center justify-center w-full h-full text-gray-200 transition-all duration-300 transform group-hover:translate-x-full ease">View order</span>
+      <span class="relative invisible">View order</span>
+      </span>
+    <% end %>
+  <% else %>
+    <%= link_to :back do %>
+      <span class="scale-90 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-gray-200 rounded-full shadow-md group">
+      <span class="absolute inset-0 flex items-center justify-center w-full h-full text-gray-900 duration-300 -translate-x-full bg-gray-100 group-hover:translate-x-0 ease">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      </svg>
+      </span>
+      <span class="absolute flex items-center justify-center w-full h-full text-gray-200 transition-all duration-300 transform group-hover:translate-x-full ease">Back</span>
+      <span class="relative invisible">Back</span>
+      </span>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div>
+  <div class="flex justify-center sm:justify-start">
+    <div class="flex-wrap text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
+      <div class="mr-1 sm:mr-2">Overview: </div>
+      <div class="text-gray-900 font-medium"> Editing Order <%= @order.id %> </div>
+    </div>
+  </div>
+  <%= render 'form', order: @order %>
+</div>

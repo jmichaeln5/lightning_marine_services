@@ -50,13 +50,6 @@
                 <%= render partial: "layouts/stacked_shell/secondary_nav" %>
               </section>
             </div>
-            <!-- <section>
-              <main id="stacked-shell-main" class="flex-1 mt-4 md:mt-6 pb-8">
-                <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
-                  <%#= yield %>
-                </div>
-              </main>
-            </section> -->
             <div class="flex-1 mt-4 md:mt-6 pb-8">
               <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
                 <main id="stacked-shell-main">
@@ -68,6 +61,15 @@
             </div>
           </div>
         </div>
+
+        <!--
+        NOTE
+        <%#= turbo_frame_tag :modal %>
+        UNNCOMMENT TO USE
+        add-order-button-turbo   in: app/views/orders/_add_order_button.html.erb
+        turbo_frame_tag do       in: app/views/orders/new.html.erb
+        -->
+
         <div class="after-main -mt-3 rounded-md mx-auto max-w-7xl pb-12 px-4 sm:px-6 lg:px-8">
           <section id="stacked-shell-main-section-under">
             <%= yield :main_content_under if content_for?(:main_content_under) %>
@@ -75,9 +77,6 @@
         </div>
       </div>
     </div>
-
-
-    <%= turbo_frame_tag "modal" %>
 
   </body>
 </html>

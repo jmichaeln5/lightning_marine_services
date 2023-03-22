@@ -1,179 +1,189 @@
-<% @card_title = "New Order" %>
+<!-- ********************************************* -->
+<!-- ********************************************* -->
+<!-- ********************************************* -->
+<!-- NOTE  -->
+<!-- FORM WILL AUTOMATICALLY BE FORMATTED AS TURBO_STREAM IF CALLED FROM TURBO_FRAME -->
+<!-- https://tailwindui.com/components/application-ui/forms/form-layouts#component-30dffb06e58cdbe872820ed3f943d85a -->
+<!-- ********************************************* -->
+<!-- ********************************************* -->
+<!-- ********************************************* -->
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <div class="rounded-md bg-white">
+    <div class="flex-1 mt-4 md:mt-6 pb-8">
+      <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
 
-<%= form_with model: order, id: "order_form" do |form| %>
+        <%= form_with model: order, id: "order_form" do |form| %>
+          <div class="space-y-8 divide-y divide-gray-200">
 
-<% if form.object.errors.any? %>
-  <div class="rounded-md bg-red-100 p-4">
-    <div class="flex">
-      <div class="flex-shrink-0">
-        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-        </svg>
-      </div>
-      <div class="ml-3">
-        <h3 class="text-sm font-medium text-red-800">
-          There was <%= pluralize(form.object.errors.count, "error") %> with your submission
-        </h3>
-        <div class="mt-2 text-sm text-red-700">
-          <ul role="list" class="list-disc space-y-1 pl-5">
-            <% form.object.errors.each do |error| %>
-              <li><%= error.full_message %></li>
+            <% if form.object.errors.any? %>
+              <div class="rounded-md bg-red-100 p-4" id="msg-container">
+                <div class="flex">
+                  <!-- <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                    </svg>
+                  </div> -->
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">
+                      There was <%= pluralize(form.object.errors.count, "error") %> with your submission
+                    </h3>
+                    <div class="mt-2 text-sm text-red-700">
+                      <ul role="list" class="list-disc space-y-1 pl-5">
+                        <% form.object.errors.each do |error| %>
+                          <li><%= error.full_message %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <% end %>
-          </ul>
-        </div>
+            <script type="text/javascript">
+
+              var notNullandNotUndefined = (element) => {
+                return element != null && element !== undefined;
+              }
+
+              notNullandNotUndefined(document.getElementById('msg-container')) ? fadeMsgContainer() : null
+
+              function fadeMsgContainer(){
+                var msgContainer = document.getElementById('msg-container').style;
+                msgContainer.opacity = 1;
+                (function fade(){(msgContainer.opacity-=.1) < 0 ? msgContainer.display="none" : setTimeout(fade,2500)})();
+              }
+
+            </script>
+            <div class="space-y-8 divide-y divide-gray-200">
+              <div>
+                <div class="pt-3">
+                  <h3 class="text-base font-semibold leading-6 text-gray-900">Order Details</h3>
+                  <p class="mt-1 text-sm text-gray-500">Add information about the order below.</p>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                  <div class="sm:col-span-3">
+                    <%= form.label 'Ship', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
+                    </div>
+                  </div>
+                  <div class="sm:col-span-3">
+                    <%= form.label 'Vendor', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
+                    </div>
+                  </div>
+
+                  <div class="sm:col-span-6">
+                    <%= form.label :dept, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.text_field :dept, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    </div>
+                  </div>
+
+                  <div class="sm:col-span-6">
+                    <%= form.label :po_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.text_field :po_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    </div>
+                  </div>
+
+                  <div class="sm:col-span-6">
+                    <%= form.label :courrier, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.text_field :courrier, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    </div>
+                  </div>
+
+                  <div class="sm:col-span-3">
+                    <%= form.label 'Date Recieved', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.date_field :date_recieved, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    </div>
+                  </div>
+                  <div class="sm:col-span-3">
+                    <%= form.label 'Date Delivered', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.date_field :date_delivered, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    </div>
+                  </div>
+
+                  <div class="sm:col-span-6">
+                    <%= form.label :tracking_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <div class="mt-2">
+                      <%= form.text_field :tracking_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    </div>
+                  </div>
+
+                  <div class="inline-flex sm:col-span-6 -mb-6 hover:cursor-default">
+                    <div class="my-3 w-full relative">
+                      <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-gray-200"></div>
+                      </div>
+                      <div class="relative flex justify-center">
+                        <span class="bg-white px-2 text-sm text-gray-400">Order Content Details</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sm:col-span-6 ml-2 mr-3">
+                    <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+
+                    <%= form.fields_for :order_content, order.order_content do |p| %>
+
+                      <div class="sm:col-span-2">
+                        <div class="flex">
+                          <%= p.label 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                          <div class="ml-3 w-full">
+                            <%= p.text_field :box, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="sm:col-span-2">
+                        <div class="flex">
+                          <%= p.label 'Crates', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                          <div class="ml-3 w-full">
+                            <%= p.text_field :crate, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="sm:col-span-2">
+                        <div class="flex">
+                          <%= p.label 'Pallets', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                          <div class="ml-3 w-full">
+                            <%= p.text_field :pallet, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="sm:col-span-6">
+                        <%= p.label :other_description, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                        <div class="mt-2">
+                          <%= p.text_area :other_description, rows: 3, class: "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6" %>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500">Write a few deatils about the order.</p>
+                      </div>
+
+                    <% end %>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-5">
+              <div class="flex justify-end">
+                <%#= link_to 'Back', :back, class:'rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50' %>
+
+                <%#= link_to 'Cancel', request.referer, class:'rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50' %>
+
+                <%= form.submit 'Save', class: 'inline-flex hover:cursor-pointer justify-center rounded-md bg-indigo-600 py-2 px-5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' %>
+
+              </div>
+            </div>
+          </div>
+        <% end %>
+
       </div>
     </div>
   </div>
-<% end %>
-
-<%# if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
-  <div class="field">
-    <p class="text-3xl"> Ship </p>
-    <%= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, {class: "form-control"} %>
-  </div>
-
-  <div class="field pb-2">
-    <p class="text-3xl"> Vendor </p>
-    <%= form.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, {class: "form-control"} %>
-  </div>
-
-  <div class="field pb-2">
-    <p class="text-2xl"> Seq. </p>
-    <%= form.number_field :order_sequence, class: "form-control" %>
-  </div>
-
-  <div class="field pb-2 pt-2">
-    <p class="text-2xl"> Dept. </p>
-    <%= form.text_field :dept, class: "form-control" %>
-  </div>
-
-  <div class="field pb-2 pt-2">
-    <p class="text-2xl"> PO# </p>
-    <%= form.text_field :po_number, class: "form-control" %>
-  </div>
-  <div class="field pb-2 pt-2">
-    <p class="text-2xl"> Tracking Number</p>
-    <%= form.text_field :tracking_number, class: "form-control" %>
-  </div>
-
-  <div class="field pb-2 pt-2">
-    <p class="text-2xl"> Courrier </p>
-    <%= form.text_field :courrier, class: "form-control" %>
-  </div>
-
-  <div class="field pb-2 pt-2">
-    <p class="text-2xl"> Date Recieved </p>
-    <%= form.date_field :date_recieved, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
-  </div>
-
-  <div class="field pb-2 pt-2">
-    <span class="text-2xl justify-content-center">
-      Date Delivered
-    </span>
-    <%= form.date_field :date_delivered, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class: 'form-control' %>
-  </div>
-
-  <!-- <div class="p-3 bg-red-100 border-4 border-red-400">
-  <%# if (current_user.has_role? :admin) && (order.archived) %>
-    <span class="border-2 ">
-      <p class="font-bold text-2xl text-red-400">
-        app/views/orders/_form.html.erb
-      </p>
-      <p class="font-bold text-2xl text-red-700">Remove this element</p>
-
-      <span class="">
-        <p class="font-bold text-2xl text-red-400">
-          shared/confirmation_modal
-        </p>
-      <%#= render 'shared/confirmation_modal' %>
-      </span>
-    </span>
-  <%# end %>
-  </div> -->
-
-  <div class="field pb-2 pt-2">
-    <p class="text-2xl"> <%= form.label "Upload(s)" %> </p>
-    <%= form.file_field :images, multiple: true, class: 'form-control' %>
-  </div>
-
-  <% if order.images.each do |image| %>
-    <%= form.hidden_field :images, multiple: true, value: image.signed_id %>
-
-    <div class="border p-3 mt-4">
-      <div class="p-3">
-        <div class="row justify-between">
-
-          <div class="align-middle">
-            <% if image.image?  %>
-              <%= image_tag(image.variant(resize: "300x300")) %>
-            <% elsif image.blob.content_type == "video/mp4" %>
-              <div class="max-w-xs">
-                <%= video_tag rails_blob_path(image), controls: true %>
-              </div>
-              <% else %>
-              <div class="max-w-xs bg-red-200" >
-                <p class="p-12">
-                  <span class="float-left text-red-400 max-w-xs" style="">
-                    Content Unavailable
-                  </span>
-                </p>
-                <br>
-              </div>
-            <% end %>
-          </div>
-
-            <%= link_to 'Remove',  order_attachment_destroy_attachment_path(order, image), data: { confirm: 'Are you sure?' }, method: :delete, class:" text-red-400 align-middle" %>
-
-          </div>
-        </div>
-      </div>
-  <% end %>
-<%# end %>
-
-  <p class="text-4xl font-semibold p-2"> Order Contents </p>
-    <%= form.fields_for :order_content, order.order_content do |p| %>
-      <div class="field pb-2">
-        <%= p.label'Boxes', class:"text-2xl" %>
-        <%= p.text_field :box, class: 'form-control' %>
-      </div>
-      <div class="field pb-2">
-        <%= p.label 'Crates', class:"text-2xl" %>
-        <%= p.text_field :crate, class: 'form-control' %>
-      </div>
-      <div class="field pb-2">
-        <%= p.label 'Pallets', class:"text-2xl" %>
-        <%= p.text_field :pallet, class: 'form-control' %>
-      </div>
-      <div class="field pb-2">
-        <%= p.label 'Other', class:"text-2xl" %>
-        <%= p.text_field :other, class: 'form-control' %>
-      </div>
-      <div class="field pb-2">
-        <%= p.label 'Description', class:"text-2xl" %>
-        <%= p.text_area :other_description,rows: 3, class: 'form-control' %>
-      </div>
-    <% end %>
-
-    <% else%>
-  <div class="container p-2">
-      <div class="field pb-2 pt-2">
-      <p class="text-2xl"> Dept. </p>
-      <%= form.text_field :dept, class: "form-control" %>
-    </div>
-  </div>
-    <% end %>
-  <br>
-  <div class="p-2">
-    <!-- <div class="actions btn btn-outline-primary">
-      <%#= button_tag(type: 'submit') do %>
-        Save
-      <%# end %>
-    </div> -->
-
-    <%= form.submit 'Save', class: 'actions inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2' %>
-
-
-    <%#= form.submit 'Save', class: 'inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2' %>
-  </div>
-
-<% end %>
+</div>

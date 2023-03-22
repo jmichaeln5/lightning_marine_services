@@ -61,14 +61,19 @@
   <% end %>
 
   <div class="hidden sm:block">
-    <nav class="flex space-x-4 inline-flex" aria-label="Tabs">
-      <% secondary_desktop_navigation_resource_css_classes = "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-200 rounded-md px-3 py-2 text-sm font-medium" %>
-      <% secondary_desktop_navigation_resource_css_classes_current = "bg-slate-50 text-gray-900 rounded-md px-3 py-2 text-sm font-semibold"  %>
+    <div class="flex justify-between">
+      <nav class="flex space-x-4 inline-flex" aria-label="Tabs">
+        <% secondary_desktop_navigation_resource_css_classes = "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-200 rounded-md px-3 py-2 text-sm font-medium" %>
+        <% secondary_desktop_navigation_resource_css_classes_current = "bg-slate-50 text-gray-900 rounded-md px-3 py-2 text-sm font-semibold"  %>
 
-      <%= render partial: "layouts/stacked_shell/nav/resource_links", locals:{
-        resource_links_css_classes_current: secondary_desktop_navigation_resource_css_classes_current,
-        resource_links_css_classes: secondary_desktop_navigation_resource_css_classes,
-      } %>
-    </nav>
+        <%= render partial: "layouts/stacked_shell/nav/resource_links", locals:{
+          resource_links_css_classes_current: secondary_desktop_navigation_resource_css_classes_current,
+          resource_links_css_classes: secondary_desktop_navigation_resource_css_classes,
+        } %>
+      </nav>
+      <div class="flex flex-wrap inline-flex">
+        <%= user_badge %>
+      </div>
+    </div>
   </div>
 </nav>

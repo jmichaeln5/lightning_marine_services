@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   # before_action :check_read_write, only: %i[ new, create ]
-  #before_action :check_read_write, only: %i[ new, edit, create , update]
+  # before_action :check_read_write, only: %i[ new, edit, create , update]
   before_action :set_order, only: %i[ show destroy ]
   before_action :set_search_params, only: %i[ all_orders]
   before_action :set_pagination_params, only: %i[ all_orders ]
@@ -177,6 +177,8 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
+    check_read_write
+
     @order = Order.new
     @order.build_order_content
     # # @order_content = @order.order_content
@@ -184,16 +186,21 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
+    check_read_write
+
     @order = Order.find(params[:id])
     @order.build_order_content if @order.order_content.nil?
   end
 
   def create
+    check_read_write
+
     @order = Order.new(order_params)
 
     respond_to do |format|
       if @order.save
         format.html { redirect_to @order, notice: "Order was successfully created." }
+        # format.html { redirect_to order_path(@order), notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -202,17 +209,32 @@ class OrdersController < ApplicationController
     end
   end
 
+  # def update
+  #   @order = Order.find(params[:id])
+  #   #logic to default number
+  #   #@order.order_sequence = @order.sequence
+  #
+  #   if @order.update(order_params)
+  #     redirect_back(fallback_location: order_path(@order),notice: "Order Updated Successfully.")
+  #   else
+  #     redirect_to request.referrer
+  #     @order.errors.each do |error|
+  #       flash[:alert] = @order.errors.full_messages.map {|message| message}
+  #     end
+  #   end
+  # end
   def update
+    check_read_write
     @order = Order.find(params[:id])
     #logic to default number
     #@order.order_sequence = @order.sequence
-
-    if @order.update(order_params)
-      redirect_back(fallback_location: order_path(@order),notice: "Order Updated Successfully.")
-    else
-      redirect_to request.referrer
-      @order.errors.each do |error|
-        flash[:alert] = @order.errors.full_messages.map {|message| message}
+    respond_to do |format|
+      if @order.update(order_params)
+        format.html { redirect_to @order, notice: "Order Updated successfully." }
+        format.json { render :show, status: :created, location: @order }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
   end
