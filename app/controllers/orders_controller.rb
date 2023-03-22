@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
   # before_action :check_read_write, only: %i[ new, create ]
   # before_action :check_read_write, only: %i[ new, edit, create , update]
-  before_action :set_order, only: %i[ show destroy ]
+  # before_action :set_order, only: %i[ show destroy ]
   before_action :set_search_params, only: %i[ all_orders]
   before_action :set_pagination_params, only: %i[ all_orders ]
   helper_method :sort_option, :sort_direction
@@ -148,29 +148,42 @@ class OrdersController < ApplicationController
     end
   end
 
+  ################################################
+  ################################################
+  ################################################
+  ################################################
+  # # GET /orders/1 or /orders/1.json
+  # def show
+  #   set_order
+  #   load_resource_files
+  #
+  #   resource_attrs = {
+  #     called_at: Time.now,
+  #     user: current_user,
+  #     target: @order,
+  #     parent_class: Order,
+  #     parent_action: 'show',
+  #     controller_name: 'orders',
+  #     controller_action: 'show',
+  #     controller_name_and_action: 'orders#show',
+  #     search_query: @query,
+  #     sort_option: sort_option,
+  #     sort_direction: sort_direction,
+  #     page: @page
+  #   }
+  #
+  #   @new_order = Order.new
+  #   order ||= @order
+  #   @new_order_content = @new_order != nil ? @new_order.build_order_content : OrderContent.new
+  # end
+  ################################################
   # GET /orders/1 or /orders/1.json
   def show
-    load_resource_files
-
-    resource_attrs = {
-      called_at: Time.now,
-      user: current_user,
-      target: @order,
-      parent_class: Order,
-      parent_action: 'show',
-      controller_name: 'orders',
-      controller_action: 'show',
-      controller_name_and_action: 'orders#show',
-      search_query: @query,
-      sort_option: sort_option,
-      sort_direction: sort_direction,
-      page: @page
-    }
-
-    @new_order = Order.new
-    order ||= @order
-    @new_order_content = @new_order != nil ? @new_order.build_order_content : OrderContent.new
+    @order = Order.find params[:id]
   end
+  ################################################
+  ################################################
+  ################################################
 
   # GET /orders/new
   def new
@@ -238,6 +251,8 @@ class OrdersController < ApplicationController
 
   # DELETE /orders/1 or /orders/1.json
   def destroy
+    @order = Order.find params[:id]
+    
     @order.destroy
     respond_to do |format|
       format.html { redirect_to orders_url, notice: "Order deleted successfully." }

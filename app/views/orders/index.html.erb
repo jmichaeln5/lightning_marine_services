@@ -468,7 +468,8 @@ cached: false %>
                 </div>
 
                 <div class="table-row-group">
-                  <%= render @orders %>
+                  <%#= render @orders %>
+                  <%= render partial: "/orders/row", collection: @orders, as: :order %>
                 </div>
 
               </div>
