@@ -14,7 +14,7 @@
     <%#= order.dept.present? ? order.dept : '' %>
   </div> -->
   <div class="<%= secondary_col_css_classes %> h-full group">
-    <%= order.dept if order.dept.present? %>
+    <%= order.dept %>
 
     <% if order.dept.present? %>
       <br>

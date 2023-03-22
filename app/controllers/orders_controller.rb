@@ -78,22 +78,19 @@ class OrdersController < ApplicationController
   #   end
   # end
   def index
-    # # orders = Order.where(archived: false)
-    # orders = Order.unarchived
-    # orders = Order.where(archived: false).includes(:purchaser, :vendor)
-    orders = Order.unarchived.includes(:purchaser, :vendor, :order_content)
+    orders = Order.unarchived
 
     if params[:query].present?
       query_str = params[:query]
       # results = orders.search(query_str).results
-      results = orders.search(query_str, misspellings: {below: 5}).results
+      results = orders.search(query_str, misspellings: {below: 3}).results
       results_arr = Array.new
       results.each do |result|
         results_arr << result.id if (result.archived? == false)
       end
-      orders = nil
-      orders = Order.unarchived.reorder('id ASC')
+      # orders = nil
       @orders = nil
+      orders = Order.unarchived.reorder('id ASC')
       orders = orders.where(id: results_arr)
     end
 
@@ -101,14 +98,12 @@ class OrdersController < ApplicationController
       sort_col = %w{ id dept date_recieved courrier date_delivered }.include?(params[:sort]) ? params[:sort] : "id"
       sort_dir = %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
 
-      if ((params[:sort] == "ship_name") || ( params[:sort] == "vendor_name" ))
-        clear_active_record_query_cache
-
+      if ((params[:sort] == "ship_name") || ( params[:sort] == "vendor_name" )) # None Order col
         sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "ship_name"
         sorted_orders = Order.where(id: orders.ids).filter_by_vendors(sort_dir) if params[:sort] == "vendor_name"
-
         sorted_orders_ids = sorted_orders.ids
         sorted_orders_ids_arr = Array.new
+
         sorted_orders_ids.each do |order_id|
           sorted_orders_ids_arr << order_id
         end
@@ -119,15 +114,17 @@ class OrdersController < ApplicationController
             ELSE #{sorted_orders_ids_arr.length}
           END
         SQL
-        newly_sorted_orders = Order.unarchived.where(id: sorted_orders_ids_arr).order(Arel.sql(order_query))
-        @orders = nil
-        orders = nil
+
+        newly_sorted_orders = Order.where(id: sorted_orders_ids_arr).order(Arel.sql(order_query))
+        clear_active_record_query_cache
       end
 
-      if ((params[:sort] != "ship_name") && ( params[:sort] != "vendor_name" ))
+      if ((params[:sort] != "ship_name") && ( params[:sort] != "vendor_name" )) # Order col
         newly_sorted_orders = orders.reorder(sort_col => sort_dir)
       end
 
+      @orders = nil
+      orders = nil
       orders = newly_sorted_orders
     end
 
