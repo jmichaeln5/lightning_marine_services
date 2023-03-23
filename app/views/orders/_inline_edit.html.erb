@@ -1,0 +1,19 @@
+<% frame_id = dom_id(model, "#{attribute}_turbo_frame") %>
+<%= form_with model: model, class: "contents", data: { turbo_frame: frame_id } do |form| %>
+
+  <%= turbo_frame_tag frame_id, class:"inline-edit" do %>
+    <div>
+      <%= yield %>
+    </div>
+
+    <div>
+      <%= link_to edit_order_path(model), class: "inline-edit" do  %>
+        <span class="ml-1 text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
+          <%= "Edit" if model.send(attribute).present? %>
+          <%= "Add" if !model.send(attribute).present? %>
+        </span>
+      <% end %>
+    </div>
+
+  <% end %>
+<% end %>

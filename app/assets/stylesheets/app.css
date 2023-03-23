@@ -6,3 +6,12 @@ a {
 a:hover {
   text-decoration: none;
 }
+
+
+.inline-action {
+  display: none;
+}
+
+.inline-edit .inline-action {
+  display: initial;
+}

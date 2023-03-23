@@ -258,6 +258,8 @@
     <div class="overflow-hidden bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:px-6">
         <span>
+
+
           <div class="my-3 mt-2 flex rounded-md shadow-sm">
             <span class="hover:cursor-default inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Boxes</span>
             <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -266,6 +268,9 @@
               </span>
             </div>
           </div>
+
+
+
           <div class="my-3 mt-2 flex rounded-md shadow-sm">
             <span class="hover:cursor-default inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Crates</span>
             <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -274,6 +279,8 @@
               </span>
             </div>
           </div>
+
+
           <div class="my-3 mt-2 flex rounded-md shadow-sm">
             <span class="hover:cursor-default inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Pallets</span>
             <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -282,6 +289,11 @@
               </span>
             </div>
           </div>
+
+
+
+
+
 
           <% if order.order_content.other.present? %>
 
@@ -325,99 +337,111 @@
       <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
 
 
-
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               Ship
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.purchaser.name %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :purchaser do %>
+                <%= @order.purchaser.name %>
+              <% end %>
+            </div>
           </div>
         </div>
 
-
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               Vendor
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.vendor.name %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :vendor do %>
+                <%= @order.vendor.name %>
+              <% end %>
+            </div>
           </div>
         </div>
 
 
+
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               PO Number
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.po_number.present? ? order.po_number : 'n/a' %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :po_number do %>
+                <%= @order.po_number %>
+              <% end %>
+            </div>
           </div>
         </div>
 
-
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               Tracking Number
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.tracking_number.present? ? order.tracking_number : 'n/a' %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :tracking_number do %>
+                <%= @order.tracking_number %>
+              <% end %>
+            </div>
           </div>
         </div>
 
 
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               Date Recieved
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :date_recieved do %>
+                <%= @order.try(:date_recieved) ? @order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+              <% end %>
+            </div>
           </div>
         </div>
 
-
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               Date Delivered
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :date_delivered do %>
+                <%= @order.try(:date_delivered) ? @order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+              <% end %>
+            </div>
           </div>
         </div>
 
 
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               Courrier
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.courrier || "n/a" %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :courrier do %>
+                <%= @order.courrier %>
+              <% end %>
+            </div>
           </div>
         </div>
 
-
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
-            <dt class="text-sm font-medium text-gray-500">
+            <div class="text-sm font-medium text-gray-500">
               Dept
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900">
-              <%= order.dept.present? ? order.dept : 'n/a' %>
-            </dd>
+            </div>
+            <div class="text-sm text-gray-900">
+              <%= render "inline_edit", model: @order, attribute: :dept do %>
+                <%= @order.dept %>
+              <% end %>
+            </div>
           </div>
         </div>
 
@@ -442,7 +466,9 @@
                           <span class="ml-2 w-0 flex-1 text-red-600 truncate"> <%= "ERROR: #{image.blob.filename}" %> </span>
                         </div>
                         <div class="ml-4 flex-shrink">
-                          <%= link_to "Remove - placeholder", rails_blob_path(image, disposition: :attachment), class:" mx-2 font-medium text-red-600 hover:text-red-700" %>
+
+                          <%= link_to "Remove - placeholder", rails_blob_path(image, disposition: :attachment), class:" mx-2 font-medium text-pink-600 hover:text-red-700" %>
+
                           <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:" mx-2 font-medium text-indigo-600 hover:text-indigo-500" %>
                         </div>
                       </div>
@@ -463,8 +489,12 @@
                             <button data-action="click->reveal#toggle" type="button" class="mx-2">
                               Preview
                             </button>
+
                             <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"mx-2 font-medium text-indigo-600 hover:text-indigo-500" if image.variable? %>
-                            <%= link_to "Remove - placeholder", dashboard_path, class:" mx-2 font-medium text-red-600 hover:text-red-700" %>
+
+
+
+                            <%= link_to "Delete", order_attachment_destroy_attachment_path(@order, image), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this attachment? Once deleted it cannot be recovered." }, class:"mx-2 font-medium text-red-600 hover:text-red-700" if current_user.has_role?('admin') || current_user.has_role?('staff') %>
 
                           </div>
                       </div>
