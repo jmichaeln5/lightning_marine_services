@@ -33,7 +33,23 @@ def create_orders(orders_to_create)
       archived:  archived_options.sample
     )
 
-    order.dept = "#{Faker::Job.field}" if [true, false].sample == true
+    # order.dept = "#{Faker::Job.field}" if [true, false].sample == true
+    if [true, false, false].sample == true
+      rand_order_depts = ["deck", "hull", "nav bridge", "bridge", "cargo hood", "forecastle", "upper hold", "upper deck", "main deck", "derrick", "deckhouse", "3 hold", "chain locker"]
+
+      rand_order_depts_arr = []
+      rand_order_depts.each do |dept|
+        dept = dept.capitalize if [true, false].sample
+        dept = dept.upcase if [true, true, false].sample
+        rand_order_depts_arr << dept
+      end
+      rand_order_depts = rand_order_depts_arr
+
+      order.dept = rand_order_depts.sample
+    end
+
+
+
     order.date_delivered = "#{order_delivery_date.strftime("%Y-%m-%d")}" if [true, false].sample == true
 
     def return_false_by_odds(amount)
