@@ -11,3 +11,5 @@ end
 
 rand_amount = rand(30..50)
 create_purchasers(rand_amount)
+
+Purchaser.reindex

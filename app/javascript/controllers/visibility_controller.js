@@ -21,7 +21,7 @@ export default class extends Controller {
   };
 
   showTargets() {
-    console.log("visibility#showTargets()")
+    // console.log("visibility#showTargets()")
     this.hideableTargets.forEach(el => {
       el.hidden = false
     })
@@ -29,7 +29,7 @@ export default class extends Controller {
   };
 
   hideTargets() {
-    console.log("visibility#hideTargets()")
+    // console.log("visibility#hideTargets()")
     this.hideableTargets.forEach(el => {
       el.hidden = true
     })
@@ -37,7 +37,7 @@ export default class extends Controller {
   };
 
   toggleTargets() {
-    console.log("visibility#toggleTargets()")
+    // console.log("visibility#toggleTargets()")
     this.toggledValue = !this.toggledValue
 
     this.hideableTargets.forEach((el) => {
