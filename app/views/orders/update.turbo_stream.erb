@@ -1,5 +1,0 @@
-<%= turbo_stream.replace dom_id(@order),
-  partial: "/orders/row",
-  locals: {
-    order: @order,
-  } if request.variant == [:turbo_frame] %>

@@ -259,12 +259,25 @@ class OrdersController < ApplicationController
   #   end
   # end
   def update
-    @order = Order.find(params[:id])
-    #logic to default number
-    #@order.order_sequence = @order.sequence
+    set_order
     respond_to do |format|
       if @order.update(order_params)
-        format.turbo_stream if !(request.path == order_path(@order))
+
+        if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+          format.turbo_stream {
+            render turbo_stream: [
+              turbo_stream.replace(
+                "order_#{@order.id}",
+                partial: "/orders/row",
+                locals: {
+                  order: @order,
+                }
+              ),
+            ],
+            status: :ok
+          }
+        end
+
         format.html { redirect_to @order, notice: "Order updated successfully." }
         format.json { render :show, status: :ok, location: @order }
       else
@@ -296,7 +309,7 @@ class OrdersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
-      @order_content = @order.order_content
+      # @order_content = @order.order_content
     end
 
     # def order_params
