@@ -6,7 +6,6 @@ class Order < ApplicationRecord
   belongs_to :vendor
   has_many_attached :images
   has_one :order_content, dependent: :destroy
-
   accepts_nested_attributes_for :order_content
 
   scope :archived, -> { where(archived: true) }
@@ -127,6 +126,8 @@ class Order < ApplicationRecord
   end
 
   def order_content_exists?
+    self.errors.add(:order_content,  "missing" ) if !self.order_content
+
     blank_attrs_count = 0
     blank_attrs_count +=1 if self.order_content.box.blank?
     blank_attrs_count +=1 if self.order_content.crate.blank?

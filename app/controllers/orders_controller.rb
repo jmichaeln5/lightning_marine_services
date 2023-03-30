@@ -88,7 +88,6 @@ class OrdersController < ApplicationController
       results.each do |result|
         results_arr << result.id if (result.archived? == false)
       end
-      # orders = nil
       @orders = nil
       orders = Order.unarchived.reorder('id ASC')
       orders = orders.where(id: results_arr)
@@ -191,35 +190,58 @@ class OrdersController < ApplicationController
 
     @order = Order.new
     @order.build_order_content
-    # # @order_content = @order.order_content
   end
 
   # GET /orders/1/edit
   def edit
-    check_read_write
-
+    # check_read_write
     @order = Order.find(params[:id])
     @order.build_order_content if @order.order_content.nil?
   end
 
+  # def create
+  #   check_read_write
+  #   @order = Order.new(order_params)
+  #
+  #   respond_to do |format|
+  #     if @order.save
+  #       format.html { redirect_to @order, notice: "Order was successfully created." }
+  #       # format.html { redirect_to order_path(@order), notice: "Order was successfully created." }
+  #       format.json { render :show, status: :created, location: @order }
+  #     else
+  #       format.html { render :new, status: :unprocessable_entity }
+  #       format.json { render json: @order.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
   def create
-    check_read_write
+  @order = Order.new(order_params)
 
-    @order = Order.new(order_params)
-
-    respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: "Order was successfully created." }
-        # format.html { redirect_to order_path(@order), notice: "Order was successfully created." }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
+  respond_to do |format|
+    if @order.save
+      format.html { redirect_to @order, notice: "Order was successfully created." }
+      format.json { render :show, status: :created, location: @order }
+    else
+      format.turbo_stream {
+        render turbo_stream: [
+          turbo_stream.replace(
+            'modal_form',
+            partial: "/orders/modal_form",
+            locals: {
+              order: @order,
+            }
+          ),
+        ],
+        status: :unprocessable_entity
+      }
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @order.errors, status: :unprocessable_entity }
     end
   end
+end
 
   # def update
+  #   check_read_write
   #   @order = Order.find(params[:id])
   #   #logic to default number
   #   #@order.order_sequence = @order.sequence
@@ -234,14 +256,28 @@ class OrdersController < ApplicationController
   #   end
   # end
   def update
-    check_read_write
     @order = Order.find(params[:id])
     #logic to default number
     #@order.order_sequence = @order.sequence
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: "Order Updated successfully." }
-        format.json { render :show, status: :created, location: @order }
+
+        if !request.referer.include? @order.id.to_s  # if request not from order_path
+          format.turbo_stream {
+            render turbo_stream: [
+              turbo_stream.replace(
+                "order_#{@order.id}",
+                partial: "/orders/row",
+                locals: {
+                  order: @order,
+                }
+              ),
+            ],
+            status: :ok
+          }
+        end
+        format.html { redirect_to @order, notice: "Order updated successfully." }
+        format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -255,6 +291,7 @@ class OrdersController < ApplicationController
 
     @order.destroy
     respond_to do |format|
+      format.turbo_stream
       format.html { redirect_to orders_url, notice: "Order deleted successfully." }
       format.json { head :no_content }
     end

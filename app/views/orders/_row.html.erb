@@ -4,6 +4,13 @@
 
   <% secondary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-500 cursor-default align-middle text-center" %>
 
+  <% if current_user_is_admin_or_staff? %>
+    <div class="<%= primary_col_css_classes %>">
+       <%= button_to "edit", edit_order_path(order), method: :get, form: {"data-type": "turbo_stream" },  data: { turbo_frame: "modal" }, class:'text-indigo-600 hover:text-indigo-800 hover:cursor-pointer'%>
+      <!-- <input type="checkbox" name="" value=""> -->
+    </div>
+  <% end %>
+
   <div class="<%= primary_col_css_classes %>">
     <%= link_to order.id, order, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
   </div>

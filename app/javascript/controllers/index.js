@@ -10,5 +10,8 @@ application.register("hello", HelloController)
 import OrdersBulkController from "./orders_bulk_controller"
 application.register("orders-bulk", OrdersBulkController)
 
+import TurboModalController from "./turbo_modal_controller"
+application.register("turbo-modal", TurboModalController)
+
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)

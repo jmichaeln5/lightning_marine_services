@@ -28,6 +28,23 @@ module ApplicationHelper
     return content_tag( :span, kurrent_user_badge[0], class:"inline-flex items-center rounded-full #{kurrent_user_badge[1]} px-3 py-1 text-xs font-medium text-gray-800")
   end
 
+  def current_user_is_admin_or_staff?
+    return false unless current_user
+
+    return true if current_user.has_role?('staff')
+    return true if current_user.has_role?('admin')
+    return false
+  end
+
+  def current_user_is_customer?
+    return false unless current_user
+
+    return true if current_user.has_role?('customer')
+    # return true if current_user.has_role?('staff')
+    # return true if current_user.has_role?('admin')
+    # return false
+    current_user_is_admin_or_staff?
+  end
 
   def is_nil_and_zero(data)
      data.blank? || data == 0

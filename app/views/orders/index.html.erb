@@ -273,6 +273,15 @@ cached: false %>
     </div>
   </div> -->
 
+
+  <%#= render partial: "/layouts/stacked_shell/modal" %>
+  <%#= render "/layouts/stacked_shell/modal", modal_title: "New Order" do %>
+    <%# new_order = Order.new %>
+    <%# new_order.build_order_content %>
+    <%#= render '/orders/modal_form', order: new_order %>
+  <%# end %>
+
+
   <div data-controller="reveal" data-reveal-hidden-class="hidden">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
       <div class="sm:flex-auto">
@@ -375,8 +384,18 @@ cached: false %>
 
                 <% sort_link_to_tc_css_classes = "text-indigo-800 hover:text-indigo-900 hover:underline" %>
 
-                <div class="table-header-group sticky top-0 z-10 backdrop-blur backdrop-filter hover:cursor-default">
+                <div class="table-header-group sticky top-0 backdrop-blur backdrop-filter hover:cursor-default">
                   <div class="table-row">
+
+
+                    <% if current_user_is_admin_or_staff? %>
+                      <!-- placeholder for table col -->
+                      <div class="<%= tc_css_classes %>">
+                        <%= content_tag(:p, "", class:"text-center" ) %>
+                      </div>
+                    <% end %>
+
+
                     <div class="<%= tc_css_classes %>">
                       <div class="group inline-flex p-3">
                         <%= sort_link_to "ID", :id, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
