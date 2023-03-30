@@ -266,7 +266,8 @@ end
     respond_to do |format|
       if @order.update(order_params)
 
-        if request.variant == [:turbo_frame]  # replaces "order_#{@order.id" on #index + #show # should only upd8 + replace on #shoow
+        # if request.variant == [:turbo_frame]  # replaces "order_#{@order.id" on #index + #show # should only upd8 + replace on #shoow
+          if ((request.variant == [:turbo_frame] )&& !(request.path.include? @order.id.to_s)) # need a better solution
           format.turbo_stream {
             render turbo_stream: [
               # turbo_stream.replace(
