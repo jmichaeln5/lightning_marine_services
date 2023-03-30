@@ -30,7 +30,7 @@
     <% end %>
 
   <% end %>
-  
+
 <% end %>
 
 <section>
@@ -40,16 +40,7 @@
       <div class="text-gray-900 font-medium"> Editing Order <%= @order.id %> </div>
     </div>
   </div>
-  <%#= render 'form', order: @order %>
-  <!-- ********************************************* -->
-  <!-- ********************************************* -->
-  <!-- ********************************************* -->
-  <!-- NOTE  -->
-  <!-- FORM WILL AUTOMATICALLY BE FORMATTED AS TURBO_STREAM IF CALLED FROM TURBO_FRAME -->
-  <!-- https://tailwindui.com/components/application-ui/forms/form-layouts#component-30dffb06e58cdbe872820ed3f943d85a -->
-  <!-- ********************************************* -->
-  <!-- ********************************************* -->
-  <!-- ********************************************* -->
+
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="rounded-md bg-white">
       <div class="flex-1 mt-4 md:mt-6 pb-8">
@@ -61,11 +52,6 @@
               <% if form.object.errors.any? %>
                 <div class="rounded-md bg-red-100 p-4" id="msg-container">
                   <div class="flex">
-                    <!-- <div class="flex-shrink-0">
-                      <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-                      </svg>
-                    </div> -->
                     <div class="ml-3">
                       <h3 class="text-sm font-medium text-red-800">
                         There was <%= pluralize(form.object.errors.count, "error") %> with your submission
@@ -117,16 +103,6 @@
 
 
                   <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-
-
-
-                    <!-- <div class="sm:col-span-3">
-                      <%#= form.label 'Ship', class:"block text-sm font-medium leading-6 text-gray-900" %>
-                      <div class="mt-2">
-                        <%#= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
-                      </div>
-                    </div> -->
-
                     <div class="sm:col-span-3">
                       <%= form.label 'Ship', class:"block text-sm font-medium leading-6 text-gray-900" %>
                       <div class="mt-2">
@@ -224,12 +200,6 @@
                         <% end %>
                       </div>
                     </div>
-
-
-
-
-
-
 
                     <div class="inline-flex sm:col-span-6 -mb-6 hover:cursor-default">
                       <div class="my-3 w-full relative">

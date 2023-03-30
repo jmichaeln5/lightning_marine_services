@@ -1,5 +1,4 @@
 class OrdersController < ApplicationController
- #  layout "stacked_shell", only: %i[ all_orders index show new]
  layout "stacked_shell"
 
   before_action :authenticate_user!
@@ -215,34 +214,34 @@ class OrdersController < ApplicationController
   #   end
   # end
   def create
-  @order = Order.new(order_params)
+    @order = Order.new(order_params)
 
-  respond_to do |format|
-    if @order.save
-      format.html { redirect_to @order, notice: "Order was successfully created." }
-      format.json { render :show, status: :created, location: @order }
-    else
+    respond_to do |format|
+      if @order.save
+        format.html { redirect_to @order, notice: "Order was successfully created." }
+        format.json { render :show, status: :created, location: @order }
+      else
 
-      if request.variant == [:turbo_frame]
-      format.turbo_stream {
-        render turbo_stream: [
-          turbo_stream.replace(
-            'modal_form',
-            partial: "/orders/modal_form",
-            locals: {
-              order: @order,
-            }
-          ),
-        ],
-        status: :unprocessable_entity
-      }
+        if request.variant == [:turbo_frame]
+          format.turbo_stream {
+            render turbo_stream: [
+              turbo_stream.replace(
+                'modal_form',
+                partial: "/orders/modal_form",
+                locals: {
+                  order: @order,
+                }
+              ),
+            ],
+            status: :unprocessable_entity
+          }
+        end
+
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
       end
-
-      format.html { render :new, status: :unprocessable_entity }
-      format.json { render json: @order.errors, status: :unprocessable_entity }
     end
   end
-end
 
   # def update
   #   check_read_write
@@ -265,23 +264,7 @@ end
     #@order.order_sequence = @order.sequence
     respond_to do |format|
       if @order.update(order_params)
-
-        # if request.variant == [:turbo_frame]  # replaces "order_#{@order.id" on #index + #show # should only upd8 + replace on #shoow
-          if ((request.variant == [:turbo_frame] )&& !(request.path.include? @order.id.to_s)) # need a better solution
-          format.turbo_stream {
-            render turbo_stream: [
-              # turbo_stream.replace(
-              turbo_stream.replace(
-                "order_#{@order.id}",
-                partial: "/orders/row",
-                locals: {
-                  order: @order,
-                }
-              ),
-            ],
-            status: :ok
-          }
-        end
+        format.turbo_stream if !(request.path == order_path(@order))
         format.html { redirect_to @order, notice: "Order updated successfully." }
         format.json { render :show, status: :ok, location: @order }
       else
