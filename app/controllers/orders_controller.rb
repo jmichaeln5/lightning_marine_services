@@ -222,6 +222,8 @@ class OrdersController < ApplicationController
       format.html { redirect_to @order, notice: "Order was successfully created." }
       format.json { render :show, status: :created, location: @order }
     else
+
+      if request.variant == [:turbo_frame]
       format.turbo_stream {
         render turbo_stream: [
           turbo_stream.replace(
@@ -234,6 +236,8 @@ class OrdersController < ApplicationController
         ],
         status: :unprocessable_entity
       }
+      end
+
       format.html { render :new, status: :unprocessable_entity }
       format.json { render json: @order.errors, status: :unprocessable_entity }
     end
@@ -262,9 +266,10 @@ end
     respond_to do |format|
       if @order.update(order_params)
 
-        if request.variant == [:turbo_frame]
+        if request.variant == [:turbo_frame]  # replaces "order_#{@order.id" on #index + #show # should only upd8 + replace on #shoow
           format.turbo_stream {
             render turbo_stream: [
+              # turbo_stream.replace(
               turbo_stream.replace(
                 "order_#{@order.id}",
                 partial: "/orders/row",
