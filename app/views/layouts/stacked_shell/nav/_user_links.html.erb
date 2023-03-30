@@ -9,7 +9,7 @@
   </div>
 
   <%= link_to "Admin Dashboard", admin_users_path, class: user_links_css_classes if current_user.has_role? :admin %>
-  <%= link_to "App Service Links", directory_links_path, class: user_links_css_classes if current_user.has_role? :admin %>
+  <%#= link_to "App Service Links", directory_links_path, class: user_links_css_classes if current_user.has_role? :admin %>
 
   <%= link_to "Account Settings", edit_user_registration_path, class: user_links_css_classes_current if current_page?(edit_user_registration_path) %>
   <%= link_to "Account Settings", edit_user_registration_path, class: user_links_css_classes if !current_page?(edit_user_registration_path) %>
