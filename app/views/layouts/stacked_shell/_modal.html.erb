@@ -1,31 +1,33 @@
-<!-- <div id="modal" data-controller="visibility" data-visibility-value-toggled="true" aria-labelledby="modal-title" role="dialog" aria-modal="true" class="fixed relative z-10"> -->
 <div id="stacked_shell_modal" data-controller="visibility" data-visibility-value-toggled="true" aria-labelledby="modal-title" role="dialog" aria-modal="true" class="fixed relative z-10">
-
-
-  <!-- placeholder for background -->
   <div data-action="turbo-modal#hideModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">
+    <!-- placeholder for background -->
   </div>
-
   <div class="fixed inset-0 z-10 overflow-y-auto">
     <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
       <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-        <div class="h-full w-full block mb-1">
-          <div class="flex justify-between">
-            <div class="text-xl">
-              <%= modal_title %>
-            </div>
-            <div>
-              <button type="button"  data-action="turbo-modal#hideModal" class="rounded-md ring-offset-2 ring-1 ring-current text-gray-400  hover:text-gray-600 hover:ring-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
-                  <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                </svg>
-              </button>
+        <span>
+          <div class="h-full w-full block mb-1">
+            <div class="border-b  border-gray-200">
+              <div class="mb-3 flex justify-between">
+                <div class="text-xl">
+                  <%= modal_title %>
+                </div>
+                <div>
+                  <button type="button"  data-action="turbo-modal#hideModal" class="rounded-md ring-offset-2 ring-1 ring-current text-gray-400  hover:text-gray-600 hover:ring-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
+                      <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <%= yield %>
-        </div>
+        </span>
+        <span>
+          <div>
+            <%= yield %>
+          </div>
+        </span>
       </div>
     </div>
   </div>

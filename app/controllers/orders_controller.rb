@@ -262,7 +262,7 @@ end
     respond_to do |format|
       if @order.update(order_params)
 
-        if !request.referer.include? @order.id.to_s  # if request not from order_path
+        if request.variant == [:turbo_frame]
           format.turbo_stream {
             render turbo_stream: [
               turbo_stream.replace(

@@ -1,30 +1,31 @@
 <span class="add-order-button-html">
-  <!-- <%#= link_to new_order_path do %>
-    <span class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
-      <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
-      <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
-      <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
-        <span class="tracking-wide"> Add Order - html </span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-2 ml-1 w-6 h-6 font-extrabold">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
+  <% if current_user_is_admin_or_staff? %>
+    <!-- <%#= link_to new_order_path do %>
+      <span class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
+        <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+        <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+        <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
+          <span class="tracking-wide"> Add Order - html </span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-2 ml-1 w-6 h-6 font-extrabold">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </span>
+        <span class="absolute inset-0 border-2 border-white rounded-full"></span>
       </span>
-      <span class="absolute inset-0 border-2 border-white rounded-full"></span>
-    </span>
-  <%# end %> -->
-  <%= link_to new_order_path, data: {turbo_frame: "modal"} do %>
-    <span class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
-      <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
-      <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
-      <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
-        <!-- <span class="tracking-wide"> Add Order - turbo </span> -->
-        <span class="tracking-wide"> Add Order </span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-2 ml-1 w-6 h-6 font-extrabold">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
+    <%# end %> -->
+    <%= link_to new_order_path, data: {turbo_frame: "modal"} do %>
+      <span class="scale-90 relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-bold rounded-full group">
+        <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+        <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+        <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900 inline-flex">
+          <!-- <span class="tracking-wide"> Add Order - turbo </span> -->
+          <span class="tracking-wide"> Add Order </span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-2 ml-1 w-6 h-6 font-extrabold">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </span>
+        <span class="absolute inset-0 border-2 border-white rounded-full"></span>
       </span>
-      <span class="absolute inset-0 border-2 border-white rounded-full"></span>
-    </span>
+    <% end %>
   <% end %>
-
 </span>

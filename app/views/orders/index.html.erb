@@ -388,12 +388,14 @@ cached: false %>
                   <div class="table-row">
 
 
+
                     <% if current_user_is_admin_or_staff? %>
-                      <!-- placeholder for table col -->
-                      <div class="<%= tc_css_classes %>">
-                        <%= content_tag(:p, "", class:"text-center" ) %>
-                      </div>
+                    <!-- placeholder for table col -->
+                    <div class="<%= tc_css_classes %>">
+                      <%= content_tag(:p, "", class:"text-center" ) %>
+                    </div>
                     <% end %>
+
 
 
                     <div class="<%= tc_css_classes %>">
