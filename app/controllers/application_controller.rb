@@ -30,6 +30,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def clear_active_record_query_cache
+    puts (" \n")*5
+    puts ("*"*50 + "\n")*10
+    puts ("ApplicationController: clearing ActiveRecord query_cache \n")*5
+    puts ("*"*50 + "\n")*10
+    puts (" \n")*5
+
+    ActiveRecord::Base.connection.query_cache.clear
+  end
+
   protected
 
   def configure_permitted_parameters
