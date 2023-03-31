@@ -1,4 +1,6 @@
 class PurchasersController < ApplicationController
+  layout "stacked_shell", only: %i[ index new show ]
+
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :exclude_customer, only: %i[new edit create update destroy]
@@ -37,7 +39,7 @@ class PurchasersController < ApplicationController
     @resource = Resource::ResourceKlass.get_resource
 
     @purchaser = Purchaser.new
-    render layout: "stacked_shell"
+    # render layout: "stacked_shell"
   end
 
   # GET /purchasers/1 or /purchasers/1.json

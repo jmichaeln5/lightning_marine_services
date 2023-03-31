@@ -177,7 +177,8 @@ class OrdersController < ApplicationController
   ################################################
   # GET /orders/1 or /orders/1.json
   def show
-    @order = Order.find params[:id]
+    # @order = Order.find params[:id]
+    set_order
   end
   ################################################
   ################################################
@@ -367,16 +368,6 @@ class OrdersController < ApplicationController
 
     def set_search_params
       @query = params[:q]
-    end
-
-    def clear_active_record_query_cache
-      puts (" \n")*5
-      puts ("*"*50 + "\n")*10
-      puts ("clearing ActiveRecord query_cache \n")*5
-      puts ("*"*50 + "\n")*10
-      puts (" \n")*5
-
-      ActiveRecord::Base.connection.query_cache.clear
     end
 
 end
