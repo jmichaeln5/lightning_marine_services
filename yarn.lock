@@ -638,6 +638,13 @@ stimulus-dropdown@^2.1.0:
   dependencies:
     stimulus-use "^0.51.1"
 
+stimulus-notification@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/stimulus-notification/-/stimulus-notification-2.2.0.tgz#4e950ad90558617e4598d152b6fcd2635287a5bb"
+  integrity sha512-i1Z5IHDuMzwrRxnjqaftQcIseybouMiKfiC0aeFvoznXOo14gx7LWE5a8lssbQJQhbTcxq1RSVOKztkcmrKxng==
+  dependencies:
+    stimulus-use "^0.51.1"
+
 stimulus-reveal-controller@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/stimulus-reveal-controller/-/stimulus-reveal-controller-4.1.0.tgz#bf0fb4c2706f22d41544b5b02e2fbd794f608575"

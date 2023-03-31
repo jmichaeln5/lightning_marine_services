@@ -5,7 +5,8 @@ class OrdersController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
   # before_action :check_read_write, only: %i[ new, create ]
   # before_action :check_read_write, only: %i[ new, edit, create , update]
-  # before_action :set_order, only: %i[ show destroy ]
+  before_action :set_order, only: %i[ show destroy ]
+
   before_action :set_search_params, only: %i[ all_orders]
   before_action :set_pagination_params, only: %i[ all_orders ]
   helper_method :sort_option, :sort_direction
@@ -177,8 +178,6 @@ class OrdersController < ApplicationController
   ################################################
   # GET /orders/1 or /orders/1.json
   def show
-    # @order = Order.find params[:id]
-    set_order
   end
   ################################################
   ################################################
@@ -219,23 +218,25 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
+        format.turbo_stream {
+          render turbo_stream: [
+            turbo_stream.append(
+              'flashes',
+              partial: "/layouts/stacked_shell/flash_messages",
+              locals: {
+                flash_type: "notice",
+                flash_title: "Order created successfully",
+              }
+            ),
+          ],
+          status: :created
+        }
         format.html { redirect_to @order, notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
 
         if request.variant == [:turbo_frame]
-          format.turbo_stream {
-            render turbo_stream: [
-              turbo_stream.replace(
-                'modal_form',
-                partial: "/orders/modal_form",
-                locals: {
-                  order: @order,
-                }
-              ),
-            ],
-            status: :unprocessable_entity
-          }
+          format.turbo_stream { render turbo_stream: turbo_render_order_errors, status: :unprocessable_entity }
         end
 
         format.html { render :new, status: :unprocessable_entity }
@@ -274,14 +275,26 @@ class OrdersController < ApplicationController
                   order: @order,
                 }
               ),
+              turbo_stream.append(
+                'flashes',
+                partial: "/layouts/stacked_shell/flash_messages",
+                locals: {
+                  flash_type: "notice",
+                  flash_title: "Order #{@order.id} updated successfully",
+                }
+              ),
             ],
             status: :ok
           }
         end
-
         format.html { redirect_to @order, notice: "Order updated successfully." }
         format.json { render :show, status: :ok, location: @order }
       else
+
+        if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+          format.turbo_stream { render turbo_stream: turbo_render_order_errors, status: :unprocessable_entity }
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
@@ -310,7 +323,6 @@ class OrdersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
-      # @order_content = @order.order_content
     end
 
     # def order_params
@@ -341,6 +353,29 @@ class OrdersController < ApplicationController
           :other,
           :other_description
         ]
+      )
+    end
+
+    def turbo_render_order_errors
+      delay_value = 3000
+      flash_title = @order.errors.count > 1 ? "There were #{@order.errors.count} errors with your submission" : "There was #{@order.errors.count} error with your submission"
+      flash_description = []
+      @order.errors.each do |error|
+        flash_description << error.full_message
+        delay_value += 500
+      end
+      flash_description = flash_description.join(" + ")  if flash_description.length > 1
+      flash_description = flash_description.join  if flash_description.length == 1
+
+      turbo_stream.append(
+        'flashes',
+        partial: "/layouts/stacked_shell/flash_messages",
+        locals: {
+          delay_value: delay_value,
+          flash_type: "alert",
+          flash_title: @order.errors.count > 1 ? "There were #{@order.errors.count} errors with your submission" : "There was #{@order.errors.count} error with your submission",
+          flash_description: flash_description,
+        }
       )
     end
 
