@@ -1,22 +1,22 @@
-<% if flash[:notice]  || flash[:alert]  %>
+<!-- <%# if flash[:notice]  || flash[:alert]  %>
   <div id="msg-container">
-    <% if flash[:notice] %>
+    <%# if flash[:notice] %>
       <div class="alert text-center bg-green-200" id="notice-msg-container">
         <div class="notice text-green-600 text-3xl z-40 py-12">
-          <%= flash[:notice] %>
+          <%#= flash[:notice] %>
         </div>
       </div>
-    <% end %>
+    <%# end %>
 
-    <% if flash[:alert] %>
+    <%# if flash[:alert] %>
       <div class="alert text-center bg-red-200" id="alert-msg-container">
         <div class="alert text-red-600 text-3xl z-40 py-12">
-          <%= flash[:alert].class == String ? flash[:alert].humanize : flash[:alert].to_sentence %>
+          <%#= flash[:alert].class == String ? flash[:alert].humanize : flash[:alert].to_sentence %>
         </div>
       </div>
-    <% end %>
+    <%# end %>
   </div>
-<% end %>
+<%# end %>
 
 <script type="text/javascript">
 
@@ -32,4 +32,27 @@
     (function fade(){(msgContainer.opacity-=.1) < 0 ? msgContainer.display="none" : setTimeout(fade,500)})();
   }
 
-</script>
+</script> -->
+
+<% if flash[:notice] || flash[:alert]  %>
+  <div id="msg-container">
+    <% if flash[:notice] %>
+      <% flash_type = "notice" %>
+      <% flash_title = flash[:notice]  %>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <% flash_type = "alert" %>
+      <% flash_title = flash[:alert].humanize if flash[:alert].class == String  %>
+      <% flash_title = flash[:alert].to_sentence if flash[:alert].class != String  %>
+    <% end %>
+
+    <%= turbo_stream.append "flashes" do %>
+      <%= render partial: "/layouts/stacked_shell/flash_messages", locals: {
+        flash_type: flash_type,
+        flash_title: flash_title,
+      } %>
+    <% end %>
+
+  </div>
+<% end %>

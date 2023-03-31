@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
   # before_action :check_read_write, only: %i[ new, create ]
   # before_action :check_read_write, only: %i[ new, edit, create , update]
-  before_action :set_order, only: %i[ show destroy ]
+  before_action :set_order, only: %i[ show update destroy ]
 
   before_action :set_search_params, only: %i[ all_orders]
   before_action :set_pagination_params, only: %i[ all_orders ]
@@ -38,45 +38,6 @@ class OrdersController < ApplicationController
     @order_content = @order != nil ? @order.build_order_content : OrderContent.new
   end
 
-  # def index
-  #   load_resource_files
-  #
-  #   resource_attrs = {
-  #     called_at: Time.now,
-  #     user: current_user,
-  #     target: Order.unarchived,
-  #     parent_class: Order,
-  #     parent_action: 'index',
-  #     controller_name: 'orders',
-  #     controller_action: 'index',
-  #     controller_name_and_action: 'orders#index',
-  #     search_query: @query,
-  #     sort_option: sort_option,
-  #     sort_direction: sort_direction,
-  #     page: @page
-  #   }
-  #
-  #   @init_resource = Resource.init_resource_klass ( resource_attrs )
-  #   @resource = Resource::ResourceKlass.get_resource
-  #
-  #   @table_option = @resource.table_option
-  #   @orders = @resource.paginated_target
-  #   @order = Order.new
-  #   @order_content = @order != nil ? @order.build_order_content : OrderContent.new
-  #
-  #   respond_to do |format|
-  #     format.html
-  #     format.csv {
-  #       send_data (Order.all).to_csv,
-  #       filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
-  #       type: 'text/csv; charset=utf-8'
-  #     }
-  #     format.xls {
-  #       send_data (Order.all).to_csv,
-  #       filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
-  #     }
-  #   end
-  # end
   def index
     orders = Order.unarchived
 
@@ -147,41 +108,9 @@ class OrdersController < ApplicationController
     end
   end
 
-  ################################################
-  ################################################
-  ################################################
-  ################################################
-  # # GET /orders/1 or /orders/1.json
-  # def show
-  #   set_order
-  #   load_resource_files
-  #
-  #   resource_attrs = {
-  #     called_at: Time.now,
-  #     user: current_user,
-  #     target: @order,
-  #     parent_class: Order,
-  #     parent_action: 'show',
-  #     controller_name: 'orders',
-  #     controller_action: 'show',
-  #     controller_name_and_action: 'orders#show',
-  #     search_query: @query,
-  #     sort_option: sort_option,
-  #     sort_direction: sort_direction,
-  #     page: @page
-  #   }
-  #
-  #   @new_order = Order.new
-  #   order ||= @order
-  #   @new_order_content = @new_order != nil ? @new_order.build_order_content : OrderContent.new
-  # end
-  ################################################
   # GET /orders/1 or /orders/1.json
   def show
   end
-  ################################################
-  ################################################
-  ################################################
 
   # GET /orders/new
   def new
@@ -198,45 +127,19 @@ class OrdersController < ApplicationController
     @order.build_order_content if @order.order_content.nil?
   end
 
-  # def create
-  #   check_read_write
-  #   @order = Order.new(order_params)
-  #
-  #   respond_to do |format|
-  #     if @order.save
-  #       format.html { redirect_to @order, notice: "Order was successfully created." }
-  #       # format.html { redirect_to order_path(@order), notice: "Order was successfully created." }
-  #       format.json { render :show, status: :created, location: @order }
-  #     else
-  #       format.html { render :new, status: :unprocessable_entity }
-  #       format.json { render json: @order.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
   def create
+    #   check_read_write
     @order = Order.new(order_params)
 
     respond_to do |format|
       if @order.save
-        format.turbo_stream {
-          render turbo_stream: [
-            turbo_stream.append(
-              'flashes',
-              partial: "/layouts/stacked_shell/flash_messages",
-              locals: {
-                flash_type: "notice",
-                flash_title: "Order created successfully",
-              }
-            ),
-          ],
-          status: :created
-        }
+        format.turbo_stream { render turbo_stream: turbo_render_flash_order_notice("Order was successfully created."), status: :created }
         format.html { redirect_to @order, notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
 
         if request.variant == [:turbo_frame]
-          format.turbo_stream { render turbo_stream: turbo_render_order_errors, status: :unprocessable_entity }
+          format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
 
         format.html { render :new, status: :unprocessable_entity }
@@ -261,7 +164,6 @@ class OrdersController < ApplicationController
   #   end
   # end
   def update
-    set_order
     respond_to do |format|
       if @order.update(order_params)
 
@@ -275,14 +177,7 @@ class OrdersController < ApplicationController
                   order: @order,
                 }
               ),
-              turbo_stream.append(
-                'flashes',
-                partial: "/layouts/stacked_shell/flash_messages",
-                locals: {
-                  flash_type: "notice",
-                  flash_title: "Order #{@order.id} updated successfully",
-                }
-              ),
+              turbo_render_flash_order_notice("Order was successfully updated.")
             ],
             status: :ok
           }
@@ -292,7 +187,7 @@ class OrdersController < ApplicationController
       else
 
         if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
-          format.turbo_stream { render turbo_stream: turbo_render_order_errors, status: :unprocessable_entity }
+          format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
 
         format.html { render :edit, status: :unprocessable_entity }
@@ -303,11 +198,13 @@ class OrdersController < ApplicationController
 
   # DELETE /orders/1 or /orders/1.json
   def destroy
-    @order = Order.find params[:id]
+    # @order = Order.find params[:id]
 
     @order.destroy
     respond_to do |format|
-      format.turbo_stream
+      if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+        format.turbo_stream
+      end
       format.html { redirect_to orders_url, notice: "Order deleted successfully." }
       format.json { head :no_content }
     end
@@ -356,7 +253,18 @@ class OrdersController < ApplicationController
       )
     end
 
-    def turbo_render_order_errors
+    def turbo_render_flash_order_notice(flash_title)
+      turbo_stream.append(
+        'flashes',
+        partial: "/layouts/stacked_shell/flash_messages",
+        locals: {
+          flash_type: "notice",
+          flash_title: flash_title,
+        }
+      )
+    end
+
+    def turbo_render_flash_order_errors
       delay_value = 3000
       flash_title = @order.errors.count > 1 ? "There were #{@order.errors.count} errors with your submission" : "There was #{@order.errors.count} error with your submission"
       flash_description = []

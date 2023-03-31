@@ -1,2 +1,8 @@
 <%= turbo_stream_action_tag "remove", target:(dom_id @order) %>
 <%= turbo_stream_action_tag "remove", target:"stacked_shell_modal" %>
+<%= turbo_stream.append "flashes" do %>
+  <%= render partial: "/layouts/stacked_shell/flash_messages", locals: {
+    flash_type: "notice",
+    flash_title: "Order deleted successfully.",
+  } %>
+<% end %>

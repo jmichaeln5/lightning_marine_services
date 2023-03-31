@@ -18,7 +18,15 @@ export default class extends Controller {
     // console.log(e.detail)
     // // debugger
     if (e.detail.success) {
+      console.log("\n\ne.detail.success\ne.detail:")
+      console.log(e.detail)
+      console.log("\n\n")
       this.hideModal()
+    } else {
+      console.log("\n\n")
+      console.warn("!(e.detail.success)\ne.detail:")
+      console.warn(e.detail)
+      console.log("\n\n")
     }
   };
 
