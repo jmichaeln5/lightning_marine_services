@@ -1,5 +1,6 @@
 class PurchasersController < ApplicationController
-  layout "stacked_shell", only: %i[ index new show ]
+  # layout "stacked_shell", only: %i[ index new show ]
+  layout "stacked_shell"
 
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
@@ -103,15 +104,35 @@ class PurchasersController < ApplicationController
 
   def create
     @purchaser = Purchaser.new(purchaser_params)
-    if @purchaser.save
-      redirect_to request.referrer, notice: "Ship created successfully."
-    else
-      redirect_to request.referrer
-      @purchaser.errors.each do |error|
-        flash[:alert] = @purchaser.errors.full_messages.map {|message| message}
+
+    respond_to do |format|
+      if @purchaser.save
+        format.html { redirect_to @purchaser, notice: "Ship was successfully created." }
+        format.json { render :show, status: :created, location: @purchaser }
+      else
+
+        if request.variant == [:turbo_frame]
+          format.turbo_stream {
+            render turbo_stream: [
+              turbo_stream.replace(
+                'purchaser_form',
+                partial: "/purchasers/form",
+                locals: {
+                  purchaser: @purchaser,
+                }
+              ),
+            ],
+            status: :unprocessable_entity
+          }
+        end
+
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @purchaser.errors, status: :unprocessable_entity }
       end
     end
   end
+
+
 
   # PATCH/PUT /purchasers/1 or /purchasers/1.json
   def update

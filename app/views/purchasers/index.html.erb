@@ -19,18 +19,12 @@
 <!-- **************************************************** -->
 <!-- **************************************************** -->
 
-<% resource = @resource %>
-<% query = @query %>
-
-<% purchasers = @purchasers %>
-<% table_title = "Ships" %>
 
 <% @card_title = "Ships" %>
 
 <% content_for :header_button do %>
     <%= render partial: "/purchasers/add_purchaser_button" %>
 <% end %>
-
 
 <section id="purchasers-index-section">
   <!-- <h2 class="text-xl font-medium leading-6 text-gray-900">Overview</h2> -->
@@ -76,7 +70,7 @@
 </section>
 
 <% content_for :main_content_under do %>
-  <div data-controller="reveal" data-reveal-hidden-class="hidden">
+  <div>
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
       <div class="sm:flex-auto">
         <div class="text-center sm:text-left">
@@ -86,39 +80,16 @@
           <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of all ships.</p>
         </div>
       </div>
-      <!-- <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
-        <div data-action="click->reveal#toggle" type="button" class="table-options-button text-center sm:inline-block">
-          <div class="mr-2 relative px-4 py-2 overflow-hidden font-medium text-gray-600 bg-gray-50 border border-gray-700 rounded-lg shadow-inner group">
-            <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
-            <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
-            <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
-            <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
-            <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
-            <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
-                <span class="text-base"> Table Options </span>
-            </span>
-          </div>
-        </div>
-      </div> -->
     </div>
-    <!-- <div data-reveal-target="item" class="hidden">
-      <div class="pb-6">
-        <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-          <div class="rounded-t-md p-8 bg-green-300 text-5xl">
-            All Ships Table
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
   <div class="rounded-md bg-white">
     <div class="flex-1">
       <%= render partial: "/purchasers/remix/table", locals:{
-        table_title: table_title,
-        resource: resource,
-        query: query,
-        purchasers: purchasers,
-        purchasers_count: purchasers.count,
+        table_title: "Ships",
+        resource: @resource,
+        query: @query,
+        purchasers: @purchasers,
+        purchasers_count: @purchasers.count,
         total_purchasers_count: Purchaser.all.count,
       } %>
     </div>
