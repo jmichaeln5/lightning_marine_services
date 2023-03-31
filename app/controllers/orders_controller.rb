@@ -134,12 +134,12 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv {
+      format.csv { # give these formats a better home, shouldn't be in this controller or action
         send_data (Order.all).to_csv,
         filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
         type: 'text/csv; charset=utf-8'
       }
-      format.xls {
+      format.xls { # give these formats a better home, shouldn't be in this controller or action
         send_data (Order.all).to_csv,
         filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
       }
