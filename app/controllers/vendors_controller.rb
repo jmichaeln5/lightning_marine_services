@@ -4,6 +4,8 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
 
+  before_action :set_page_header_title
+
   before_action :set_vendor, only: %i[ show edit update destroy ]
 
   # GET /vendors or /vendors.json
@@ -68,6 +70,10 @@ class VendorsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_page_header_title
+      @card_title = "Vendors"
+    end
+
     def set_vendor
       @vendor = Vendor.find(params[:id])
     end
