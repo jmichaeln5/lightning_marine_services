@@ -1,9 +1,10 @@
-<% content_for :title, "Vendor: #{@vendor.name}" %>
-<% content_for :subtitle, "#{@vendor.orders.count}" + ' Order'.pluralize(@vendor.orders.count) %>
+<p style="color: green"><%= notice %></p>
 
-<%= render 'shared/under_header_card_options' %>
-<%#= render 'shared/new_order_on_show_modal' %>
-<%= render 'shared/top_table_header' %>
-<%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
-<%= render partial: "show" %>
-<%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>
+<%= render @vendor %>
+
+<div>
+  <%= link_to "Edit this vendor", edit_vendor_path(@vendor) %> |
+  <%= link_to "Back to vendors", vendors_path %>
+
+  <%= button_to "Destroy this vendor", @vendor, method: :delete %>
+</div>

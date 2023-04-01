@@ -1,3 +1,9 @@
-<%= render 'form', vendor: Vendor.new %>
+<h1>New vendor</h1>
 
-<%= link_to 'Back', :back %>
+<%= render "form", vendor: @vendor %>
+
+<br>
+
+<div>
+  <%= link_to "Back to vendors", vendors_path %>
+</div>

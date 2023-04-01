@@ -37,17 +37,14 @@
         </div>
 
         <!-- Page title & actions -->
-        <div id="top-level-header-wrapper" class="py-9">
-          <header id="stacked-shell-header">
-            <section id="stacked-shell-header-section">
-              <%= render partial: "layouts/stacked_shell/header", locals:{
-                card_title: @card_title,
-              } %>
-            </section>
-          </header>
+        <div id="top-level-header-wrapper" class="py-6 sm:py-12 lg:py-16 ">
+          <%= render partial: "layouts/stacked_shell/header", locals:{
+            card_title: @card_title,
+          } %>
         </div>
       </div>
-      <div class="-mt-32">
+
+      <div class="-mt-32 relative">
         <div class="rounded-md mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div class="rounded-md bg-white">
             <div id="top-level-secondary-nav-wrapper">
