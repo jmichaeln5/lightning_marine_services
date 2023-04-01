@@ -16,10 +16,13 @@
     <%= link_to vendor.id, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
   </div>
 
+
   <div class="<%= secondary_col_css_classes %> h-full group">
     <div class="text-sm text-gray-900">
       <%= render "inline_edit", model: vendor, attribute: :name do %>
-        <%= vendor.name %>
+        <%#= vendor.name %>
+        <%= link_to vendor.name, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+
       <% end %>
     </div>
   </div>

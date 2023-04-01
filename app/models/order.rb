@@ -1,12 +1,12 @@
 class Order < ApplicationRecord
-  searchkick
-  # searchkick searchable: [:name]
-
   belongs_to :purchaser
   belongs_to :vendor
   has_many_attached :images
   has_one :order_content, dependent: :destroy
   accepts_nested_attributes_for :order_content
+
+  searchkick
+  # searchkick searchable: [:name]
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }

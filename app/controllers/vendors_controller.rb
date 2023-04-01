@@ -10,11 +10,42 @@ class VendorsController < ApplicationController
 
   # GET /vendors or /vendors.json
   def index
-    # @vendors = Vendor.all
-    vendors = Vendor.all
-    @vendors ||= vendors
+    @vendors = Vendor.all
+    # vendors = Vendor.all
+    # @pagy, @vendors = pagy @vendors.reorder(sort_column => sort_direction), items: params.fetch(:count, 10)
+
+    sort_vendors if params[:sort]
     @pagy, @vendors = pagy @vendors, items: params.fetch(:count, 10)
   end
+
+  def sort_column
+    %w{ id name order_amount }.include?(params[:sort]) ? params[:sort] : "name"
+  end
+
+  def sort_direction
+    %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
+  end
+
+  def sort_vendors
+    if params[:sort] == "order_amount"
+      Vendor.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
+      @vendors = nil
+      vendors = Vendor.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
+    else
+      # vendors = @vendors.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
+      vendors = @vendors.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
+      @vendors = nil
+    end
+    clear_active_record_query_cache
+    @vendors = vendors
+  end
+
+
+
+
+
+
+
 
   # GET /vendors/1 or /vendors/1.json
   def show
@@ -59,12 +90,21 @@ class VendorsController < ApplicationController
   end
 
   # DELETE /vendors/1 or /vendors/1.json
+  # def destroy
+  #   @vendor.destroy
+  #
+  #   respond_to do |format|
+  #     format.html { redirect_to vendors_url, notice: "Vendor was successfully destroyed." }
+  #     format.json { head :no_content }
+  #   end
+  # end
   def destroy
-    @vendor.destroy
-
-    respond_to do |format|
-      format.html { redirect_to vendors_url, notice: "Vendor was successfully destroyed." }
-      format.json { head :no_content }
+    if @vendor.destroy
+      redirect_to vendors_url, notice: "#{@vendor.name}(Vendor) deleted successfully."
+    else
+      redirect_to request.referrer
+      # redirect_back fallback_location: orders_url
+      @vendor.errors.full_messages.each.map {|message| flash[:alert] = message }
     end
   end
 
