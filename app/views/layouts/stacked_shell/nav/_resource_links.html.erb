@@ -25,6 +25,10 @@
   <%= link_to "Ships", purchasers_path, class: resource_links_css_classes_current if "purchasers".in? controller_path %>
   <%= link_to "Ships", purchasers_path, class: resource_links_css_classes if !"purchasers".in? controller_path %>
 
-  <%= link_to "Vendors", vendors_path, class: resource_links_css_classes_current if current_page?(vendors_path) %>
-  <%= link_to "Vendors", vendors_path, class: resource_links_css_classes if !current_page?(vendors_path) %>
+
+  <%#= link_to "Vendors", vendors_path, class: resource_links_css_classes_current if current_page?(vendors_path) %>
+  <%#= link_to "Vendors", vendors_path, class: resource_links_css_classes if !current_page?(vendors_path) %>
+  <%= link_to "Vendors", vendors_path, class: resource_links_css_classes_current if "vendors".in? controller_path %>
+  <%= link_to "Vendors", vendors_path, class: resource_links_css_classes if !"vendors".in? controller_path %>
+
 <% end %>

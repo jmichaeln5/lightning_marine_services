@@ -8,7 +8,8 @@
            <%= content_tag(:p, "Dashboard" ) if current_page?(dashboard_path) %>
            <%= content_tag(:p, "Orders" ) if "orders".in? controller_path %>
            <%= content_tag(:p, "Ships" ) if "purchasers".in? controller_path %>
-           <%= content_tag(:p, "Vendors" ) if current_page?(vendors_path) %>
+           <%= content_tag(:p, "Vendors" ) if "vendors".in? controller_path %>
+           <%#= content_tag(:p, "Vendors" ) if current_page?(vendors_path) %>
          </button>
          <div data-visibility-target="hideable" hidden class="mt-1" id="sub-menu-1">
            <% mobile_navigation_resource_css_classes = "hover:bg-gray-50 block rounded-md py-2  text-sm leading-6 text-gray-700" %>
@@ -20,7 +21,8 @@
 
            <%= link_to "Ships", purchasers_path, class: mobile_navigation_resource_css_classes if !"purchasers".in? controller_path %>
 
-           <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes if !current_page?(vendors_path) %>
+           <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes if !"vendors".in? controller_path %>
+
          </div>
        </div>
       </div>
