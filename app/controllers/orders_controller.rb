@@ -185,8 +185,10 @@ class OrdersController < ApplicationController
         format.html { redirect_to @order, notice: "Order updated successfully." }
         format.json { render :show, status: :ok, location: @order }
       else
-
-        if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+        # if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+        #   format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
+        # end
+        if request.variant == [:turbo_frame]
           format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
 
@@ -267,6 +269,7 @@ class OrdersController < ApplicationController
     def turbo_render_flash_order_errors
       delay_value = 3000
       flash_title = @order.errors.count > 1 ? "There were #{@order.errors.count} errors with your submission" : "There was #{@order.errors.count} error with your submission"
+
       flash_description = []
       @order.errors.each do |error|
         flash_description << error.full_message
