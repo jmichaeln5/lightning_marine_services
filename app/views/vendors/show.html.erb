@@ -1,10 +1,450 @@
-<p style="color: green"><%= notice %></p>
+<!-- <p style="color: green"><%= notice %></p>
 
-<%= render @vendor %>
+<%#= render @vendor %>
 
 <div>
-  <%= link_to "Edit this vendor", edit_vendor_path(@vendor) %> |
-  <%= link_to "Back to vendors", vendors_path %>
+  <%#= link_to "Edit this vendor", edit_vendor_path(@vendor) %> |
+  <%#= link_to "Back to vendors", vendors_path %>
 
-  <%= button_to "Destroy this vendor", @vendor, method: :delete %>
-</div>
+  <%#= button_to "Destroy this vendor", @vendor, method: :delete %>
+</div> -->
+
+
+
+<% @card_title = "Vendors" %>
+
+<% content_for :header_button do %>
+  <%= link_to edit_vendor_path(@vendor) do %>
+    <span class="scale-90 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-gray-200 rounded-full shadow-md group">
+    <span class="absolute inset-0 flex items-center justify-center w-full h-full text-gray-900 duration-300 -translate-x-full bg-gray-100 group-hover:translate-x-0 ease">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+      <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+    </svg>
+    </span>
+    <span class="absolute flex items-center justify-center w-full h-full text-gray-200 transition-all duration-300 transform group-hover:translate-x-full ease">Edit vendor</span>
+    <span class="relative invisible">Edit vendor</span>
+    </span>
+  <% end %>
+<% end %>
+
+
+<section id="vendors-show-section">
+  <!-- <h2 class="text-xl font-medium leading-6 text-gray-900">Vendor</h2> -->
+  <div class="-mt-1 mb-2 flex justify-center sm:justify-start">
+    <div class="text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
+      <div class="mr-1 sm:mr-2">Overview: </div>
+      <div class="text-gray-900 font-medium"> <%= @vendor.name %> </div>
+    </div>
+  </div>
+
+
+  <div class="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <span>
+      <% content_for :vendor_icon do %>
+        <div class="flex space-x-1">
+          <?xml version="1.0" encoding="iso-8859-1"?>
+          <svg fill="#9CA3AF" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 501.6 501.6" class="text-gray-400" xml:space="preserve">
+          <g>
+            <g>
+              <path d="M498.4,330.096c-4.267-6.4-10.667-10.667-18.133-10.667H389.6v-78.933c0-11.733-9.6-21.333-21.333-21.333h-96v-33.067
+                c0-11.733-9.6-21.333-21.333-21.333h-68.267V42.096c0-11.733-9.6-21.333-21.333-21.333S140,30.362,140,42.096v122.667H71.733
+                c-11.733,0-21.333,9.6-21.333,21.333v133.333H20.533c-7.467,0-13.867,4.267-18.133,10.667c-3.2,6.4-3.2,13.867,0,20.267
+                l56.533,105.6c14.933,27.733,43.733,44.8,75.733,44.8H367.2c30.933,0,59.733-17.067,74.667-44.8l56.533-105.6
+                C502.667,343.962,502.667,336.496,498.4,330.096z M272.266,260.762H348v58.667h-75.733V260.762z M92,206.362h137.6v113.067H92
+                V206.362z M404.533,436.762c-7.467,14.933-22.4,23.467-38.4,23.467H134.666c-16,0-30.933-9.6-38.4-23.467l-40.533-74.667h389.333
+                L404.533,436.762z"/>
+            </g>
+          </g>
+          <g>
+            <g>
+              <path d="M417.333,25.029C415.2,14.362,405.6,5.829,393.866,6.895C371.466,9.029,348,11.162,325.6,9.029
+                c-6.4-1.067-13.867-2.133-21.333-3.2c-23.467-4.267-51.2-9.6-77.867,2.133c-10.667,5.333-14.933,17.067-10.667,27.733
+                c5.333,10.667,17.066,14.933,27.733,10.667c14.933-6.4,34.133-3.2,54.4,0c8.533,1.067,16,2.133,24.533,3.2
+                c7.467,1.067,16,1.067,23.467,1.067c18.133,0,36.267-2.133,53.333-2.133C409.866,46.362,418.4,36.762,417.333,25.029z"/>
+            </g>
+          </g>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v16.5M2.25 12h19.5M6.375 17.25a4.875 4.875 0 004.875-4.875V12m6.375 5.25a4.875 4.875 0 01-4.875-4.875V12m-9 8.25h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v13.5a1.5 1.5 0 001.5 1.5zm12.621-9.44c-1.409 1.41-4.242 1.061-4.242 1.061s-.349-2.833 1.06-4.242a2.25 2.25 0 013.182 3.182zM10.773 7.63c1.409 1.409 1.06 4.242 1.06 4.242S9 12.22 7.592 10.811a2.25 2.25 0 113.182-3.182z" />
+          </svg>
+        </div>
+      <% end %>
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+        card_title: "All Vendor Orders",
+        card_description: "#{@vendor.orders.unarchived.count + @vendor.orders.archived.count}",
+        card_link: (link_to "View All Vendor Orders - placeholder", vendors_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_icon: yield(:vendor_icon),
+      } %>
+    </span>
+
+    <span>
+      <% content_for :active_orders_icon do %>
+        <div class="flex space-x-1">
+          <?xml version="1.0" encoding="iso-8859-1"?>
+          <svg fill="#9CA3AF" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 501.6 501.6" class="text-gray-400" xml:space="preserve">
+          <g>
+            <g>
+              <path d="M498.4,330.096c-4.267-6.4-10.667-10.667-18.133-10.667H389.6v-78.933c0-11.733-9.6-21.333-21.333-21.333h-96v-33.067
+                c0-11.733-9.6-21.333-21.333-21.333h-68.267V42.096c0-11.733-9.6-21.333-21.333-21.333S140,30.362,140,42.096v122.667H71.733
+                c-11.733,0-21.333,9.6-21.333,21.333v133.333H20.533c-7.467,0-13.867,4.267-18.133,10.667c-3.2,6.4-3.2,13.867,0,20.267
+                l56.533,105.6c14.933,27.733,43.733,44.8,75.733,44.8H367.2c30.933,0,59.733-17.067,74.667-44.8l56.533-105.6
+                C502.667,343.962,502.667,336.496,498.4,330.096z M272.266,260.762H348v58.667h-75.733V260.762z M92,206.362h137.6v113.067H92
+                V206.362z M404.533,436.762c-7.467,14.933-22.4,23.467-38.4,23.467H134.666c-16,0-30.933-9.6-38.4-23.467l-40.533-74.667h389.333
+                L404.533,436.762z"/>
+            </g>
+          </g>
+          <g>
+            <g>
+              <path d="M417.333,25.029C415.2,14.362,405.6,5.829,393.866,6.895C371.466,9.029,348,11.162,325.6,9.029
+                c-6.4-1.067-13.867-2.133-21.333-3.2c-23.467-4.267-51.2-9.6-77.867,2.133c-10.667,5.333-14.933,17.067-10.667,27.733
+                c5.333,10.667,17.066,14.933,27.733,10.667c14.933-6.4,34.133-3.2,54.4,0c8.533,1.067,16,2.133,24.533,3.2
+                c7.467,1.067,16,1.067,23.467,1.067c18.133,0,36.267-2.133,53.333-2.133C409.866,46.362,418.4,36.762,417.333,25.029z"/>
+            </g>
+          </g>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+          </svg>
+        </div>
+
+      <% end %>
+      <div class="bg-slate-100 rounded-md ring ring-offset-4 ring-4 ring-gray-300">
+        <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+          card_title: "Active Vendor Orders",
+          card_description: @vendor.orders.unarchived.count,
+          card_link: (link_to "View Active Vendor Orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+          card_icon: yield(:active_orders_icon),
+        } %>
+      </div>
+    </span>
+
+
+    <span>
+      <% content_for :completed_vendor_orders_icon do %>
+      <div class="flex space-x-1">
+        <?xml version="1.0" encoding="iso-8859-1"?>
+        <svg fill="#9CA3AF" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 501.6 501.6" class="text-gray-400" xml:space="preserve">
+        <g>
+          <g>
+            <path d="M498.4,330.096c-4.267-6.4-10.667-10.667-18.133-10.667H389.6v-78.933c0-11.733-9.6-21.333-21.333-21.333h-96v-33.067
+              c0-11.733-9.6-21.333-21.333-21.333h-68.267V42.096c0-11.733-9.6-21.333-21.333-21.333S140,30.362,140,42.096v122.667H71.733
+              c-11.733,0-21.333,9.6-21.333,21.333v133.333H20.533c-7.467,0-13.867,4.267-18.133,10.667c-3.2,6.4-3.2,13.867,0,20.267
+              l56.533,105.6c14.933,27.733,43.733,44.8,75.733,44.8H367.2c30.933,0,59.733-17.067,74.667-44.8l56.533-105.6
+              C502.667,343.962,502.667,336.496,498.4,330.096z M272.266,260.762H348v58.667h-75.733V260.762z M92,206.362h137.6v113.067H92
+              V206.362z M404.533,436.762c-7.467,14.933-22.4,23.467-38.4,23.467H134.666c-16,0-30.933-9.6-38.4-23.467l-40.533-74.667h389.333
+              L404.533,436.762z"/>
+          </g>
+        </g>
+        <g>
+          <g>
+            <path d="M417.333,25.029C415.2,14.362,405.6,5.829,393.866,6.895C371.466,9.029,348,11.162,325.6,9.029
+              c-6.4-1.067-13.867-2.133-21.333-3.2c-23.467-4.267-51.2-9.6-77.867,2.133c-10.667,5.333-14.933,17.067-10.667,27.733
+              c5.333,10.667,17.066,14.933,27.733,10.667c14.933-6.4,34.133-3.2,54.4,0c8.533,1.067,16,2.133,24.533,3.2
+              c7.467,1.067,16,1.067,23.467,1.067c18.133,0,36.267-2.133,53.333-2.133C409.866,46.362,418.4,36.762,417.333,25.029z"/>
+          </g>
+        </g>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        </svg>
+      </div>
+      <% end %>
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+        card_title: "Completed Vendor Orders",
+        card_description: @vendor.orders.archived.count,
+        card_link: (link_to "(placeholder)View Completed Vendor Orders", root_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_icon: yield(:completed_vendor_orders_icon),
+      } %>
+    </span>
+
+
+  </div>
+</section>
+
+<!-- <%# content_for :main_content_under do %>
+  <div data-controller="reveal" data-reveal-hidden-class="hidden">
+    <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+      <div class="sm:flex-auto">
+        <div class="text-center sm:text-left">
+          <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+            <%#= @vendor.name %> Active Orders
+          </h1>
+          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of all active orders belonging to the vendor <%#= @vendor.name %>.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="rounded-md bg-white">
+    <div class="flex-1">
+      <%##= render partial: "/orders/remix/table", locals:{
+        table_title: "#{@vendor.name} Active Orders",
+        resource: @resource,
+        query: @query,
+        orders: @resource.paginated_target,
+        order_count: @resource.paginated_target.count,
+        total_order_count: @vendor.orders.unarchived.count,
+      }, cached: false %>
+    </div>
+  </div>
+
+<%# end %> -->
+
+
+
+<% content_for :main_content_under do %>
+
+  <!-- NOTE -->
+  <!-- <div class="py-12">
+    <div class="bg-red-100 p-4 text-xl text-center text-red-500">
+      Sorting works well w purchaser + vendor name BUT search still only search order model (cant search vendor/ship name) unless obvious descriptive query - possible but unlikely to lead to expected result (when searching ship/vendor name)
+    </div>
+  </div> -->
+
+  <section>
+    <div data-controller="reveal" data-reveal-hidden-class="hidden">
+      <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+        <div class="sm:flex-auto">
+          <div class="text-center sm:text-left">
+            <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+              Active Orders Table
+            </h1>
+            <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of recent orders that have not yet been completed.</p>
+          </div>
+        </div>
+        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
+          <div data-action="click->reveal#toggle" type="button" class="table-options-button text-center sm:inline-block">
+            <div class="mr-2 relative px-4 py-2 overflow-hidden font-medium text-gray-600 bg-gray-50 border border-gray-700 rounded-lg shadow-inner group">
+              <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
+              <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
+              <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+              <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+              <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
+              <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
+                  <span class="text-base"> Table Options </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-reveal-target="item" class="hidden">
+        <div class="pb-9">
+            <div class="rounded-md bg-white py-3">
+
+              <%= form_with url: "", method: :get, data: { turbo_frame: "orders", turbo_action: "advance" } do |form| %>
+                <div class="mx-3 flex flex-wrap justify-center sm:justify-between">
+                  <!-- <p class="text-sm text-gray-700">
+                    <p class="text-sm text-gray-700"> Amount per page </p> <%#= form.select :count, options_for_select([10, 25, 50, 100], selected: params[:count]), {}, { onchange: "this.form.requestSubmit()" } %>
+                    <%##= form.select :count, options_for_select([10, 25, 50, 100], selected: params[:count]), onchange: "this.form.requestSubmit()",  class: "text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50"  %>
+                    <select onchange="this.form.requestSubmit()" name="count" id="count">
+                    <option selected value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    </select>
+                  </p> -->
+                  <div class="text-gray-700 text-center sm:text-left">
+                    <p class="text-sm text-gray-700 mb-1"> Amount per page </p>
+                    <div class="relative">
+                      <select onchange="this.form.requestSubmit()" name="count" id="count" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="w-full inline-flex sm:hidden">
+                    <!-- placeholder div to ensure line break -->
+                  </div>
+                  <div>
+                    <div class="text-gray-700 mt-2 sm:mt-0 text-center sm:text-right">
+                      <p class="text-sm text-gray-700 sm:-ml-5"> Search </p>
+                      <%#= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()" %>
+                      <%= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()", class: "w-full rounded-md bg-white py-1.5 pl-3 border-0 drop-shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search' %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rounded-md bg-white">
+    <div class="flex-1">
+      <div class="pt-7 w-full px-4 sm:px-6 lg:px-8 ">
+        <%= turbo_frame_tag "orders" do %>
+          <!-- <div class="mb-7 flex-auto text-center sm:text-left">
+            <h1 class="text-3xl font-semibold leading-6 text-gray-900"> Orders </h1>
+          </div> -->
+          <div class="mb-7 flex-auto text-center sm:text-left">
+            <div class="flex justify-center space-y-3 sm:space-y-0 sm:justify-between flex-wrap">
+              <h1 class="w-full sm:w-auto text-3xl font-semibold leading-6 text-gray-900"> Orders </h1>
+              <div class="w-full sm:w-auto">
+                <div data-controller="visibility" data-visibility-value-toggled="false" class="inline-flex rounded-md shadow-sm">
+                  <button type="button" data-action="visibility#toggleTargets" class="relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-normal text-gray-600 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">Download Orders </button>
+                  <div class="relative -ml-px block">
+                    <button type="button"  data-action="visibility#toggleTargets" class="relative inline-flex items-center rounded-r-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
+                      <span class="sr-only">Open options</span>
+                      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                    <div data-visibility-target="hideable" hidden class="absolute right-0 z-10 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
+                      <div class="py-1" role="none">
+                        <%= link_to "Download as Excel", orders_path(format: :xls), class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm" %>
+                        <%= link_to "Download as CSV", orders_path(format: :csv), class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm" %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 min-w-full flex flex-wrap text-center sm:justify-between">
+            <div class="w-full sm:w-auto">
+              <p class="text-sm text-gray-700">
+                Showing
+                <span class="font-medium"><%= @pagy.from %></span>
+                to
+                <span class="font-medium"><%= @pagy.to %></span>
+                of
+                <span class="font-medium"><%= @pagy.count %> </span>
+                results
+              </p>
+            </div>
+            <div class="w-full sm:w-auto">
+              <%== pagy_nav @pagy %>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto flow-root">
+            <div class="min-w-full">
+              <div class="table min-w-full border border-slate-50">
+
+                <% tc_css_classes = "table-cell whitespace-nowrap py-3.5 pl-4 pr-3 sm:pl-6 lg:pl-8 align-middle text-center border-b border-gray-300 bg-white bg-opacity-7 text-sm font-semibold text-gray-900" %>
+
+                <% sort_link_to_tc_css_classes = "text-indigo-800 hover:text-indigo-900 hover:underline" %>
+
+                <div class="table-header-group sticky top-0 backdrop-blur backdrop-filter hover:cursor-default">
+                  <div class="table-row">
+
+                    <% if current_user_is_admin_or_staff? %>
+                      <!-- placeholder for edit th -->
+                      <div class="<%= tc_css_classes %>">
+                        <%= content_tag(:p, "", class:"text-center" ) %>
+                      </div>
+                    <% end %>
+
+                    <div class="<%= tc_css_classes %>">
+                      <div class="group inline-flex p-3">
+                        <%= sort_link_to "ID", :id, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <!-- NOTE BEGIN -->
+                    <!-- DEPT SHOULD BE SORTABLE -->
+                    <!--
+                    <div class="<%#= tc_css_classes %>">
+                      <div class="group inline-flex ">
+                        <%#= sort_link_to "Dept", :dept, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    -->
+                    <div class="<%= tc_css_classes %>">
+                      <%= content_tag(:p, "Dept", class:"text-center" ) %>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <div class="group inline-flex ">
+                        <%= sort_link_to "Ship", :ship_name, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <div class="group inline-flex ">
+                        <%= sort_link_to "Vendor", :vendor_name, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <%= content_tag(:p, "PO Number", class:"text-center" ) %>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <%= content_tag(:p, "Tracking Number", class:"text-center" ) %>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <div class="group inline-flex ">
+                        <%= sort_link_to "Date Recieved", :date_recieved, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <%= content_tag(:p, "Content", class:"text-center" ) %>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <div class="group inline-flex ">
+                        <%= sort_link_to "Courrier", :courrier, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="<%= tc_css_classes %>">
+                      <div class="group inline-flex ">
+                        <%= sort_link_to "Date Delivered", :date_delivered, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-row-group">
+                  <%#= render @orders %>
+                  <%= render partial: "/orders/row", collection: @orders, as: :order %>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <%== pagy_nav @pagy %>
+          </div>
+
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+<% end %>

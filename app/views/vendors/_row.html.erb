@@ -4,13 +4,13 @@
 
   <% secondary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-500 cursor-default align-middle text-center" %>
 
-  <% if current_user_is_admin_or_staff? %>
-    <div class="<%= primary_col_css_classes %>">
-      <%= link_to edit_vendor_path(vendor), data: {turbo_frame: "modal"} do %>
+  <!-- <%# if current_user_is_admin_or_staff? %>
+    <div class="<%#= primary_col_css_classes %>">
+      <%#= link_to edit_vendor_path(vendor), data: {turbo_frame: "modal"} do %>
         <span class="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer"> Edit </span>
-      <% end %>
+      <%# end %>
     </div>
-  <% end %>
+  <%# end %> -->
 
   <div class="<%= primary_col_css_classes %>">
     <%= link_to vendor.id, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
@@ -18,13 +18,12 @@
 
 
   <div class="<%= secondary_col_css_classes %> h-full group">
-    <div class="text-sm text-gray-900">
-      <%= render "inline_edit", model: vendor, attribute: :name do %>
-        <%#= vendor.name %>
-        <%= link_to vendor.name, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
-
-      <% end %>
-    </div>
+    <%= link_to vendor.name, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+    <!-- <div class="text-sm text-gray-900">
+      <%#= render "inline_edit", model: vendor, attribute: :name do %>
+        <%#= link_to vendor.name, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+      <%# end %>
+    </div> -->
   </div>
 
   <div class="<%= primary_col_css_classes %>">
