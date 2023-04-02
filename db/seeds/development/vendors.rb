@@ -11,4 +11,4 @@ end
 
 rand_amount = rand(30..50)
 create_vendors(rand_amount)
-Vendor.reindex
+# Vendor.reindex
