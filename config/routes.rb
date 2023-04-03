@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   resources :vendors
 
   namespace :orders do
-    resource :bulk, controller: :bulk
+    resource :bulk, controller: :bulk, only: [:destroy]
   end
 
   resources :orders

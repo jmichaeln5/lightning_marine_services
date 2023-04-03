@@ -1,6 +1,6 @@
-<% @card_title = "Ships" %>
+<% @page_heading_title = "Ships" %>
 
-<% content_for :header_button do %>
+<% content_for :page_heading_button do %>
 
   <% modified_link_to_path = :back unless (!(request.referer) || (request.referer.include? request.fullpath )) %>
   <% modified_link_to_text = "Back" unless (!(request.referer) || (request.referer.include? request.fullpath )) %>

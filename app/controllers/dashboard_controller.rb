@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_card_title
+  before_action :set_page_heading_title
 
   layout "stacked_shell"
 
@@ -15,8 +15,8 @@ class DashboardController < ApplicationController
 
   private
 
-    def set_card_title
-      @card_title = "Dashboard"
+    def set_page_heading_title
+      @page_heading_title = "Dashboard"
     end
 
 end

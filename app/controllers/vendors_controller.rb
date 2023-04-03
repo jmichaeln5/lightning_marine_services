@@ -4,15 +4,12 @@ class VendorsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
 
-  before_action :set_page_header_title
+  before_action :set_page_heading_title
   before_action :set_vendor, only: %i[ show edit update destroy ]
 
   # GET /vendors or /vendors.json
   def index
     @vendors = Vendor.all
-    # vendors = Vendor.all
-    # @pagy, @vendors = pagy @vendors.reorder(sort_column => sort_direction), items: params.fetch(:count, 10)
-
     sort_vendors if params[:sort]
     @pagy, @vendors = pagy @vendors, items: params.fetch(:count, 10)
   end
@@ -170,8 +167,8 @@ class VendorsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_page_header_title
-      @card_title = "Vendors"
+    def set_page_heading_title
+      @page_heading_title = "Vendors"
     end
 
     def set_vendor

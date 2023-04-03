@@ -5,9 +5,6 @@ module OrderParent
     after_find do |order_parent|
       establish_order_amount
     end
-    after_initialize do |order_parent|
-      establish_order_amount
-    end
 
     has_many :orders
     attribute :order_amount, :integer

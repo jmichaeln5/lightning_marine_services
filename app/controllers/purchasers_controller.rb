@@ -6,7 +6,7 @@ class PurchasersController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
   before_action :exclude_customer, only: %i[new edit create update destroy]
 
-  before_action :set_page_header_title
+  before_action :set_page_heading_title
 
   before_action :set_purchaser, only: %i[ show edit update destroy ]
   before_action :set_search_params, only: %i[ index show]
@@ -195,8 +195,8 @@ class PurchasersController < ApplicationController
       @purchaser = Purchaser.find(params[:id])
     end
 
-    def set_page_header_title
-      @card_title = "Ships"
+    def set_page_heading_title
+      @page_heading_title = "Ships"
     end
 
     # Only allow a list of trusted parameters through.

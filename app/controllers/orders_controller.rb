@@ -5,6 +5,8 @@ class OrdersController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
   # before_action :check_read_write, only: %i[ new, create ]
   # before_action :check_read_write, only: %i[ new, edit, create , update]
+
+  before_action :set_page_heading_title
   before_action :set_order, only: %i[ show update destroy ]
 
   before_action :set_search_params, only: %i[ all_orders]
@@ -102,7 +104,7 @@ class OrdersController < ApplicationController
         type: 'text/csv; charset=utf-8'
       }
       format.xls { # give these formats a better home, shouldn't be in this controller or action
-        send_data (Order.all).to_csv,
+        send_data (Order.all).to_csv, # method should be to_xls
         filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
       }
     end
@@ -253,6 +255,10 @@ class OrdersController < ApplicationController
           :other_description
         ]
       )
+    end
+
+    def set_page_heading_title
+      @page_heading_title = "Orders"
     end
 
     def turbo_render_flash_order_notice(flash_title)

@@ -1,6 +1,4 @@
-<% @card_title = "Orders" %>
-
-<% content_for :header_button do %>
+<% content_for :page_heading_button do %>
 
   <% if request.referer.nil? %>
     <%= link_to order_path(@order) do %>

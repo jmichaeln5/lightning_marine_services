@@ -20,11 +20,7 @@
 <!-- **************************************************** -->
 
 
-
-<%#= turbo_stream_action_tag "update", target: "header_title", template: %(<div id="header_title">Ships</div>) %>
-
-
-<% content_for :header_button do %>
+<% content_for :page_heading_button do %>
     <%= render partial: "/purchasers/add_purchaser_button" %>
 <% end %>
 
