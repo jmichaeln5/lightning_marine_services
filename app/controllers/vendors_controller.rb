@@ -5,7 +5,6 @@ class VendorsController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
 
   before_action :set_page_header_title
-
   before_action :set_vendor, only: %i[ show edit update destroy ]
 
   # GET /vendors or /vendors.json
@@ -40,31 +39,20 @@ class VendorsController < ApplicationController
     @vendors = vendors
   end
 
-
-
-
-
-
-
-
   # GET /vendors/1 or /vendors/1.json
   # def show
   # end
-
   def show
-    # orders = Order.unarchived
     orders = Order.unarchived.where(vendor: @vendor)
 
     if params[:query].present?
       query_str = params[:query]
-      # results = orders.search(query_str).results
       results = orders.search(query_str, misspellings: {below: 3}).results
       results_arr = Array.new
       results.each do |result|
         results_arr << result.id if (result.archived? == false)
       end
       @orders = nil
-      # orders = Order.unarchived.reorder('id ASC')
       orders = Order.unarchived.where(vendor: @vendor).reorder('id ASC')
       orders = orders.where(id: results_arr)
     end
@@ -122,9 +110,6 @@ class VendorsController < ApplicationController
       }
     end
   end
-
-
-
 
   # GET /vendors/new
   def new
