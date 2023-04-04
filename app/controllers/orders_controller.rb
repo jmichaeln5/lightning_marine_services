@@ -194,7 +194,6 @@ class OrdersController < ApplicationController
         if request.variant == [:turbo_frame]
           format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
-
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
