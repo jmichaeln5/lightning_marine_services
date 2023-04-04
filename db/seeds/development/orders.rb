@@ -87,7 +87,10 @@ def create_orders(orders_to_create)
   end
 end
 
+# rand_amount = rand(10..20)
 # rand_amount = rand(150..300)
 rand_amount = rand(300..900)
 create_orders(rand_amount)
+
+Order.search_index.delete
 Order.reindex

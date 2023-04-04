@@ -46,7 +46,8 @@ class OrdersController < ApplicationController
     if params[:query].present?
       query_str = params[:query]
       # results = orders.search(query_str).results
-      results = orders.search(query_str, misspellings: {below: 3}).results
+      # results = orders.search(query_str, misspellings: { below: 3} ).results
+      results = orders.search(query_str, misspellings: { below: 6} ).results
       results_arr = Array.new
       results.each do |result|
         results_arr << result.id if (result.archived? == false)

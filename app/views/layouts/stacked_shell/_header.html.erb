@@ -1,19 +1,37 @@
 <%= turbo_stream.update "page_heading_title", @page_heading_title unless content_for?(:page_heading_title) %>
 
-<header id="header" class="inline-black">
-  <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-    <div class="mx-3 sm:mx-0 flex flex-wrap sm:flex-wrap-no sm:shrink justify-center sm:justify-between space-x-3">
-      <div class="w-full self-center sm:self-auto sm:w-auto">
-        <h1 class="w-full text-center sm:text-left text-3xl font-bold tracking-tight text-white">
-          <div id="page_heading_title">
-            <%= yield :page_heading_title %>
-          </div>
-        </h1>
-      </div>
-      <div class="mt-3 sm:mt-0 w-full self-center sm:self-auto sm:w-auto">
-        <div class="w-full text-center sm:text-left">
-          <div id="page_heading_button">
-            <%= yield :page_heading_button %>
+<header id="header" class="w-full">
+  <%# Navigation %>
+  <div id="top-level-nav-wrapper">
+    <section id="stacked-shell-nav-section">
+      <% tmp_search_input_placeholder_text = "Search" %>
+      <%= render partial: "layouts/stacked_shell/nav", locals:{
+        search_input_placeholder_text: tmp_search_input_placeholder_text,
+      } %>
+    </section>
+  </div>
+
+  <%# New flashes appended to div #flashes %>
+  <div id="flashes">
+    <%= render "shared/flash_messages" %>  <%# old flashes %>
+  </div>
+
+  <%# Page Heading - title & action btns %>
+  <div id="top-level-header-wrapper" class="py-6 sm:py-12">
+    <div id="page_header" class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div class="mx-3 sm:mx-0 flex flex-wrap sm:flex-wrap-no sm:shrink justify-center sm:justify-between space-x-3">
+        <div class="w-full self-center sm:self-auto sm:w-auto">
+          <h1 class="w-full text-center sm:text-left text-3xl font-bold tracking-tight text-white">
+            <div id="page_heading_title">
+              <%= yield :page_heading_title %>
+            </div>
+          </h1>
+        </div>
+        <div class="mt-3 sm:mt-0 w-full self-center sm:self-auto sm:w-auto">
+          <div class="w-full text-center sm:text-left">
+            <div id="page_heading_button">
+              <%= yield :page_heading_button %>
+            </div>
           </div>
         </div>
       </div>

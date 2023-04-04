@@ -5,8 +5,25 @@ class Order < ApplicationRecord
   has_one :order_content, dependent: :destroy
   accepts_nested_attributes_for :order_content
 
-  searchkick
-  # searchkick searchable: [:name]
+  attribute :purchaser_name, :string, default: ""
+  attribute :ship_name, :string, default: ""
+  attribute :vendor_name, :string, default: ""
+
+  after_initialize do |order|
+    # puts "\n\n\n ***order.rb => after_initialize !self.new_record? *** \n\n\n" if !self.new_record?
+    # puts "\n\n\n ***order.rb => after_initialize self.new_record? *** \n\n\n" if self.new_record?
+    set_virtual_attributes if !self.new_record?
+  end
+
+  def set_virtual_attributes
+    # puts "\n\n\n ***order.rb => set_virtual_attributes*** \n\n\n"
+    self.ship_name = self.purchaser.name
+    self.purchaser_name = self.purchaser.name
+    self.vendor_name = self.vendor.name
+  end
+
+  # searchkick
+  searchkick searchable: [:dept, :po_number, :courrier, :tracking_number, :purchaser_name, :ship_name, :vendor_name]
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }
@@ -21,18 +38,6 @@ class Order < ApplicationRecord
       order.date_delivered = DateTime.now
       order.save
     end
-  end
-
-  def ship_name
-    self.purchaser.name
-  end
-
-  def purchaser_name
-    self.purchaser.name
-  end
-
-  def vendor_name
-    self.vendor.name
   end
 
   def default_sequence
@@ -146,23 +151,14 @@ class Order < ApplicationRecord
 
   def search_data
     attributes.merge(
-      order_content: self.order_content,
-      ship_name: self.purchaser,
-      vendor_name: self.vendor,
+      dept: self.dept,
       po_number: self.po_number,
-      tracking_number: self.tracking_number
+      courrier: self.courrier,
+      tracking_number: self.tracking_number,
+      purchaser_name: self.purchaser.name,
+      ship_name: self.purchaser.name,
+      vendor_name: self.vendor.name,
     )
   end
-
-  # def search_data
-  #   # byebug
-  #   attributes.merge(
-  #     order_content: self.order_content,
-  #     ship_name: self.ship_name,
-  #     vendor_name: self.vendor_name,
-  #     po_number: self.po_number,
-  #     tracking_number: self.tracking_number
-  #   )
-  # end
 
 end

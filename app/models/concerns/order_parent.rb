@@ -13,7 +13,7 @@ module OrderParent
   end
 
   def establish_order_amount
-    self.order_ids.size
+    self.order_ids.size # ?? Forgot, is this necessary?? Doesnt look like it
     self.order_amount = self.order_ids.size
     return self.order_amount
   end
