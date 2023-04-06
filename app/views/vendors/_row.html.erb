@@ -13,9 +13,8 @@
   <%# end %> -->
 
   <div class="<%= primary_col_css_classes %>">
-    <%= link_to vendor.id, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+    <%= content_tag :span, vendor.id, class: 'cursor-default' %>
   </div>
-
 
   <div class="<%= secondary_col_css_classes %> h-full group">
     <%= link_to vendor.name, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
@@ -27,7 +26,7 @@
   </div>
 
   <div class="<%= primary_col_css_classes %>">
-    <%= link_to vendor.orders.count, vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+    <%= content_tag :span, vendor.order_amount, class: 'cursor-default' %>
   </div>
 
 </div>
