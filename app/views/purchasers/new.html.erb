@@ -1,23 +1,8 @@
 <% content_for :page_heading_button do %>
-
-  <% modified_link_to_path = :back unless (!(request.referer) || (request.referer.include? request.fullpath )) %>
-  <% modified_link_to_text = "Back" unless (!(request.referer) || (request.referer.include? request.fullpath )) %>
-
-  <% modified_link_to_path ||= purchasers_path %>
-  <% modified_link_to_text ||= "View ships" %>
-
-  <%= link_to modified_link_to_path do %>
-    <span class="scale-90 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-gray-200 rounded-full shadow-md group">
-      <span class="absolute inset-0 flex items-center justify-center w-full h-full text-gray-900 duration-300 -translate-x-full bg-gray-100 group-hover:translate-x-0 ease">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-        </svg>
-      </span>
-      <span class="absolute flex items-center justify-center w-full h-full text-gray-200 font-bold transition-all duration-300 transform group-hover:translate-x-full ease"> <%= modified_link_to_text %></span>
-      <span class="relative invisible"> <%= modified_link_to_text %></span>
-    </span>
-  <% end %>
-
+  <%= render partial: "/layouts/stacked_shell/headings/back_btn_with_fallback", locals: {
+    fallback_location: purchasers_path,
+    fallback_location_text: "View ships",
+  } %>
 <% end %>
 
 <div>
