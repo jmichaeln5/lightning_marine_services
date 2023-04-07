@@ -335,7 +335,7 @@ class OrdersController < ApplicationController
     def turbo_render_flash_order_notice(flash_title)
       turbo_stream.append(
         'flashes',
-        partial: "/layouts/stacked_shell/flash_messages",
+        partial: "/layouts/stacked_shell/headings/flash_messages",
         locals: {
           flash_type: "notice",
           flash_title: flash_title,
@@ -357,7 +357,7 @@ class OrdersController < ApplicationController
 
       turbo_stream.append(
         'flashes',
-        partial: "/layouts/stacked_shell/flash_messages",
+        partial: "/layouts/stacked_shell/headings/flash_messages",
         locals: {
           delay_value: delay_value,
           flash_type: "alert",
