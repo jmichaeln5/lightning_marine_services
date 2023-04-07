@@ -1,11 +1,3 @@
-<!-- <div id="<%#= dom_id purchaser %>">
-<p class="p-4 pb-12">
-  purchaser.inspect
-  <br>
-  <%#= purchaser.inspect %>
-</p>
-</div> -->
-
 <div id="<%= dom_id purchaser %>">
   <% content_for :page_heading_button do %>
     <%= link_to edit_purchaser_path(purchaser) do %>
@@ -20,7 +12,6 @@
       </span>
     <% end %>
   <% end %>
-
 
   <% content_for :page_heading_card do %>
 
@@ -57,46 +48,6 @@
 
   <% end %>
 
-
-
-
-  <!-- <%# content_for :main_content_under do %>
-    <div data-controller="reveal" data-reveal-hidden-class="hidden">
-      <div class="sm:flex sm:items-center mb-5 sm:mb-7">
-        <div class="sm:flex-auto">
-          <div class="text-center sm:text-left">
-            <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
-              <%#= purchaser.name %> Active Orders
-            </h1>
-            <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of all active orders belonging to the purchaser <%#= purchaser.name %>.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="rounded-md bg-white">
-      <div class="flex-1">
-        <%##= render partial: "/orders/remix/table", locals:{
-          table_title: "#{purchaser.name} Active Orders",
-          resource: @resource,
-          query: @query,
-          orders: @resource.paginated_target,
-          order_count: @resource.paginated_target.count,
-          total_order_count: purchaser.orders.unarchived.count,
-        }, cached: false %>
-      </div>
-    </div>
-
-  <%# end %> -->
-
-
-  <!-- NOTE -->
-  <!-- <div class="py-12">
-    <div class="bg-red-100 p-4 text-xl text-center text-red-500">
-      Sorting works well w purchaser + purchaser name BUT search still only search order model (cant search purchaser/ship name) unless obvious descriptive query - possible but unlikely to lead to expected result (when searching ship/purchaser name)
-    </div>
-  </div> -->
-
   <section>
     <div data-controller="reveal" data-reveal-hidden-class="hidden">
       <div class="sm:flex sm:items-center mb-5 sm:mb-7">
@@ -105,7 +56,6 @@
             <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
               <%= purchaser.name %>: Active Orders
             </h1>
-            <!-- <p class="mt-2 ml-2 mb-1 text-md text-gray-700">All orders belonging to <%#= purchaser.name %> that have not yet been completed.</p> -->
             <p class="mt-2 ml-2 mb-1 text-md text-gray-700">All active orders belonging to <%= content_tag :span, purchaser.name, class:'font-bold' %> that have not yet been completed.</p>
           </div>
         </div>
@@ -247,20 +197,6 @@
                         </span>
                       </div>
                     </div>
-                    <!-- NOTE BEGIN -->
-                    <!-- DEPT SHOULD BE SORTABLE -->
-                    <!--
-                    <div class="<%#= tc_css_classes %>">
-                      <div class="group inline-flex ">
-                        <%#= sort_link_to "Dept", :dept, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
-                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
-                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                    -->
                     <div class="<%= tc_css_classes %>">
                       <%= content_tag(:p, "Dept", class:"text-center" ) %>
                     </div>
@@ -268,15 +204,6 @@
 
                     <div class="<%= tc_css_classes %>">
                       <%= content_tag(:p, "Ship", class:"" ) %>
-
-                      <!-- <div class="group inline-flex ">
-                        <%#= sort_link_to "Ship", :purchaser, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
-                        <span class="ml-2 rounded bg-gray-100 text-gray-900">
-                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                          </svg>
-                        </span>
-                      </div> -->
                     </div>
 
 
