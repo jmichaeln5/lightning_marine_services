@@ -30,23 +30,21 @@
 
 <% end %>
 
-<div>
-  <div class="flex justify-center sm:justify-start">
-    <div class="flex-wrap text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
-      <div class="mr-1 sm:mr-2">Overview: </div>
-      <div class="text-gray-900 font-medium"> New Vendor </div>
-    </div>
+<div class="flex justify-center sm:justify-start">
+  <div class="flex-wrap text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
+    <div class="mr-1 sm:mr-2">Overview: </div>
+    <div class="text-gray-900 font-medium"> New Vendor </div>
   </div>
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="rounded-md bg-white">
-      <div class="flex-1 mt-4 md:mt-6 pb-8">
-        <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 ">
-          <div class="space-y-8">
-            <div class="mt-1 border-t border-gray-200">
-              <%= render 'form', vendor: @vendor %>
-            </div>
-        </div>
-        </div>
+</div>
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <div class="rounded-md bg-white">
+    <div class="flex-1 mt-4 md:mt-6 pb-8">
+      <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 ">
+        <div class="space-y-8">
+          <div class="mt-1 border-t border-gray-200">
+            <%= render 'form', vendor: @vendor %>
+          </div>
+      </div>
       </div>
     </div>
   </div>

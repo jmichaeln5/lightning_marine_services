@@ -7,31 +7,9 @@
         <%= form_with model: order, id: "order_form" do |form| %>
           <div class="space-y-8 divide-y divide-gray-200">
 
-            <% if order.errors.any? %>
-              <div data-controller="notification" data-notification-delay-value="5000" class="rounded-md bg-red-100 p-4" id="msg-container">
-                <div class="flex justify-between text-sm font-medium ">
-                  <div class="text-red-800">
-                    There was <%= pluralize(order.errors.count, "error") %> with your submission
-                  </div>
-                  <div class="ml-4 flex flex-shrink-0">
-                    <button type="button" data-action="notification#hide" class="inline-flex rounded-md text-red-800 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                      <span class="sr-only">Close</span>
-                      <svg class="h-5 w-5 text-red-800" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="mt-2 text-sm text-red-700">
-                  <ul role="list" class="list-disc space-y-1 ml-5">
-                    <% order.errors.each do |error| %>
-                      <li><%= error.full_message %></li>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
-            <% end %>
-
+            <%= render partial: "/layouts/stacked_shell/headings/form_errors", locals: {
+              form: form,
+            } %>
 
             <div class="space-y-8 divide-y divide-gray-200">
               <div>
