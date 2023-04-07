@@ -46,7 +46,7 @@
         } %>
 
         <%= render partial: "/shared/data_display/stats/overview_card", locals: {
-        card_title: "Completed purchaser orders",
+        card_title: "Completed ship orders",
         card_description: purchaser.orders.archived.count,
         card_link: (link_to "View completed ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
