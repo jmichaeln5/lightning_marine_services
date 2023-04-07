@@ -16,46 +16,73 @@
     <%#= stylesheet_link_tag "application" %>
     <%#= javascript_include_tag "application", defer: true %>
   </head>
-  <body class="min-h-full">
 
-    <div class="bg-gray-800 pb-32 w-full relative">
-      <%= render partial: "layouts/stacked_shell/headings/header" %>
-    </div>
 
-    <div class="-mt-32 w-full absolute">
-      <div class="rounded-md mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-        <div class="rounded-md bg-white">
+  <body class="h-full">
+    <div class="min-h-full">
+      <div class="bg-gray-800 pb-32">
+        <nav class="bg-gray-800">
+          <% tmp_search_input_placeholder_text = "Search" %>
+          <%= render partial: "layouts/stacked_shell/nav", locals:{
+            search_input_placeholder_text: tmp_search_input_placeholder_text,
+          } %>
+        </nav>
 
-          <div id="top-level-secondary-nav-wrapper">
-            <section id="stacked-shell-secondary-nav-section">
-              <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
-            </section>
-          </div>
+        <div id="flashes">   <%# New flashes appended to div #flashes %>
+          <%= render "shared/flash_messages" %>  <%# old flashes %>
+        </div>
 
-          <% if content_for?(:page_heading_card) %>
-            <div class="flex-1 mt-4 md:mt-6 pb-8">
-              <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
-                <main id="main">
-                  <section id="stacked-shell-main-section">
-                    <%= render partial: "/layouts/stacked_shell/headings/card" %>
-                    <%= yield :page_heading_card %>
-                  </section>
-                </main>
+        <header class="flow-root py-10 ">         <!-- move back into header partial -->
+          <div id="page_header">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div class="w-full inline-flex flex-wrap justify-center sm:justify-between space-y-3 sm:space-y-0">
+                <div class="w-full sm:w-auto">
+                  <h1 class="text-center sm:text-left">
+                    <div id="page_heading_title" class="text-4xl font-bold tracking-tight text-white">
+                      <%= turbo_stream.update "page_heading_title", @page_heading_title unless content_for?(:page_heading_title) %>
+                      <%= yield :page_heading_title %>
+                    </div>
+                  </h1>
+                </div>
+                <div class="w-full sm:w-auto">
+                  <div class="text-center sm:text-right">
+                    <div id="page_heading_button">
+                      <%= yield :page_heading_button %>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+        </header>
+      </div>
+      <main class="-mt-32">
+
+        <% if content_for?(:page_heading_card) %>
+          <%= render layout: "/layouts/stacked_shell/container" do %>
+            <section>
+            <%= render layout: "/layouts/stacked_shell/card" do %>
+              <%= render partial: "/layouts/stacked_shell/headings/card" %>
+              <%= yield :page_heading_card %>
+            <% end %>
+            </section>
+            <section class="mt-9">
+              <%= yield %>
+              <%= turbo_frame_tag :modal %>
+            </section>
           <% end %>
+        <% end %>
 
-        </div>
-      </div>
+        <% if !content_for?(:page_heading_card) %>
+          <%= render layout: "/layouts/stacked_shell/container" do %>
+            <%= render layout: "/layouts/stacked_shell/card" do %>
+              <%= yield %>
+              <%= turbo_frame_tag :modal %>
+            <% end %>
+          <% end %>
+        <% end %>
 
-
-      <div class="-mt-3 rounded-md mx-auto max-w-7xl pb-12 px-4 sm:px-6 lg:px-8">
-        <section>
-          <%= yield %>
-          <%= turbo_frame_tag :modal %>
-        </section>
-      </div>
+      </main>
     </div>
-
   </body>
 </html>

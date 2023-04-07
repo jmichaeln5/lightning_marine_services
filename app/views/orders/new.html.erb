@@ -29,7 +29,7 @@
   <% end %>
 <% end %>
 
-<div>
+<div class="w-full">
   <div class="flex justify-center sm:justify-start">
     <div class="flex-wrap text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
       <div class="mr-1 sm:mr-2">Overview: </div>
@@ -38,6 +38,7 @@
   </div>
   <%= render 'form', order: @order %>
 </div>
+
 
 <% if request.variant and request.variant == [:turbo_frame]  %>
   <%= turbo_frame_tag :modal do %>
