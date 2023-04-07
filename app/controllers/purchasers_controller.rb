@@ -47,54 +47,123 @@ class PurchasersController < ApplicationController
   end
 
   # GET /purchasers/1 or /purchasers/1.json
+  # def show
+  #   load_resource_files
+  #   if params["all"] != "1"
+  #     @tgt = @purchaser.orders.order("order_sequence ASC").unarchived
+  #     resource_attrs = {
+  #       called_at: Time.now,
+  #       user: current_user,
+  #       #target: @purchaser.orders.unarchived,
+  #       target: @tgt,
+  #       parent_class: Purchaser,
+  #       parent_action: 'show',
+  #       controller_name: 'purchasers',
+  #       controller_action: 'show',
+  #       controller_name_and_action: 'purchasers#show',
+  #       search_query: @query,
+  #       sort_option: sort_option,
+  #       sort_direction: sort_direction,
+  #       page: @page
+  #     }
+  #
+  #   else
+  #     resource_attrs = {
+  #       called_at: Time.now,
+  #       user: current_user,
+  #       target: Purchaser.find(params[:id]).orders.all,
+  #       parent_class: Purchaser,
+  #       parent_action: 'show',
+  #       controller_name: 'purchasers',
+  #       controller_action: 'show',
+  #       controller_name_and_action: 'purchasers#show',
+  #       search_query: @query,
+  #       sort_option: sort_option,
+  #       sort_direction: sort_direction,
+  #       page: @page
+  #     }
+  #   end
+  #
+  #   Resource.init_resource_klass ( resource_attrs )
+  #   @resource = Resource::ResourceKlass.get_resource
+  #
+  #   @table_option = @resource.table_option
+  #   @order = Order.new
+  #   @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+  #
+  #   ################################################
+  #   render layout: "stacked_shell"
+  #   ################################################
+  # end
   def show
-    load_resource_files
-    if params["all"] != "1"
-      @tgt = @purchaser.orders.order("order_sequence ASC").unarchived
-      resource_attrs = {
-        called_at: Time.now,
-        user: current_user,
-        #target: @purchaser.orders.unarchived,
-        target: @tgt,
-        parent_class: Purchaser,
-        parent_action: 'show',
-        controller_name: 'purchasers',
-        controller_action: 'show',
-        controller_name_and_action: 'purchasers#show',
-        search_query: @query,
-        sort_option: sort_option,
-        sort_direction: sort_direction,
-        page: @page
-      }
+    orders = Order.unarchived.where(purchaser: @purchaser)
 
-    else
-      resource_attrs = {
-        called_at: Time.now,
-        user: current_user,
-        target: Purchaser.find(params[:id]).orders.all,
-        parent_class: Purchaser,
-        parent_action: 'show',
-        controller_name: 'purchasers',
-        controller_action: 'show',
-        controller_name_and_action: 'purchasers#show',
-        search_query: @query,
-        sort_option: sort_option,
-        sort_direction: sort_direction,
-        page: @page
-      }
+    if params[:query].present?
+      query_str = params[:query]
+      results = orders.search(query_str, misspellings: {below: 3}).results
+      results_arr = Array.new
+      results.each do |result|
+        results_arr << result.id if (result.archived? == false)
+      end
+      @orders = nil
+      orders = Order.unarchived.where(purchaser: @purchaser).reorder('id ASC')
+      orders = orders.where(id: results_arr)
     end
 
-    Resource.init_resource_klass ( resource_attrs )
-    @resource = Resource::ResourceKlass.get_resource
+    if params[:sort]
+      sort_col = %w{ id dept date_recieved courrier date_delivered }.include?(params[:sort]) ? params[:sort] : "id"
+      sort_dir = %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
 
-    @table_option = @resource.table_option
+      if ((params[:sort] == "ship_name") || ( params[:sort] == "vendor_name" )) # None Order col
+        sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "ship_name"
+        sorted_orders = Order.where(id: orders.ids).filter_by_vendors(sort_dir) if params[:sort] == "vendor_name"
+        sorted_orders_ids = sorted_orders.ids
+        sorted_orders_ids_arr = Array.new
+
+        sorted_orders_ids.each do |order_id|
+          sorted_orders_ids_arr << order_id
+        end
+        # https://stackoverflow.com/a/61267426
+        order_query = <<-SQL
+          CASE orders.id
+            #{sorted_orders_ids_arr.map.with_index { |id, index| "WHEN #{id} THEN #{index}" } .join(' ')}
+            ELSE #{sorted_orders_ids_arr.length}
+          END
+        SQL
+
+        newly_sorted_orders = Order.where(id: sorted_orders_ids_arr).order(Arel.sql(order_query))
+        clear_active_record_query_cache
+      end
+
+      if ((params[:sort] != "ship_name") && ( params[:sort] != "vendor_name" )) # Order col
+        newly_sorted_orders = orders.reorder(sort_col => sort_dir)
+      end
+
+      @orders = nil
+      orders = nil
+      orders = newly_sorted_orders
+    end
+
+    @orders ||= orders
+    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+
     @order = Order.new
-    @order_content = @order != nil ? @order.build_order_content : OrderContent.new
+    @order.build_order_content
 
-    ################################################
-    render layout: "stacked_shell"
-    ################################################
+    respond_to do |format|
+      format.html
+      format.csv { # give these formats a better home, shouldn't be in this controller or action
+        send_data (Order.all).to_csv,
+        filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
+        type: 'text/csv; charset=utf-8'
+      }
+      format.xls { # give these formats a better home, shouldn't be in this controller or action
+        send_data (Order.all).to_csv,
+        filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      }
+    end
   end
+
 
   # GET /purchasers/new
   def new
