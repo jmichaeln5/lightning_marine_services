@@ -153,9 +153,6 @@
               <%#= content_tag(:div, "Courrier", class: table_header_css_classes ) %>
               <%#= content_tag(:div, "Date Delivered", class: table_header_css_classes ) %> -->
 
-
-
-
               <%# sort_link_to_tc_css_classes = "text-indigo-800 hover:text-indigo-900 hover:underline" %>
 
               <% table_header_css_classes = "table-cell px-1 text-sm font-bold text-center" %>
@@ -164,7 +161,7 @@
               <%= content_tag(:div, " ", class: table_header_css_classes ) if current_user_is_admin_or_staff? %>
               <%= sort_link_to "ID", :id, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
               <%= content_tag(:div, "Dept", class: table_header_css_classes ) %>
-              <%= content_tag(:div, "Ship", class: table_header_css_classes ) %>
+              <%= sort_link_to "Ship", :ship_name, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
               <%= content_tag(:div, "Vendor", class: table_header_css_classes ) %>
               <%= content_tag(:div, "PO Number", class: table_header_css_classes ) %>
               <%= content_tag(:div, "Tracking Number", class: table_header_css_classes ) %>
