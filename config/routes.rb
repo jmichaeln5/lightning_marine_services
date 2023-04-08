@@ -43,6 +43,25 @@ Rails.application.routes.draw do
     end
   end
 
+  ################################################
+  ################################################
+  ################################################
+  concern :order_parent do
+    resources :orders, only: [:index, :new, :create]
+  end
+
+  namespace :purchasers do
+    concerns :order_parent
+  end
+
+  namespace :vendors do
+    concerns :order_parent
+  end
+  ################################################
+  ################################################
+  ################################################
+
+
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
 
