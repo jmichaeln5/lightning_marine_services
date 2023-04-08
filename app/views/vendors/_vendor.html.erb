@@ -9,15 +9,20 @@
 <div id="<%= dom_id vendor %>">
 
   <% content_for :page_heading_button do %>
-    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
-      link_to_path: edit_vendor_path(@vendor),
-      link_to_text: "Edit vendor",
-    } %>
-    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
-      with_turbo_modal: true,
-      link_to_path: new_order_path,
-      link_to_text: "Add order",
-    } %>
+
+    <div class="grid space-y-3 sm:inline-block sm:space-y-0">
+      <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
+        link_to_path: edit_vendor_path(vendor),
+        link_to_text: "Edit vendor",
+      } %>
+
+      <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+        with_turbo_modal: true,
+        link_to_path: new_vendor_order_path(vendor),
+        link_to_text: "Add vendor order",
+      } %>
+    </div>
+
   <% end %>
 
   <% content_for :page_heading_card do %>
@@ -30,7 +35,8 @@
         <%= render partial: "/shared/data_display/stats/overview_card", locals: {
           card_title: "All vendor orders",
           card_description: vendor.orders.count,
-          card_link: (link_to "View all vendor orders", all_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+          # card_link: (link_to "View all vendor orders", vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+          card_link: (link_to "View all vendor orders", vendor_orders_path(vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
           card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
         } %>
 

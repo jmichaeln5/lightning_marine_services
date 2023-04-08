@@ -163,6 +163,8 @@
 
   <br> -->
 
+  <% @page_heading_title = "Order" %>
+
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
     link_to_path: edit_order_path(@order),

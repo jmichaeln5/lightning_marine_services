@@ -13,9 +13,11 @@ class OrderContent < ApplicationRecord
     blank_attrs_count +=1 if self.other.blank?
 
     if blank_attrs_count >= 4
-    # if blank_attrs_count >= 3
-      self.order.errors.add(:order_content,  "missing" )
+      # self.order.errors.add(:order_content,  "missing" )
+      self.order.errors.add(:order_content,  "missing" ) unless self.order.errors[:order_content].any?
     end
+
+
   end
 
 end

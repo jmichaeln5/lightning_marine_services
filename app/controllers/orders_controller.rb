@@ -350,7 +350,7 @@ class OrdersController < ApplicationController
       flash_description = []
       @order.errors.each do |error|
         flash_description << error.full_message
-        delay_value += 500
+        delay_value += 1500
       end
       flash_description = flash_description.join(" + ")  if flash_description.length > 1
       flash_description = flash_description.join  if flash_description.length == 1

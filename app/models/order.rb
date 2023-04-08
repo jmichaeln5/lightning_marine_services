@@ -127,20 +127,28 @@ class Order < ApplicationRecord
   def before_validationz
     default_sequence
     handle_archive
-    order_content_exists?
+    ensure_order_content_exists
   end
 
-  def order_content_exists?
-    self.errors.add(:order_content,  "missing" ) if !self.order_content
+  def ensure_order_content_exists
+    def throw_missing_content_error
+      self.errors.add(:order_content, "missing, must have at least 1 box, crate, pallet, or description")
+      throw(:abort)
+    end
+
+    if !self.order_content
+      throw_missing_content_error
+    end
 
     blank_attrs_count = 0
-    blank_attrs_count +=1 if self.order_content.box.blank?
-    blank_attrs_count +=1 if self.order_content.crate.blank?
-    blank_attrs_count +=1 if self.order_content.pallet.blank?
-    blank_attrs_count +=1 if self.order_content.other.blank?
+    blank_attrs_count +=1 if (self.order_content.box.nil? or self.order_content.box.blank?)
+    blank_attrs_count +=1 if (self.order_content.crate.nil? or self.order_content.crate.blank?)
+    blank_attrs_count +=1 if (self.order_content.pallet.nil? or self.order_content.pallet.blank?)
+    blank_attrs_count +=1 if (self.order_content.other.nil? or self.order_content.other.blank?)
 
     if blank_attrs_count >= 4
-      self.errors.add(:order_content,  "missing" ) unless self.errors[:order_content].any?
+      # self.errors.add(:order_content,  "missing, must have at least 1 box, crate, pallet, or description" )
+      self.errors.add(:order_content,  "missing, must have at least 1 box, crate, pallet, or description" ) unless self.errors[:order_content].any?
     end
   end
 

@@ -28,8 +28,6 @@ Rails.application.routes.draw do
 
   resources :users
   resources :table_options
-  resources :purchasers
-  resources :vendors
 
   namespace :orders do
     resource :bulk, controller: :bulk, only: [:destroy]
@@ -43,24 +41,9 @@ Rails.application.routes.draw do
     end
   end
 
-  ################################################
-  ################################################
-  ################################################
-  concern :order_parent do
-    resources :orders, only: [:index, :new, :create]
+  resources :vendors do
+    resources :orders, only: [:index, :new, :create], module: :vendors
   end
-
-  namespace :purchasers do
-    concerns :order_parent
-  end
-
-  namespace :vendors do
-    concerns :order_parent
-  end
-  ################################################
-  ################################################
-  ################################################
-
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
