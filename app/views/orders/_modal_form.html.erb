@@ -20,7 +20,7 @@
                 </div>
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
 
-
+                  <%#= current_page?(new_purchaser_url) %>
                   <div class="sm:col-span-3">
                     <%= form.label 'Ship', class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
@@ -29,7 +29,13 @@
                   </div>
 
 
+                  <%#= current_page?(new_vendor_url) %>
+                  <%##= current_page?(new_vendor_path) %>
+                  <%##= current_page?(new_vendor_order_path) %>
+                  <%##= current_page?(new_vendor_order_url) %>
+                  <%#= params[:controller] %>
 
+                  <%# ???? shallow nest vendors/orders w controller then check if current_page?(new_vendor_order_url)  %>
                   <div class="sm:col-span-3">
                     <%= form.label 'Vendor', class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">

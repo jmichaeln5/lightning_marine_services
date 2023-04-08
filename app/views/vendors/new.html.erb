@@ -1,36 +1,31 @@
-<!-- <h1>New vendor</h1>
+<% if request.variant == [:turbo_frame]  %>
+  <%= turbo_frame_tag :modal do %>
+    <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
 
-<%#= render "form", vendor: @vendor %>
+      <% content_for :modal_title, flush: true do %>
+        <%= link_to "New Vendor", new_vendor_path, target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
+      <% end %>
 
-<br>
+      <%= render "/layouts/stacked_shell/modal", modal_title: yield(:modal_title) do %>
+        <%= render 'form', vendor: @vendor %>
+      <% end %>
 
-<div>
-  <%#= link_to "Back to vendors", vendors_path %>
-</div> -->
+    </div>
+  <% end %>
+<% end %>
 
 <% content_for :page_heading_button do %>
-  <%= render partial: "/layouts/stacked_shell/headings/back_btn_with_fallback", locals: {
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: vendors_path,
     fallback_location_text: "View vendors",
   } %>
 <% end %>
 
-<div class="flex justify-center sm:justify-start">
-  <div class="flex-wrap text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
-    <div class="mr-1 sm:mr-2">Overview: </div>
-    <div class="text-gray-900 font-medium"> New Vendor </div>
-  </div>
-</div>
-<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-  <div class="rounded-md bg-white">
-    <div class="flex-1 mt-4 md:mt-6 pb-8">
-      <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 ">
-        <div class="space-y-8">
-          <div class="mt-1 border-t border-gray-200">
-            <%= render 'form', vendor: @vendor %>
-          </div>
-      </div>
-      </div>
+<% content_for :page_heading_card do %>
+  <%= turbo_stream.update "card_title", "New Vendor" %>
+  <%= turbo_stream.update "card_content" do %>
+    <div class="p-3 overflow-hidden rounded-lg border border-gray-100 shadow">
+      <%= render 'form', vendor: @vendor %>
     </div>
-  </div>
-</div>
+  <% end %>
+<% end %>

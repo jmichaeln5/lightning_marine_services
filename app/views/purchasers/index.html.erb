@@ -19,9 +19,12 @@
 <!-- **************************************************** -->
 <!-- **************************************************** -->
 
-
 <% content_for :page_heading_button do %>
-    <%= render partial: "/purchasers/add_purchaser_button" %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+    with_turbo_modal: true,
+    link_to_path: new_purchaser_path,
+    link_to_text: "Add ship",
+  } %>
 <% end %>
 
 <% content_for :page_heading_card do %>

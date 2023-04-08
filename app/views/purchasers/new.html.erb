@@ -1,43 +1,30 @@
+<% if request.variant == [:turbo_frame]  %>
+  <%= turbo_frame_tag :modal do %>
+    <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
+
+      <% content_for :modal_title, flush: true do %>
+        <%= link_to "New Ship", new_purchaser_path, target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
+      <% end %>
+
+      <%= render "/layouts/stacked_shell/modal", modal_title: yield(:modal_title) do %>
+        <%= render 'form', purchaser: @purchaser %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
 <% content_for :page_heading_button do %>
-  <%= render partial: "/layouts/stacked_shell/headings/back_btn_with_fallback", locals: {
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: purchasers_path,
     fallback_location_text: "View ships",
   } %>
 <% end %>
 
-<div>
-  <div class="flex justify-center sm:justify-start">
-    <div class="flex-wrap text-2xl sm:text-xl text-gray-800 inline-flex align-baseline text-center">
-      <div class="mr-1 sm:mr-2">Overview: </div>
-      <div class="text-gray-900 font-medium"> New Ship </div>
-    </div>
-  </div>
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="rounded-md bg-white">
-      <div class="flex-1 mt-4 md:mt-6 pb-8">
-        <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 ">
-          <div class="space-y-8">
-            <div class="mt-1 border-t border-gray-200">
-              <%= render 'form', purchaser: @purchaser %>
-            </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<% if request.variant == [:turbo_frame]  %>
-  <%= turbo_frame_tag :modal do %>
-    <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
-
-      <% content_for :new_purchaser_modal_title, flush: true do %>
-        <%= link_to "New Ship", new_purchaser_path, target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
-      <% end %>
-
-      <%= render "/layouts/stacked_shell/modal", modal_title: yield(:new_purchaser_modal_title) do %>
-        <%= render 'form', purchaser: @purchaser %>
-      <% end %>
+<% content_for :page_heading_card do %>
+  <%= turbo_stream.update "card_title", "New Ship" %>
+  <%= turbo_stream.update "card_content" do %>
+    <div class="p-3 overflow-hidden rounded-lg border border-gray-100 shadow">
+      <%= render 'form', purchaser: @purchaser %>
     </div>
   <% end %>
 <% end %>

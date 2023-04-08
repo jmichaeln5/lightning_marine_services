@@ -27,11 +27,15 @@
       <% end %>
     </div>
   </div>
+
   <div class="<%= primary_col_css_classes %>">
-    <%= link_to order.purchaser.name, order.purchaser, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+    <%= link_to order.purchaser.name, order.purchaser, class:'text-indigo-600 hover:text-indigo-800', target: "_top" if !current_page?(purchaser_path(order.purchaser)) %>
+    <%= content_tag(:p, order.purchaser.name, class: "table-cell text-sm font-medium text-gray-500" ) if current_page?(purchaser_path(order.purchaser)) %>
   </div>
+
   <div class="<%= primary_col_css_classes %>">
-    <%= link_to order.vendor.name, order.vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+    <%= link_to order.vendor.name, order.vendor, class:'text-indigo-600 hover:text-indigo-800', target: "_top" if !current_page?(vendor_path(order.vendor)) %>
+    <%= content_tag(:p, order.vendor.name, class: "table-cell text-sm font-medium text-gray-500" ) if current_page?(vendor_path(order.vendor)) %>
   </div>
   <div class="<%= secondary_col_css_classes %> h-full group">
     <div class="text-sm text-gray-900">

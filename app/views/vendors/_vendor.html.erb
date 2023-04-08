@@ -7,20 +7,18 @@
 </div> -->
 
 <div id="<%= dom_id vendor %>">
-  <% content_for :page_heading_button do %>
-    <%= link_to edit_vendor_path(vendor) do %>
-      <span class="scale-90 relative inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-gray-200 rounded-full shadow-md group">
-      <span class="absolute inset-0 flex items-center justify-center w-full h-full text-gray-900 duration-300 -translate-x-full bg-gray-100 group-hover:translate-x-0 ease">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
-      </svg>
-      </span>
-      <span class="absolute flex items-center justify-center w-full h-full text-gray-200 font-bold transition-all duration-300 transform group-hover:translate-x-full ease">Edit vendor</span>
-      <span class="relative invisible font-bold">Edit vendor</span>
-      </span>
-    <% end %>
-  <% end %>
 
+  <% content_for :page_heading_button do %>
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
+      link_to_path: edit_vendor_path(@vendor),
+      link_to_text: "Edit vendor",
+    } %>
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+      with_turbo_modal: true,
+      link_to_path: new_order_path,
+      link_to_text: "Add order",
+    } %>
+  <% end %>
 
   <% content_for :page_heading_card do %>
 
