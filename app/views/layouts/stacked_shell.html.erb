@@ -39,25 +39,37 @@
 
         <% if content_for?(:page_heading_card) %>
           <%= render layout: "/layouts/stacked_shell/container" do %>
-            <section>
-            <%= render layout: "/layouts/stacked_shell/card" do %>
-              <%= render partial: "/layouts/stacked_shell/headings/card" %>
-              <%= yield :page_heading_card %>
-            <% end %>
-            </section>
-            <section class="mt-9">
-              <%= yield %>
-              <%= turbo_frame_tag :modal %>
-            </section>
+
+            <div class="bg-white rounded-md mb-9">
+              <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
+              <div class="pt-3 pb-9">
+                <div class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <%= render partial: "/layouts/stacked_shell/headings/card" %>
+                  <%= yield :page_heading_card %>
+                </div>
+              </div>
+            </div>
+
+            <%= yield %>
+            <%= turbo_frame_tag :modal %>
+
           <% end %>
         <% end %>
 
+
         <% if !content_for?(:page_heading_card) %>
           <%= render layout: "/layouts/stacked_shell/container" do %>
-            <%= render layout: "/layouts/stacked_shell/card" do %>
-              <%= yield %>
-              <%= turbo_frame_tag :modal %>
-            <% end %>
+
+            <div class="bg-white rounded-md mb-9">
+              <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
+              <div class="pt-3 pb-9">
+                <div class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <%= yield %>
+                  <%= turbo_frame_tag :modal %>
+                </div>
+              </div>
+            </div>
+
           <% end %>
         <% end %>
 

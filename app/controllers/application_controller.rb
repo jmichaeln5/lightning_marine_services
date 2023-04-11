@@ -30,12 +30,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def dev_output_str(str)
+    if Rails.env == "development"
+      puts (" \n")*5
+      puts ("*"*50 + "\n")*10
+      puts (" #{str} \n")*5
+      puts ("*"*50 + "\n")*10
+      puts (" \n")*5
+    end
+  end
+
   def clear_active_record_query_cache
-    puts (" \n")*5
-    puts ("*"*50 + "\n")*10
-    puts ("clear_active_record_query_cache \n")*5
-    puts ("*"*50 + "\n")*10
-    puts (" \n")*5
+    dev_output_str("ApplicationController#clear_active_record_query_cache")
 
     ActiveRecord::Base.connection.query_cache.clear
   end
