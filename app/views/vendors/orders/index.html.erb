@@ -1,4 +1,3 @@
-<% @page_heading_title = "Vendor Orders" %>
 
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
@@ -42,17 +41,12 @@
 
 <% end %>
 
+<%= turbo_frame_tag "all_orders", src: all_vendor_orders_path(@vendor), loading: "lazy" do %>
 
-<% content_for :table_section_heading_description_text do %>
-  All orders (both active + completed) belonging to <%= content_tag :span, @vendor.name, class:'font-bold' %>.
+  <div class="h-full w-full p-4 bg-slate-300 opacity-25 animate-pulse ">
+    <div class="flex justify-center opacity-100">
+    <%= render partial: "/layouts/stacked_shell/headings/icons/loading" %>
+    </div>
+  </div>
+
 <% end %>
-
-<%= render partial: "/orders/table", locals: {
-  table_turbo_frame_tag: "orders",
-  orders: @orders,
-  pagy: @pagy,
-  table_section_heading_title: "#{@vendor.name}: All Orders",
-  table_section_heading_description: yield(:table_section_heading_description_text),
-  table_title: "All Vendor Orders",
-  # table_description: "Active + completed orders.",
-} %>

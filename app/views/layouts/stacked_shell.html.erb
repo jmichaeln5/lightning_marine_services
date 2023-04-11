@@ -54,10 +54,10 @@
             <%= turbo_frame_tag :modal %>
 
           <% end %>
-        <% end %>
+        <%# end %>
+        <%# if !content_for?(:page_heading_card) %>
+        <% else %>
 
-
-        <% if !content_for?(:page_heading_card) %>
           <%= render layout: "/layouts/stacked_shell/container" do %>
 
             <div class="bg-white rounded-md mb-9">

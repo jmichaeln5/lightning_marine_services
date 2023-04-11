@@ -1,0 +1,16 @@
+<turbo-frame id="all_orders">
+
+  <% content_for :table_section_heading_description_text do %>
+    All active and completed orders belonging to <%= content_tag :span, @vendor.name, class:'font-bold' %>.
+  <% end %>
+
+  <%= render partial: "/orders/table", locals: {
+    table_turbo_frame_tag: "orders",
+    orders: @orders,
+    pagy: @pagy,
+    table_section_heading_title: "#{@vendor.name}: All Orders",
+    table_section_heading_description: yield(:table_section_heading_description_text),
+    table_title: "All Vendor Orders",
+  } %>
+
+</turbo-frame>

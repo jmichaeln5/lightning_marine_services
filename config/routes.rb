@@ -41,9 +41,13 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/vendors/:vendor_id/all_orders', to: 'vendors/orders#all_orders',  as: 'all_vendor_orders'
+  get '/vendors/:vendor_id/active_orders', to: 'vendors/orders#active_orders',  as: 'active_vendor_orders'
+
   resources :vendors do
     resources :orders, only: [:index, :new, :create], module: :vendors
   end
+
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'

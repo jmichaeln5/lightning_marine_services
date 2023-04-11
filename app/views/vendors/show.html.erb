@@ -1,4 +1,4 @@
-<% @page_heading_title = "Vendor" %>
+<% @page_heading_title = "Vendor Orders" %>
 
 <% content_for :page_heading_card do %>
 
@@ -32,6 +32,19 @@
     </div>
   <% end %>
 
+  <%#= render partial: "/vendors/orders/page_heading_card" %>
+
 <% end %>
 
 <%= render @vendor %>
+
+<%#= turbo_frame_tag "active_orders", src: active_vendor_orders_path(@vendor), loading: "lazy" do %>
+<%= turbo_frame_tag "active_orders", src: active_vendor_orders_path(@vendor) do %>
+
+  <div class="h-full w-full p-4 bg-slate-300 opacity-25 animate-pulse ">
+    <div class="flex justify-center opacity-100">
+    <%= render partial: "/layouts/stacked_shell/headings/icons/loading" %>
+    </div>
+  </div>
+
+<% end %>
