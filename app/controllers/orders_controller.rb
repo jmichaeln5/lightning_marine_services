@@ -246,7 +246,7 @@ class OrdersController < ApplicationController
             render turbo_stream: [
               turbo_stream.replace(
                 "order_#{@order.id}",
-                partial: "/orders/row",
+                partial: "/orders/table/row",
                 locals: {
                   order: @order,
                 }
