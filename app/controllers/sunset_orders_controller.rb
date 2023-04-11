@@ -1,4 +1,5 @@
-class OrdersController < ApplicationController
+# class OrdersController < ApplicationController
+class SunsetOrdersController < ApplicationController
  layout "stacked_shell"
 
   before_action :authenticate_user!

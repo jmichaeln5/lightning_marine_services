@@ -12,14 +12,16 @@
         <div class="text-center sm:text-left">
           <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
 
-            <%= table_section_heading_title %>
+            <%#= table_section_heading_title %>
             <%#= local_assigns[:table_section_heading_title]  %>
+            <%= content_tag(:span, table_section_heading_title, id:"table_section_heading_title" ) %>
 
           </h1>
           <p class="mt-2 ml-2 mb-1 text-md text-gray-700">
 
-            <%= table_section_heading_description %>
+            <%#= table_section_heading_description %>
             <%#= local_assigns[:table_section_heading_description]  %>
+            <%= content_tag(:span, table_section_heading_description, id:"table_section_heading_description" ) %>
 
           </p>
         </div>

@@ -3,7 +3,6 @@
   <% primary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-900 align-middle text-center h-full group" %>
   <% target_top_link_to_css_classes = "text-indigo-600 hover:text-indigo-800 hover:cursor-pointer hover:underline" %>
 
-
   <div class="<%= primary_col_css_classes %>">
     <%= link_to "View", order, class:target_top_link_to_css_classes, target: "_top" %>
     <% if current_user_is_admin_or_staff? %>

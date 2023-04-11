@@ -33,9 +33,9 @@ class ApplicationController < ActionController::Base
   def dev_output_str(str)
     if Rails.env == "development"
       puts (" \n")*5
-      puts ("*"*50 + "\n")*10
+      puts ("*"*50 + "\n")
       puts (" #{str} \n")*5
-      puts ("*"*50 + "\n")*10
+      puts ("*"*50 + "\n")
       puts (" \n")*5
     end
   end
