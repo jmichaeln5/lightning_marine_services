@@ -9,7 +9,7 @@
       <div class="flex justify-between">
         <div>
           <h3 class="text-base font-semibold leading-6 text-gray-900">Ship Form</h3>
-          <p class="mt-1 text-sm text-gray-500">Enter purchaser's name below to save.</p>
+          <p class="mt-1 text-sm text-gray-500">Enter ship's name below to save.</p>
         </div>
         <div>
          <%= link_to "Delete", purchaser, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this ship? Once deleted it cannot be recovered." }, class:"inline-flex items-center rounded border border-transparent bg-red-100 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" if current_user.has_role?('admin') && !purchaser.new_record? %>
@@ -25,7 +25,9 @@
 
   <div class="pt-5">
     <div class="flex justify-end">
+
       <%= form.submit 'Save', class: 'inline-flex hover:cursor-pointer justify-center rounded-md bg-indigo-600 py-2 px-5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' %>
+
     </div>
   </div>
 <% end %>

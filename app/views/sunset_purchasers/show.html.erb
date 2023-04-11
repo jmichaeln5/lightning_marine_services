@@ -1,0 +1,74 @@
+<!-- <%# content_for :title, "Ship: #{@purchaser.name}" %>
+
+<div class="accordion" id="aboveTableAccordionOptions">
+    <div class="card">
+        <div class="card-header">
+            <%#= link_to "Export to Excel", export_purchaser_path(@purchaser, format: :xlsx) %>
+        </div>
+        <%# if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+        <div class="card-header">
+            <%#= link_to "Deliver Open Orders", deliver_purchaser_path(@purchaser) %>
+        </div>
+        <%# end %>
+    </div>
+</div>
+
+<%# content_for :subtitle, "#{@purchaser.orders.unarchived.count}" + ' Open Order'.pluralize(@purchaser.orders.unarchived.count) %>
+<%# content_for :subtitle_two, "#{@purchaser.orders.archived.count}" + ' Archived Order'.pluralize(@purchaser.orders.archived.count) %>
+
+<%#= render 'shared/under_header_card_options' %>
+<%# if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+    <%#= render 'shared/new_order_on_show_modal' %>
+<%# end %>
+<hr>
+<%#= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
+<%#= render partial: "show" %>
+<%#= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %> -->
+
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<!-- *************************************************************** -->
+<% @page_heading_title = "Ship" %>
+
+<% content_for :page_heading_card do %>
+
+  <%= turbo_stream.update "card_title", @purchaser.name %>
+
+  <%= turbo_stream.update "card_content" do %>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+        card_title: "All ship orders",
+        card_description: @purchaser.orders.count,
+        # card_link: (link_to "View all purchaser orders", purchaser_orders_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_link: (link_to "View all ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
+      } %>
+
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      is_active_card: true,
+      card_title: "Active ship orders",
+      card_description: @purchaser.orders.unarchived.count,
+      card_link: (link_to "View active ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
+      } %>
+
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      card_title: "Completed ship orders",
+      card_description: @purchaser.orders.archived.count,
+      card_link: (link_to "View completed ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
+      } %>
+
+    </div>
+  <% end %>
+
+<% end %>
+
+<%= render @purchaser %>

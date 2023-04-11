@@ -1,30 +1,9 @@
-<%# content_for :title, "#{Purchaser.all.count}" + ' Ship'.pluralize(Purchaser.all.count) %>
-
-<%#= render 'shared/under_header_card_options' %>
-<%# if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
-    <%#= render 'shared/new_modal' %>
-<%# end %>
-<%#= render 'shared/top_table_header' %>
-<%#= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
-<%#= render partial: 'purchasers/index', locals: { purchasers: @resource} %>
-<%#= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>
-
-
-
-<!-- **************************************************** -->
-<!-- **************************************************** -->
-<!-- **************************************************** -->
-<!-- **************************************************** -->
-<!-- **************************************************** -->
-<!-- **************************************************** -->
-<!-- **************************************************** -->
-
 <% content_for :page_heading_button do %>
-  <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
-    with_turbo_modal: true,
-    link_to_path: new_purchaser_path,
-    link_to_text: "Add ship",
-  } %>
+<%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+  with_turbo_modal: true,
+  link_to_path: new_purchaser_path,
+  link_to_text: "Add ship",
+} %>
 <% end %>
 
 <% content_for :page_heading_card do %>
@@ -41,28 +20,164 @@
   <% end %>
 <% end %>
 
+<section>
+  <div data-controller="reveal" data-reveal-hidden-class="hidden">
+    <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+      <div class="sm:flex-auto">
+        <div class="text-center sm:text-left">
+          <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+            All Ships Table
+          </h1>
+          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of all recorded purchasers.</p>
+        </div>
+      </div>
+      <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
+        <div data-action="click->reveal#toggle" type="button" class="table-options-button text-center sm:inline-block">
+          <div class="mr-2 relative px-4 py-2 overflow-hidden font-medium text-gray-600 bg-gray-50 border border-gray-700 rounded-lg shadow-inner group">
+            <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
+            <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
+            <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+            <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+            <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
+            <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
+                <span class="text-base"> Table Options </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div>
-  <div class="sm:flex sm:items-center mb-5 sm:mb-7">
-    <div class="sm:flex-auto">
-      <div class="text-center sm:text-left">
-        <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
-          All Ships Table
-        </h1>
-        <p class="mt-2 ml-2 mb-1 text-md text-gray-700">A list of all recorded ships.</p>
+    <% turbo_frame_table_id = "purchasers-table" %>
+    <div data-reveal-target="item" class="hidden">
+      <div class="pb-9">
+          <div class="rounded-md bg-white py-3">
+
+            <%= form_with url: "", method: :get, data: { turbo_frame: turbo_frame_table_id, turbo_action: "advance" } do |form| %>
+              <div class="mx-3 flex flex-wrap justify-center sm:justify-between">
+                <div class="text-gray-700 text-center sm:text-left">
+                  <p class="text-sm text-gray-700 mb-1"> Amount per page </p>
+                  <div class="relative">
+                    <select onchange="this.form.requestSubmit()" name="count" id="count" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full inline-flex sm:hidden">
+                  <!-- placeholder div to ensure line break -->
+                </div>
+                <div>
+                  <div class="text-gray-700 mt-2 sm:mt-0 text-center sm:text-right">
+                    <!-- <p class="text-sm text-gray-700 sm:-ml-5"> Search </p>
+                    <%##= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()" %>
+                    <%#= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()", class: "w-full rounded-md bg-white py-1.5 pl-3 border-0 drop-shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search' %> -->
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+          </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+
 <div class="rounded-md bg-white">
   <div class="flex-1">
-    <%= render partial: "/purchasers/remix/table", locals:{
-      table_title: "Ships",
-      resource: @resource,
-      query: @query,
-      purchasers: @purchasers,
-      purchasers_count: @purchasers.count,
-      total_purchasers_count: Purchaser.all.count,
-    } %>
+    <div class="pt-7 w-full px-4 sm:px-6 lg:px-8 ">
+      <%= turbo_frame_tag turbo_frame_table_id do %>
+        <div class="mb-7 flex-auto text-center sm:text-left">
+          <h1 class="text-3xl font-semibold leading-6 text-gray-900"> Ships </h1>
+        </div>
+
+        <div class="mt-3 min-w-full flex flex-wrap text-center sm:justify-between">
+          <div class="w-full sm:w-auto">
+            <p class="text-sm text-gray-700">
+              Showing
+              <span class="font-medium"><%= @pagy.from %></span>
+              to
+              <span class="font-medium"><%= @pagy.to %></span>
+              of
+              <span class="font-medium"><%= @pagy.count %> </span>
+              results
+            </p>
+          </div>
+          <div class="w-full sm:w-auto">
+            <%== pagy_nav @pagy %>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto flow-root">
+          <div class="min-w-full">
+            <div class="table min-w-full border border-slate-50">
+
+              <% tc_css_classes = "table-cell whitespace-nowrap py-3.5 pl-4 pr-3 sm:pl-6 lg:pl-8 align-middle text-center border-b border-gray-300 bg-white bg-opacity-7 text-sm font-semibold text-gray-900" %>
+
+              <% sort_link_to_tc_css_classes = "text-indigo-800 hover:text-indigo-900 hover:underline" %>
+
+              <div class="table-header-group sticky top-0 backdrop-blur backdrop-filter hover:cursor-default">
+                <div class="table-row">
+
+                  <!-- placeholder for edit th -->
+                  <!-- <%# if current_user_is_admin_or_staff? %>
+                    <div class="<%#= tc_css_classes %>">
+                      <%##= content_tag(:p, "", class:"text-center" ) %>
+                    </div>
+                  <%# end %> -->
+
+                  <div class="<%= tc_css_classes %>">
+                    <div class="group inline-flex p-3">
+                      <%= sort_link_to "ID", :id, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                      <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="<%= tc_css_classes %>">
+                    <div class="group inline-flex ">
+                      <%= sort_link_to "Ship Name", :name, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                      <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="<%= tc_css_classes %>">
+                    <div class="group inline-flex ">
+                      <%= sort_link_to "Order Amount", :order_amount, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
+                      <span class="ml-2 rounded bg-gray-100 text-gray-900">
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="table-row-group">
+                <%#= render @orders %>
+                <%= render partial: "/purchasers/row", collection: @purchasers, as: :purchaser %>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <%== pagy_nav @pagy %>
+        </div>
+
+      <% end %>
+
+    </div>
   </div>
 </div>

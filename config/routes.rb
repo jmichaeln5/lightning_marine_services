@@ -41,6 +41,13 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/purchasers/:purchaser_id/all_orders', to: 'purchasers/orders#all_orders',  as: 'all_purchaser_orders'
+  get '/purchasers/:purchaser_id/active_orders', to: 'purchasers/orders#active_orders',  as: 'active_purchaser_orders'
+
+  resources :purchasers do
+    resources :orders, only: [:index, :new, :create], module: :purchasers
+  end
+
   get '/vendors/:vendor_id/all_orders', to: 'vendors/orders#all_orders',  as: 'all_vendor_orders'
   get '/vendors/:vendor_id/active_orders', to: 'vendors/orders#active_orders',  as: 'active_vendor_orders'
 

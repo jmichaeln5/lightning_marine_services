@@ -1,0 +1,32 @@
+<div id="<%= dom_id purchaser %>" class="table-row odd:bg-white even:bg-slate-50 hover:bg-slate-100">
+
+  <% primary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-900 align-middle text-center" %>
+
+  <% secondary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-500 cursor-default align-middle text-center" %>
+
+  <!-- <%# if current_user_is_admin_or_staff? %>
+    <div class="<%#= primary_col_css_classes %>">
+      <%#= link_to edit_purchaser_path(purchaser), data: {turbo_frame: "modal"} do %>
+        <span class="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer"> Edit </span>
+      <%# end %>
+    </div>
+  <%# end %> -->
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= content_tag :span, purchaser.id, class: 'cursor-default' %>
+  </div>
+
+  <div class="<%= secondary_col_css_classes %> h-full group">
+    <%= link_to purchaser.name, purchaser, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+    <!-- <div class="text-sm text-gray-900">
+      <%#= render "inline_edit", model: purchaser, attribute: :name do %>
+        <%#= link_to purchaser.name, purchaser, class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+      <%# end %>
+    </div> -->
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= content_tag :span, purchaser.order_amount, class: 'cursor-default' %>
+  </div>
+
+</div>
