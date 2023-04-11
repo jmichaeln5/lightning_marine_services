@@ -3,11 +3,7 @@
 <% sort_link_to_table_header_css_classes = "text-indigo-800 hover:text-indigo-900 hover:underline" %>
 
 
-<% if current_user_is_admin_or_staff? %>
-  <div class="<%= table_header_css_classes %>">
-    <%= content_tag(:p, "", class:"text-center" ) %>
-  </div>
-<% end %>
+<%= content_tag(:div, "", class:table_header_css_classes ) %> <%# placeholder for first col %>
 
 <div class="<%= table_header_css_classes %>">
   <div class="group inline-flex p-3">

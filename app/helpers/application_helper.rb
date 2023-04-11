@@ -13,7 +13,7 @@ module ApplicationHelper
 
   def user_badge
     visitor = ["Visitor", "bg-gray-100"]
-    customer = ["Customer", "bg-green-100"]
+    customer = ["Client", "bg-green-100"]
     staff = ["Staff", "bg-blue-100"]
     admin = ["Admin", "bg-purple-100"]
 
@@ -25,12 +25,7 @@ module ApplicationHelper
       kurrent_user_badge = customer if current_user.has_role?('customer')
     end
 
-    if current_user.has_role?('customer')
-      return content_tag( :span, "Client", class:"inline-flex items-center rounded-full #{kurrent_user_badge[1]} px-3 py-1 text-xs font-medium text-gray-800")
-    else
     return content_tag( :span, kurrent_user_badge[0], class:"inline-flex items-center rounded-full #{kurrent_user_badge[1]} px-3 py-1 text-xs font-medium text-gray-800")
-    end
-
   end
 
   def current_user_is_admin_or_staff?

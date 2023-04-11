@@ -10,7 +10,7 @@ class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show update destroy ]
 
   def all_orders
-    @orders = nil
+    # @orders = nil
     orders = Order.all
 
     @orders ||= resolve_orders_for_data_table(orders)
@@ -19,7 +19,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = nil
+    # @orders = nil
     orders = Order.all
 
     @orders ||= resolve_orders_for_data_table(orders)
