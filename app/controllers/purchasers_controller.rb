@@ -147,20 +147,11 @@ class PurchasersController < ApplicationController
   end
 
   # DELETE /purchasers/1 or /purchasers/1.json
-  # def destroy
-  #   @purchaser.destroy
-  #
-  #   respond_to do |format|
-  #     format.html { redirect_to purchasers_url, notice: "Purchaser was successfully destroyed." }
-  #     format.json { head :no_content }
-  #   end
-  # end
   def destroy
     if @purchaser.destroy
       redirect_to purchasers_url, notice: "#{@purchaser.name}(Ship) deleted successfully."
     else
       redirect_to request.referrer
-      # redirect_back fallback_location: orders_url
       @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
     end
   end

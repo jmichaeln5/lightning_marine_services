@@ -36,27 +36,27 @@ class Purchasers::OrdersController < OrdersController
       @order.build_order_content
     end
 
-    def order_params
-      params.require(:order).permit(
-        :dept,
-        :po_number,
-        :tracking_number,
-        :date_recieved,
-        :courrier,
-        :date_delivered,
-        :purchaser_id,
-        :purchaser_id,
-        :order_sequence,
-        images: [],
-        order_content_attributes: [
-          :id,
-          :box,
-          :crate,
-          :pallet,
-          :other,
-          :other_description
-        ]
-      )
-    end
-
+    # def order_params
+    #   params.require(:order).permit(
+    #     :dept,
+    #     :po_number,
+    #     :tracking_number,
+    #     :date_recieved,
+    #     :courrier,
+    #     :date_delivered,
+    #     :purchaser_id,
+    #     :purchaser_id,
+    #     :order_sequence,
+    #     images: [],
+    #     order_content_attributes: [
+    #       :id,
+    #       :box,
+    #       :crate,
+    #       :pallet,
+    #       :other,
+    #       :other_description
+    #     ]
+    #   )
+    # end
+    
 end

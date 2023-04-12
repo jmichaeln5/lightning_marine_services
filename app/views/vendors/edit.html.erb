@@ -1,3 +1,28 @@
+<%# content_for :page_heading_button do %>
+  <%#= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: vendor_path(@vendor),
+    fallback_location_text: "View vendor",
+  } %>
+<%# end %>
+
+<%#= render 'form', vendor: @vendor %>
+
+<% if request.variant == [:turbo_frame]  %>
+  <%= turbo_frame_tag :modal do %>
+    <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
+
+      <% content_for :modal_title, flush: true do %>
+        <%= link_to "Edit Vendor", edit_vendor_path(@vendor), target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
+      <% end %>
+
+      <%= render "/layouts/stacked_shell/modal", modal_title: yield(:modal_title) do %>
+        <%= render 'form', vendor: @vendor %>
+      <% end %>
+
+    </div>
+  <% end %>
+<% end %>
+
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: vendor_path(@vendor),
@@ -5,4 +30,11 @@
   } %>
 <% end %>
 
-<%= render 'form', vendor: @vendor %>
+<% content_for :page_heading_card do %>
+  <%= turbo_stream.update "card_title", "Edit Vendor" %>
+  <%= turbo_stream.update "card_content" do %>
+    <div class="p-3 overflow-hidden rounded-lg border border-gray-100 shadow">
+      <%= render 'form', vendor: @vendor %>
+    </div>
+  <% end %>
+<% end %>

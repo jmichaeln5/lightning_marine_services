@@ -1,4 +1,23 @@
-<% @page_heading_title = "Ship Orders" %>
+<%# @page_heading_title = "Ship Orders" %>
+
+<% content_for :page_heading_button do %>
+
+  <div class="grid space-y-3 sm:inline-block sm:space-y-0">
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
+      # with_turbo_modal: true,
+      link_to_path: edit_purchaser_path(@purchaser),
+      link_to_text: "Edit ship",
+    } %>
+
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+      with_turbo_modal: true,
+      link_to_path: new_purchaser_order_path(@purchaser),
+      link_to_text: "Add ship order",
+    } %>
+  </div>
+
+<% end %>
+
 
 <% content_for :page_heading_card do %>
 
@@ -8,7 +27,7 @@
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
       <%= render partial: "/shared/data_display/stats/overview_card", locals: {
-        card_title: "All purchaser orders",
+        card_title: "All ship orders",
         card_description: @purchaser.orders.count,
         card_link: (link_to "View all ship orders", purchaser_orders_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
@@ -18,14 +37,14 @@
       is_active_card: true,
       card_title: "Active ship orders",
       card_description: @purchaser.orders.unarchived.count,
-      card_link: (link_to "View active purchaser orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_link: (link_to "View active ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
       } %>
 
       <%= render partial: "/shared/data_display/stats/overview_card", locals: {
       card_title: "Completed ship orders",
       card_description: @purchaser.orders.archived.count,
-      card_link: (link_to "View completed purchaser orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_link: (link_to "View completed ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
       } %>
 

@@ -1,4 +1,7 @@
 class Order < ApplicationRecord
+  searchkick
+  # searchkick searchable: [:dept, :po_number, :courrier, :tracking_number, :purchaser_name, :ship_name, :vendor_name]
+
   belongs_to :purchaser
   belongs_to :vendor
   has_many_attached :images
@@ -22,8 +25,8 @@ class Order < ApplicationRecord
     self.vendor_name = self.vendor.name
   end
 
-  # searchkick
-  searchkick searchable: [:dept, :po_number, :courrier, :tracking_number, :purchaser_name, :ship_name, :vendor_name]
+  # # searchkick
+  # searchkick searchable: [:dept, :po_number, :courrier, :tracking_number, :purchaser_name, :ship_name, :vendor_name]
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }

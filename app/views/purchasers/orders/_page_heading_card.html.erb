@@ -3,23 +3,23 @@
 
     <%= render partial: "/shared/data_display/stats/overview_card", locals: {
       is_active_card: true,
-      card_title: "All vendor orders",
-      card_description: @vendor.orders.count,
-      card_link: (link_to "View all vendor orders", vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_title: "All ship orders",
+      card_description: @purchaser.orders.count,
+      card_link: (link_to "View all purchaser orders", purchaser_orders_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
     } %>
 
     <%= render partial: "/shared/data_display/stats/overview_card", locals: {
-    card_title: "Active vendor orders",
-    card_description: @vendor.orders.unarchived.count,
-    card_link: (link_to "View active vendor orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
-    card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
+    card_title: "Active ship orders",
+    card_description: @purchaser.orders.unarchived.count,
+    card_link: (link_to "View active purchaser orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+    card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
     } %>
 
     <%= render partial: "/shared/data_display/stats/overview_card", locals: {
-    card_title: "Completed vendor orders",
-    card_description: @vendor.orders.archived.count,
-    card_link: (link_to "View completed vendor orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+    card_title: "Completed ship orders",
+    card_description: @purchaser.orders.archived.count,
+    card_link: (link_to "View completed purchaser orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
     card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
     } %>
 
