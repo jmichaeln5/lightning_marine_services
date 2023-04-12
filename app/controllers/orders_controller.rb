@@ -51,9 +51,12 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
-    # check_read_write
-    @order = Order.find(params[:id])
-    @order.build_order_content if @order.order_content.nil?
+    if order_policy.able_to_moderate?
+      @order = Order.find(params[:id])
+      @order.build_order_content if @order.order_content.nil?
+    else
+      refuse_unauthenticated
+    end
   end
 
   def create
@@ -131,6 +134,12 @@ class OrdersController < ApplicationController
   end
 
   private
+
+    def order_policy
+      @order_policy ||= OrderPolicy.new(current_user: current_user, resource: @order)
+    end
+    helper_method :order_policy
+
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])

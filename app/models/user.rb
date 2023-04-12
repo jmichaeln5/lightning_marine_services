@@ -19,6 +19,12 @@ class User < ApplicationRecord
   def bypass_email_confirmation # Needed to prevent error in UsersController < Admin::ApplicationController
   end
 
+  def moderator_for?(order)
+    return true if self.has_role? "admin"
+    return true if self.has_role? "staff"
+    return true if self.has_role? "customer"
+  end
+
   private
 
   def name
@@ -30,5 +36,6 @@ class User < ApplicationRecord
       self.add_role(:customer)
     end
   end
+
 
 end

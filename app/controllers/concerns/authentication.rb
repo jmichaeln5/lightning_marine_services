@@ -31,7 +31,11 @@ module Authentication
 
     def refuse_unauthenticated
       refuse_unauthenticated_turbo_frame and return if turbo_frame_request?
-      redirect_back fallback_location: sign_in_path, alert: 'Not authorized.'
+      if Current.user
+        redirect_back fallback_location: dashboard_path, alert: 'Not authorized.'
+      else
+        redirect_back fallback_location: sign_in_path, alert: 'Not authorized.'
+      end
     end
 
     def authenticate
