@@ -48,7 +48,7 @@ class OrdersController < ApplicationController
     if order_policy.able_to_moderate?
       set_new_order
     else
-      refuse_unauthorized_request
+      veto_unauthorized_request
     end
   end
 
@@ -58,12 +58,13 @@ class OrdersController < ApplicationController
       @order = Order.find(params[:id])
       @order.build_order_content if @order.order_content.nil?
     else
-      refuse_unauthorized_request
+      veto_unauthorized_request
     end
   end
 
   def create
-    check_read_write
+    veto_unauthorized_request unless order_policy.able_to_moderate?
+    return unless order_policy.able_to_moderate?
 
     @order = Order.new(order_params)
 
