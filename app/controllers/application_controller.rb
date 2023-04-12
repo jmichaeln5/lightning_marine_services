@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
-  include Authentication
   include SetCurrentRequestDetails
+  include Authentication
+  include Authorization
+  # include SetCurrentRequestDetails
   include Pagy::Backend
 
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -12,23 +14,6 @@ class ApplicationController < ActionController::Base
 
   def after_sign_up_path_for(resource)
     redirect_back
-  end
-
-  def authenticate_admin
-    redirect_back fallback_location: root_path, alert: 'Not authorized.' unless current_user.has_role? 'admin'
-  end
-
-  def exclude_customer
-    if current_user.has_role?('customer')
-      redirect_to root_path, alert: 'Not authorized.'
-    end
-  end
-
-  def check_read_write
-    # Admins and Staff have Read Write Access
-    if ! (current_user.has_role?('admin') || current_user.has_role?('staff'))
-      redirect_to root_path, alert: 'Not authorized.'
-    end
   end
 
   def dev_output_str(str)
@@ -58,7 +43,7 @@ class ApplicationController < ActionController::Base
   private
 
     # def set_request_variant
-    #   request.variant = :turbo_frame if turbo_frame_request?
+      # request.variant = :turbo_frame if turbo_frame_request?
     #   # request.variant = Current.request_variant
     # end
 

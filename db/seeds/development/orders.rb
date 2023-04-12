@@ -15,8 +15,8 @@ def create_orders(orders_to_create)
   vendor_record_amount =  return_amount_of_records_for("vendor")
   purchaser_record_amount =  return_amount_of_records_for("purchaser")
 
-  create_vendor_or_puchasher_records("vendor", rand(1..30)) unless vendor_record_amount > 0
-  create_vendor_or_puchasher_records("purchaser", rand(1..30)) unless purchaser_record_amount > 0
+  create_vendor_or_puchasher_records("vendor", rand(5..10)) unless vendor_record_amount > 0
+  create_vendor_or_puchasher_records("purchaser", rand(5..10)) unless purchaser_record_amount > 0
 
   orders_to_create.times do
     archived_options = [true, false]

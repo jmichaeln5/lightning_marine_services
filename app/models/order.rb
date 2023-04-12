@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
-  searchkick
-  # searchkick searchable: [:dept, :po_number, :courrier, :tracking_number, :purchaser_name, :ship_name, :vendor_name]
+  # searchkick
+  searchkick searchable: [ :dept, :po_number, :courrier, :tracking_number, :purchaser_name, :vendor_name ]
 
   belongs_to :purchaser
   belongs_to :vendor
@@ -8,33 +8,22 @@ class Order < ApplicationRecord
   has_one :order_content, dependent: :destroy
   accepts_nested_attributes_for :order_content
 
-  attribute :purchaser_name, :string, default: ""
-  attribute :ship_name, :string, default: ""
-  attribute :vendor_name, :string, default: ""
-
-  after_initialize do |order|
-    # puts "\n\n\n ***order.rb => after_initialize !self.new_record? *** \n\n\n" if !self.new_record?
-    # puts "\n\n\n ***order.rb => after_initialize self.new_record? *** \n\n\n" if self.new_record?
-    set_virtual_attributes if !self.new_record?
-  end
-
-  def set_virtual_attributes
-    # puts "\n\n\n ***order.rb => set_virtual_attributes*** \n\n\n"
-    self.ship_name = self.purchaser.name
-    self.purchaser_name = self.purchaser.name
-    self.vendor_name = self.vendor.name
-  end
-
-  # # searchkick
-  # searchkick searchable: [:dept, :po_number, :courrier, :tracking_number, :purchaser_name, :ship_name, :vendor_name]
-
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }
+
   scope :filter_by_purchasers, ->(sort_direction) { includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction) }
   scope :filter_by_vendors, ->(sort_direction) { includes(:vendor).references(:vendor).order("name" + " " + sort_direction) }
 
   validates :purchaser_id, :vendor_id, :courrier, presence: true
   validate :before_validationz
+
+  def purchaser_name
+    self.purchaser.name
+  end
+
+  def vendor_name
+    self.vendor.name
+  end
 
   def self.deliver_all
     all.each do |order|
@@ -167,7 +156,6 @@ class Order < ApplicationRecord
       courrier: self.courrier,
       tracking_number: self.tracking_number,
       purchaser_name: self.purchaser.name,
-      ship_name: self.purchaser.name,
       vendor_name: self.vendor.name,
     )
   end

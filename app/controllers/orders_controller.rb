@@ -19,7 +19,7 @@ class OrdersController < ApplicationController
 
   def index
     # @orders = nil
-    orders = Order.all
+    orders = Order.unarchived
 
     @orders ||= resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
@@ -45,8 +45,11 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    check_read_write
-    set_new_order
+    if order_policy.able_to_moderate?
+      set_new_order
+    else
+      refuse_unauthorized_request
+    end
   end
 
   # GET /orders/1/edit
@@ -55,12 +58,13 @@ class OrdersController < ApplicationController
       @order = Order.find(params[:id])
       @order.build_order_content if @order.order_content.nil?
     else
-      refuse_unauthenticated
+      refuse_unauthorized_request
     end
   end
 
   def create
-    #   check_read_write
+    check_read_write
+
     @order = Order.new(order_params)
 
     respond_to do |format|

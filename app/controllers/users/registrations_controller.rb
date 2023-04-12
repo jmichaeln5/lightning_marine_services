@@ -7,7 +7,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    redirect_to root_path, alert: 'Not authorized.'
     # super # Commented out to support redirect above (Only Admins should be allowed to add new users)
   end
 

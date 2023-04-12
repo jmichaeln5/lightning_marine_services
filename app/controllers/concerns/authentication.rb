@@ -2,48 +2,24 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
-    before_action :authenticate
+    before_action :require_login, if: :controller_requires_login?
   end
 
   private
 
-    def controllers_elected_for_authentication
-      [
-        'DashboardController',
-        'OrdersController',
-        'VendorsController',
-        'PurchasersController',
-        'Vendors::OrdersController',
-        'Purchasers::OrdersController',
+    def require_login
+      redirect_to sign_in_path, alert: 'Not authorized.' unless user_signed_in?
+    end
+
+    def controller_requires_login?
+      controllers_without_authentication = [
+        'PagesController',
+        'Users::SessionsController',
+        'Users::ConfirmationsController',
+        'Users::UnlocksController',
       ]
-    end
-
-    def refuse_unauthenticated_turbo_frame
-      render turbo_stream: turbo_stream.append(
-        'flashes',
-        partial: "/layouts/stacked_shell/headings/flash_messages",
-        locals: {
-          flash_type: "alert",
-          flash_title: 'Not authorized.',
-        }
-      ), status: :unauthorized
-    end
-
-    def refuse_unauthenticated
-      refuse_unauthenticated_turbo_frame and return if turbo_frame_request?
-      if Current.user
-        redirect_back fallback_location: dashboard_path, alert: 'Not authorized.'
-      else
-        redirect_back fallback_location: sign_in_path, alert: 'Not authorized.'
-      end
-    end
-
-    def authenticate
-      if authenticated_user = current_user
-        Current.user = authenticated_user
-      else
-        refuse_unauthenticated if request.controller_class.to_s.in? controllers_elected_for_authentication
-      end
+      controller_requested_by_navigator = request.controller_class.to_s
+      return true unless controller_requested_by_navigator.in? controllers_without_authentication
     end
 
 end

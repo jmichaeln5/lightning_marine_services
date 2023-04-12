@@ -1,4 +1,4 @@
-# app/policy/client_policy.rb
+# https://blog.eq8.eu/article/policy-object.html
 class OrderPolicy
   attr_reader :current_user, :resource
 
@@ -8,7 +8,9 @@ class OrderPolicy
   end
 
   def able_to_moderate?
-    return false unless Current.user
-    current_user.has_role? "admin" || current_user.moderator_for?(resource)
+    # current_user.has_role? "admin" || current_user.moderator_for?(resource)
+    # current_user.has_role? "admin" or current_user.has_role? "staff"
+    return true if current_user.has_role? "admin"
+    return true if current_user.has_role? "staff"
   end
 end

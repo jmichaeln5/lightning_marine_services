@@ -46,6 +46,11 @@ Rails.application.routes.draw do
 
   resources :purchasers do
     resources :orders, only: [:index, :new, :create], module: :purchasers
+
+    member do
+      get :export
+      get :deliver
+    end
   end
 
   get '/vendors/:vendor_id/all_orders', to: 'vendors/orders#all_orders',  as: 'all_vendor_orders'
@@ -55,7 +60,6 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :new, :create], module: :vendors
   end
 
-
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
 
@@ -63,14 +67,12 @@ Rails.application.routes.draw do
   #get '/all_ship_orders/:id', to: 'purchasers#show_all'
   get '/search', to: 'searches#index'
 
-  resources :purchasers do
-    member do
-      get :export
-      get :deliver
-    end
-  end
-
-
+  # resources :purchasers do
+  #   member do
+  #     get :export
+  #     get :deliver
+  #   end
+  # end
 
   # Redirects to root if invalid path BUT, fucks up search params
   # match '*path' => redirect('/'), :via => [:get, :post]
