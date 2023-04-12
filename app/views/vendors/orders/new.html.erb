@@ -19,7 +19,7 @@
   <%#= render 'vendors/orders/form', order: @order, vendor: @vendor %>
 </div>
 
-<% if request.variant and request.variant == [:turbo_frame]  %>
+<% if Current.request_variant == :turbo_frame  %>
   <%= turbo_frame_tag :modal do %>
     <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
 

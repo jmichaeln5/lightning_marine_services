@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  # before_action :set_request_variant
 
   def after_sign_in_path_for(resource)
     dashboard_path
@@ -48,12 +49,17 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :phone_number, :email, :username, :bypass_email_confirmation, :confirmed_at, role_ids: []])
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :phone_number, :email, :username, :bypass_email_confirmation, :confirmed_at, role_ids: []])
 
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone_number, :email, :username])
-  end
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone_number, :email, :username])
+    end
 
-  # private
+  private
+
+    # def set_request_variant
+    #   request.variant = :turbo_frame if turbo_frame_request?
+    #   # request.variant = Current.request_variant
+    # end
 
 end

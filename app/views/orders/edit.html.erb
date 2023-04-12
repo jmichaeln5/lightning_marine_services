@@ -240,7 +240,7 @@
 
 </section>
 
-<% if request.variant == [:turbo_frame]  %>
+<% if Current.request_variant == :turbo_frame  %>
   <%= turbo_frame_tag :modal do %>
 
     <% content_for :edit_order_modal_title, flush: true do %>

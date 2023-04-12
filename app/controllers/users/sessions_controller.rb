@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  # layout "stacked_shell", only: %i[ create ]
+
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -11,7 +13,9 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     super
-    layout "stacked_shell"
+    # layout "stacked_shell"
+    # render layout: "stacked_shell"
+     # layout :stacked_shell
   end
 
   # DELETE /resource/sign_out

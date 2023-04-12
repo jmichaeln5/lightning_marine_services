@@ -208,13 +208,13 @@ class SunsetOrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.turbo_stream { render turbo_stream: turbo_render_flash_order_notice("Order was successfully created."), status: :created }
+        format.turbo_stream { render turbo_stream: turbo_render_flash_notice_for_obj("Order was successfully created."), status: :created }
         format.html { redirect_to @order, notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
 
         if request.variant == [:turbo_frame]
-          format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
+          format.turbo_stream { render turbo_stream: turbo_render_flash_errors_for_obj, status: :unprocessable_entity }
         end
 
         format.html { render :new, status: :unprocessable_entity }
@@ -252,7 +252,7 @@ class SunsetOrdersController < ApplicationController
                   order: @order,
                 }
               ),
-              turbo_render_flash_order_notice("Order was successfully updated.")
+              turbo_render_flash_notice_for_obj("Order was successfully updated.")
             ],
             status: :ok
           }
@@ -261,10 +261,10 @@ class SunsetOrdersController < ApplicationController
         format.json { render :show, status: :ok, location: @order }
       else
         # if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
-        #   format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
+        #   format.turbo_stream { render turbo_stream: turbo_render_flash_errors_for_obj, status: :unprocessable_entity }
         # end
         if request.variant == [:turbo_frame]
-          format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
+          format.turbo_stream { render turbo_stream: turbo_render_flash_errors_for_obj, status: :unprocessable_entity }
         end
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -333,7 +333,7 @@ class SunsetOrdersController < ApplicationController
       @page_heading_title = "Orders"
     end
 
-    def turbo_render_flash_order_notice(flash_title)
+    def turbo_render_flash_notice_for_obj(flash_title)
       turbo_stream.append(
         'flashes',
         partial: "/layouts/stacked_shell/headings/flash_messages",
@@ -344,7 +344,7 @@ class SunsetOrdersController < ApplicationController
       )
     end
 
-    def turbo_render_flash_order_errors
+    def turbo_render_flash_errors_for_obj
       delay_value = 3000
       flash_title = @order.errors.count > 1 ? "There were #{@order.errors.count} errors with your submission" : "There was #{@order.errors.count} error with your submission"
 

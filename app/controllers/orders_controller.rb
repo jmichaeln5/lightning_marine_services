@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
         format.json { render :show, status: :created, location: @order }
       else
 
-        if request.variant == [:turbo_frame]
+        if Current.request_variant == :turbo_frame
           format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
 
@@ -81,7 +81,7 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.update(order_params)
 
-        if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+        if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
           format.turbo_stream {
             render turbo_stream: [
               turbo_stream.replace(
@@ -99,10 +99,10 @@ class OrdersController < ApplicationController
         format.html { redirect_to @order, notice: "Order updated successfully." }
         format.json { render :show, status: :ok, location: @order }
       else
-        # if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+        # if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
         #   format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         # end
-        if request.variant == [:turbo_frame]
+        if Current.request_variant == :turbo_frame
           format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
         format.html { render :edit, status: :unprocessable_entity }
@@ -116,7 +116,7 @@ class OrdersController < ApplicationController
     # @order = Order.find params[:id]
     @order.destroy
     respond_to do |format|
-      if ( (request.variant == [:turbo_frame]) && !(request.referer.include? @order.id.to_s) )
+      if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
         format.turbo_stream
       end
       format.html { redirect_to orders_url, notice: "Order deleted successfully." }
