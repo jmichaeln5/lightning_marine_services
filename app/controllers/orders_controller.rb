@@ -3,7 +3,6 @@ class OrdersController < ApplicationController
 
  include OrdersTableHelper
 
-  before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
 
   before_action :set_page_heading_title

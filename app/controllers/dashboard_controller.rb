@@ -1,5 +1,4 @@
 class DashboardController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_page_heading_title
 
   layout "stacked_shell"

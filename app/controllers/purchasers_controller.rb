@@ -1,7 +1,6 @@
 class PurchasersController < ApplicationController
   layout "stacked_shell"
 
-  before_action :authenticate_user!
   before_action :authenticate_admin, only: %i[ destroy ]
 
   before_action :set_page_heading_title

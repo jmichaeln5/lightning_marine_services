@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
+  include Authentication
+  include SetCurrentRequestDetails
   include Pagy::Backend
 
-  before_action :turbo_frame_request_variant
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def after_sign_in_path_for(resource)
@@ -13,7 +14,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_admin
-    # redirect_back fallback_location: root_path, alert: 'Not authorized.' unless current_user.has_role?(:admin)
     redirect_back fallback_location: root_path, alert: 'Not authorized.' unless current_user.has_role? 'admin'
   end
 
@@ -54,10 +54,6 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone_number, :email, :username])
   end
 
-  private
-
-  def turbo_frame_request_variant
-    request.variant = :turbo_frame if turbo_frame_request?
-  end
+  # private
 
 end
