@@ -20,48 +20,40 @@
 <% end %>
 
 
-<div class="py-5 text-xl text-center">
-  Time outside turbo_frame: <br>
-  <%=  Time.zone.now  %>
-</div>
 
+<!-- <%# if !(Current.request_variant == :turbo_frame)  %>
 
-<% if !(Current.request_variant == :turbo_frame)  %>
-
-  <%= form_with url: searches_path, method: :get, data: { turbo_frame: "results", turbo_action: "advance" } do |form| %>
+  <%#= form_with url: searches_path, method: :get, data: { turbo_frame: "results", turbo_action: "advance" } do |form| %>
 
     <div class="p-2 mb-3 border-2 shadow-md">
       <div class="w-full text-center p-3">
         <div class="text-2xl my-3"> Auto submit </div>
         <div class="flex w-full space-x-3">
 
-          <%= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()",  class: "w-full rounded-md bg-white py-1.5 pl-3 border-2 border-slate-200 shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search', placeholder:'Search' %>
+          <%#= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()",  class: "w-full rounded-md bg-white py-1.5 pl-3 border-2 border-slate-200 shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search', placeholder:'Search' %>
 
         </div>
       </div>
     </div>
 
-  <% end %>
-<% end %>
+  <%# end %>
+<%# end %> -->
 
-<%= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>
 
-  <div class="py-2 text-xl text-center">
-    Time inside turbo_frame: <br>
-    <%=  Time.zone.now  %>
-  </div>
 
-  <div class="py-2 text-3xl text-center">
+<%#= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>
+
+  <!-- <div class="py-2 text-3xl text-center">
     Results: <br>
-    <%#= @pagy.inspect %>
-    <%= @results_amount %>
-  </div>
+    <%###= @pagy.inspect %>
+    <%##= @results_amount %>
+  </div> -->
 
 
-  <div id="search_results">
-  </div>
+  <!-- <div id="search_results">
+  </div> -->
 
-  <%= turbo_frame_tag 'pagination',
+  <%#= turbo_frame_tag 'pagination',
     src: searches_path(
       # page: @pagy.next
       query: params[:query],
@@ -71,4 +63,4 @@
     ),
   loading: :lazy %>
 
-<% end %>
+<%# end %>

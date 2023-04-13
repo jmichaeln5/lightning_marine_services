@@ -8,6 +8,16 @@
   <% end %>
 <% end %>
 
+<%#= turbo_stream.update "results_amount", @results_amount %>
+
+<%# if @pagy %>
+<!-- UPDATE
+  #results_amount
+ TO -->
+ <%# updated_results_amount_text = "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} " %>
+ <%#= turbo_stream.update "results_amount", updated_results_amount_text %>
+<%# end %>
+
 <% if @pagy.next.present? %>
   <%= turbo_stream.replace "pagination" do %>
 
