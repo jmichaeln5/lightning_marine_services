@@ -12,15 +12,11 @@
         <div class="text-center sm:text-left">
           <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
 
-            <%#= table_section_heading_title %>
-            <%#= local_assigns[:table_section_heading_title]  %>
             <%= content_tag(:span, table_section_heading_title, id:"table_section_heading_title" ) %>
 
           </h1>
           <p class="mt-2 ml-2 mb-1 text-md text-gray-700">
 
-            <%#= table_section_heading_description %>
-            <%#= local_assigns[:table_section_heading_description]  %>
             <%= content_tag(:span, table_section_heading_description, id:"table_section_heading_description" ) %>
 
           </p>
@@ -43,48 +39,50 @@
     </div>
     <div data-reveal-target="item" class="hidden">
       <div class="pb-9">
-          <div class="rounded-md bg-white py-3">
+        <div class="rounded-md bg-white py-3">
+          <div class="mx-3 flex flex-wrap justify-center sm:justify-between">
+            <!-- <p class="text-sm text-gray-700">
+              <p class="text-sm text-gray-700"> Amount per page </p> <%#= form.select :count, options_for_select([10, 25, 50, 100], selected: params[:count]), {}, { onchange: "this.form.requestSubmit()" } %>
+              <%##= form.select :count, options_for_select([10, 25, 50, 100], selected: params[:count]), onchange: "this.form.requestSubmit()",  class: "text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50"  %>
+              <select onchange="this.form.requestSubmit()" name="count" id="count">
+              <option selected value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              </select>
+            </p> -->
+            <div class="text-gray-700 text-center sm:text-left">
+              <%= form_with url: "", method: :get, data: { turbo_frame: local_assigns[:table_turbo_frame_tag], turbo_action: "advance" } do |form| %>
 
-            <%= form_with url: "", method: :get, data: { turbo_frame: local_assigns[:table_turbo_frame_tag], turbo_action: "advance" } do |form| %>
-
-              <div class="mx-3 flex flex-wrap justify-center sm:justify-between">
-                <!-- <p class="text-sm text-gray-700">
-                  <p class="text-sm text-gray-700"> Amount per page </p> <%#= form.select :count, options_for_select([10, 25, 50, 100], selected: params[:count]), {}, { onchange: "this.form.requestSubmit()" } %>
-                  <%##= form.select :count, options_for_select([10, 25, 50, 100], selected: params[:count]), onchange: "this.form.requestSubmit()",  class: "text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50"  %>
-                  <select onchange="this.form.requestSubmit()" name="count" id="count">
-                  <option selected value="10">10</option>
+                <p class="text-sm text-gray-700 mb-1"> Amount per page </p>
+                <div class="relative">
+                  <select onchange="this.form.requestSubmit()" name="count" id="count" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
+                  <option value="10">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
                   </select>
-                </p> -->
-                <div class="text-gray-700 text-center sm:text-left">
-                  <p class="text-sm text-gray-700 mb-1"> Amount per page </p>
-                  <div class="relative">
-                    <select onchange="this.form.requestSubmit()" name="count" id="count" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    </select>
-                  </div>
                 </div>
-                <div class="w-full inline-flex sm:hidden">
-                  <%# placeholder div to ensure line break %>
-                </div>
-                <div>
-                  <div class="text-gray-700 mt-2 sm:mt-0 text-center sm:text-right">
-                    <p class="text-sm text-gray-700 sm:-ml-5"> Search </p>
 
-                    <%= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()", class: "w-full rounded-md bg-white py-1.5 pl-3 border-0 drop-shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search' %>
+              <% end %>
+            </div>
+            <div class="w-full inline-flex sm:hidden">   <%# placeholder div to ensure line break %>
+            </div>
 
-                  </div>
+            <%= form_with url: "", method: :get, data: { turbo_frame: local_assigns[:table_turbo_frame_tag], turbo_action: "advance" } do |form| %>
+
+              <div>
+                <div class="text-gray-700 mt-2 sm:mt-0 text-center sm:text-right">
+                  <p class="text-sm text-gray-700 sm:-ml-5"> Search </p>
+
+                  <%= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()", class: "w-full rounded-md bg-white py-1.5 pl-3 border-0 drop-shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search' %>
                 </div>
               </div>
 
             <% end %>
 
           </div>
+        </div>
       </div>
     </div>
   </div>

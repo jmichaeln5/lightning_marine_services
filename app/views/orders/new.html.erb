@@ -27,7 +27,7 @@
       <%= render "/layouts/stacked_shell/modal", modal_title: yield(:new_order_modal_title) do %>
         <% new_order = Order.new %>
         <% new_order.build_order_content %>
-        <%= render '/orders/modal_form', order: new_order %>
+        <%= render '/orders/form', order: new_order %>
       <% end %>
 
     </div>

@@ -4,8 +4,10 @@ module OrdersTableHelper
   def resolve_orders_for_data_table(orders)
     dev_output_str("OrdersTableHelper#resolve_orders_for_data_table")
 
-    orders = search_orders_against_query(orders, params[:query] ) if params[:query].present?
     orders = sort_orders_against_params(orders, params[:sort] ) if params[:sort].present?
+
+    orders = search_orders_against_query(orders, params[:query] ) if params[:query].present? and params[:query].length > 1
+
     return orders
   end
 
