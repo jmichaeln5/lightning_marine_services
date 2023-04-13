@@ -14,9 +14,7 @@
       <div class="text-gray-900 font-medium"> New Vendor Order </div>
     </div>
   </div>
-  <%#= @order.inspect %>
   <%= render 'orders/form', order: @order, vendor: @vendor %>
-  <%#= render 'vendors/orders/form', order: @order, vendor: @vendor %>
 </div>
 
 <% if Current.request_variant == :turbo_frame  %>

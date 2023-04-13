@@ -35,5 +35,9 @@ class Purchasers::OrdersController < OrdersController
       @order = @purchaser.orders.build
       @order.build_order_content
     end
-    
+
+    def set_page_heading_title
+      @page_heading_title = "Ship Orders"
+    end
+
 end
