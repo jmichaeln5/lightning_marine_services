@@ -1,0 +1,23 @@
+<%= turbo_stream.append "search_results" do %>
+  <% @results.each do | result | %>
+    <div class="py-3">
+      <%= render partial: "/searches/results/result", locals:{
+        result: result,
+      } %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @pagy.next.present? %>
+  <%= turbo_stream.replace "pagination" do %>
+
+      <%= turbo_frame_tag :pagination,
+        loading: :lazy,
+        src: searches_path(
+          format: :turbo_stream,
+          query: params[:query],
+          page: @pagy.next
+      ) %>
+
+  <% end %>
+<% end %>

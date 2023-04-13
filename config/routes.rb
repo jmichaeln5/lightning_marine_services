@@ -29,11 +29,21 @@ Rails.application.routes.draw do
   resources :users
   resources :table_options
 
+  get 'searches/example', to: 'searches#example'
+
+  resources :searches, only: [:index]
+  concern :searchable do
+    collection do
+      resources :searches, only: [:index]
+    end
+  end
+
+  resources :orders, concerns: [:searchable ]
+
+
   namespace :orders do
     resource :bulk, controller: :bulk, only: [:destroy]
   end
-
-  resources :orders
 
   resources :orders do
     resources :attachments do
@@ -57,6 +67,7 @@ Rails.application.routes.draw do
   get '/vendors/:vendor_id/active_orders', to: 'vendors/orders#active_orders',  as: 'active_vendor_orders'
 
   resources :vendors do
+  # resources :vendors, concerns: [:searchable ] do
     resources :orders, only: [:index, :new, :create], module: :vendors
   end
 
@@ -65,7 +76,7 @@ Rails.application.routes.draw do
 
   get '/purchasers_all', to: 'purchasers#show_all'
   #get '/all_ship_orders/:id', to: 'purchasers#show_all'
-  get '/search', to: 'searches#index'
+  # get '/search', to: 'searches#index'
 
   # resources :purchasers do
   #   member do

@@ -1,8 +1,8 @@
 <% modified_link_to_path = :back unless (!(request.referer) || (request.referer.include? request.fullpath )) %>
 <% modified_link_to_text = "Back" unless (!(request.referer) || (request.referer.include? request.fullpath )) %>
 
-<% modified_link_to_path ||= fallback_location %>
-<% modified_link_to_text ||= fallback_location_text %>
+<% modified_link_to_path ||= local_assigns[:fallback_location] %>
+<% modified_link_to_text ||= local_assigns[:fallback_location_text] %>
 
 <%= link_to modified_link_to_path do %>
   <div class="inline-block">
