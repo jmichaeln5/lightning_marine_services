@@ -32,11 +32,11 @@
       </div>
       <main class="-mt-32">
 
-        <!-- <%#= render layout: "/layouts/stacked_shell/container" do %>
+        <%= render layout: "/layouts/stacked_shell/container" do %>
         <div class="py-3">
-          <%#= button_to "Searches", searches_path,  method: :get, class: "rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:cursor-pointer" %>
+          <%= button_to "Searches", searches_path,  method: :get, class: "rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:cursor-pointer" %>
         </div>
-        <%# end %> -->
+        <% end %>
 
         <% if content_for?(:page_heading_card) %>
           <%= render layout: "/layouts/stacked_shell/container" do %>

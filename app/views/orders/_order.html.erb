@@ -1,27 +1,62 @@
-<div id="<%= dom_id order %>" class="bg-white hover:bg-gray-50 rounded-md shadow-sm mb-5 hover:cursor-default">
+<div id="<%= dom_id order %>" >
 
-  <span class="hoverWrapper -mx-auto">
-    <div class="m-3 inline-block w-full">
-      <span class="text-lg sm:text-md text-gray-800 inline-flex align-baseline text-center"> Order <%= order.id %></span>
-      <div class="ml-5">
-        <div class="font-semibold text-gray-900 mb-1">
-          Ship:
-          <%= link_to order.purchaser_name, order.purchaser, method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
-        </div>
-        <div class="font-semibold text-gray-900 mb-1">
-          Vendor:
-          <%= link_to order.vendor_name, order.vendor, method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+  <% if local_assigns[:details] %>
+
+    <div class="w-full min-h-full ">
+      <details class="bg-white rounded-md group hover:bg-gray-50  hover:ring-offset-4 hover:ring-4 hover:ring-slate-100 hover:cursor-default">
+        <summary class="m-3">
+          <div class="text-lg sm:text-md text-gray-800 inline-flex align-baseline text-center">
+            Order <%= order.id %>
+          </div>
+          <div class="">
+            <span class="font-semibold text-gray-900 mb-1">
+              Ship:
+              <%= link_to order.purchaser_name, order.purchaser, method: :get, target: '_top', class: "inline-block text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+            </span>
+            <span class="font-semibold text-gray-900 mb-1">
+              Vendor:
+              <%= link_to order.vendor_name, order.vendor, method: :get, target: '_top', class: "inline-block text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+            </span>
+          </div>
+        </summary>
+        <span id="" class="inline-block w-full border border-slate-100 bg-white">
+          <%= turbo_frame_tag dom_id(order, :thumbnail), loading: :lazy, src: hovercard_order_path(order) do %>
+            <span class="animate-pulse p-4">
+              <span class="my-3">Loading...</span>
+            </span>
+          <% end %>
+        </span>
+      </details>
+    </div>
+
+  <% else %>
+
+    <div class="bg-white w-full min-h-full rounded-md group hover:bg-gray-50  hover:ring-offset-4 hover:ring-4 hover:ring-slate-100 hover:cursor-default">
+      <div class=" w-full ">
+        <div class="hoverWrapper ">
+          <div class="m-3">
+            <span class="text-lg sm:text-md text-gray-800 inline-flex align-baseline text-center"> Order <%= order.id %></span>
+            <div class="">
+              <span class="font-semibold text-gray-900 mb-1">
+                Ship:
+                <%= link_to order.purchaser_name, order.purchaser, method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+              </span>
+              <span class="font-semibold text-gray-900 mb-1">
+                Vendor:
+                <%= link_to order.vendor_name, order.vendor, method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+              </span>
+            </div>
+          </div>
+          <span id="hoverContent" class="inline-block h-full border border-slate-100 bg-white">
+            <%= turbo_frame_tag dom_id(order, :thumbnail), loading: :lazy, src: hovercard_order_path(order) do %>
+              <span class="animate-pulse p-4">
+                <span class="my-3">Loading...</span>
+              </span>
+            <% end %>
+          </span>
         </div>
       </div>
     </div>
-
-    <div id="hoverContent" class="-mt-3 border border-slate-100 bg-white m-3 shadow-lg">
-      <%= turbo_frame_tag dom_id(order, :thumbnail), loading: :lazy, src: hovercard_order_path(order) do %>
-        <span class="animate-pulse p-4">
-          <span class="my-3">Loading...</span>
-        </span>
-      <% end %>
-    </div>
-  </span>
-
+  <% end %>
+  
 </div>

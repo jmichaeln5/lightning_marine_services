@@ -1,9 +1,6 @@
 
 <%# if Current.request_variant == :turbo_frame  %>
 
-  <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
-  <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} "  %>
-
   <% active_result_css_classes = "bg-gray-100 bg-slate-100" %>
   <% active_result_css_classes_on_hover = "hover:bg-gray-100 hover:bg-slate-100" %>
 

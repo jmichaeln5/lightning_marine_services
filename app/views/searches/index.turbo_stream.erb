@@ -1,10 +1,18 @@
 <%= turbo_stream.append "search_results" do %>
   <% @results.each do | result | %>
-    <div class="">
-      <%= render partial: "/searches/results/result", locals:{
+
+      <%#= render partial: "/searches/results/result", locals:{
         result: result,
       } %>
-    </div>
+
+      <%= render partial: "/orders/order", locals:{
+        details: true,
+        order: result,
+      } %>
+
+      <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
+      <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} "  %>
+
   <% end %>
 <% end %>
 

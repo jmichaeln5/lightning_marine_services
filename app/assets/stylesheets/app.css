@@ -17,7 +17,7 @@ a:hover {
 
 .hoverWrapper #hoverContent {
   display: none;
-  position: absolute;
+  /* position: absolute; */
 }
 
 .hoverWrapper:hover #hoverContent {
