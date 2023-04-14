@@ -14,3 +14,12 @@ a:hover {
 .inline-edit .inline-action {
   display: initial;
 }
+
+.hoverWrapper #hoverContent {
+  display: none;
+  position: absolute;
+}
+
+.hoverWrapper:hover #hoverContent {
+  display: block;
+}

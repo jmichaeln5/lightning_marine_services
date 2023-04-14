@@ -46,6 +46,10 @@ Rails.application.routes.draw do
   end
 
   resources :orders do
+    member do
+      get :hovercard
+    end
+
     resources :attachments do
       delete :destroy_attachment
     end

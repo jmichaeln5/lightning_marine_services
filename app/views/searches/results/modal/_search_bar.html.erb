@@ -10,7 +10,7 @@
     <span id="modal_search">
       <%#= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()",  class: "h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder:text-gray-400 focus:ring-0 sm:text-sm", placeholder:'Search', placeholder:'Search...' %>
 
-      <%= form.text_field :query, value: params[:query], oninput: "this.form.requestSubmit()",  class: "h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder:text-gray-400 focus:ring-0 sm:text-sm", placeholder:'Search', placeholder:'Search...' %>
+      <%= form.text_field :query, value: params[:query], autofocus: true, oninput: "this.form.requestSubmit()",  class: "h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder:text-gray-400 focus:ring-0 sm:text-sm", placeholder:'Search', placeholder:'Search...' %>
     </span>
   <% end %>
 <% end %>

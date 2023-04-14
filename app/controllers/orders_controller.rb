@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_admin, only: %i[ destroy ]
 
   before_action :set_page_heading_title
-  before_action :set_order, only: %i[ show update destroy ]
+  before_action :set_order, only: %i[ show hovercard update destroy ]
 
   def all_orders
     # @orders = nil
@@ -41,6 +41,9 @@ class OrdersController < ApplicationController
 
   # GET /orders/1 or /orders/1.json
   def show
+  end
+
+  def hovercard
   end
 
   # GET /orders/new
