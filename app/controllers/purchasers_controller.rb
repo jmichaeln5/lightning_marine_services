@@ -3,7 +3,8 @@ class PurchasersController < ApplicationController
 
   before_action :authenticate_admin, only: %i[ destroy ]
 
-  before_action :set_page_heading_title
+  before_action :set_page_heading_title, except: %i[ show ]
+
   before_action :set_purchaser, only: %i[ show edit update destroy ]
 
   # GET /purchasers or /purchasers.json
@@ -39,6 +40,8 @@ class PurchasersController < ApplicationController
   # def show
   # end
   def show
+    @page_heading_title = "Ship"
+
     orders = Order.unarchived.where(purchaser: @purchaser)
 
     if params[:query].present?
@@ -123,7 +126,7 @@ class PurchasersController < ApplicationController
     respond_to do |format|
       if @purchaser.save
         # format.html { redirect_to purchaser_url(@purchaser), notice: "Ship was successfully created." }
-        
+
         format.html { redirect_to @purchaser, notice: "Ship was successfully created." }
         format.json { render :show, status: :created, location: @purchaser }
       else

@@ -1,85 +1,38 @@
 
+<%# if Current.request_variant == :turbo_frame  %>
 
+  <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
+  <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} "  %>
 
+  <% active_result_css_classes = "bg-gray-100 bg-slate-100" %>
+  <% active_result_css_classes_on_hover = "hover:bg-gray-100 hover:bg-slate-100" %>
 
-<!-- <%#= content_tag :div, class: "hidden" do -%>
-  <%#= active_result_css_classes_on_hover ||= "" %>
+  <li class="group flex cursor-default select-none items-center rounded-md p-2 hover:bg-gray-100 hover:bg-slate-100" id="option-1" role="option" tabindex="-1">
 
-  <li class="group flex cursor-default select-none items-center rounded-md p-2 <%#= active_result_css_classes_on_hover %> " id="option-1" role="option" tabindex="-1">
-    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full">
-    <span class="ml-3 flex-auto truncate">Tom Cook</span>
+    <span class="ml-3 flex-auto truncate">
+      <%= result.class %>
+      <%= result.id %>
+    </span>
+
     <%# Not Active: "hidden" %>
-    <svg class="ml-3 hidden h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <svg class="ml-3 h-5 w-5 flex-none text-gray-400 hidden group-hover:block" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
     </svg>
   </li>
 
-
-  <li class="group flex cursor-default select-none items-center rounded-md p-2 <%#= active_result_css_classes_on_hover %>" id="option-2" role="option" tabindex="-1">
-    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full">
-    <span class="ml-3 flex-auto truncate">Courtney Henry</span>
-    <svg class="ml-3 hidden h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-    </svg>
-  </li>
-<%# end -%> -->
+<%# end %>
 
 
 
-<% if Current.request_variant == :turbo_frame  %>
-
-
-
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-<!-- NOTE UPD8888 MODAL WHEN APPENDED HERE -->
-
-<%= turbo_stream.update "results_amount" do %>
-  <%= "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} " %>
-<% end %>
-
-<% active_result_css_classes = "bg-gray-100 bg-slate-100" %>
-<% active_result_css_classes_on_hover = "hover:bg-gray-100 hover:bg-slate-100" %>
-
-
-<li class="group flex cursor-default select-none items-center rounded-md p-2 <%= active_result_css_classes_on_hover %> " id="option-1" role="option" tabindex="-1">
-  <!-- <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full"> -->
-  <!-- <span class="ml-3 flex-auto truncate">Tom Cook</span> -->
-  <span class="ml-3 flex-auto truncate">
-    <%= result.class %>
-    <%= result.id %>
-  </span>
-  <%# Not Active: "hidden" %>
-  <svg class="ml-3 hidden h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-  </svg>
-</li>
-
-
-
-
-<% end %>
-
-
-
-<% if !Current.request_variant == :turbo_frame  %>
+<!-- <%# if !Current.request_variant == :turbo_frame  %>
 
 <div class="inline-block text-center">
   <div class=" p-2 mb-3 border-2 shadow-md w-1/2">
     <div class="text-center p-3">
 
       <div class="text-2xl my-3">
-        <%= result.class %>
-        <%= result.id %>
+        <%#= result.class %>
+        <%#= result.id %>
       </div>
 
       <div class="flex w-full justify-center space-x-3 ">
@@ -87,24 +40,24 @@
             <span class="font-bold mr-1">
               vendor_name:
             </span>
-            <%= result.vendor_name %>
+            <%#= result.vendor_name %>
           </div>
 
           <div>
             <span class="font-bold mr-1">
               purchaser_name:
             </span>
-            <%= result.purchaser_name %>
+            <%#= result.purchaser_name %>
           </div>
       </div>
       <div>
-        <%#= result.order_content.inspect %>
+        <%##= result.order_content.inspect %>
       </div>
     </div>
   </div>
 </div>
 
-<% end %>
+<%# end %> -->
 
 
 

@@ -37,7 +37,8 @@ class Purchasers::OrdersController < OrdersController
     end
 
     def set_page_heading_title
-      @page_heading_title = "Ship Orders"
+      # @page_heading_title = "Ship Orders"
+      @page_heading_title = "Ship"
     end
 
 end

@@ -3,7 +3,8 @@ class VendorsController < ApplicationController
 
   before_action :authenticate_admin, only: %i[ destroy ]
 
-  before_action :set_page_heading_title
+  before_action :set_page_heading_title, except: %i[ show ]
+
   before_action :set_vendor, only: %i[ show edit update destroy ]
 
   # GET /vendors or /vendors.json
@@ -39,6 +40,8 @@ class VendorsController < ApplicationController
   # def show
   # end
   def show
+    @page_heading_title = "Vendor"
+
     orders = Order.unarchived.where(vendor: @vendor)
 
     if params[:query].present?

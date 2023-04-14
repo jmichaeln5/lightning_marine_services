@@ -1,5 +1,3 @@
-<%# @page_heading_title = "Vendor Orders" %>
-
 <% content_for :page_heading_button do %>
 
   <div class="grid space-y-3 sm:inline-block sm:space-y-0">
@@ -17,7 +15,6 @@
   </div>
 
 <% end %>
-
 
 <% content_for :page_heading_card do %>
 
@@ -37,7 +34,7 @@
       is_active_card: true,
       card_title: "Active vendor orders",
       card_description: @vendor.orders.unarchived.count,
-      card_link: (link_to "View active vendor orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_link: (link_to "View active vendor orders", vendor_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
       } %>
 

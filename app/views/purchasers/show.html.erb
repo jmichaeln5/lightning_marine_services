@@ -37,7 +37,7 @@
       is_active_card: true,
       card_title: "Active ship orders",
       card_description: @purchaser.orders.unarchived.count,
-      card_link: (link_to "View active ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_link: (link_to "View active ship orders", purchaser_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
       } %>
 

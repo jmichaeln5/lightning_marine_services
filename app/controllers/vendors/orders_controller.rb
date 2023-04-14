@@ -37,7 +37,7 @@ class Vendors::OrdersController < OrdersController
     end
 
     def set_page_heading_title
-      @page_heading_title = "Vendor Orders"
+      @page_heading_title = "Vendor"
     end
 
 end

@@ -1,6 +1,6 @@
 <%= turbo_stream.append "search_results" do %>
   <% @results.each do | result | %>
-    <div class="py-3">
+    <div class="">
       <%= render partial: "/searches/results/result", locals:{
         result: result,
       } %>
@@ -8,19 +8,8 @@
   <% end %>
 <% end %>
 
-<%#= turbo_stream.update "results_amount", @results_amount %>
-
-<%# if @pagy %>
-<!-- UPDATE
-  #results_amount
- TO -->
- <%# updated_results_amount_text = "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} " %>
- <%#= turbo_stream.update "results_amount", updated_results_amount_text %>
-<%# end %>
-
 <% if @pagy.next.present? %>
   <%= turbo_stream.replace "pagination" do %>
-
       <%= turbo_frame_tag :pagination,
         loading: :lazy,
         src: searches_path(
@@ -28,6 +17,5 @@
           query: params[:query],
           page: @pagy.next
       ) %>
-
   <% end %>
 <% end %>

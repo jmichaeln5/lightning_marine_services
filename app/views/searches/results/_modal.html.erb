@@ -12,6 +12,10 @@
   }
   ```
 -->
+
+<%= render partial: "/searches/results/modal_content" %>
+
+
 <div class="relative z-10" data-controller="turbo-modal" role="dialog" aria-modal="true">
   <!--
     Background backdrop, show/hide based on modal state.
@@ -40,33 +44,36 @@
       <div class="relative">
         <div class="w-full mt-2">
           <div class="flex justify-between">
-
-            <div class="w-full h-full">
-              <div class="shadow-sm">
-                <svg class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-                </svg>
-
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- search bar -->
-                <!-- <input type="text" class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." role="combobox" aria-expanded="false" aria-controls="options"> -->
-
-                <%= form_with url: searches_path, method: :get, data: { turbo_frame: "results", turbo_action: "advance" } do |form| %>
-
-                <%= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()",  class: "h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder:text-gray-400 focus:ring-0 sm:text-sm", placeholder:'Search', placeholder:'Search...' %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
+            <%# ****  /searches/results/_modal_content.html.erb  **** %>
+            <%# ****  /searches/results/_modal_content.html.erb  **** %>
+            <%# ****  /searches/results/_modal_content.html.erb  **** %>
+            <%# ******************************************************** %>
+            <%# **** top_row_element  **** %>
+            <%# **** top_row_element  **** %>
+            <%# **** top_row_element  **** %>
+            <%# **** top_row_element  **** %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
+            <%# ******************************************************** %>
 
 
-                <% end %>
 
+            <div id="top_row_container" class="w-full h-full">
+              <div id="modal_search_bar_container" class="shadow-sm">
+                <%= yield :search_bar %>
+              </div>
+
+              <div id="results_text_container" class="w-full h-full">
+                <div class="ml-3 my-1 text-gray-700">
+                <%= yield :results_text %>
+              </div>
 
               </div>
             </div>
@@ -79,68 +86,18 @@
                 </svg>
               </button>
             </div>
-
           </div>
         </div>
       </div>
 
+
+
       <div class="flex divide-x divide-gray-100">
         <%# Preview Visible: "sm:h-96" %>
         <div class="max-h-96 min-w-0 flex-auto scroll-py-4 overflow-y-auto px-6 py-4 sm:h-96">
-          <%# Default state, show/hide based on command palette state. %>
+          <%# hover:bg-gray-100 hover:bg-slate-100 %>
+          <%# bg-gray-100 bg-slate-100 %>
 
-          <h2 class="text-xs font-semibold p-3 text-gray-500">
-            <span id="results_amount" class="fixed -mt-2">
-              Results: <%= @results_amount %>
-            </span>
-          </h2>
-          <!-- <%# if @results_amount == @pagy.count %>
-            <h2 class="text-xs font-semibold p-3 text-gray-500">
-              <span id="results_amount">
-                Results: <%#= @results_amount %>
-              </span>
-            </h2>
-          <%# else %>
-          <div class="bg-gray-100 opacity-50 mb-4 mt-1 fixed">
-            <h2 class="w-full text-xs font-semibold p-3 text-gray-500">
-              <span id="results_amount">
-                Results: <%#= @results_amount %>
-              </span>
-            </h2>
-          </div>
-          <%# end %> -->
-
-
-
-          <% active_result_css_classes = "bg-gray-100 bg-slate-100" %>
-          <% active_result_css_classes_on_hover = "hover:bg-gray-100 hover:bg-slate-100" %>
-
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- top result -->
-          <!-- <ul class="-mx-2 text-sm text-gray-700" id="result" role="listbox">
-            <li class="group flex cursor-default select-none items-center rounded-md p-2 <%#= active_result_css_classes %>" id="result-1" role="option" tabindex="-1">
-              <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full">
-              <span class="ml-3 flex-auto truncate">Floyd Miles</span>
-              <%# Not Active: "hidden" %>
-              <svg class="ml-3 hidden h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-              </svg>
-            </li>
-          </ul> -->
-
-          <!-- results -->
-          <!-- results -->
-          <!-- results -->
-          <!-- results -->
-          <!-- results -->
           <!-- results -->
           <!-- results -->
           <!-- results -->
@@ -148,7 +105,7 @@
           <!-- results -->
           <%# Results, show/hide based on command palette state. %>
           <ul class="-mx-2 text-sm text-gray-700" id="options" role="listbox">
-            <!-- <li class="group flex cursor-default select-none items-center rounded-md p-2 <%= active_result_css_classes_on_hover %> " id="option-1" role="option" tabindex="-1">
+            <!-- <li class="group flex cursor-default select-none items-center rounded-md p-2 bg-gray-100 bg-slate-100" id="option-1" role="option" tabindex="-1">
               <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full">
               <span class="ml-3 flex-auto truncate">Tom Cook</span>
               <%# Not Active: "hidden" %>
@@ -157,17 +114,14 @@
               </svg>
             </li> -->
 
-
             <%= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>
+
               <div id="search_results">
               </div>
 
               <%= turbo_frame_tag 'pagination',
                 src: searches_path(
-                  # page: @pagy.next
                   query: params[:query],
-                  # src: users_path(last_name: params[:last_name],
-                  # category: params[:category],
                   format: :turbo_stream
                 ),
               loading: :lazy %>
@@ -187,22 +141,12 @@
         <!-- #active_result -->
         <!-- #active_result -->
         <div id="active_result" class="hidden h-96 w-1/2 flex-none flex-col divide-y divide-gray-100 overflow-y-auto sm:flex">
-          <div class="flex-none p-6 text-center">
-            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="mx-auto h-16 w-16 rounded-full">
-            <h2 class="mt-3 font-semibold text-gray-900">Tom Cook</h2>
-            <p class="text-sm leading-6 text-gray-500">Director, Product Development</p>
-          </div>
-          <div class="flex flex-auto flex-col justify-between p-6">
-            <dl class="grid grid-cols-1 gap-x-6 gap-y-3 text-sm text-gray-700">
-              <dt class="col-end-1 font-semibold text-gray-900">Phone</dt>
-              <dd>881-460-8515</dd>
-              <dt class="col-end-1 font-semibold text-gray-900">URL</dt>
-              <dd class="truncate"><a href="https://example.com" class="text-indigo-600 underline">https://example.com</a></dd>
-              <dt class="col-end-1 font-semibold text-gray-900">Email</dt>
-              <dd class="truncate"><a href="#" class="text-indigo-600 underline">tomcook@example.com</a></dd>
-            </dl>
-            <button type="button" class="mt-6 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Send message</button>
-          </div>
+          <%#= yield :active_result %>
+          <% if content_for?(:active_result) %>
+            <%= yield :active_result %>
+          <% else %>
+            <%= yield :empty_state %>
+          <% end %>
         </div>
 
 
