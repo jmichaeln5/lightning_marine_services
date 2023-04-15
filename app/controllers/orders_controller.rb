@@ -3,7 +3,9 @@ class OrdersController < ApplicationController
 
  include OrdersTableHelper
 
-  before_action :authenticate_admin, only: %i[ destroy ]
+ # before_action :ensure_frame_response, only: %i[ new ]
+
+  before_action :authorize_admin, only: %i[ destroy ]
 
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]

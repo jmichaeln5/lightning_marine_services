@@ -3,7 +3,7 @@ module Authorization
 
   private
 
-    def authenticate_admin
+    def authorize_admin
       veto_unauthorized_request unless current_user.has_role? 'admin'
     end
 
@@ -17,7 +17,7 @@ module Authorization
       end
     end
 
-    def turbo_frame_veto_unauthorized_request
+    def veto_unauthorized_turbo_frame_request
       render turbo_stream: turbo_stream.append(
         'flashes',
         partial: "/layouts/stacked_shell/headings/flash_messages",
@@ -28,9 +28,13 @@ module Authorization
       ), status: :unauthorized
     end
 
-    def veto_unauthorized_request
-      turbo_frame_veto_unauthorized_request and return if turbo_frame_request?
+    def veto_unauthorized_http_request
       redirect_back fallback_location: dashboard_path, alert: 'Not authorized.'
+    end
+
+    def veto_unauthorized_request
+      veto_unauthorized_turbo_frame_request and return if turbo_frame_request?
+      veto_unauthorized_http_request
     end
 
 end

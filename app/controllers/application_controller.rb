@@ -47,4 +47,19 @@ class ApplicationController < ActionController::Base
     #   # request.variant = Current.request_variant
     # end
 
+    def ensure_frame_response
+      if  Rails.env.development? and !turbo_frame_request?
+        puts (" \n")*10
+        puts ("*"*50 + "\n")*10
+        puts "\n\nMESSAGE FROM: ApplicationController#ensure_frame_response\n\nStarted #{request.method} \"#{request.path}\" for #{request.ip} at #{Time.now}"
+        puts "Processing by #{request.controller_class}##{request.params[:action]} as HTML"
+        puts "\n\n#{request.controller_class}##{request.params[:action]} has invoked ApplicationController#ensure_frame_response\nThis request is allowed in development ENV but will be vetoed in all other ENVs\n\n"
+        puts ("*"*50 + "\n")*10
+        puts (" \n")*10
+      end
+
+      return unless Rails.env.development?
+      veto_unauthorized_http_request unless turbo_frame_request?
+    end
+
 end

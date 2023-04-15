@@ -3,7 +3,7 @@ class SunsetOrdersController < ApplicationController
  layout "stacked_shell"
 
   before_action :authenticate_user!
-  before_action :authenticate_admin, only: %i[ destroy ]
+  before_action :authorize_admin, only: %i[ destroy ]
   # before_action :check_read_write, only: %i[ new, create ]
   # before_action :check_read_write, only: %i[ new, edit, create , update]
 

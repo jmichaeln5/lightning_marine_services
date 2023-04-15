@@ -1,6 +1,6 @@
 class DirectoryLinksController < ApplicationController
-  # before_action :authenticate_admin_for_directory_links
-  before_action :authenticate_admin
+  # before_action :authorize_admin_for_directory_links
+  before_action :authorize_admin
   before_action :set_directory_link, only: %i[ show edit update destroy ]
 
   # GET /directory_links or /directory_links.json
@@ -61,7 +61,7 @@ class DirectoryLinksController < ApplicationController
 
   private
 
-    # def authenticate_admin_for_directory_links
+    # def authorize_admin_for_directory_links
     #   redirect_back fallback_location: root_path, alert: 'Not authorized.'
     # end
 

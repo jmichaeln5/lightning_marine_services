@@ -1,7 +1,7 @@
 class VendorsController < ApplicationController
   layout "stacked_shell"
 
-  before_action :authenticate_admin, only: %i[ destroy ]
+  before_action :authorize_admin, only: %i[ destroy ]
 
   before_action :set_page_heading_title, except: %i[ show ]
 

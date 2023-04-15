@@ -6,10 +6,17 @@ RSpec.describe Order, type: :model do
   vendor = Vendor.create(name: 'Sample vendor')
 
   o_id = Order.last ? ( Order.last.id + 1) : 1
+  # order = Order.new(
+  #   id: o_id,
+  #   purchaser: purchaser,
+  #   vendor: vendor,
+  #   courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
+  # )
+
   order = Order.new(
     id: o_id,
-    purchaser: purchaser,
-    vendor: vendor,
+    purchaser_id: purchaser.id,
+    vendor_id: vendor.id,
     courrier: "#{['Fedex', 'UPS', 'USPS', 'DHL'].sample}",
   )
 
