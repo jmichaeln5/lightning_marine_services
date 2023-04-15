@@ -1,0 +1,84 @@
+<table class="bg-white table table-striped border border-2">
+  <thead>
+    <tr>
+      <% if @query.present? %>
+          <% results_counter = 0 %>
+          <th class="align-middle">
+            Search Results
+          </th>
+      <% end %>
+
+      <% @resource.table_option.selected_options.each do |option| %>
+            <% if option.in? TableOptionsHelper.sortable_ths  %>
+                <th class="align-middle">
+                  <%= link_to "#{option.titleize}", request.params.merge(q: @query, sort_option: "#{option}", sort_direction: sort_direction ) %>
+                </th>
+            <% else %>
+                <th class="align-middle">
+                  <%= "#{option.titleize}"%>
+                </th>
+            <% end %>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody id="table-body">
+
+    <% @orders.each do |order| %>
+        <tr>
+          <% if @query.present? %>
+              <td class="align-middle font-normal	">
+                <%= "Result: #{@resource.paginated_offset += 1}"%>
+              </td>
+          <% end %>
+
+          <% @resource.table_option.selected_options.each do |option| %>
+                <td class="align-middle font-normal	">
+                  <% case option %>
+                  <% when 'id' %>
+                    <%= link_to "#{order.id}", order_path(order), class:"text-blue-500" %>
+                  <% when 'order_sequence' %>
+                    <%= order.try(:order_sequence) || 0 %>
+                  <% when 'dept' %>
+                    <%= order.try(:dept) || 'n/a' %>
+                  <% when 'ship_name' %>
+                    <%= order.try(:purchaser) ? (link_to "#{order.purchaser.name}", purchaser_path(order.purchaser), class:"text-blue-500") : 'n/a' %>
+                  <% when 'vendor_name' %>
+                    <%= order.try(:vendor) ? (link_to "#{order.vendor.name}", vendor_path(order.vendor), class:"text-blue-500") : 'n/a' %>
+                  <% when 'po_number' %>
+                  <%= order.try(:po_number) || 'n/a' %>
+                  <% when 'tracking_number' %>
+                    <%= order.try(:tracking_number) || 'n/a' %>
+                  <% when 'date_recieved' %>
+                  <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+                  <% when 'order_content' %>
+                    <% if order.try(:order_content).present?%>
+                          <%= link_to(order_path(order), class:"text-blue-500") do %>
+                              Boxes: <%= order.try(:order_content).box || 'n/a' %>
+                              <br>
+                              Crates: <%= order.try(:order_content).crate || 'n/a' %>
+                              <br>
+                              Pallets: <%= order.try(:order_content).pallet || 'n/a' %>
+                              <br>
+                              <% if is_nil_and_zero(order.order_content.other) == false %>
+                                   <%= "Other: #{order.order_content.other}" %>
+                                   <br>
+                                   <%= order.order_content.other_description.to_s.chars.count >= 75 ? "Description: #{order.order_content.other_description[0..75]...}" : "Description: #{order.order_content.other_description}" if order.order_content.other_description %>
+                                <% end %>
+                          <% end %>
+                    <% else %>
+                    n/a
+                    <% end %>
+                  <% when 'courrier' %>
+                  <%= order.try(:courrier) || 'n/a' %>
+                  <% when 'date_delivered' %>
+                  <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+                  <% end %>
+                </td>
+          <% end %>
+
+        </tr>
+    <% end %>
+
+  </tbody>
+</table>

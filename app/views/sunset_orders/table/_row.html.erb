@@ -1,0 +1,89 @@
+<div id="<%= dom_id order %>" class="table-row odd:bg-white even:bg-slate-50 hover:bg-slate-100">
+
+  <% primary_col_css_classes = "table-cell px-2 py-2 text-sm font-medium text-gray-900 align-middle text-center h-full group" %>
+  <% target_top_link_to_css_classes = "text-indigo-600 hover:text-indigo-800 hover:cursor-pointer hover:underline" %>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= link_to "View", order, class:target_top_link_to_css_classes, target: "_top" %>
+    <% if current_user_is_admin_or_staff? %>
+      <%= link_to edit_order_path(order), data: {turbo_frame: "modal"} do %>
+        <span class="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer hover:underline"> Edit </span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= content_tag(:p, order.id, class: primary_col_css_classes) %>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= render "inline_edit", model: order, attribute: :dept do %>
+      <%= content_tag(:div, order.dept, class: "text-sm text-gray-900") %>
+    <% end %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= link_to order.purchaser.name, order.purchaser, class:target_top_link_to_css_classes, target: "_top" if !current_page?(purchaser_path(order.purchaser)) %>
+    <%= content_tag(:p, order.purchaser.name, class: "table-cell text-sm font-medium text-gray-500" ) if current_page?(purchaser_path(order.purchaser)) %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= link_to order.vendor.name, order.vendor, class:target_top_link_to_css_classes, target: "_top" if !current_page?(vendor_path(order.vendor)) %>
+    <%= content_tag(:p, order.vendor.name, class: "table-cell text-sm font-medium text-gray-500" ) if current_page?(vendor_path(order.vendor)) %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= render "inline_edit", model: order, attribute: :po_number do %>
+      <%= order.po_number %>
+    <% end %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= render "inline_edit", model: order, attribute: :tracking_number do %>
+      <%= order.tracking_number.present? ? order.tracking_number : 'n/a' %>
+    <% end %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= render "inline_edit", model: order, attribute: :date_recieved do %>
+    <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+    <% end %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <% if order.try(:order_content).present?%>
+      <% content = order.order_content %>
+
+      <%= link_to order, target: "_top"  do %>
+        <span class="text-indigo-600 hover:text-indigo-800">
+          Boxes: <%= order.order_content.try(:box) || '0' %>
+          <br>
+          Crates: <%= order.order_content.try(:crate) || '0' %>
+          <br>
+          Pallets: <%= order.order_content.try(:pallet) || '0' %>
+          <br>
+          Other: <%= order.order_content.try(:other) || '0' %>
+          <br>
+          <%  if content.other.present? && content.other_description.present? %>
+          Other Desc:
+          <% end %>
+          <% if content.other.present? && content.other_description.present? %>
+            <span class="whitespace-normal text-gray-500">
+              <%= content.other_description.length >= 25 ? "#{content.other_description[0..25]...}" : "#{content.other_description}" if content.other_description %>
+            </span>
+          <% end %>
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= render "inline_edit", model: order, attribute: :courrier do %>
+      <%= order.courrier.present? ? order.courrier : 'n/a' %>
+    <% end %>
+  </div>
+
+  <div class="<%= primary_col_css_classes %>">
+    <%= render "inline_edit", model: order, attribute: :date_delivered do %>
+      <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+    <% end %>
+  </div>
+</div>

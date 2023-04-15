@@ -1,0 +1,70 @@
+<!-- <%# content_for :title, "#{Order.all.count} Total" + ' Order'.pluralize(Order.all.count) %>
+<%# content_for :subtitle, "#{Order.unarchived.count} Unarchived" + ' Order'.pluralize(Order.unarchived.count) %>
+<%# content_for :subtitle_two, "#{Order.archived.count} Archived" + ' Order'.pluralize(Order.archived.count) %>
+<%# if (current_user.has_role?('admin') || current_user.has_role?('staff')) %>
+<%#= render 'shared/under_header_card_options' %>
+<%#= render 'shared/new_modal' %>
+<%# else %>
+<%#= link_to "Open Orders Page", orders_path %>
+<%# end %>
+<br>
+<%#= render 'shared/top_table_header' %>
+<%#= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
+<%#= render partial: 'orders/index', locals: { orders: @orders} %>
+<%#= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %> -->
+
+
+<!-- ******************************************************* -->
+<!-- ******************************************************* -->
+<!-- ******************************************************* -->
+
+<% @page_heading_title = "All Orders" %>
+
+<% content_for :page_heading_button do %>
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+      with_turbo_modal: true,
+      link_to_path: new_order_path,
+      link_to_text: "Add order",
+    } %>
+<% end %>
+
+<% content_for :page_heading_card do %>
+
+  <%= turbo_stream.update "card_title", "All Orders" %>
+
+  <%= turbo_stream.update "card_content" do %>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+        is_active_card: true,
+        card_title: "All orders",
+        card_description: Order.all.count,
+        card_link: (link_to "View all orders", all_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
+      } %>
+
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+        card_title: "Active orders",
+        card_description: Order.all.unarchived.count,
+        card_link: (link_to "View active orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/box_truck"),
+      } %>
+
+      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+        card_title: "Completed orders",
+        card_description: Order.all.archived.count,
+        card_link: (link_to "(placeholder)View Completed Orders", root_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
+      } %>
+    </div>
+  <% end %>
+
+<% end %>
+
+<%= render partial: "/orders/table", locals: {
+  table_turbo_frame_tag: "orders",
+  orders: @orders,
+  pagy: @pagy,
+  table_section_heading_title: "All Orders",
+  table_section_heading_description: "All orders that are active and have been completed.",
+  table_title: "All Orders Table",
+} %>

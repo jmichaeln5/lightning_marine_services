@@ -1,0 +1,97 @@
+<% table_header_css_classes = "table-cell whitespace-nowrap py-3.5 pl-4 pr-3 sm:pl-6 lg:pl-8 align-middle text-center border-b border-gray-300 bg-white bg-opacity-7 text-sm font-semibold text-gray-900" %>
+
+<% sort_link_to_table_header_css_classes = "text-indigo-800 hover:text-indigo-900 hover:underline" %>
+
+
+<%= content_tag(:div, "", class:table_header_css_classes ) %> <%# placeholder for first col %>
+
+<div class="<%= table_header_css_classes %>">
+  <div class="group inline-flex p-3">
+    <%= sort_link_to "ID", :id, class: sort_link_to_table_header_css_classes, data: { turbo_action: "advance" } %>
+    <span class="ml-2 rounded bg-gray-100 text-gray-900">
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </span>
+  </div>
+</div>
+
+<%# NOTE %>
+<%# DEPT SHOULD BE SORTABLE %>
+<div class="<%= table_header_css_classes %>">
+  <%= content_tag(:p, "Dept", class:"text-center" ) %>
+</div>
+
+
+
+<div class="<%= table_header_css_classes %>">
+  <%= content_tag(:p, "Ship", class:"text-center" ) if controller_path.include? "purchaser" %>
+
+  <% if !controller_path.include? "purchaser"  %>
+    <div class="group inline-flex ">
+      <%= sort_link_to "Ship", :ship_name, class: sort_link_to_table_header_css_classes, data: { turbo_action: "advance" } %>
+      <span class="ml-2 rounded bg-gray-100 text-gray-900">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+        </svg>
+      </span>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="<%= table_header_css_classes %>">
+  <%= content_tag(:p, "Vendor", class:"text-center" ) if controller_path.include? "vendor" %>
+
+  <% if !controller_path.include? "vendor"%>
+    <div class="group inline-flex ">
+      <%= sort_link_to "Vendor", :vendor_name, class: sort_link_to_table_header_css_classes, data: { turbo_action: "advance" } %>
+      <span class="ml-2 rounded bg-gray-100 text-gray-900">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+        </svg>
+      </span>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="<%= table_header_css_classes %>">
+  <%= content_tag(:p, "PO Number", class:"text-center" ) %>
+</div>
+<div class="<%= table_header_css_classes %>">
+  <%= content_tag(:p, "Tracking Number", class:"text-center" ) %>
+</div>
+<div class="<%= table_header_css_classes %>">
+  <div class="group inline-flex ">
+    <%= sort_link_to "Date Recieved", :date_recieved, class: sort_link_to_table_header_css_classes, data: { turbo_action: "advance" } %>
+    <span class="ml-2 rounded bg-gray-100 text-gray-900">
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </span>
+  </div>
+</div>
+<div class="<%= table_header_css_classes %>">
+  <%= content_tag(:p, "Content", class:"text-center" ) %>
+</div>
+<div class="<%= table_header_css_classes %>">
+  <div class="group inline-flex ">
+    <%= sort_link_to "Courrier", :courrier, class: sort_link_to_table_header_css_classes, data: { turbo_action: "advance" } %>
+    <span class="ml-2 rounded bg-gray-100 text-gray-900">
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </span>
+  </div>
+</div>
+<div class="<%= table_header_css_classes %>">
+  <div class="group inline-flex ">
+    <%= sort_link_to "Date Delivered", :date_delivered, class: sort_link_to_table_header_css_classes, data: { turbo_action: "advance" } %>
+    <span class="ml-2 rounded bg-gray-100 text-gray-900">
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </span>
+  </div>
+</div>
