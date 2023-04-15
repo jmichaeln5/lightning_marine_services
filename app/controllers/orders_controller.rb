@@ -146,7 +146,7 @@ class OrdersController < ApplicationController
   private
 
     def order_policy
-      @order_policy ||= OrderPolicy.new(current_user: current_user, resource: @order)
+      @order_policy ||= OrderPolicy.new(Current.user, @order)
     end
     helper_method :order_policy
 

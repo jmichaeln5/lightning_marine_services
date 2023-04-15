@@ -2,16 +2,27 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
-    before_action :require_login, if: :controller_requires_login?
+    before_action :authenticate, if: :controller_requires_authentication?
   end
 
   private
 
-    def require_login
+    def authenticate
       redirect_to sign_in_path, alert: 'Not authorized.' unless user_signed_in?
+      Current.user = current_user
     end
 
-    def controller_requires_login?
+    # https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html
+    # def authenticate
+    #   if authenticated_user = User.find_by(id: cookies.encrypted[:user_id])
+    #     Current.user = authenticated_user
+    #   else
+    #     redirect_to new_session_url
+    #   end
+    # end
+    # https://api.rubyonrails.org/v5.1/classes/ActionDispatch/Cookies.html
+
+    def controller_requires_authentication?
       controllers_without_authentication = [
         'PagesController',
         'Users::SessionsController',

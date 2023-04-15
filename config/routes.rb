@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :directory_links
   root 'pages#home'
-  get 'pages/about'
+  get '/about', to: 'pages#about'
 
   namespace :admin do
       resources :users
