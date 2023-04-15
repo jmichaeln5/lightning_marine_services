@@ -9,7 +9,8 @@ class SearchesController < ApplicationController
     @results = Order.order(created_at: :desc) if !query_str
 
     @results_amount = @results.size
-    @pagy, @results = pagy @results, items: params.fetch(:count, 10)
+    # @pagy, @results = pagy @results, items: params.fetch(:count, 10)
+    @pagy, @results = pagy @results, items: params.fetch(:count, 15)
   end
 
   private
