@@ -29,16 +29,21 @@ Rails.application.routes.draw do
   resources :users
   resources :table_options
 
-  get 'searches/example', to: 'searches#example'
+  concern :hovercardable do
+    member do
+      get :hovercard
+    end
+  end
 
-  resources :searches, only: [:index]
   concern :searchable do
     collection do
       resources :searches, only: [:index]
     end
   end
 
-  resources :orders, concerns: [:searchable ]
+  resources :searches, only: [:index]
+
+  resources :orders, concerns: [:searchable, :hovercardable ]
 
 
   namespace :orders do
@@ -46,10 +51,6 @@ Rails.application.routes.draw do
   end
 
   resources :orders do
-    member do
-      get :hovercard
-    end
-
     resources :attachments do
       delete :destroy_attachment
     end
