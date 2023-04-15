@@ -9,17 +9,17 @@
 
 <% if Current.request_variant == :turbo_frame  %>
   <%= turbo_frame_tag :modal do %>
-    <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
+    <%= render "/layouts/stacked_shell/render_modal",
+      modal_title: (
+        link_to "Edit ship",
+        edit_purchaser_path(@purchaser),
+        target: "_top",
+        class: default_link_to_css_classes
+      ) do %>
 
-      <% content_for :modal_title, flush: true do %>
-        <%= link_to "Edit Ship", edit_purchaser_path(@purchaser), target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
-      <% end %>
+      <%= render 'form', purchaser: @purchaser %>
 
-      <%= render "/layouts/stacked_shell/modal", modal_title: yield(:modal_title) do %>
-        <%= render 'form', purchaser: @purchaser %>
-      <% end %>
-
-    </div>
+    <% end %>
   <% end %>
 <% end %>
 

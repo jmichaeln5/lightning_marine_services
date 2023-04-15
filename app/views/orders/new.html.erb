@@ -1,19 +1,16 @@
 <% if Current.request_variant == :turbo_frame  %>
   <%= turbo_frame_tag :modal do %>
-    <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
-
-      <% content_for :new_order_modal_title, flush: true do %>
-        <%= link_to "New Order", new_order_path, target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
+    <%= render "/layouts/stacked_shell/render_modal",
+      modal_title: (
+        link_to "New Order",
+        new_order_path,
+        target: "_top",
+        class: default_link_to_css_classes
+      ) do %>
+        <%= render '/orders/form', order: @order %>
       <% end %>
 
-      <%= render "/layouts/stacked_shell/modal", modal_title: yield(:new_order_modal_title) do %>
-        <% new_order = Order.new %>
-        <% new_order.build_order_content %>
-        <%= render '/orders/form', order: new_order %>
-      <% end %>
-
-    </div>
-  <% end %>
+    <% end %>
 <% end %>
 
 <% content_for :page_heading_button do %>

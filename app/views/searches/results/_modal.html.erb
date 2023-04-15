@@ -13,9 +13,11 @@
   ```
 -->
 
+
+
 <%= render partial: "/searches/results/modal_content" %>
 
-<div class="relative z-10" data-controller="turbo-modal" role="dialog" aria-modal="true">
+<div class="relative z-10" data-controller="turbo-modal" turbo_modal_target="modal" data-action="keyup@window->turbo-modal#closeWithKeyboard click@window->turbo-modal#closeBackground" role="dialog" aria-modal="true">
   <!--
     Background backdrop, show/hide based on modal state.
 
@@ -40,77 +42,79 @@
         To: "opacity-0 scale-95"
     -->
     <div class="mx-auto max-w-3xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
-      <div class="relative">
-        <div class="w-full mt-2">
-          <div class="flex justify-between">
-            <div id="top_row_container" class="w-full h-full">
-              <div class="w-full flex mb-3 shadow-sm ">
-                <div id="modal_search_bar_container" class="w-full">
+      <span data-turbo-modal-target="modal">
+        <div class="relative">
+          <div class="w-full mt-2">
+            <div class="flex justify-between">
+              <div id="top_row_container" class="w-full h-full">
+                <div class="w-full flex mb-3 shadow-sm ">
+                  <div id="modal_search_bar_container" class="w-full">
 
-                  <%= yield :search_bar %>
+                    <%= yield :search_bar %>
 
+                  </div>
+                  <div class="flex-none w-14">
+                    <button type="button"  data-action="turbo-modal#hideModal" class="inline-flex rounded-md bg-gray-100 p-1.5 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 focus:ring-offset-gray-50">
+                      <span class="sr-only">Dismiss</span>
+                      <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <div class="flex-none w-14">
-                  <button type="button"  data-action="turbo-modal#hideModal" class="inline-flex rounded-md bg-gray-100 p-1.5 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 focus:ring-offset-gray-50">
-                    <span class="sr-only">Dismiss</span>
-                    <svg class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div id="results_text_container" class="w-full h-full -mx-auto">
-                <div data-controller="reveal" data-reveal-hidden-class="hidden">
-                  <div class="w-full inline-flex flex-wrap justify-center sm:justify-between space-y-3 sm:space-y-0">
-                    <div class="w-full sm:w-auto">
-                      <h1 class="text-center sm:text-left">
-                        <div class="text-gray-700 mx-3">
+                <div id="results_text_container" class="w-full h-full -mx-auto">
+                  <div data-controller="reveal" data-reveal-hidden-class="hidden">
+                    <div class="w-full inline-flex flex-wrap justify-center sm:justify-between space-y-3 sm:space-y-0">
+                      <div class="w-full sm:w-auto">
+                        <h1 class="text-center sm:text-left">
+                          <div class="text-gray-700 mx-3">
 
-                        <%= yield :results_text %>
+                          <%= yield :results_text %>
 
-                        </div>
-                      </h1>
-                    </div>
-                    <div class="w-full sm:w-auto">
-                      <div class="align-baseline text-center sm:text-right">
-                        <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
-                          <div  id="advanced_search_button" class="mx-auto my-1 px-4 py-1.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 shadow-md inline-block">
-                          <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
-                          <span class="relative group-hover:text-white text-sm">  Advanced Search </span>
+                          </div>
+                        </h1>
+                      </div>
+                      <div class="w-full sm:w-auto">
+                        <div class="align-baseline text-center sm:text-right">
+                          <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
+                            <div  id="advanced_search_button" class="mx-auto my-1 px-4 py-1.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 shadow-md inline-block">
+                            <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
+                            <span class="relative group-hover:text-white text-sm">  Advanced Search </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div data-reveal-target="item" class="hidden py-3 bg-gray-100 text-3xl">
-                    <div class="text-center">
+                    <div data-reveal-target="item" class="hidden py-3 bg-gray-100 text-3xl">
+                      <div class="text-center">
 
-                      <%= content_tag(:p, 'Search Filters', class:'mb-1 text-gray-600 text-lg font-medium') %>
-                      <%= content_tag(:p, 'Select a filter for more accurate results', class:'mb-4 text-gray-600 text-base') %>
+                        <%= content_tag(:p, 'Search Filters', class:'mb-1 text-gray-600 text-lg font-medium') %>
+                        <%= content_tag(:p, 'Select a filter for more accurate results', class:'mb-4 text-gray-600 text-base') %>
 
-                      <ul class="mx-3 items-center text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
+                        <ul class="mx-3 items-center text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
 
-                        <% filter_css_classes_resource_hover = "rounded-md select-none hover:underline hover:bg-slate-50" %>
+                          <% filter_css_classes_resource_hover = "rounded-md select-none hover:underline hover:bg-slate-50" %>
 
-                        <li class="w-full rounded-md border-b border-gray-200 sm:border-b-0 sm:border-r">
-                          <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
-                            <input id="order_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="order_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Orders</label>
-                          </div>
-                        </li>
-                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
-                          <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
-                            <input id="vendor_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="vendor_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Vendors</label>
-                          </div>
-                        </li>
-                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
-                          <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
-                            <input id="purchaser_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                            <label for="purchaser_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Ships</label>
-                          </div>
-                        </li>
-                      </ul>
+                          <li class="w-full rounded-md border-b border-gray-200 sm:border-b-0 sm:border-r">
+                            <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
+                              <input id="order_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                              <label for="order_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Orders</label>
+                            </div>
+                          </li>
+                          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+                            <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
+                              <input id="vendor_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                              <label for="vendor_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Vendors</label>
+                            </div>
+                          </li>
+                          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+                            <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
+                              <input id="purchaser_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                              <label for="purchaser_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Ships</label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -118,67 +122,34 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="flex divide-x divide-gray-100">
+        <div class="flex divide-x divide-gray-100">
+          <div class="max-h-96 min-w-0 max-w-full flex-auto scroll-py-4 overflow-y-auto overflow-x-hidden px-6 sm:h-96">
+            <ul class="-mx-2 text-sm text-gray-700" id="options" role="listbox">
 
-        <div class="max-h-96 min-w-0 max-w-full flex-auto scroll-py-4 overflow-y-auto overflow-x-hidden px-6 sm:h-96">
+              <%= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>
 
-          <ul class="-mx-2 text-sm text-gray-700" id="options" role="listbox">
+                <div class="w-auto">
+                  <div id="search_results" class="mx-auto h-full grid grid-cols-1 space-y-3 divide-y">
+                  </div>
 
-            <%= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>
+                  <%= turbo_frame_tag 'pagination',
+                    src: searches_path(
+                      query: params[:query],
+                      format: :turbo_stream
+                    ),
+                  loading: :lazy %>
 
-              <div class="w-auto">
-                <div id="search_results" class="mx-auto h-full grid grid-cols-1 space-y-3 divide-y">
                 </div>
 
-                <%= turbo_frame_tag 'pagination',
-                  src: searches_path(
-                    query: params[:query],
-                    format: :turbo_stream
-                  ),
-                loading: :lazy %>
+              <% end %>
 
-              </div>
-
-            <% end %>
-
-          </ul>
+            </ul>
+          </div>
         </div>
-
-        <!-- <div id="active_result_container" class="hidden h-96 w-1/2 flex-none flex-col divide-y divide-gray-100 overflow-y-auto sm:flex">
-            <span id="active_result_container">
-              <%# if content_for?(:active_result) %>
-              <%#= yield :active_result %>
-              <%# else %>
-                <%#= yield :empty_state %>
-              <%# end %>
-            </span>
-
-            <%# Can have many .active_result els without moving in fixed div %>
-            <%# Add results on top and show active result when matching result is hovered %>
-            <div class="inline-block">
-                <div class="fixed">
-                  <%#= yield :active_result %>
-                  <%#= yield :active_result %>
-                  <%#= yield :active_result %>
-                  <%#= yield :active_result %>
-                  <span id="active_result_container">
-                    <%# if content_for?(:active_result) %>
-                    <%#= yield :active_result %>
-                    <%# else %>
-                      <%#= yield :empty_state %>
-                    <%# end %>
-                  </span>
-                </div>
-            </div>
-        </div> -->
-
-      </div>
-
-
-
-
+        
+      </span>
     </div>
+
   </div>
 </div>

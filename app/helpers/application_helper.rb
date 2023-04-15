@@ -1,6 +1,20 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  def dev_output_str(str)
+    if Rails.env == "development"
+      puts (" \n")*5
+      puts ("*"*50 + "\n")
+      puts (" #{str} \n")*5
+      puts ("*"*50 + "\n")
+      puts (" \n")*5
+    end
+  end
+
+  def default_link_to_css_classes
+    "font-medium hover:underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer"
+  end
+
   def sort_link_to(name, column, **options)
     if params[:sort] == column.to_s
       direction = params[:direction] == "asc" ? "desc" : "asc"

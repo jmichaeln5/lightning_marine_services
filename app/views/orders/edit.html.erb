@@ -219,18 +219,33 @@
 
 </section>
 
-<% if Current.request_variant == :turbo_frame  %>
-  <%= turbo_frame_tag :modal do %>
+<!-- <%# if Current.request_variant == :turbo_frame  %>
+  <%#= turbo_frame_tag :modal do %>
 
-    <% content_for :edit_order_modal_title, flush: true do %>
-      <%= link_to "Editing Order #{@order.id}", edit_order_path(@order), target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
-    <% end %>
+    <%# content_for :edit_order_modal_title, flush: true do %>
+      <%#= link_to "Editing Order #{@order.id}", edit_order_path(@order), target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
+    <%# end %>
 
     <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd">
-      <%= render "/layouts/stacked_shell/modal", modal_title: yield(:edit_order_modal_title) do %>
-        <%= render '/orders/form', order: @order %>
-      <% end %>
+      <%#= render "/layouts/stacked_shell/modal", modal_title: yield(:edit_order_modal_title) do %>
+        <%#= render '/orders/form', order: @order %>
+      <%# end %>
     </div>
 
-  <% end %>
+  <%# end %>
+<%# end %> -->
+
+<% if Current.request_variant == :turbo_frame  %>
+  <%= turbo_frame_tag :modal do %>
+    <%= render "/layouts/stacked_shell/render_modal",
+      modal_title: (
+        link_to "Editing Order #{@order.id}",
+        edit_order_path(@order),
+        target: "_top",
+        class: default_link_to_css_classes
+      ) do %>
+        <%= render '/orders/form', order: @order %>
+      <% end %>
+
+    <% end %>
 <% end %>
