@@ -43,11 +43,11 @@
     -->
     <div class="mx-auto max-w-3xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
       <span data-turbo-modal-target="modal">
-        <div class="relative">
-          <div class="w-full mt-2">
+        <div class="relative my-3 ">
+          <div class="w-full ">
             <div class="flex justify-between">
               <div id="top_row_container" class="w-full h-full">
-                <div class="w-full flex mb-3 shadow-sm ">
+                <div class="w-full flex">
                   <div id="modal_search_bar_container" class="w-full">
 
                     <%= yield :search_bar %>
@@ -85,17 +85,17 @@
                         </div>
                       </div>
                     </div>
-                    <div data-reveal-target="item" class="hidden py-3 bg-gray-100 text-3xl">
+                    <div data-reveal-target="item" class="hidden -mb-3 py-3 bg-gray-100 shadow-inner text-3xl">
                       <div class="text-center">
 
                         <%= content_tag(:p, 'Search Filters', class:'mb-1 text-gray-600 text-lg font-medium') %>
                         <%= content_tag(:p, 'Select a filter for more accurate results', class:'mb-4 text-gray-600 text-base') %>
 
-                        <ul class="mx-3 items-center text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex">
+                        <ul class="mx-3 items-center text-sm font-medium text-gray-900 bg-white rounded-lg sm:flex">
 
                           <% filter_css_classes_resource_hover = "rounded-md select-none hover:underline hover:bg-slate-50" %>
 
-                          <li class="w-full rounded-md border-b border-gray-200 sm:border-b-0 sm:border-r">
+                          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                             <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
                               <input id="order_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                               <label for="order_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Orders</label>
@@ -107,7 +107,7 @@
                               <label for="vendor_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Vendors</label>
                             </div>
                           </li>
-                          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
+                          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-l">
                             <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
                               <input id="purchaser_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                               <label for="purchaser_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Ships</label>
@@ -147,7 +147,7 @@
             </ul>
           </div>
         </div>
-        
+
       </span>
     </div>
 

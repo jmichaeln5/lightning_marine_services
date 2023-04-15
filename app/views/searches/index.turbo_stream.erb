@@ -6,7 +6,11 @@
       } %>
 
       <%= render partial: "/orders/order", locals:{
-        details: true,
+        details: true, # click summary details element to view details
+        order: result,
+      } %>
+
+      <%#= render partial: "/orders/order", locals:{ # displays summary and shows details on hover, revealing lazy load frame el that updates details
         order: result,
       } %>
 
