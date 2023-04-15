@@ -1,7 +1,6 @@
 class Current < ActiveSupport::CurrentAttributes
   # attribute :account, :user
-  attribute :user
-  attribute :user_time_zone
+  attribute :user, :user_time_zone
   attribute :request_id, :user_agent, :ip_address, :request_variant
 
   resets { Time.zone = nil }

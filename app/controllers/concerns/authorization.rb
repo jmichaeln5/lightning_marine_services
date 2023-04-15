@@ -4,7 +4,15 @@ module Authorization
   private
 
     def authorize_admin
-      veto_unauthorized_request unless current_user.has_role? 'admin'
+      veto_unauthorized_request unless Current.user.has_role? 'admin'
+    end
+
+    def authorize_editors
+      authorized_editor = false
+      authorized_editor = true if Current.user.has_role? 'admin'
+      authorized_editor = true if Current.user.has_role? 'staff'
+
+      veto_unauthorized_request unless authorized_editor
     end
 
     def exclude_customer

@@ -5,13 +5,12 @@ class OrdersController < ApplicationController
 
  # before_action :ensure_frame_response, only: %i[ new ]
 
-  before_action :authorize_admin, only: %i[ destroy ]
+  before_action :authorize_editors, only: %i[ new create edit update destroy ]
 
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]
 
   def all_orders
-    # @orders = nil
     orders = Order.all
 
     @orders ||= resolve_orders_for_data_table(orders)
@@ -20,7 +19,6 @@ class OrdersController < ApplicationController
   end
 
   def index
-    # @orders = nil
     orders = Order.unarchived
 
     @orders ||= resolve_orders_for_data_table(orders)
@@ -50,27 +48,16 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    if order_policy.able_to_moderate?
-      set_new_order
-    else
-      veto_unauthorized_request
-    end
+    set_new_order
   end
 
   # GET /orders/1/edit
   def edit
-    if order_policy.able_to_moderate?
-      @order = Order.find(params[:id])
-      @order.build_order_content if @order.order_content.nil?
-    else
-      veto_unauthorized_request
-    end
+    @order = Order.find(params[:id])
+    @order.build_order_content if @order.order_content.nil?
   end
 
   def create
-    veto_unauthorized_request unless order_policy.able_to_moderate?
-    return unless order_policy.able_to_moderate?
-
     @order = Order.new(order_params)
 
     respond_to do |format|
@@ -126,7 +113,6 @@ class OrdersController < ApplicationController
 
   # DELETE /orders/1 or /orders/1.json
   def destroy
-    # @order = Order.find params[:id]
     @order.destroy
     respond_to do |format|
       if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
@@ -144,11 +130,6 @@ class OrdersController < ApplicationController
   end
 
   private
-
-    def order_policy
-      @order_policy ||= OrderPolicy.new(Current.user, @order)
-    end
-    helper_method :order_policy
 
     # Use callbacks to share common setup or constraints between actions.
     def set_order
