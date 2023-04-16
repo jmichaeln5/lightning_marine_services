@@ -5,7 +5,7 @@ class SunsetPurchasersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :authorize_admin, only: %i[ destroy ]
-  before_action :exclude_customer, only: %i[new edit create update destroy]
+  before_action :authorize_internal_user, only: %i[new edit create update destroy]
 
   before_action :set_page_heading_title
 

@@ -150,6 +150,8 @@ class Order < ApplicationRecord
   end
 
   def search_data
+    # When too many requests error in dev
+    # https://stackoverflow.com/a/56029723/8643768
     attributes.merge(
       dept: self.dept,
       po_number: self.po_number,

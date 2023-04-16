@@ -26,7 +26,8 @@
       <%= render partial: "/shared/data_display/stats/overview_card", locals: {
         card_title: "All vendor orders",
         card_description: @vendor.orders.count,
-        card_link: (link_to "View all vendor orders", vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        # card_link: (link_to "View all vendor orders", vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_link: (link_to "View all vendor orders", all_vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
       } %>
 

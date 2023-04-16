@@ -43,14 +43,15 @@ Rails.application.routes.draw do
 
   resources :searches, only: [:index]
 
-  resources :orders, concerns: [:searchable, :hovercardable ]
+  # namespace :orders do
+  #   resource :bulk, controller: :bulk, only: [:destroy]
+  # end
 
-
-  namespace :orders do
-    resource :bulk, controller: :bulk, only: [:destroy]
-  end
-
-  resources :orders do
+  resources :orders, concerns: [:searchable, :hovercardable ] do
+    member do
+      get :edit_dept
+      patch :update_dept, to: 'orders#update_dept'
+    end
     resources :attachments do
       delete :destroy_attachment
     end
@@ -61,7 +62,6 @@ Rails.application.routes.draw do
 
   resources :purchasers do
     resources :orders, only: [:index, :new, :create], module: :purchasers
-
     member do
       get :export
       get :deliver

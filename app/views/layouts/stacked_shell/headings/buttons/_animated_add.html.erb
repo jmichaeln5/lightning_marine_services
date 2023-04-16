@@ -15,20 +15,29 @@
       </span>
     </div>
   </div>
-  
+
 <% end %>
 
-<% if local_assigns[:with_turbo_modal] %>
 
-  <%= link_to link_to_path, data: { turbo_frame: "modal" } do %>
-    <%= yield :button_el %>
+<% if authorized_internal_user? %>
+  <% if local_assigns[:with_turbo_modal] %>
+
+    <%= link_to link_to_path, data: { turbo_frame: "modal" } do %>
+      <%= yield :button_el %>
+    <% end %>
+
+  <% else %>
+
+    <%= link_to link_to_path do %>
+      <%= yield :button_el %>
+    <% end %>
+
   <% end %>
+<% end %>
 
-<% else %>
-
-  <%= link_to link_to_path do %>
-    <%= yield :button_el %>
-  <% end %>
-
-
+<% if !authorized_internal_user? %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: dashboard_path,
+    fallback_location_text: "Dashboard",
+  } %>
 <% end %>

@@ -6,14 +6,17 @@
       <%= yield %>
     </div>
 
-    <div>
-      <%= link_to edit_polymorphic_path(model), class: "inline-edit" do  %>
-        <span class="ml-1 text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
-          <%= "Edit" if model.send(attribute).present? %>
-          <%= "Add" if !model.send(attribute).present? %>
-        </span>
-      <% end %>
-    </div>
+    <% if authorized_internal_user? %>
+      <div>
+        <%= link_to edit_polymorphic_path(model), class: "inline-edit" do  %>
+          <span class="ml-1 text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
+            <%= "Edit" if model.send(attribute).present? %>
+            <%= "Add" if !model.send(attribute).present? %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+
 
   <% end %>
 <% end %>

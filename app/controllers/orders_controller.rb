@@ -4,8 +4,7 @@ class OrdersController < ApplicationController
  include OrdersTableHelper
 
  # before_action :ensure_frame_response, only: %i[ new ]
-
-  before_action :authorize_editors, only: %i[ new create edit update destroy ]
+  before_action :authorize_internal_user, only: %i[ new create edit destroy ]
 
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]
@@ -57,6 +56,16 @@ class OrdersController < ApplicationController
     @order.build_order_content if @order.order_content.nil?
   end
 
+  def edit_dept
+    ensure_frame_response
+    set_order
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
   def create
     @order = Order.new(order_params)
 
@@ -78,6 +87,14 @@ class OrdersController < ApplicationController
   end
 
   def update
+
+    if !authorized_internal_user?
+      veto_unauthorized_request unless authorized_customer? && order_params.keys == ["dept"]
+    end
+
+    # ApplicationPolicy.new(Current.user, Order.find_by_id(params[:id]))
+    # OrdersPolicy.new(Current.user, Order.find_by_id(params[:id]))
+
     respond_to do |format|
       if @order.update(order_params)
 

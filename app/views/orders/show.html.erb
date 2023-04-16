@@ -189,9 +189,14 @@
                 Dept
               </div>
               <div class="text-sm text-gray-900">
-                <%= render "inline_edit", model: @order, attribute: :dept do %>
-                  <%= @order.dept %>
+
+                <%#= render "inline_edit", model: @order, attribute: :dept do %>
+                  <%#= @order.dept %>
+                <%# end %>
+                <%= render "orders/inline_edit_dept", order: @order, attribute: :dept do %>
+                  <%= content_tag(:div, @order.dept, class: "text-sm text-gray-900") %>
                 <% end %>
+
               </div>
             </div>
           </div>

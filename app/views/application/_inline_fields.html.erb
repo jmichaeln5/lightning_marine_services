@@ -24,25 +24,23 @@
 
 <%# end %> -->
 
-
-<% frame_id = dom_id(form.object, "#{attribute}_turbo_frame") %>
-<%= turbo_frame_tag frame_id, class:"contents" do %>
-  <div>
-    <%= yield %>
-  </div>
-
-  <div class="w-full mr-1 flex md:justify-end space-x-1">
-  <%= form.button class:"inline-action" do %>
-    <span class="text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
-      Save
-    </span>
+<% if authorized_internal_user? %>
+  <% frame_id = dom_id(form.object, "#{attribute}_turbo_frame") %>
+  <%= turbo_frame_tag frame_id, class:"contents" do %>
+    <div>
+      <%= yield %>
+    </div>
+    <div class="w-full mr-1 flex md:justify-end space-x-1">
+    <%= form.button class:"inline-action" do %>
+      <span class="text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
+        Save
+      </span>
+    <% end %>
+    <%= link_to polymorphic_path(form.object), class:"inline-action" do %>
+      <span class="text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
+        Cancel
+      </span>
+    <% end %>
+    </div>
   <% end %>
-
-  <%= link_to polymorphic_path(form.object), class:"inline-action" do %>
-    <span class="text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
-      Cancel
-    </span>
-  <% end %>
-
-  </div>
 <% end %>

@@ -3,29 +3,37 @@ module Authorization
 
   private
 
+    def authorized_admin?
+      return false unless Current.user.has_role? :admin
+      return true
+    end
+
     def authorize_admin
-      veto_unauthorized_request unless Current.user.has_role? 'admin'
+      veto_unauthorized_request unless authorized_admin?
     end
 
-    def authorize_editors
-      authorized_editor = false
-      authorized_editor = true if Current.user.has_role? 'admin'
-      authorized_editor = true if Current.user.has_role? 'staff'
-
-      veto_unauthorized_request unless authorized_editor
+    def authorized_internal_user?
+      return true if Current.user.has_role? :admin
+      return true if Current.user.has_role? :staff
+      return false
     end
 
-    def exclude_customer
-      veto_unauthorized_request if current_user.has_role?('customer')
+    def authorize_internal_user
+      veto_unauthorized_request unless authorized_internal_user?
     end
 
-    def check_read_write # Admins and Staff have Read Write Access
-      if ! (current_user.has_role?('admin') || current_user.has_role?('staff'))
-        veto_unauthorized_request
-      end
+    def authorized_customer?
+      return true if Current.user.has_role? :customer
+      return false
     end
 
-    def veto_unauthorized_turbo_frame_request
+    def authorize_customer
+      return true if authorized_customer?
+      return true if authorized_internal_user?
+      veto_unauthorized_request
+    end
+
+    def render_turbo_stream_unauthorized_request_message
       render turbo_stream: turbo_stream.append(
         'flashes',
         partial: "/layouts/stacked_shell/headings/flash_messages",
@@ -41,8 +49,12 @@ module Authorization
     end
 
     def veto_unauthorized_request
-      veto_unauthorized_turbo_frame_request and return if turbo_frame_request?
+      render_turbo_stream_unauthorized_request_message and return if turbo_frame_request?
       veto_unauthorized_http_request
+    end
+
+    def silently_veto_unauthorized_request
+      redirect_back fallback_location: dashboard_path unless turbo_frame_request?
     end
 
 end

@@ -5,19 +5,27 @@
 
   <div class="<%= primary_col_css_classes %>">
     <%= link_to "View", order, class:target_top_link_to_css_classes, target: "_top" %>
+
     <% if current_user_is_admin_or_staff? %>
       <%= link_to edit_order_path(order), data: {turbo_frame: "modal"} do %>
         <span class="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer hover:underline"> Edit </span>
       <% end %>
     <% end %>
+
   </div>
 
   <%= content_tag(:p, order.id, class: primary_col_css_classes) %>
 
   <div class="<%= primary_col_css_classes %>">
-    <%= render "inline_edit", model: order, attribute: :dept do %>
+
+    <%#= render "inline_edit", model: order, attribute: :dept do %>
+      <%#= content_tag(:div, order.dept, class: "text-sm text-gray-900") %>
+    <%# end %>
+
+    <%= render "orders/inline_edit_dept", order: order, attribute: :dept do %>
       <%= content_tag(:div, order.dept, class: "text-sm text-gray-900") %>
     <% end %>
+
   </div>
 
   <div class="<%= primary_col_css_classes %>">

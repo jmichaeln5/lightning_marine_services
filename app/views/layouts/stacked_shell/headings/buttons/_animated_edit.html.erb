@@ -15,18 +15,19 @@
 </div>
 
 <% end %>
+<% if authorized_internal_user? %>
+  <% if local_assigns[:with_turbo_modal] %>
 
-<% if local_assigns[:with_turbo_modal] %>
+    <%= link_to link_to_path, data: { turbo_frame: "modal" } do %>
+      <%= yield :button_el %>
+    <% end %>
 
-  <%= link_to link_to_path, data: { turbo_frame: "modal" } do %>
-    <%= yield :button_el %>
+  <% else %>
+
+    <%= link_to link_to_path do %>
+      <%= yield :button_el %>
+    <% end %>
+
+
   <% end %>
-
-<% else %>
-
-  <%= link_to link_to_path do %>
-    <%= yield :button_el %>
-  <% end %>
-
-
 <% end %>

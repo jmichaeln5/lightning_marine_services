@@ -14,8 +14,13 @@
         order: result,
       } %>
 
-      <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
-      <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} "  %>
+    <%# if @results_amount && @results_amount == 0 %>
+      <%#= turbo_stream.update "results_amount", "0"  %>
+      <%#= turbo_stream.update "results_details", "No results found"  %>
+    <%# end %>
+
+    <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
+    <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} "  %>
 
   <% end %>
 <% end %>

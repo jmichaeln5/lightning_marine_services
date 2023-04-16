@@ -1,46 +1,8 @@
-<!--
-  This example requires some changes to your config:
-
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
-
-
-
 <%= render partial: "/searches/results/modal_content" %>
-
 <div class="relative z-10" data-controller="turbo-modal" turbo_modal_target="modal" data-action="keyup@window->turbo-modal#closeWithKeyboard click@window->turbo-modal#closeBackground" role="dialog" aria-modal="true">
-  <!--
-    Background backdrop, show/hide based on modal state.
-
-    Entering: "ease-out duration-300"
-      From: "opacity-0"
-      To: "opacity-100"
-    Leaving: "ease-in duration-200"
-      From: "opacity-100"
-      To: "opacity-0"
-  -->
-  <div class="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
-
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity">
+  </div>
   <div class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
-    <!--
-      Command palette, show/hide based on modal state.
-
-      Entering: "ease-out duration-300"
-        From: "opacity-0 scale-95"
-        To: "opacity-100 scale-100"
-      Leaving: "ease-in duration-200"
-        From: "opacity-100 scale-100"
-        To: "opacity-0 scale-95"
-    -->
     <div class="mx-auto max-w-3xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
       <span data-turbo-modal-target="modal">
         <div class="relative my-3 ">
@@ -76,12 +38,12 @@
                       </div>
                       <div class="w-full sm:w-auto">
                         <div class="align-baseline text-center sm:text-right">
-                          <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
+                          <!-- <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
                             <div  id="advanced_search_button" class="mx-auto my-1 px-4 py-1.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 shadow-md inline-block">
                             <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
                             <span class="relative group-hover:text-white text-sm">  Advanced Search </span>
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
@@ -114,6 +76,7 @@
                             </div>
                           </li>
                         </ul>
+                        
                       </div>
                     </div>
                   </div>
@@ -122,34 +85,25 @@
             </div>
           </div>
         </div>
-
         <div class="flex divide-x divide-gray-100">
           <div class="max-h-96 min-w-0 max-w-full flex-auto scroll-py-4 overflow-y-auto overflow-x-hidden px-6 sm:h-96">
             <ul class="-mx-2 text-sm text-gray-700" id="options" role="listbox">
-
               <%= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>
-
                 <div class="w-auto">
                   <div id="search_results" class="mx-auto h-full grid grid-cols-1 space-y-3 divide-y">
                   </div>
-
                   <%= turbo_frame_tag 'pagination',
                     src: searches_path(
                       query: params[:query],
                       format: :turbo_stream
                     ),
                   loading: :lazy %>
-
                 </div>
-
               <% end %>
-
             </ul>
           </div>
         </div>
-
       </span>
     </div>
-
   </div>
 </div>

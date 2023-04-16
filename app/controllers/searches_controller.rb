@@ -1,6 +1,8 @@
 class SearchesController < ApplicationController
   layout "stacked_shell"
 
+  before_action :ensure_frame_response, only: %i[ index ]
+
   def index
     query_str = params[:query]
     model = Order
@@ -9,8 +11,8 @@ class SearchesController < ApplicationController
     @results = Order.order(created_at: :desc) if !query_str
 
     @results_amount = @results.size
-    # @pagy, @results = pagy @results, items: params.fetch(:count, 10)
-    @pagy, @results = pagy @results, items: params.fetch(:count, 15)
+    @pagy, @results = pagy @results, items: params.fetch(:count, 10)
+    # @pagy, @results = pagy @results, items: params.fetch(:count, 15)
   end
 
   private

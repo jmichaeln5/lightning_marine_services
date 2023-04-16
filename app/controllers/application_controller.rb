@@ -2,11 +2,15 @@ class ApplicationController < ActionController::Base
   include SetCurrentRequestDetails
   include Authentication
   include Authorization
-  # include SetCurrentRequestDetails
   include Pagy::Backend
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+
   # before_action :set_request_variant
+
+  helper_method :authorized_admin?
+  helper_method :authorized_internal_user?
+  helper_method :authorized_customer?
 
   def after_sign_in_path_for(resource)
     dashboard_path
@@ -52,14 +56,12 @@ class ApplicationController < ActionController::Base
         puts ("*"*50 + "\n")*10
         puts "\n\nMESSAGE FROM: ApplicationController#ensure_frame_response\n\nStarted #{request.method} \"#{request.path}\" for #{request.ip} at #{Time.now}"
         puts "Processing by #{request.controller_class}##{request.params[:action]} as HTML"
-        # puts "\n\n#{request.controller_class}##{request.params[:action]} has invoked ApplicationController#ensure_frame_response\nThis request is allowed in development ENV but will be vetoed in all other ENVs\n\n"
         puts "\n\n#{request.controller_class}##{request.params[:action]} has invoked ApplicationController#ensure_frame_response\nRequest vetoed.\nturbo_frame_request? != true\n\n"
         puts ("*"*50 + "\n")*10
         puts (" \n")*10
       end
-
       # return unless Rails.env.development?
-      veto_unauthorized_http_request unless turbo_frame_request?
+      silently_veto_unauthorized_request
     end
 
 end

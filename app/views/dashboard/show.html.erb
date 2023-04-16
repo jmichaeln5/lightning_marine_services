@@ -1,48 +1,30 @@
-<!-- ************************************ -->
-<!-- ************************************ -->
-<!-- ************************************ -->
-<!-- Before esbuiild (webpack dashboard) -->
-<!-- ************************************ -->
+<% if authorized_internal_user? %>
+  <% content_for :page_heading_button do %>
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+      with_turbo_modal: true,
+      link_to_path: new_order_path,
+      link_to_text: "Add order",
+    } %>
+  <% end %>
+<% end %>
 
-<!-- <%# content_for :title, 'Dashboard' %>
-<%#= render 'shared/under_header_card_options' %>
-<div class="text-center mt-20">
-  <div class="card">
-    <div class="p-4">
-    <p class="text-3xl"> Welcome <%#=current_user.first_name if current_user %> </p>
-
-      <%#= "#{Order.all.count} Total Orders" %>
-      <br>
-      <%#= "#{@unarchived_orders.unarchived.all.count} Unarchived Orders" %>
-      <br>
-      <%#= "#{@archived_orders.count} Archived Orders" %>
-    </div>
-  </div>
-</div> -->
-<!-- <%# content_for :title, 'Dashboard' %>
-<%#= render 'shared/under_header_card_options' %>
-<div class="text-center mt-20">
-  <div class="card">
-    <div class="p-4">
-    <p class="text-3xl"> Welcome <%=current_user.first_name if current_user %> </p>
-      <%#= "#{Order.all.count} Total Orders" %>
-      <br>
-      <%#= "#{@unarchived_orders.unarchived.all.count} Unarchived Orders" %>
-      <br>
-      <%#= "#{@archived_orders.count} Archived Orders" %>
-    </div>
-  </div>
-</div> -->
-<!-- ************************************ -->
-<!-- ************************************ -->
-<!-- ************************************ -->
-
-<% content_for :page_heading_button do %>
-  <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
-    with_turbo_modal: true,
-    link_to_path: new_order_path,
-    link_to_text: "Add order",
-  } %>
+<% if !authorized_internal_user? %>
+  <% content_for :page_heading_button do %>
+    <%= link_to orders_path do %>
+      <div class="inline-block">
+        <div class="w-full">
+          <span class=" relative inline-flex items-center justify-center px-5 py-2 overflow-hidden font-bold text-white transition duration-300 ease-out border-2 border-gray-200 rounded-full shadow-md group">
+            <span class="absolute inset-0 flex items-center justify-center w-full h-full text-gray-900 duration-300 -translate-x-full bg-gray-100 group-hover:translate-x-0 ease">
+              <%= render partial: "/layouts/stacked_shell/headings/icons/order" %>
+              <span class="ml-3"> Orders </span>
+            </span>
+            <span class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease tracking-wide"> View orders </span>
+            <span class="relative invisible tracking-wide"> View orders </span>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>
 
 <% content_for :page_heading_card do %>
