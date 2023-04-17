@@ -9,7 +9,7 @@ def create_purchasers(purchasers_to_create)
   end
 end
 
-rand_amount = rand(3..5)
+rand_amount = rand(1..3)
 # rand_amount = rand(30..50)
 create_purchasers(rand_amount)
 
