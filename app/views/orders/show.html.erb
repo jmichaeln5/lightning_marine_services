@@ -5,6 +5,14 @@
     link_to_path: edit_order_path(@order),
     link_to_text: "Edit order",
   } %>
+
+  <% if !authorized_internal_user? %>
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+      fallback_location: dashboard_path,
+      fallback_location_text: "Dashboard",
+    } %>
+  <% end %>
+
 <% end %>
 
 <% content_for :page_heading_card do %>

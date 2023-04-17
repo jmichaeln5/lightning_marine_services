@@ -15,6 +15,7 @@
 </div>
 
 <% end %>
+
 <% if authorized_internal_user? %>
   <% if local_assigns[:with_turbo_modal] %>
 
@@ -27,7 +28,6 @@
     <%= link_to link_to_path do %>
       <%= yield :button_el %>
     <% end %>
-
 
   <% end %>
 <% end %>
