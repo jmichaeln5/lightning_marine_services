@@ -39,7 +39,7 @@ RSpec.describe Order, type: :model do
     expect(true).to eq true
   end
 
-  it "is a valid user" do
+  it "is a valid order" do
     expect(order.valid?).to be true
   end
 
