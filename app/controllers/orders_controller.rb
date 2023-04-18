@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
 
  include OrdersTableHelper
 
- # before_action :ensure_frame_response, only: %i[ new ]
+  # before_action :ensure_frame_response, only: %i[ new ]
   before_action :authorize_internal_user, only: %i[ new create edit destroy ]
 
   before_action :set_page_heading_title
@@ -93,7 +93,6 @@ class OrdersController < ApplicationController
   end
 
   def update
-
     if !authorized_internal_user?
       veto_unauthorized_request unless authorized_customer? && order_params.keys == ["dept"]
     end

@@ -77,7 +77,6 @@ Rails.application.routes.draw do
   resources :orders, concerns: [:searchable, :hovercardable ] do
     member do
       get :edit_dept
-      patch :update_dept, to: 'orders#update_dept'
     end
     resources :attachments do
       delete :destroy_attachment
@@ -106,7 +105,6 @@ Rails.application.routes.draw do
       get 'completed_orders', controller: 'vendors/orders'
     end
   end
-
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'

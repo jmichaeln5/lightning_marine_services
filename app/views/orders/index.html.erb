@@ -1,29 +1,50 @@
 <% content_for :page_heading_button do %>
 
   <% if authorized_internal_user? %>
-    <%  if "purchasers".in? request.controller_class.to_s.downcase %>
-      <% edit_resource_path_if_not_orders_text = "Edit ship" %>
-      <% edit_resource_path_if_not_orders_path = edit_purchaser_path(@purchaser) %>
+
+    <% current_orders_controller_class = request.controller_class.to_s.downcase  %>
+
+    <%  if "purchasers".in? current_orders_controller_class %>
+      <% edit_resource_text = "Edit ship" %>
+      <% edit_resource_path = edit_purchaser_path(@purchaser) %>
+
+      <% add_order_to_nested_resource_text = "Add ship order" %>
+      <% add_order_to_nested_resource_path = new_purchaser_order_path(@purchaser) %>
     <% end %>
 
-    <%  if "vendors".in? request.controller_class.to_s.downcase %>
-      <% edit_resource_path_if_not_orders_text = "Edit vendor" %>
-      <% edit_resource_path_if_not_orders_path = edit_vendor_path(@vendor) %>
+    <%  if "vendors".in? current_orders_controller_class %>
+      <% edit_resource_text = "Edit vendor" %>
+      <% edit_resource_path = edit_vendor_path(@vendor) %>
+
+      <% add_order_to_nested_resource_text = "Add vendor order" %>
+      <% add_order_to_nested_resource_path = new_vendor_order_path(@vendor) %>
     <% end %>
 
-    <% if edit_resource_path_if_not_orders_text && edit_resource_path_if_not_orders_path  %>
+    <% if edit_resource_path && add_order_to_nested_resource_text  %>
       <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
-        link_to_text: edit_resource_path_if_not_orders_text,
-      link_to_path: edit_resource_path_if_not_orders_path,
+        link_to_text: edit_resource_text,
+      link_to_path: edit_resource_path,
       } %>
     <% end %>
+
+    <% if add_order_to_nested_resource_path && add_order_to_nested_resource_text  %>
+      <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+        with_turbo_modal: true,
+        link_to_text: add_order_to_nested_resource_text,
+      link_to_path: add_order_to_nested_resource_path,
+      } %>
+    <% end %>
+
   <% end %>
 
-  <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
-    with_turbo_modal: true,
-    link_to_path: new_order_path,
-    link_to_text: "Add order",
-  } %>
+  <% if !add_order_to_nested_resource_path && !add_order_to_nested_resource_text  %>
+    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
+      with_turbo_modal: true,
+      link_to_path: new_order_path,
+      link_to_text: "Add order",
+    } %>
+  <% end %>
+
 <% end %>
 
 <% content_for :page_heading_card do %>
@@ -34,9 +55,6 @@
   <%= render partial: page_heading_card_partial_path %>
   <%#= turbo_stream.update "page_heading_title", "#{page_heading_card_partial_path}" %>
 <% end %>
-
-
-
 
 <%#= render @orders %>
 
