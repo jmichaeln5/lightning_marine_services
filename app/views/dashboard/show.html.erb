@@ -31,21 +31,21 @@
 
   <%= turbo_stream.update "card_content" do %>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "All orders",
         card_description: Order.all.count,
         card_link: (link_to "View All Orders", all_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
       } %>
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Active orders",
         card_description: Order.all.unarchived.count,
         card_link: (link_to "View Active Orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/box_truck"),
       } %>
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Completed orders",
         card_description: Order.all.archived.count,
         card_link: (link_to "(placeholder)View Completed Orders", root_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),

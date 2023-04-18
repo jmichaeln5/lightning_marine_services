@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="h-full bg-slate-200">
+  <head>
+    <title>LightningMarineServices</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application", defer: true %>
+  </head>
+
+  <body class="h-full">
+    <div class="min-h-full">
+      <div id="flashes">   <%# New flashes appended to div #flashes %>
+        <%= render "application/flash_messages" %>  <%# old flashes %>
+      </div>
+      <main>
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>

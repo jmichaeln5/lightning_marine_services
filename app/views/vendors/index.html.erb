@@ -22,7 +22,7 @@
   <%= turbo_stream.update "card_title", "Vendors" %>
   <%= turbo_stream.update "card_content" do %>
     <div class="grid grid-cols-1">
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Vendors",
         card_description: "#{Vendor.all.count} Vendors",
         card_link: (link_to "All Vendors", vendors_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),

@@ -21,6 +21,9 @@ By default, it renders:
   <title>
     <%= content_for(:title) %> - <%= application_title %>
   </title>
+
+  <%= stylesheet_link_tag "users", "data-turbo-track": "reload" %>
+
   <%= render "stylesheet" %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag if defined?(csp_meta_tag) %>

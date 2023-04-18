@@ -6,7 +6,7 @@
         <div class="pl-4 flex items-center">
           <span class="py-2 mt-2 focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
           <a class=" toggleColour text-white no-underline hover:text-black hover:no-underline font-bold text-2xl lg:text-4xl" href="/">
-            <%= render "landing_page/svgs/ship_icon"%>
+            <%= render "static_pages/svgs/ship_icon"%>
             LMS
           </a>
         </span>
@@ -21,9 +21,9 @@
         </div>
 
         <div class="flex-grow lg:flex lg:items-center lg:w-auto hidden -mt-2 lg:mt-0 lg:bg-transparent text-black p-4 lg:p-0 z-20" id="nav-content" style="  display: block; margin: 0 0 0 auto;">
-          <button id="navAction" class="float-right z-10 mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+          <button id="navAction" class="float-right z-10 mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out "
           >
-          <%= link_to 'sign in', sign_in_path, class:'text-gray-900 hover:text-black' if !user_signed_in? %>
+          <%= link_to 'sign in', new_user_session_path, class:'text-gray-900 hover:text-black' if !user_signed_in? %>
 
           <%= link_to 'Dashboard', dashboard_path, class:'text-gray-900 hover:text-black' if user_signed_in? %>
           </button>
@@ -48,7 +48,7 @@
         <!--Right Col-->
         <div class="flex flex-col md:w-1/2">
           <div class="">
-            <%= render "landing_page/svgs/ship_icon_two"%>
+            <%= render "static_pages/svgs/ship_icon_two"%>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
           <div class="w-full sm:w-1/2 p-6 -mt-12">
             <div class="text-center mt-6">
               <div class="h-2/3 -mt-4">
-              <%= render "landing_page/svgs/palm_tree"%>
+              <%= render "static_pages/svgs/palm_tree"%>
               </div>
             </div>
           </div>
@@ -114,7 +114,7 @@
           <div class="w-full sm:w-1/2 p-6 -mt-4">
             <div class="text-center mt-6">
               <div class="h-2/3 -mt-4">
-              <%= render "landing_page/svgs/globe"%>
+              <%= render "static_pages/svgs/globe"%>
               </div>
             </div>
           </div>
@@ -198,7 +198,7 @@
               <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
                 <div class="pl-4 flex items-center">
                   <a class="py-2 toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-                    <%= render "landing_page/svgs/ship_icon"%>
+                    <%= render "static_pages/svgs/ship_icon"%>
                     LMS
                   </a>
                 </div>

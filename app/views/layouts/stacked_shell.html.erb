@@ -6,7 +6,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "users", "data-turbo-track": "reload" if controller_path.include? "users" %>
+    <%#= stylesheet_link_tag "users", "data-turbo-track": "reload" if controller_path.include? "users" %>
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application", defer: true %>
   </head>
@@ -22,7 +22,7 @@
         </nav>
 
         <div id="flashes">   <%# New flashes appended to div #flashes %>
-          <%= render "shared/flash_messages" %>  <%# old flashes %>
+          <%= render "application/flash_messages" %>  <%# old flashes %>
         </div>
 
         <div class="flow-root py-10">

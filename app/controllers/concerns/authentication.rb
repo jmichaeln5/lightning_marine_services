@@ -8,7 +8,7 @@ module Authentication
   private
 
     def authenticate
-      redirect_to sign_in_path, alert: 'Not authorized.' unless user_signed_in?
+      redirect_to new_user_session_path, alert: 'Not authorized.' unless user_signed_in?
       Current.user = current_user
     end
 
@@ -24,7 +24,7 @@ module Authentication
 
     def controller_requires_authentication?
       controllers_without_authentication = [
-        'PagesController',
+        'StaticPagesController',
         'Users::SessionsController',
         'Users::ConfirmationsController',
         'Users::UnlocksController',

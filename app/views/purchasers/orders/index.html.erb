@@ -14,7 +14,7 @@
   <%= turbo_stream.update "card_content" do %>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: true,
         card_title: "All ship orders",
         card_description: @purchaser.orders.count,
@@ -22,14 +22,14 @@
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
       } %>
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
       card_title: "Active ship orders",
       card_description: @purchaser.orders.unarchived.count,
       card_link: (link_to "View active ship orders", purchaser_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
       } %>
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
       card_title: "Completed ship orders",
       card_description: @purchaser.orders.archived.count,
       card_link: (link_to "View completed ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),

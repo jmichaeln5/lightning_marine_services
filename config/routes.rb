@@ -1,32 +1,60 @@
 Rails.application.routes.draw do
   resources :directory_links
-  root 'pages#home'
-  get '/about', to: 'pages#about'
+  root 'static_pages#landing'
+  get '/about', to: 'static_pages#about'
 
   namespace :admin do
-      resources :users
-      resources :roles, only: [:index, :show]
-      root to: "users#index"
+    root to: "users#index"
+    resources :users
+    resources :roles, only: [:index, :show]
   end
 
-  # devise_for :users
-  devise_for :users, :controllers => {
-    :registrations => 'users/registrations',
-    :sessions => 'users/sessions',
-    :passwords => 'users/passwords',
-    :confirmations => 'users/confirmations'
-   }
+  # devise_for :users, controllers: {
+  #   sessions: 'users/sessions',
+  #   passwords: 'users/passwords',
+  #   confirmations: 'users/confirmations',
+  # }
+  #
+  # devise_scope :user do
+  #   get 'sign_in', to: 'users/sessions#new'
+  #   # get 'users/sign_out', to: 'users/sessions#destroy'
+  #   # delete 'users/sign_out', to: 'users/sessions#destroy'
+  # end
 
-  devise_scope :user do
-    get 'sign_up', to: 'users/registrations#new'
-    get 'sign_in', to: 'users/sessions#new'
-    get 'signout', to: 'users/sessions#destroy'
-    delete 'signout', to: 'users/sessions#destroy'
+  devise_for :users, skip: [ :sessions, :registrations, :passwords ]
+
+  devise_scope :user do  # Users::SessionsController
+    get 'users/sign_in', to: 'users/sessions#new', as:'new_user_session'
+    post 'users/sign_in', to: 'users/sessions#create', as:'user_session'
+    get 'users/sign_out', to: 'users/sessions#destroy', as:'destroy_user_session'
+    delete 'users/sign_out', to: 'users/sessions#destroy'
   end
+
+  devise_scope :user do  # Users::RegistrationsController
+    get '/users/sign_up', to: 'users/registrations#new', as:'new_user_registration'
+    post '/users/sign_up', to: 'users/registrations#create'
+
+    get '/account_settings', to: 'users/registrations#edit', as:'edit_user_registration'
+    put '/users/edit', to: 'users/registrations#update', as:'user_registration'
+    delete '/users/edit', to: 'users/registrations#destroy'
+
+    delete '/users', to: 'users/registrations#destroy'
+    get '/users/cancel', to: 'users/registrations#cancel', as:'cancel_user_registration'
+    delete '/users/cancel', to: 'users/registrations#cancel'
+  end
+
+  devise_scope :user do  # Users::PasswordsController
+    get '/users/password/new', to: 'users/passwords#new', as:'new_user_password' # forgot password
+    get '/users/password/edit', to: 'users/passwords#edit', as:'edit_user_password'
+
+    patch '/users/password', to: 'users/passwords#update'
+    put '/users/password', to: 'users/passwords#update'
+  end
+
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
-  resources :users
+  # resources :users
   resources :table_options
 
   concern :hovercardable do

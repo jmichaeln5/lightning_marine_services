@@ -1,0 +1,21 @@
+<% if flash[:notice] || flash[:alert]  %>
+  <div id="msg-container">
+    <% if flash[:notice] %>
+      <% flash_type = "notice" %>
+      <% flash_title = flash[:notice]  %>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <% flash_type = "alert" %>
+      <% flash_title = flash[:alert].humanize if flash[:alert].class == String  %>
+      <% flash_title = flash[:alert].to_sentence if flash[:alert].class != String  %>
+    <% end %>
+
+    <%= turbo_stream.append "flashes" do %>
+      <%= render partial: "/layouts/stacked_shell/headings/flash_messages", locals: {
+        flash_type: flash_type,
+        flash_title: flash_title,
+      } %>
+    <% end %>
+  </div>
+<% end %>

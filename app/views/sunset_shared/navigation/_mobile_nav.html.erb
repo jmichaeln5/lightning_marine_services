@@ -84,13 +84,13 @@
           <%= link_to "Account Settings", edit_user_registration_path, class: mobile_navigation_resource_css_classes_current if current_page?(edit_user_registration_path) %>
           <%= link_to "Account Settings", edit_user_registration_path, class: mobile_navigation_resource_css_classes if !current_page?(edit_user_registration_path) %>
 
-          <%= link_to "Logout", signout_path, method: :delete, class: mobile_navigation_resource_css_classes %>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: mobile_navigation_resource_css_classes %>
         <% else %>
           <%= link_to "Home", root_path, class: mobile_navigation_resource_css_classes_current if current_page?(root_path) %>
           <%= link_to "Home", root_path, class: mobile_navigation_resource_css_classes if !current_page?(root_path) %>
 
-          <%= link_to "Sign In", sign_in_path, class: mobile_navigation_resource_css_classes_current if current_page?(sign_in_path) %>
-          <%= link_to "Sign In", sign_in_path, class: mobile_navigation_resource_css_classes if !current_page?(sign_in_path) %>
+          <%= link_to "Sign In", new_user_session_path, class: mobile_navigation_resource_css_classes_current if current_page?(new_user_session_path) %>
+          <%= link_to "Sign In", new_user_session_path, class: mobile_navigation_resource_css_classes if !current_page?(new_user_session_path) %>
           <div class="-mt-6">
             <!-- placeholder to adjust extra padding on top -->
           </div>

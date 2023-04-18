@@ -22,14 +22,14 @@
   <%= turbo_stream.update "card_content" do %>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Ship",
         card_description: @order.purchaser.name,
         card_link: (link_to "View Ship", purchaser_path(@order.purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
       } %>
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Vendor",
         card_description: @order.vendor.name,
         card_link: (link_to "View Vendor", vendor_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),

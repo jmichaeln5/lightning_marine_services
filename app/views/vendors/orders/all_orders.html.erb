@@ -13,7 +13,7 @@
   <%= turbo_stream.update "card_content" do %>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: true,
         card_title: "All vendor orders",
         card_description: @vendor.orders.count,
@@ -22,14 +22,14 @@
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
       } %>
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
       card_title: "Active vendor orders",
       card_description: @vendor.orders.unarchived.count,
       card_link: (link_to "View active vendor orders", vendor_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
       } %>
 
-      <%= render partial: "/shared/data_display/stats/overview_card", locals: {
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
       card_title: "Completed vendor orders",
       card_description: @vendor.orders.archived.count,
       card_link: (link_to "View completed vendor orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),

@@ -61,15 +61,15 @@
               <%= link_to "Account Settings", edit_user_registration_path, class: profile_dropdown_navigation_css_classes_current, role:"menuitem", tabindex:"-1" if current_page?(edit_user_registration_path) %>
               <%= link_to "Account Settings", edit_user_registration_path, class: profile_dropdown_navigation_css_classes, role:"menuitem", tabindex:"-1" if !current_page?(edit_user_registration_path) %>
 
-              <%= link_to "Logout", signout_path, method: :delete, class: profile_dropdown_navigation_css_classes, role:"menuitem", tabindex:"-1" %>
+              <%= link_to "Logout", destroy_user_session_path, method: :delete, class: profile_dropdown_navigation_css_classes, role:"menuitem", tabindex:"-1" %>
             <% end %>
 
             <% if !current_user %>
               <%= link_to "Home", root_path, class: profile_dropdown_navigation_css_classes_current, role:"menuitem", tabindex:"-1" if current_page?(root_path) %>
               <%= link_to "Home", root_path, class: profile_dropdown_navigation_css_classes, role:"menuitem", tabindex:"-1" if !current_page?(root_path) %>
 
-              <%= link_to "Sign In", sign_in_path, role:"menuitem", tabindex:"-1", class: profile_dropdown_navigation_css_classes_current if current_page?(sign_in_path) %>
-              <%= link_to "Sign In", sign_in_path, role:"menuitem", tabindex:"-1", class: profile_dropdown_navigation_css_classes if !current_page?(sign_in_path) %>
+              <%= link_to "Sign In", new_user_session_path, role:"menuitem", tabindex:"-1", class: profile_dropdown_navigation_css_classes_current if current_page?(new_user_session_path) %>
+              <%= link_to "Sign In", new_user_session_path, role:"menuitem", tabindex:"-1", class: profile_dropdown_navigation_css_classes if !current_page?(new_user_session_path) %>
             <% end %>
 
           </div>

@@ -1,18 +1,10 @@
-<% content_for :search_bar do %>
-  <%#= render partial: "/layouts/stacked_shell/nav/search_bar", locals:{
-    search_input_placeholder_text: local_assigns[:search_input_placeholder_text],
-  } %>
-
-  <%= render partial: "/searches/search_bar", locals:{
-    search_input_placeholder_text: local_assigns[:search_input_placeholder_text],
-  } %>
-
+<% if Current.user %>
+  <% content_for :search_bar do %>
+    <%= render partial: "/searches/search_bar", locals:{
+      search_input_placeholder_text: local_assigns[:search_input_placeholder_text],
+    } %>
+  <% end %>
 <% end %>
-
-
-
-
-
 
 <div id="nav-wrapper-desktop" class="hidden lg:block">
   <%= render partial: "layouts/stacked_shell/nav/desktop" %>
