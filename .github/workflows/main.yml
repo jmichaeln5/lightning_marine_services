@@ -62,8 +62,6 @@ jobs:
           echo $ELASTIC_SEARCH_URL
           curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
 
-
-
       - name: Build and run tests
         env:
           DATABASE_URL: postgres://postgres:@localhost:5432/test
@@ -74,12 +72,29 @@ jobs:
           sudo apt-get -yqq install libpq-dev
           gem install bundler:1.17.3
           bundle install --jobs 4 --retry 3
-          bundle exec rails db:create
-          bundle exec rails db:migrate
+          RAILS_ENV=test bundle exec rails db:create
+          RAILS_ENV=test bundle exec rails db:migrate
           echo db_name="$(bundle exec rails runner "puts ActiveRecord::Base.connection.current_database")"
           bundle exec rake searchkick:reindex:all
           RAILS_ENV=test bundle exec rake
           rspec spec
+
+      # - name: Build and run tests
+      #   env:
+      #     DATABASE_URL: postgres://postgres:@localhost:5432/test
+      #     RAILS_ENV: test
+      #     POSTGRES_USER: postgres
+      #     POSTGRES_PASSWORD: postgres
+      #   run: |
+      #     sudo apt-get -yqq install libpq-dev
+      #     gem install bundler:1.17.3
+      #     bundle install --jobs 4 --retry 3
+      #     bundle exec rails db:create
+      #     bundle exec rails db:migrate
+      #     echo db_name="$(bundle exec rails runner "puts ActiveRecord::Base.connection.current_database")"
+      #     bundle exec rake searchkick:reindex:all
+      #     RAILS_ENV=test bundle exec rake
+      #     rspec spec
 
 
 

@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_person_name
 
   attribute :time_zone
-  
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -11,10 +11,10 @@ class User < ApplicationRecord
 
   has_many :table_options, dependent: :destroy
 
-  validates :first_name, :last_name, :phone_number, presence: true, length: { minimum: 2, maximum: 30 }
-  validates :email, presence: true, length: { minimum: 8, maximum: 100 }
-
-  validates :username, uniqueness: true, length: { minimum: 3, maximum: 30 }
+  validates :first_name, length: { minimum: 2, maximum: 40  }
+  validates :last_name, length: { minimum: 2, maximum: 40  }
+  validates :phone_number, length: { minimum: 4, maximum: 20  }
+  validates :email, length: { minimum: 7, maximum: 100  }
 
   before_create :set_default_role, if: :new_record?
   # before_save :bypass_email_confirmation
