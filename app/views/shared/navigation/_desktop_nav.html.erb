@@ -61,8 +61,7 @@
               <%= link_to "Account Settings", edit_user_registration_path, class: profile_dropdown_navigation_css_classes_current, role:"menuitem", tabindex:"-1" if current_page?(edit_user_registration_path) %>
               <%= link_to "Account Settings", edit_user_registration_path, class: profile_dropdown_navigation_css_classes, role:"menuitem", tabindex:"-1" if !current_page?(edit_user_registration_path) %>
 
-              <%= link_to "Logout", signout_path, method: :delete, class: profile_dropdown_navigation_css_classes_current, role:"menuitem", tabindex:"-1" if current_page?(signout_path) %>
-              <%= link_to "Logout", signout_path, method: :delete, class: profile_dropdown_navigation_css_classes, role:"menuitem", tabindex:"-1" if !current_page?(signout_path) %>
+              <%= link_to "Logout", signout_path, method: :delete, class: profile_dropdown_navigation_css_classes, role:"menuitem", tabindex:"-1" %>
             <% end %>
 
             <% if !current_user %>
