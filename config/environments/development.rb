@@ -42,7 +42,6 @@ Rails.application.configure do
   config.active_storage.replace_on_assign_to_many = true
   ##### From tut to fix upd8 issue
 
-
   #### * Devise/ Letter Opener (Development Mailer) *
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
