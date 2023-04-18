@@ -11,7 +11,7 @@ class User < ApplicationRecord
 
   has_many :table_options, dependent: :destroy
 
-  validates :first_name, length: { minimum: 2, maximum: 40  }
+  validates :first_name, length: { minimum: 2, maximum: 30  }
   validates :last_name, length: { minimum: 2, maximum: 40  }
   validates :phone_number, length: { minimum: 4, maximum: 20  }
   validates :email, length: { minimum: 7, maximum: 100  }

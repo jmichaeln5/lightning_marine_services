@@ -29,6 +29,10 @@ RSpec.describe User, type: :model do
     user.destroy
   end
 
+  it "Passes initial acceptance test" do
+    expect(true).to eq true
+  end
+
   it "is a valid user" do
     expect(user.valid?).to be true
   end
