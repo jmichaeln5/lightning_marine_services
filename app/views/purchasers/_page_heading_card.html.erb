@@ -21,7 +21,7 @@
     is_active_card: current_page?(completed_orders_purchaser_path(@purchaser)),
     card_title: "Completed ship orders",
     card_description: @purchaser.orders.archived.count,
-    card_link: (link_to "View completed ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+    card_link: (link_to "View completed ship orders", completed_orders_purchaser_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
     card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
     } %>
 

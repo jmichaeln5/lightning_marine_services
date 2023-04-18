@@ -51,7 +51,6 @@ Rails.application.routes.draw do
     put '/users/password', to: 'users/passwords#update'
   end
 
-
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
   resources :table_options

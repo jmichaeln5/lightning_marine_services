@@ -1,10 +1,6 @@
 <% if authorized_internal_user? %>
   <% content_for :page_heading_button do %>
-    <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
-      with_turbo_modal: true,
-      link_to_path: new_order_path,
-      link_to_text: "Add order",
-    } %>
+    <%= render partial: '/orders/page_heading_button' %>
   <% end %>
 <% end %>
 
@@ -28,32 +24,8 @@
 <% end %>
 
 <% content_for :page_heading_card do %>
-
-  <%= turbo_stream.update "card_content" do %>
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-        card_title: "All orders",
-        card_description: Order.all.count,
-        card_link: (link_to "View All Orders", all_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
-        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
-      } %>
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-        card_title: "Active orders",
-        card_description: Order.all.unarchived.count,
-        card_link: (link_to "View Active Orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
-        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/box_truck"),
-      } %>
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-        card_title: "Completed orders",
-        card_description: Order.all.archived.count,
-        card_link: (link_to "(placeholder)View Completed Orders", root_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
-        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
-      } %>
-    </div>
-  <% end %>
-
+  <%= turbo_stream.update "card_title", "Dashboard" %>
+  <%= render partial: 'orders/page_heading_card' %>
 <% end %>
 
 <!-- <div class="sm:flex sm:items-center mb-5 sm:mb-7">
