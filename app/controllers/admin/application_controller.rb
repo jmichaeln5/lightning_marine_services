@@ -6,6 +6,8 @@
 # you're free to overwrite the RESTful controller actions.
 module Admin
   class ApplicationController < Administrate::ApplicationController
+    include SetCurrentRequestDetails
+    include Authentication
     include Authorization
 
     before_action :authenticate_user!
