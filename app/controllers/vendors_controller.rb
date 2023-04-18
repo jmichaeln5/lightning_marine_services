@@ -1,7 +1,8 @@
 class VendorsController < ApplicationController
   layout "stacked_shell"
 
-  before_action :authorize_internal_user, only: %i[ new create edit update destroy ]
+  # before_action :authorize_internal_user, only: %i[ new create edit update destroy ]
+  before_action :authorize_internal_user
 
   before_action :set_page_heading_title, except: %i[ show ]
 

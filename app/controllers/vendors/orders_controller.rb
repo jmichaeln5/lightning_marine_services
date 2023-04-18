@@ -1,4 +1,5 @@
 class Vendors::OrdersController < OrdersController
+  before_action :authorize_internal_user
 
   def index
     @vendor = Vendor.includes(:orders).find(params[:vendor_id])
