@@ -37,7 +37,7 @@ class OrdersController < ApplicationController
     set_new_order
   end
 
-  def completed
+  def completed_orders
     @orders =  Order.archived
     @orders = resolve_orders_for_data_table(@orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)

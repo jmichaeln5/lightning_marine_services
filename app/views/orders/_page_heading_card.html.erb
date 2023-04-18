@@ -18,9 +18,10 @@
       } %>
 
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
+        is_active_card: current_page?(completed_orders_path),
         card_title: "Completed orders",
         card_description: Order.all.archived.count,
-        card_link: (link_to "(placeholder)View Completed Orders", root_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_link: (link_to "View completed orders", completed_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
       } %>
     </div>
