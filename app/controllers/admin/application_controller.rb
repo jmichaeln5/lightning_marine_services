@@ -23,8 +23,6 @@ module Admin
     #   params[:per_page] || 20
     # end
 
-
-
     # ### create method from docs:
     # ### https://github.com/thoughtbot/administrate/blob/main/app/controllers/administrate/application_controller.rb
     # def create
