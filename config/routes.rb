@@ -54,7 +54,6 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
-  # resources :users
   resources :table_options
 
   concern :hovercardable do
@@ -85,24 +84,29 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/purchasers/:purchaser_id/all_orders', to: 'purchasers/orders#all_orders',  as: 'all_purchaser_orders'
-  get '/purchasers/:purchaser_id/active_orders', to: 'purchasers/orders#active_orders',  as: 'active_purchaser_orders'
-
   resources :purchasers do
-    resources :orders, only: [:index, :new, :create], module: :purchasers
+    resources :orders, only: [:index, :new, :create ], module: :purchasers
+
     member do
+      get 'all_orders', controller: 'purchasers/orders'
+      get 'active_orders', controller: 'purchasers/orders'
+      get 'completed_orders', controller: 'purchasers/orders'
+
       get :export
       get :deliver
     end
   end
 
-  get '/vendors/:vendor_id/all_orders', to: 'vendors/orders#all_orders',  as: 'all_vendor_orders'
-  get '/vendors/:vendor_id/active_orders', to: 'vendors/orders#active_orders',  as: 'active_vendor_orders'
-
   resources :vendors do
-  # resources :vendors, concerns: [:searchable ] do
-    resources :orders, only: [:index, :new, :create], module: :vendors
+    resources :orders, only: [:index, :new, :create ], module: :vendors
+
+    member do
+      get 'all_orders', controller: 'vendors/orders'
+      get 'active_orders', controller: 'vendors/orders'
+      get 'completed_orders', controller: 'vendors/orders'
+    end
   end
+
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
@@ -110,13 +114,6 @@ Rails.application.routes.draw do
   get '/purchasers_all', to: 'purchasers#show_all'
   #get '/all_ship_orders/:id', to: 'purchasers#show_all'
   # get '/search', to: 'searches#index'
-
-  # resources :purchasers do
-  #   member do
-  #     get :export
-  #     get :deliver
-  #   end
-  # end
 
   # Redirects to root if invalid path BUT, fucks up search params
   # match '*path' => redirect('/'), :via => [:get, :post]

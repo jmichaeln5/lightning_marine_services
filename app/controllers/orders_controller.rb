@@ -8,19 +8,11 @@ class OrdersController < ApplicationController
 
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]
-
-  def all_orders
-    orders = Order.all
-
-    @orders ||= resolve_orders_for_data_table(orders)
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
-  end
+  # before_action :set_index_orders, only: %i[ index ]
 
   def index
-    orders = Order.unarchived
-
-    @orders ||= resolve_orders_for_data_table(orders)
+    @orders =  Order.unarchived
+    @orders = resolve_orders_for_data_table(@orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
 
@@ -36,6 +28,20 @@ class OrdersController < ApplicationController
         filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
       }
     end
+  end
+
+  def all_orders
+    @orders =  Order.all
+    @orders = resolve_orders_for_data_table(@orders)
+    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    set_new_order
+  end
+
+  def completed
+    @orders =  Order.archived
+    @orders = resolve_orders_for_data_table(@orders)
+    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    set_new_order
   end
 
   # GET /orders/1 or /orders/1.json

@@ -1,44 +1,44 @@
 class Purchasers::OrdersController < OrdersController
-  before_action :set_purchaser, only: %i[ all_orders active_orders index new create ]
 
-  def active_orders
-    # @orders = nil
-    orders = @purchaser.orders.unarchived
-    @orders ||= resolve_orders_for_data_table(orders)
+  def index
+    @purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
+
+    @orders = @purchaser.orders.unarchived
+    @orders = resolve_orders_for_data_table(@orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
 
   def all_orders
-    # @orders = nil
-    orders = @purchaser.orders
-    @orders ||= resolve_orders_for_data_table(orders)
+    @purchaser = Purchaser.includes(:orders).find(params[:id])
+
+    @orders = @purchaser.orders.all
+    @orders = resolve_orders_for_data_table(@orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
 
-  def index
-    # @orders = nil
-    orders = @purchaser.orders.unarchived
-    @orders ||= resolve_orders_for_data_table(orders)
+  def completed_orders
+    @purchaser = Purchaser.includes(:orders).find(params[:id])
+
+    @orders = @purchaser.orders.archived
+    @orders = resolve_orders_for_data_table(@orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_purchaser
-      @purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
-    end
 
     def set_new_order
+      if params[:purchaser_id]
+        @purchaser = Purchaser.find(params[:purchaser_id])
+      end
+      @purchaser ||= Purchaser.find(params[:id])
+
       @order = @purchaser.orders.build
       @order.build_order_content
-    end
-
-    def set_page_heading_title
-      # @page_heading_title = "Ship Orders"
-      @page_heading_title = "Ship"
+      @page_heading_title = "Ship: #{@purchaser.name}"
     end
 
 end

@@ -17,43 +17,11 @@
 <% end %>
 
 <% content_for :page_heading_card do %>
-
-  <%= turbo_stream.update "card_title", @purchaser.name %>
-
-  <%= turbo_stream.update "card_content" do %>
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-        card_title: "All ship orders",
-        card_description: @purchaser.orders.count,
-        # card_link: (link_to "View all ship orders", purchaser_orders_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
-        card_link: (link_to "View all ship orders", all_purchaser_orders_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
-        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
-      } %>
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-      is_active_card: true,
-      card_title: "Active ship orders",
-      card_description: @purchaser.orders.unarchived.count,
-      card_link: (link_to "View active ship orders", purchaser_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
-      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
-      } %>
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-      card_title: "Completed ship orders",
-      card_description: @purchaser.orders.archived.count,
-      card_link: (link_to "View completed ship orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
-      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
-      } %>
-
-    </div>
-  <% end %>
-
-  <%#= render partial: "/purchasers/orders/page_heading_card" %>
-
+  <%= turbo_stream.update "card_title", "#{@purchaser.name} Active Orders" %>
+  <%= render partial: "purchasers/page_heading_card" %>
 <% end %>
 
-<%= render @purchaser %>
+<%#= render @purchaser %>
 
 <% content_for :table_section_heading_description_text do %>
     All active orders belonging to <%= content_tag :span, @purchaser.name, class:'font-bold' %> that have not yet been completed.

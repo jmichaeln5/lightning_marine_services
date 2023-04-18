@@ -17,43 +17,11 @@
 <% end %>
 
 <% content_for :page_heading_card do %>
-
-  <%= turbo_stream.update "card_title", @vendor.name %>
-
-  <%= turbo_stream.update "card_content" do %>
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-        card_title: "All vendor orders",
-        card_description: @vendor.orders.count,
-        # card_link: (link_to "View all vendor orders", vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
-        card_link: (link_to "View all vendor orders", all_vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
-        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
-      } %>
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-      is_active_card: true,
-      card_title: "Active vendor orders",
-      card_description: @vendor.orders.unarchived.count,
-      card_link: (link_to "View active vendor orders", vendor_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
-      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
-      } %>
-
-      <%= render partial: "/application/data_display/stats/overview_card", locals: {
-      card_title: "Completed vendor orders",
-      card_description: @vendor.orders.archived.count,
-      card_link: (link_to "View completed vendor orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
-      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
-      } %>
-
-    </div>
-  <% end %>
-
-  <%#= render partial: "/vendors/orders/page_heading_card" %>
-
+  <%= turbo_stream.update "card_title", "#{@vendor.name} Active Orders" %>
+  <%= render partial: "vendors/page_heading_card" %>
 <% end %>
 
-<%= render @vendor %>
+<%#= render @vendor %>
 
 <% content_for :table_section_heading_description_text do %>
     All active orders belonging to <%= content_tag :span, @vendor.name, class:'font-bold' %> that have not yet been completed.

@@ -17,25 +17,20 @@
   <%= content_tag(:p, order.id, class: primary_col_css_classes) %>
 
   <div class="<%= primary_col_css_classes %>">
-
     <%#= render "inline_edit", model: order, attribute: :dept do %>
       <%#= content_tag(:div, order.dept, class: "text-sm text-gray-900") %>
     <%# end %>
-
     <%= render "orders/inline_edit_dept", order: order, attribute: :dept do %>
       <%= content_tag(:div, order.dept, class: "text-sm text-gray-900") %>
     <% end %>
-
   </div>
 
   <div class="<%= primary_col_css_classes %>">
-    <%= link_to order.purchaser.name, order.purchaser, class:target_top_link_to_css_classes, target: "_top" if !current_page?(purchaser_path(order.purchaser)) %>
-    <%= content_tag(:p, order.purchaser.name, class: "table-cell text-sm font-medium text-gray-500" ) if current_page?(purchaser_path(order.purchaser)) %>
+    <%=  link_to order.purchaser.name, purchaser_orders_path(order.purchaser), class:target_top_link_to_css_classes, target: "_top" %>
   </div>
 
   <div class="<%= primary_col_css_classes %>">
-    <%= link_to order.vendor.name, order.vendor, class:target_top_link_to_css_classes, target: "_top" if !current_page?(vendor_path(order.vendor)) %>
-    <%= content_tag(:p, order.vendor.name, class: "table-cell text-sm font-medium text-gray-500" ) if current_page?(vendor_path(order.vendor)) %>
+    <%=  link_to order.vendor.name, vendor_orders_path(order.vendor), class:target_top_link_to_css_classes, target: "_top" %>
   </div>
 
   <div class="<%= primary_col_css_classes %>">
