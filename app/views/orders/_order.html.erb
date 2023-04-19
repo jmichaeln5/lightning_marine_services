@@ -15,7 +15,9 @@
             </span>
             <span class="font-semibold text-gray-900 mb-1">
               Vendor:
-              <%= link_to order.vendor_name, order.vendor, method: :get, target: '_top', class: "inline-block text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+              <%= link_to order.vendor_name, order.vendor, method: :get, target: '_top', class: "inline-block text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" if authorized_internal_user? %>
+
+              <%= content_tag(:p, order.vendor.name, class:"inline-block text-md font-normal hover:cursor-pointer") if !authorized_internal_user? %>
             </span>
           </div>
         </summary>
@@ -43,7 +45,9 @@
               </span>
               <span class="font-semibold text-gray-900 mb-1">
                 Vendor:
-                <%= link_to order.vendor_name, order.vendor, method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+                <%= link_to order.vendor_name, order.vendor, method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" if authorized_internal_user? %>
+
+                <%= content_tag(:p, order.vendor.name, class:"text-md font-normal hover:cursor-pointer") if !authorized_internal_user? %>
               </span>
             </div>
           </div>

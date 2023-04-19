@@ -2,13 +2,12 @@ module ApplicationHelper
   include Pagy::Frontend
 
   def dev_output_str(str)
-    if Rails.env == "development"
-      puts (" \n")*5
-      puts ("*"*50 + "\n")
-      puts (" #{str} \n")*5
-      puts ("*"*50 + "\n")
-      puts (" \n")*5
-    end
+    return unless Rails.env == "development"
+    puts (" \n")*5
+    puts ("*"*50 + "\n")*5
+    puts (" #{str} \n")*5
+    puts ("*"*50 + "\n")*5
+    puts (" \n")*5
   end
 
   def default_link_to_css_classes

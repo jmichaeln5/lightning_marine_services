@@ -29,10 +29,16 @@
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
       } %>
 
+      <% vendor_data_overview_card_link = (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900") if authorized_internal_user?  %>
+
+      <% vendor_data_overview_card_link = content_tag(:p, "Vendor", class:"font-medium hover:cursor-default") if !authorized_internal_user? %>
+
+
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Vendor",
         card_description: @order.vendor.name,
-        card_link: (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        # card_link: (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_link: vendor_data_overview_card_link,
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
       } %>
 

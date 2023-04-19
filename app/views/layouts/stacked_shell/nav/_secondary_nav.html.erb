@@ -21,8 +21,9 @@
 
            <%= link_to "Ships", purchasers_path, class: mobile_navigation_resource_css_classes if !"purchasers".in? controller_path %>
 
-           <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes if !"vendors".in? controller_path %>
-
+           <% if authorized_internal_user? %>
+             <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes if !"vendors".in? controller_path %>
+          <% end %>
          </div>
        </div>
       </div>
