@@ -27,20 +27,35 @@ RSpec.describe Order, type: :model do
     )
   }
 
-  before do
-    order.save
-  end
-
-  after do
-    order.destroy
-  end
-
   it "Passes initial acceptance test" do
     expect(true).to eq true
   end
-
+  #
   it "is a valid order" do
     expect(order.valid?).to be true
+  end
+
+  it 'can save a valid order' do
+    order_is_saved = false
+
+    if order.save
+      order_is_saved = true
+    end
+    expect(order_is_saved).to be true
+  end
+
+  it "is a valid order when built with purchaser, vendor, and order_content factories" do
+    built_order = build(:order,
+      purchaser_id: create(:purchaser).id,
+      vendor_id: create(:vendor).id,
+      order_content: build(:order_content),
+    )
+    expect(built_order.valid?).to be true
+  end
+
+  it "is a valid order when created with order factories" do
+    created_order = create(:order)
+    expect(created_order.valid?).to be true
   end
 
 end

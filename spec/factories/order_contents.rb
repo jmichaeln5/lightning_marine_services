@@ -3,7 +3,5 @@ FactoryBot.define do
     box { rand(1..15) }
     crate { rand(1..10) }
     pallet { rand(1..15) }
-    # association :order, factory: :order
   end
-
 end
