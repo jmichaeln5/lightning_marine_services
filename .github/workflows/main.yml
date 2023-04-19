@@ -48,8 +48,12 @@ jobs:
         with:
           node-version: 10.13.0
 
-      - name: Build Esbuild
-        run: yarn build
+      - name: Install Yarn and run build scripts
+        run: |
+          npm install -g yarn
+          yarn install
+          yarn run build
+          yarn run build:css
 
       - name: Verify Elasticsearch connection from host
         env:
