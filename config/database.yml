@@ -56,14 +56,27 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 
-# test: # 4-17-23 # BEFORE
+################################################################
+################################################################
+############################################### 4-17-23 # BEFORE
+# test:
 #   <<: *default
 #   username: <%= ENV["POSTGRES_USER"] %>
 #   password: <%= ENV["POSTGRES_PASSWORD"] %>
 
-test: # 4-17-23 # AFTER
+################################################################
+############################################### 4-17-23 # AFTER
+test:
   <<: *default
   database: lightning_marine_services_test
+################################################################
+###################################################     # latest
+### https://gist.github.com/peimelo/7869e7a1bdc05554f72b798840afe85a
+### Added config/database.ci.yml
+### Loading referencing  config/database.ci.yml in .github/workflows/main.yml
+################################################################
+################################################################
+
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
