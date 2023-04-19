@@ -30,13 +30,13 @@ Bundler.require(*Rails.groups)
 
 module LightningMarineServices
   class Application < Rails::Application
-    config.load_defaults 6.0 # requires  -v 6.0 load_defaults when -v 6.1 ????
-    # config.load_defaults 6.1 # should replace above with this
+    # config.load_defaults 6.0 # requires  -v 6.0 load_defaults when -v 6.1 ????
+    config.load_defaults 6.1 # should replace above with this
 
     #################################### Migrating to esbuild
     # config.assets.initialize_on_precompile = false # Note from initial push to prod, Heroku is trying to connect to DB as part of 'rake assets:precompile' but cannot because DB has not been created yet
     # config.assets.initialize_on_precompile = true ### Until uninstalled pack shizz
-    config.assets.initialize_on_precompile = false
+    # config.assets.initialize_on_precompile = false
     ####################################
 
     # Settings in config/environments/* take precedence over those specified here.

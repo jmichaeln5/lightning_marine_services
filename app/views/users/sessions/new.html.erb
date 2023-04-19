@@ -194,7 +194,6 @@ input[type=text]:placeholder {
   animation-delay: 1.2s;
 }
 
-
 .fadeIn.sixth {
   -webkit-animation-delay: 1.4s;
   -moz-animation-delay: 1.4s;
@@ -264,13 +263,35 @@ input[type=text]:placeholder {
         <%= f.label :remember_me %>
       </div>
     <% end %>
-    <div class="actions fadeIn sixth">
+    <div class="actions mt-3 fadeIn sixth">
       <%= f.submit "Log in", id:"formBtn", class:'cursor-pointer' %>
     </div>
     <% end %>
+
     <div id="formFooter" class="fadeIn seventh">
-      <%= render "users/shared/links" %>
+
+      <div data-controller="reveal" data-reveal-hidden-class="hidden">
+
+
+        <div class="">
+            <div class="align-baseline text-center">
+              <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
+                <%= content_tag(:p, 'Forgot your email/password?', class:'text-indigo-600 hover:text-indigo-800 hover:cursor-pointer hover:underline hover:cursor-pointer') %>
+              </div>
+            </div>
+        </div>
+
+
+        <div data-reveal-target="item" class="hidden p-3 bg-white shadow-inner">
+          <div class="text-center">
+            We are no longer resetting account credentials via email as of November 2021. If you have forgotten your email/password please reach out to a manager directly to have them re-enable access to your account.
+          </div>
+        </div>
+      </div>
+
+
     </div>
+
   </div>
 </div>
 <%= turbo_frame_tag :modal %>
