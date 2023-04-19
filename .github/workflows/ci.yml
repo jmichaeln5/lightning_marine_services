@@ -7,16 +7,12 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
-        image: postgres
+      db:
+        image: postgres:11
         ports: ["5432:5432"]
-        env:
-          POSTGRES_DB: test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
+          --health-interval 15s
           --health-timeout 5s
           --health-retries 5
       elasticsearch:
@@ -47,15 +43,14 @@ jobs:
         run: |
           echo $ELASTIC_SEARCH_URL
           curl -fsSL "$ELASTIC_SEARCH_URL/_cat/health?h=status"
-      - name: Install system dependencies
-        run: |
-          sudo apt-get -y update
-      - name: Run tests
+      - name: Build and run tests
         env:
+          DATABASE_URL: postgres://postgres:@localhost:5432/test
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:password@localhost:5432/test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
-          bundle exec rails db:create
-          bundle exec rake db:schema:load
+          sudo apt-get -yqq install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rails db:prepare
           bundle exec rake
