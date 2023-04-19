@@ -36,16 +36,12 @@ jobs:
         options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
         with:
-          fetch-depth: 1
-      # - uses: actions/checkout@v1
-
-      - name: Set up Ruby -v 3.0.3
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 3.0.3
+          bundler-cache: true
 
       - name: Set up Node -v 10.13.0
         uses: actions/setup-node@v1
