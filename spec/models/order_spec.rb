@@ -30,7 +30,7 @@ RSpec.describe Order, type: :model do
   it "Passes initial acceptance test" do
     expect(true).to eq true
   end
-  #
+
   it "is a valid order" do
     expect(order.valid?).to be true
   end
@@ -54,8 +54,14 @@ RSpec.describe Order, type: :model do
   end
 
   it "is a valid order when created with order factories" do
-    created_order = create(:order)
-    expect(created_order.valid?).to be true
+    build_order = build(:order)
+    expect(build_order.errors.any?).to eq false
+
+    build_valid_order = build(:valid_order)
+    expect(build_valid_order.errors.any?).to eq false
+
+    valid_order = create(:valid_order)
+    expect(valid_order.valid?).to eq true
   end
 
 end
