@@ -731,11 +731,6 @@ spark-md5@^3.0.0:
   resolved "https://registry.npmjs.org/spark-md5/-/spark-md5-3.0.2.tgz#7952c4a30784347abcee73268e473b9c0167e3fc"
   integrity sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==
 
-stimulus-checkbox-select-all@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/stimulus-checkbox-select-all/-/stimulus-checkbox-select-all-2.1.0.tgz#f375d63073fa90b25fa26310af741fe17943459a"
-  integrity sha512-CaaE0z1HZD7JU+WbfikrkXG88GIJ/atJGVo6pZqTtTzqzVD77eRkff4EBxUL3YB8qJKTip0zQbqmYYhS/Uy7Ew==
-
 stimulus-dropdown@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/stimulus-dropdown/-/stimulus-dropdown-2.1.0.tgz#22f15cd1dc247e08f04c3f95d7ab9d8102602a07"
