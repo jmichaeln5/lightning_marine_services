@@ -407,7 +407,6 @@ DEPENDENCIES
   redis (~> 4.0)
   rolify
   rspec-rails
-  sassc-rails (~> 2.1)
   searchkick (~> 4.6)
   selenium-webdriver
   spring
