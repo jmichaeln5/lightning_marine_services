@@ -16,11 +16,13 @@
 
   <%= content_tag(:p, order.id, class: primary_col_css_classes) %>
 
-  <div class="<%= primary_col_css_classes %>">
-    <%= render "inline_edit", model: order, attribute: :order_sequence do %>
-      <%= order.order_sequence %>
-    <% end %>
-  </div>
+  <% unless @vendor %>
+    <div class="<%= primary_col_css_classes %>">
+      <%= render "inline_edit", model: order, attribute: :order_sequence do %>
+        <%= order.order_sequence %>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="<%= primary_col_css_classes %>">
     <%#= render "inline_edit", model: order, attribute: :dept do %>
