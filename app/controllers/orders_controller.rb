@@ -10,8 +10,9 @@ class OrdersController < ApplicationController
   # before_action :set_index_orders, only: %i[ index ]
 
   def index
-    @orders =  Order.unarchived
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = Order.unarchived
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
 
@@ -30,15 +31,19 @@ class OrdersController < ApplicationController
   end
 
   def all_orders
-    @orders =  Order.all
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = Order.all
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
+
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
 
   def completed_orders
-    @orders =  Order.archived
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = Order.archived
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
+
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
