@@ -3,8 +3,9 @@ class Purchasers::OrdersController < OrdersController
   def index
     @purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
 
-    @orders = @purchaser.orders.unarchived
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = @purchaser.orders.unarchived
+    orders = orders.order(order_sequence: :asc)
+    @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
@@ -12,8 +13,9 @@ class Purchasers::OrdersController < OrdersController
   def all_orders
     @purchaser = Purchaser.includes(:orders).find(params[:id])
 
-    @orders = @purchaser.orders.all
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = @purchaser.orders.all
+    orders = orders.order(order_sequence: :asc)
+    @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
@@ -21,8 +23,9 @@ class Purchasers::OrdersController < OrdersController
   def completed_orders
     @purchaser = Purchaser.includes(:orders).find(params[:id])
 
-    @orders = @purchaser.orders.archived
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = @purchaser.orders.archived
+    orders = orders.order(order_sequence: :asc)
+    @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end

@@ -4,8 +4,9 @@ class Vendors::OrdersController < OrdersController
   def index
     @vendor = Vendor.includes(:orders).find(params[:vendor_id])
 
-    @orders = @vendor.orders.unarchived
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = @vendor.orders.unarchived
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
@@ -13,8 +14,9 @@ class Vendors::OrdersController < OrdersController
   def all_orders
     @vendor = Vendor.includes(:orders).find(params[:id])
 
-    @orders = @vendor.orders.all
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = @vendor.orders.all
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
@@ -22,8 +24,8 @@ class Vendors::OrdersController < OrdersController
   def completed_orders
     @vendor = Vendor.includes(:orders).find(params[:id])
 
-    @orders = @vendor.orders.archived
-    @orders = resolve_orders_for_data_table(@orders)
+    orders = @vendor.orders.archived
+    orders = orders.order(created_at: :desc)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
   end
