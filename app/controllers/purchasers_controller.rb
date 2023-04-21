@@ -1,12 +1,11 @@
 class PurchasersController < ApplicationController
   layout "stacked_shell"
 
-  # before_action :authorize_admin, only: %i[ destroy ]
   before_action :authorize_internal_user, only: %i[ new create edit update destroy ]
 
   before_action :set_page_heading_title, except: %i[ show ]
 
-  before_action :set_purchaser, only: %i[ show edit update destroy ]
+  before_action :set_purchaser, only: %i[ show edit update export destroy ]
 
   # GET /purchasers or /purchasers.json
   def index
@@ -159,6 +158,33 @@ class PurchasersController < ApplicationController
       @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
     end
   end
+
+  def export
+    filePrefix = (@purchaser.name + "_").parameterize(separator: '_')
+    @orders = @purchaser.orders.unarchived
+    respond_to do |format|
+      format.html {
+        render :export }
+      format.xls {
+        send_data @orders.to_csv,
+        filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      }
+      format.xlsx {
+        fName = filePrefix + "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
+        #response.headers['Content-Disposition'] = 'attachment; ' + fName
+        response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
+        #send_data @orders,
+        #filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
+      }
+    end
+  end
+
+  # def deliver
+  #   # purchaser = Purchaser.find(params[:id])
+  #   @orders = ship.orders.unarchived
+  #   @orders.deliver_all
+  #   redirect_to dashboard_path
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -16,13 +16,17 @@
   </div>
 </div>
 
+<% unless @vendor %>
+  <div class="<%= table_header_css_classes %>">
+    <%= content_tag(:p, "Order Sequence", class:"text-center" ) %>
+  </div>
+<% end %>
+
 <%# NOTE %>
 <%# DEPT SHOULD BE SORTABLE %>
 <div class="<%= table_header_css_classes %>">
   <%= content_tag(:p, "Dept", class:"text-center" ) %>
 </div>
-
-
 
 <div class="<%= table_header_css_classes %>">
   <%= content_tag(:p, "Ship", class:"text-center" ) if controller_path.include? "purchaser" %>
@@ -38,8 +42,6 @@
     </div>
   <% end %>
 </div>
-
-
 <div class="<%= table_header_css_classes %>">
   <%= content_tag(:p, "Vendor", class:"text-center" ) if controller_path.include? "vendor" %>
 
@@ -54,8 +56,6 @@
     </div>
   <% end %>
 </div>
-
-
 <div class="<%= table_header_css_classes %>">
   <%= content_tag(:p, "PO Number", class:"text-center" ) %>
 </div>
