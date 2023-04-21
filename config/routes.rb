@@ -91,7 +91,7 @@ Rails.application.routes.draw do
       get 'completed_orders', controller: 'purchasers/orders'
 
       get :export
-      get :deliver
+      # get :deliver
     end
   end
 

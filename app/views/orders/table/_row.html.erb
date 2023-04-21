@@ -15,6 +15,7 @@
   </div>
 
   <%= content_tag(:p, order.id, class: primary_col_css_classes) %>
+  <%= content_tag(:p, order.order_sequence, class: primary_col_css_classes) unless @vendor %>
 
   <div class="<%= primary_col_css_classes %>">
     <%#= render "inline_edit", model: order, attribute: :dept do %>

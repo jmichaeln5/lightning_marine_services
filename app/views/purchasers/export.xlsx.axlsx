@@ -1,0 +1,26 @@
+wb = xlsx_package.workbook
+
+sNow = Time.now.strftime("%d/%m/%Y %H:%M")
+
+#title = wb.styles.add_style(:bg_color => "#00D9DDDC", :fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "FFFF0000"})
+title = wb.styles.add_style(:fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "#FF000000"})
+bold = wb.styles.add_style(:b=>true,:fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "#FF000000"},:alignment=>{:horizontal => :left})
+ordstyle = wb.styles.add_style(:fg_color=>"#FF000000",:border=>Axlsx::STYLE_THIN_BORDER,:sz=>8, :alignment=>{:horizontal => :left})
+
+@orders.order("order_sequence ASC")
+wb.add_worksheet(name: "Orders", :page_setup => {:fit_to_width=>1, :orientation => :landscape}) do |sheet|
+    sheet
+    sheet.add_row ["Ship:", @purchaser.name,'','','Printed:',sNow], :style=>title
+    sheet.add_row ["#","Department","Vendor","PO #","Tracking #","Received Date","Boxes","Crates","Pallet", "Courrier", "Delivery Date"], :style=>bold
+
+  @orders.order("order_sequence ASC").each do |ord|
+    dept = ord.try(:dept) || ''
+    boxes = ord.try(:order_content).box || '0'
+    crates = ord.try(:order_content).crate || '0'
+    pallet = ord.try(:order_content).pallet || '0'
+    rec_date = ord.try(:date_recieved) ? ord.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a'
+    del_date = ord.try(:date_delivered) ? ord.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a'
+
+    sheet.add_row [ord.order_sequence,dept, ord.vendor.name, ord.po_number,ord.tracking_number,rec_date,boxes,crates,pallet,ord.courrier,del_date], :style=>ordstyle
+  end
+end
