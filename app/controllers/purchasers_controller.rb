@@ -179,13 +179,6 @@ class PurchasersController < ApplicationController
     end
   end
 
-  def deliver
-    @orders = @purchaser.orders.unarchived
-    @orders.deliver_all
-
-    redirect_back(fallback_location: purchaser_orders_path(@purchaser), notice: "#{@purchaser.name} active orders delivered successfully.")
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_page_heading_title

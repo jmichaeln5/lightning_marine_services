@@ -1,47 +1,22 @@
+<%##### E.G.  %>
+<%#= turbo_frame_tag :modal do %>
 
-<!-- NOTE BEFORE: -->
+<%#= render "/layouts/stacked_shell/render_modal",
+  # close_with_keyboard: true,
+  # close_with_keyboard: false,
+  # close_on_submission_success: true,
+  # close_on_submission_success: false,
+  # close_on_outside_click: true,
+  # close_on_outside_click: false,
+  modal_title: (link_to "Editing Order #{@order.id}", edit_order_path(@order), target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer") do %>
 
-<%# if Current.request_variant == :turbo_frame  %>
-  <%#= turbo_frame_tag :modal do %>
-
-    <%# content_for :edit_order_modal_title, flush: true do %>
-      <%#= link_to "Editing Order #{@order.id}", edit_order_path(@order), target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
-    <%# end %>
-
-    <!-- <div data-controller="turbo-modal" data-action="turbo:submit-end->turbo-modal#submitEnd"> -->
-      <%#= render "/layouts/stacked_shell/modal", modal_title: yield(:edit_order_modal_title) do %>
-        <%#= render '/orders/form', order: @order %>
-      <%# end %>
-    <!-- </div> -->
-
+    <%#= render '/orders/form', order: @order %>
+    <!-- whatever you want to be yielded in modal -->
+    <!-- eg -->
+    <!-- render '/orders/form', order: @order -->
   <%# end %>
+
 <%# end %>
-
-
-
-
-<!-- NOTE AFTER: -->
-
-  <%#= turbo_frame_tag :modal do %>
-
-  <%#= render "/layouts/stacked_shell/render_modal",
-    # close_with_keyboard: true,
-    # close_with_keyboard: false,
-    # close_on_submission_success: true,
-    # close_on_submission_success: false,
-    # close_on_outside_click: true,
-    # close_on_outside_click: false,
-    modal_title: (link_to "Editing Order #{@order.id}", edit_order_path(@order), target: "_top", class:"font-medium underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer") do %>
-
-      <%#= render '/orders/form', order: @order %>
-      <!-- whatever you want to be yielded in modal -->
-      <!-- eg -->
-      <!-- render '/orders/form', order: @order -->
-    <%# end %>
-
-  <%# end %>
-
-
 
 <% if local_variables.include?(:close_with_keyboard) %>
   <% add_close_with_keyboard_attr = close_with_keyboard %>

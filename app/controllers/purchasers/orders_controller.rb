@@ -30,6 +30,15 @@ class Purchasers::OrdersController < OrdersController
     set_new_order
   end
 
+  def deliver_active
+    @purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
+
+    orders = @purchaser.orders.unarchived
+    orders.deliver_active
+
+    redirect_to purchaser_orders_path(@purchaser), notice: "#{@purchaser.name} active orders delivered successfully."
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
 

@@ -16,10 +16,10 @@
       <div data-visibility-target="hideable" hidden class="absolute right-0 z-10 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
         <div class="py-1" role="none">
 
-          <%#= link_to "Deliver #{@purchaser.name} orders", deliver_purchaser_path(@purchaser),  class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm" if current_page?(purchaser_orders_path(@purchaser)) %>
-          <%= link_to "Deliver open orders", deliver_purchaser_path(@purchaser),  class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm" if current_page?(purchaser_orders_path(@purchaser)) %>
+          <%= link_to "Deliver active orders", deliver_active_purchaser_orders_path(@purchaser),  class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm" if @purchaser.active_orders.any? %>
 
           <%= link_to "Export orders to Excel", export_purchaser_path(@purchaser, format: :xlsx), class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm" %>
+          
           <%#= link_to "Download orders as CSV", orders_path(format: :csv), class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm" %>
 
         </div>
