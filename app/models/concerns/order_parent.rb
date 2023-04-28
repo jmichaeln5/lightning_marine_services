@@ -11,6 +11,10 @@ module OrderParent
     return self.order_ids.size
   end
 
+  def active_orders
+    self.orders.where(archived: false)
+  end
+
   private
 
     def check_associated_orders

@@ -5,7 +5,7 @@ class PurchasersController < ApplicationController
 
   before_action :set_page_heading_title, except: %i[ show ]
 
-  before_action :set_purchaser, only: %i[ show edit update export destroy ]
+  before_action :set_purchaser, only: %i[ show edit update destroy export ]
 
   # GET /purchasers or /purchasers.json
   def index
@@ -178,13 +178,6 @@ class PurchasersController < ApplicationController
       }
     end
   end
-
-  # def deliver
-  #   # purchaser = Purchaser.find(params[:id])
-  #   @orders = ship.orders.unarchived
-  #   @orders.deliver_all
-  #   redirect_to dashboard_path
-  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

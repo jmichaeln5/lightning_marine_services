@@ -25,10 +25,12 @@ class Order < ApplicationRecord
     self.vendor.name
   end
 
-  def self.deliver_all
+  def self.deliver_active
     all.each do |order|
-      order.date_delivered = DateTime.now
-      order.save
+      if order.archived == false
+        order.date_delivered = DateTime.now
+        order.save
+      end
     end
   end
 

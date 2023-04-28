@@ -83,15 +83,16 @@ Rails.application.routes.draw do
   end
 
   resources :purchasers do
-    resources :orders, only: [:index, :new, :create ], module: :purchasers
+    resources :orders, only: [:index, :new, :create ], module: :purchasers do
+      get 'deliver_active', on: :collection
+    end
 
     member do
       get 'all_orders', controller: 'purchasers/orders'
       get 'active_orders', controller: 'purchasers/orders'
       get 'completed_orders', controller: 'purchasers/orders'
 
-      get :export
-      # get :deliver
+      get :export # exports orders, NOT purchaser. Move action to Purchasers::OrdersController to export orders
     end
   end
 
