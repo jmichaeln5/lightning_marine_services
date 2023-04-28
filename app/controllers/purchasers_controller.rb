@@ -5,7 +5,7 @@ class PurchasersController < ApplicationController
 
   before_action :set_page_heading_title, except: %i[ show ]
 
-  before_action :set_purchaser, only: %i[ show edit update destroy export deliver ]
+  before_action :set_purchaser, only: %i[ show edit update destroy export ]
 
   # GET /purchasers or /purchasers.json
   def index
