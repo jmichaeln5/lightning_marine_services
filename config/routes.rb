@@ -90,8 +90,8 @@ Rails.application.routes.draw do
       get 'active_orders', controller: 'purchasers/orders'
       get 'completed_orders', controller: 'purchasers/orders'
 
-      get :export
-      # get :deliver
+      get :export # exports orders, NOT purchaser. Nest route under orderable route concern + create seperate action in OrdersController for exporting orders
+      get :deliver
     end
   end
 
