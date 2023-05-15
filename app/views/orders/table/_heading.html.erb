@@ -7,12 +7,22 @@
       <%= content_tag(:h4, table_description, id:"table_description", class:"text-lg text-gray-700" ) %>
 
     </div>
-    <div class="w-full sm:w-auto">
 
-      <% if authorized_internal_user? and @purchaser %>
+    <!-- <div class="w-full sm:w-auto">
+      <%# if authorized_internal_user? and @purchaser %>
+        <%#= render partial: '/purchasers/orders/table/heading/actions' %>
+      <%# end %>
+    </div> -->
+    <% valid_purchaser_orders_table_heading_action_page = false %>
+    <% if @purchaser && current_page?(purchaser_orders_path(@purchaser)) %>
+      <% valid_purchaser_orders_table_heading_action_page = true %>
+    <% end %>
+
+    <div class="w-full sm:w-auto">
+      <% if valid_purchaser_orders_table_heading_action_page %>
         <%= render partial: '/purchasers/orders/table/heading/actions' %>
       <% end %>
-
     </div>
+
   </div>
 </div>
