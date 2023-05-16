@@ -8,11 +8,6 @@
 
     </div>
 
-    <!-- <div class="w-full sm:w-auto">
-      <%# if authorized_internal_user? and @purchaser %>
-        <%#= render partial: '/purchasers/orders/table/heading/actions' %>
-      <%# end %>
-    </div> -->
     <% valid_purchaser_orders_table_heading_action_page = false %>
     <% if @purchaser && current_page?(purchaser_orders_path(@purchaser)) %>
       <% valid_purchaser_orders_table_heading_action_page = true %>
