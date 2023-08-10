@@ -44,6 +44,11 @@ RSpec.configure do |config|
   # config.use_transactional_fixtures = true
   config.use_transactional_fixtures = false
 
+  ### Add searchable concern + methods to delete + reindex searchable models, call those methods here
+  Order.search_index.delete
+  Order.reindex
+
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 
