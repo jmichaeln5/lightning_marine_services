@@ -164,4 +164,6 @@ class Order < ApplicationRecord
     )
   end
 
+  # Order.search_index.delete
+  # Order.reindex
 end
