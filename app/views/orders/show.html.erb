@@ -144,11 +144,10 @@
               </div>
             </div>
           </div>
-
           <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
             <div class="cursor-default">
               <div class="text-sm font-medium text-gray-500">
-                PO Number
+                PO/Tracking Number
               </div>
               <div class="text-sm text-gray-900">
                 <%= render "inline_edit", model: @order, attribute: :po_number do %>
@@ -184,7 +183,6 @@
               </div>
             </div>
           </div>
-
           <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
             <div class="cursor-default">
               <div class="text-sm font-medium text-gray-500">
@@ -197,7 +195,6 @@
               </div>
             </div>
           </div>
-
           <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
             <div class="cursor-default">
               <div class="text-sm font-medium text-gray-500">
@@ -210,25 +207,18 @@
               </div>
             </div>
           </div>
-
           <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
             <div class="cursor-default">
               <div class="text-sm font-medium text-gray-500">
                 Dept
               </div>
               <div class="text-sm text-gray-900">
-
-                <%#= render "inline_edit", model: @order, attribute: :dept do %>
-                  <%#= @order.dept %>
-                <%# end %>
                 <%= render "orders/inline_edit_dept", order: @order, attribute: :dept do %>
                   <%= content_tag(:div, @order.dept, class: "text-sm text-gray-900") %>
                 <% end %>
-
               </div>
             </div>
           </div>
-
           <div class="sm:col-span-2">
             <dt class="text-sm font-medium text-gray-500">
               <%= pluralize(@order.images.count, 'Attachment') %>
@@ -236,10 +226,8 @@
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <% if @order.images.count > 0 %>
                 <ul role="list" class="divide-y divide-gray-200 rounded-md border border-gray-200">
-
                   <% upload_count = 1 %>
                   <% @order.images.reverse.each do |image| %>
-
                     <% if !image.variable?  %>
                       <li data-controller="reveal" data-reveal-hidden-class="hidden">
                         <div class="flex items-center justify-between py-3 pl-3 pr-4 text-sm bg-red-100">
