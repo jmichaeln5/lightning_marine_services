@@ -7,21 +7,20 @@ module OrderParent
     before_destroy :check_associated_orders
   end
 
-  def order_amount
-    return self.order_ids.size
-  end
-
   def active_orders
     self.orders.where(archived: false)
   end
 
-  private
+  def order_amount
+    return self.order_ids.size unless (self.class.model_name.name == "Purchaser")
+    return self.orders.unarchived.size
+  end
 
+  private
     def check_associated_orders
       if self.orders.any?
         self.errors.add(:base, "Unable to delete. #{self.orders.count} associated orders. You must update associated orders before deleting.")
         throw(:abort)
       end
     end
-
 end
