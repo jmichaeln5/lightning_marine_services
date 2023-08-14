@@ -141,7 +141,17 @@
                               <div class="flex text-sm text-gray-600">
                                 <label for="order_images" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                   <span>Click here to upload an attachment</span>
+
+
+                                  <%# if @order.images.attached? %>
+                                    <%# @order.images.each do |image| %>
+                                    <%#= form.hidden_field :images, multiple: true, value: image.signed_id %>
+                                    <%# end %>
+                                  <%# end %>
+
                                   <%= form.file_field :images, multiple: true, class: 'hidden' %>
+
+
                                 </label>
                               </div>
                               <p class="text-xs text-gray-500">Accepts PNG, JPG, JPEG</p>

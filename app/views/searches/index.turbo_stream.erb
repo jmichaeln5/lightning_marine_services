@@ -1,30 +1,34 @@
 <%= turbo_stream.append "search_results" do %>
   <% @results.each do | result | %>
 
-      <%#= render partial: "/searches/results/result", locals:{
-        result: result,
-      } %>
 
-      <%= render partial: "/orders/order", locals:{
-        details: true, # click summary details element to view details
-        order: result,
-      } %>
 
-      <%#= render partial: "/orders/order", locals:{ # displays summary and shows details on hover, revealing lazy load frame el that updates details
-        order: result,
-      } %>
+    <%#= Order.searchable_fields %>
 
-    <%# if @results_amount && @results_amount == 0 %>
-      <%#= turbo_stream.update "results_amount", "0"  %>
-      <%#= turbo_stream.update "results_details", "No results found"  %>
-    <%# end %>
+
+    <!-- highlight matches stimmy targets -->
+    <!-- highlight matches stimmy targets -->
+    <!-- highlight matches stimmy targets -->
+    <!-- highlight matches stimmy targets -->
+    <!-- highlight matches stimmy targets -->
+    <%#= render partial: "/orders/order", locals:{
+      details: true, # click summary details element to view details
+      order: result,
+    } %>
+
+    <%= render partial: "/searches/orders/order", locals:{
+      details: true, # click summary details element to view details
+      order: result,
+    } %>
+
+
+
+
 
     <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
     <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} "  %>
-
   <% end %>
 <% end %>
-
 <% if @pagy.next.present? %>
   <%= turbo_stream.replace "pagination" do %>
       <%= turbo_frame_tag :pagination,

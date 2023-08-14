@@ -1,13 +1,12 @@
 class OrdersController < ApplicationController
  layout "stacked_shell"
 
- include OrdersTableHelper
-  # before_action :ensure_frame_response, only: %i[ new ]
-  before_action :authorize_internal_user, only: %i[ new create edit destroy ]
+  include DestroyAttachable
+  include OrdersTableHelper
 
+  before_action :authorize_internal_user, only: %i[ new create edit destroy ]
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]
-  # before_action :set_index_orders, only: %i[ index ]
 
   def index
     orders = Order.unarchived
@@ -149,14 +148,13 @@ class OrdersController < ApplicationController
     end
   end
 
-  def destroy_attachment
-    # image = ActiveStorage::Attachment.find(params[:id])
-    image.purge
-    redirect_to request.referrer, notice: "Image deleted successfully."
-  end
+  # def destroy_attachment
+  #   # image = ActiveStorage::Attachment.find(params[:id])
+  #   image.purge
+  #   redirect_to request.referrer, notice: "Image deleted successfully."
+  # end
 
   private
-
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])

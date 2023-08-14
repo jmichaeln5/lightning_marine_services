@@ -61,24 +61,31 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :searchable do
-    collection do
-      resources :searches, only: [:index]
-    end
-  end
-
-  resources :searches, only: [:index]
-
   # namespace :orders do
   #   resource :bulk, controller: :bulk, only: [:destroy]
   # end
 
-  resources :orders, concerns: [:searchable, :hovercardable ] do
+  resources :searches, only: [:index]
+
+  # concern :searchable do
+  #   #   scope module: 'searches' do
+  #   #     get 'search'
+  #   #   end
+  #   get 'search'
+  # end
+
+  concern :destroy_attachable do
+    delete '/attachments/:signed_id', action: 'destroy_attachment'
+  end
+
+  resources :orders, concerns: [:hovercardable ] do
+    # collection do
+    #   concerns :searchable
+    # end
+
     member do
       get :edit_dept
-    end
-    resources :attachments do
-      delete :destroy_attachment
+      concerns :destroy_attachable
     end
   end
 

@@ -4,9 +4,11 @@ class Order < ApplicationRecord
 
   belongs_to :purchaser
   belongs_to :vendor
-  has_many_attached :images
+  # has_many_attached :images
   has_one :order_content, dependent: :destroy
   accepts_nested_attributes_for :order_content
+
+  include Attachable::Images # change attr name, can attach more than images
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }
