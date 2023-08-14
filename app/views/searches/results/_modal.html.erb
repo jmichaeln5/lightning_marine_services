@@ -30,22 +30,49 @@
                       <div class="w-full sm:w-auto">
                         <h1 class="text-center sm:text-left">
                           <div class="text-gray-700 mx-3">
+                            <div>
+                              <span class="font-semibold">Results: </span>
+                              <span id="results_amount"> 0 </span>  <%# placeholder span #results_amount updated by turbo stream %>
+                            </div>
+                              <div class="text-xs">
+                              <span id="results_details"> No results found.</span> <%# placeholder span #results_details updated by turbo stream %>
+                            </div>
+                          </div>
+                        </h1>
+                      </div>
 
-                          <%= yield :results_text %>
+
+
+                      <div class="w-full sm:w-auto">
+                        <h1 class="text-center sm:text-right">
+                          <div class="text-gray-700 mx-3">
+
+                            <!-- <div id="exact_matches_container" class="hidden">
+                              <span class="font-semibold">Exact matches: </span>
+                              <span id="exact_matches_amount"> 0 </span>  <%# placeholder span #results_amount updated by turbo stream %>
+                            </div> -->
+
+                              <!-- <div class="text-xs">
+                              <span id="results_details"> No results found.</span> <%# placeholder span #results_details updated by turbo stream %>
+                            </div> -->
 
                           </div>
                         </h1>
                       </div>
-                      <div class="w-full sm:w-auto">
+
+                      <!-- <div class="w-full sm:w-auto">
                         <div class="align-baseline text-center sm:text-right">
-                          <!-- <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
+                          <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
                             <div  id="advanced_search_button" class="mx-auto my-1 px-4 py-1.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 shadow-md inline-block">
                             <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
                             <span class="relative group-hover:text-white text-sm">  Advanced Search </span>
                             </div>
-                          </div> -->
+                          </div>
                         </div>
-                      </div>
+                      </div> -->
+
+
+
                     </div>
                     <div data-reveal-target="item" class="hidden -mb-3 py-3 bg-gray-100 shadow-inner text-3xl">
                       <div class="text-center">
@@ -60,23 +87,23 @@
                           <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                             <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
                               <input id="order_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                              <label for="order_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Orders</label>
+                              <label for="order_checkbox_list" class="cursor-pointer w-full py-3 text-sm font-medium text-gray-900">Orders</label>
                             </div>
                           </li>
                           <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                             <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
                               <input id="vendor_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                              <label for="vendor_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Vendors</label>
+                              <label for="vendor_checkbox_list" class="cursor-pointer w-full py-3 text-sm font-medium text-gray-900">Vendors</label>
                             </div>
                           </li>
                           <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-l">
                             <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
                               <input id="purchaser_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                              <label for="purchaser_checkbox_list" class="w-full py-3 text-sm font-medium text-gray-900">Ships</label>
+                              <label for="purchaser_checkbox_list" class="cursor-pointer w-full py-3 text-sm font-medium text-gray-900">Ships</label>
                             </div>
                           </li>
                         </ul>
-                        
+
                       </div>
                     </div>
                   </div>

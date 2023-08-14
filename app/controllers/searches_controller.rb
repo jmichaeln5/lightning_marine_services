@@ -4,11 +4,11 @@ class SearchesController < ApplicationController
   before_action :ensure_frame_response, only: %i[ index ]
 
   def index
-    query_str = params[:query]
+    @query_str = params[:query]
     model = Order
 
-    @results = search_query_against_model(model, query_str) if query_str
-    @results = Order.order(created_at: :desc) if !query_str
+    @results = search_query_against_model(model, @query_str) if @query_str
+    @results = Order.order(created_at: :desc) if !@query_str
 
     @results_amount = @results.size
     @pagy, @results = pagy @results, items: params.fetch(:count, 10)

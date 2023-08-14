@@ -1,32 +1,45 @@
 <%= turbo_stream.append "search_results" do %>
   <% @results.each do | result | %>
-
-    <%#= Order.searchable_fields %>
-
-
-    <!-- highlight matches stimmy targets -->
-    <!-- highlight matches stimmy targets -->
-    <!-- highlight matches stimmy targets -->
-    <!-- highlight matches stimmy targets -->
-    <!-- highlight matches stimmy targets -->
     <%#= render partial: "/orders/order", locals:{
       details: true, # click summary details element to view details
       order: result,
     } %>
 
-    <%= render partial: "/searches/orders/order", locals:{
-      details: true, # click summary details element to view details
-      order: result,
-    } %>
+    <% if !@query_str.nil? && (result.search_data.values.include? @query_str) %>
+      <div class="exactMatch<%= dom_id result %>">
+        <%= render partial: "/searches/orders/order", locals:{
+          details: true, # click summary details element to view details
+          order: result,
+        } %>
+      </div>
+      <turbo-stream action="update" targets=".exactMatch<%= dom_id result %>">
+        <template>
+          <div class="p-3 rounded-md" style="background: #f8fca8;">
 
-
-
-
-
-    <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
-    <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} "  %>
+            <div class="w-full font-semibold">
+              <span class="font-bold mr-1">
+                Exact match:
+              </span>
+              <%= result.find_humanized_key_from_value(@query_str) %>
+            </div>
+            <%= render partial: "/searches/orders/order", locals:{
+              details: true, # click summary details element to view details
+              order: result,
+            } %>
+          </div>
+        </template>
+      </turbo-stream>
+    <% else %>
+        <%= render partial: "/searches/orders/order", locals:{
+          details: true, # click summary details element to view details
+          order: result,
+        } %>
+    <% end %>
   <% end %>
+  <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
+  <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} " %>
 <% end %>
+
 <% if @pagy.next.present? %>
   <%= turbo_stream.replace "pagination" do %>
       <%= turbo_frame_tag :pagination,
