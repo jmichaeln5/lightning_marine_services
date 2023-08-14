@@ -1,0 +1,7 @@
+<% if Current.request_variant == :turbo_frame  %>
+  <%= turbo_frame_tag :modal do %>
+    <%= render partial: "/searches/results/modal" %>
+  <% end %>
+<% else %>
+  <%= render partial: "/searches/orders/index" %>
+<% end %>

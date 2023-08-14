@@ -1,9 +1,13 @@
-class SearchesController < ApplicationController
+# class Searches::OrdersController < ApplicationController
+class Searches::OrdersController < SearchesController
   layout "stacked_shell"
 
   before_action :ensure_frame_response, only: %i[ index ]
 
-  def index
+  def search
+    # http://localhost:3000/orders/search
+    ### Currently the same as: SearchesController, different method name (8-14-23)
+
     query_str = params[:query]
     model = Order
 

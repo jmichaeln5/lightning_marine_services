@@ -1,14 +1,11 @@
 class Order < ApplicationRecord
-  # searchkick
-  searchkick searchable: [ :dept, :po_number, :courrier, :tracking_number, :purchaser_name, :vendor_name ]
-
   belongs_to :purchaser
   belongs_to :vendor
-  # has_many_attached :images
   has_one :order_content, dependent: :destroy
   accepts_nested_attributes_for :order_content
 
   include Attachable::Images # change attr name, can attach more than images
+  include Searchable
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }
@@ -152,20 +149,4 @@ class Order < ApplicationRecord
     self.archived = true if self.date_delivered.present? == true
     self.archived = false if self.date_delivered.present? == false
   end
-
-  def search_data
-    # When too many requests error in dev
-    # https://stackoverflow.com/a/56029723/8643768
-    attributes.merge(
-      dept: self.dept,
-      po_number: self.po_number,
-      courrier: self.courrier,
-      tracking_number: self.tracking_number,
-      purchaser_name: self.purchaser.name,
-      vendor_name: self.vendor.name,
-    )
-  end
-
-  # Order.search_index.delete
-  # Order.reindex
 end

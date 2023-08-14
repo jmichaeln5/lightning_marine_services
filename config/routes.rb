@@ -67,21 +67,21 @@ Rails.application.routes.draw do
 
   resources :searches, only: [:index]
 
-  # concern :searchable do
-  #   #   scope module: 'searches' do
-  #   #     get 'search'
-  #   #   end
-  #   get 'search'
-  # end
+  concern :searchable do
+      scope module: 'searches' do
+        get 'search'
+      end
+    # get 'search'
+  end
 
   concern :destroy_attachable do
     delete '/attachments/:signed_id', action: 'destroy_attachment'
   end
 
   resources :orders, concerns: [:hovercardable ] do
-    # collection do
-    #   concerns :searchable
-    # end
+    collection do
+      concerns :searchable
+    end
 
     member do
       get :edit_dept
