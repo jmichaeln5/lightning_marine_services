@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%#= stylesheet_link_tag "users", "data-turbo-track": "reload" if controller_path.include? "users" %>
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application", defer: true %>
   </head>
-
   <body class="h-full">
     <div class="min-h-full">
       <!-- <div class="bg-gray-800 min-h-full pb-32"> -->
@@ -20,54 +18,61 @@
             search_input_placeholder_text: "Search",
           } %>
         </nav>
-
         <div id="flashes">   <%# New flashes appended to div #flashes %>
           <%= render "application/flash_messages" %>  <%# old flashes %>
         </div>
-
         <div class="flow-root py-10">
-          <%= render "/layouts/stacked_shell/headings/header" %>
-        </div>
+          <header id="header">
+            <div id="page_header">
+              <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="w-full inline-flex flex-wrap justify-center sm:justify-between space-y-3 sm:space-y-0">
+                  <div class="w-full sm:w-auto">
+                    <h1 class="text-center sm:text-left">
+                      <div id="page_heading_title" class="text-4xl font-bold tracking-tight text-white">
 
-      </div>
-      <main class="-mt-32">
+                        <% if content_for?(:page_heading_title) %>
+                            <%= yield :page_heading_title %>
+                        <% else %>
+                            <%= turbo_stream.update "page_heading_title", @page_heading_title %>
+                        <% end %>
 
-        <!-- <%#= render layout: "/layouts/stacked_shell/container" do %>
-        <div class="py-3">
-          <%#= button_to "Searches", searches_path,  method: :get, class: "rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:cursor-pointer" %>
-        </div>
-        <%# end %> -->
-
-        <% if content_for?(:page_heading_card) %>
-          <%= render layout: "/layouts/stacked_shell/container" do %>
-            <div class="bg-white rounded-md mb-9">
-              <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
-              <div class="pt-3 pb-9">
-                <div class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                  <%= render partial: "/layouts/stacked_shell/headings/card" %>
-                  <%= yield :page_heading_card %>
+                      </div>
+                    </h1>
+                  </div>
+                  <div class="w-full sm:w-auto">
+                    <div class="text-center sm:text-right">
+                      <div id="page_heading_button">
+                        <%= yield :page_heading_button %>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+          </header>
+        </div>
+      </div>
+      <main class="-mt-32">
+        <div class="mx-auto max-w-7xl px-4 pb-9 sm:px-6 lg:px-8">
+          <div class="bg-white rounded-md mb-9">
+            <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
+            <div class="pt-3 pb-9">
+              <div class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <% if content_for?(:page_heading_card) %>
+                  <%= render partial: "/layouts/stacked_shell/headings/card" %>
+                  <%= yield :page_heading_card %>
+                <% else %>
+                  <%= yield %>
+                  <%= turbo_frame_tag :modal %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <% unless !content_for?(:page_heading_card) %>
             <%= yield %>
             <%= turbo_frame_tag :modal %>
           <% end %>
-        <% end %>
-        <%# else %>
-        <% if !content_for?(:page_heading_card) %>
-          <%= render layout: "/layouts/stacked_shell/container" do %>
-            <div class="bg-white rounded-md mb-9">
-              <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
-              <div class="pt-3 pb-9">
-                <div class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                  <%= yield %>
-                  <%= turbo_frame_tag :modal %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-
+        </div>
       </main>
     </div>
   </body>

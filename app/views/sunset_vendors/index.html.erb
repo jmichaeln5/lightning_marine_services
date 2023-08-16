@@ -1,8 +1,0 @@
-<% content_for :title, "#{Vendor.all.count}" + ' Vendor'.pluralize(Vendor.all.count) %>
-
-<%= render 'shared/under_header_card_options' %>
-<%= render 'shared/new_modal' %>
-<%= render 'shared/top_table_header' %>
-<%= render 'shared/top_table_header_two', total_pages: @resource.total_pages %>
-<%= render partial: 'vendors/index', locals: { vendors: @vendors} %>
-<%= render "shared/pagination/pagination_buttons", total_pages: @resource.total_pages %>
