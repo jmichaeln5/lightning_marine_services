@@ -2,7 +2,7 @@
 
 <% if Current.request_variant == :turbo_frame  %>
   <%= turbo_frame_tag :modal do %>
-    <%= render partial: "/searches/results/modal" %>
+    <%= render partial: "/searches/modal" %>
   <% end %>
 <% else %>
   <%= render partial: "/searches/index" %>
