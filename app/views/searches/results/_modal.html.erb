@@ -1,19 +1,23 @@
-<%= render partial: "/searches/results/modal_content" %>
 <div class="relative z-10" data-controller="turbo-modal" turbo_modal_target="modal" data-action="keyup@window->turbo-modal#closeWithKeyboard click@window->turbo-modal#closeBackground" role="dialog" aria-modal="true">
   <div class="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity">
-  </div>
+  </div>  <%# placeholder div for background opacity %>
   <div class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
     <div class="mx-auto max-w-3xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
-      <span data-turbo-modal-target="modal">
+      <span data-turbo-modal-target="modal" data-controller="search">
         <div class="relative my-3 ">
           <div class="w-full ">
             <div class="flex justify-between">
               <div id="top_row_container" class="w-full h-full">
                 <div class="w-full flex">
                   <div id="modal_search_bar_container" class="w-full">
-
-                    <%= yield :search_bar %>
-
+                    <svg class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                    </svg>
+                    <%= form_with url: searches_path, method: :get, data: { turbo_frame: "results", turbo_action: "advance" } do |form| %>
+                      <span id="modal_search">
+                        <%= form.text_field :query, value: params[:query], data: { search_target: :query, "search-query-value": "", action: "input->search#update" }, autofocus: true, oninput: "this.form.requestSubmit()",  class: "h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder:text-gray-400 focus:ring-0 sm:text-sm", placeholder:'Search', placeholder:'Search...' %>
+                      </span>
+                    <% end %>
                   </div>
                   <div class="flex-none w-14">
                     <button type="button"  data-action="turbo-modal#hideModal" class="inline-flex rounded-md bg-gray-100 p-1.5 text-gray-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 focus:ring-offset-gray-50">
@@ -27,63 +31,37 @@
                 <div id="results_text_container" class="w-full h-full -mx-auto">
                   <div data-controller="reveal" data-reveal-hidden-class="hidden">
                     <div class="w-full inline-flex flex-wrap justify-center sm:justify-between space-y-3 sm:space-y-0">
-                      <div class="w-full sm:w-auto">
+                      <div class="w-full sm:w-auto mb-3 sm:mb-0">
                         <h1 class="text-center sm:text-left">
                           <div class="text-gray-700 mx-3">
-                            <div>
+                            <div class="text-xl">
                               <span class="font-semibold">Results: </span>
                               <span id="results_amount"> 0 </span>  <%# placeholder span #results_amount updated by turbo stream %>
                             </div>
-                              <div class="text-xs">
+                            <div class="text-sm">
                               <span id="results_details"> No results found.</span> <%# placeholder span #results_details updated by turbo stream %>
                             </div>
                           </div>
                         </h1>
                       </div>
-
-
-
-                      <div class="w-full sm:w-auto">
-                        <h1 class="text-center sm:text-right">
-                          <div class="text-gray-700 mx-3">
-
-                            <!-- <div id="exact_matches_container" class="hidden">
-                              <span class="font-semibold">Exact matches: </span>
-                              <span id="exact_matches_amount"> 0 </span>  <%# placeholder span #results_amount updated by turbo stream %>
-                            </div> -->
-
-                              <!-- <div class="text-xs">
-                              <span id="results_details"> No results found.</span> <%# placeholder span #results_details updated by turbo stream %>
-                            </div> -->
-
-                          </div>
-                        </h1>
-                      </div>
-
+                      <%# advanced search buttons %>
                       <!-- <div class="w-full sm:w-auto">
                         <div class="align-baseline text-center sm:text-right">
                           <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
-                            <div  id="advanced_search_button" class="mx-auto my-1 px-4 py-1.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 shadow-md inline-block">
+                            <div  id="advanced_search_button" class="mx-auto my-1 px-4 py-1.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 shadow-sm inline-block">
                             <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
                             <span class="relative group-hover:text-white text-sm">  Advanced Search </span>
                             </div>
                           </div>
                         </div>
                       </div> -->
-
-
-
                     </div>
                     <div data-reveal-target="item" class="hidden -mb-3 py-3 bg-gray-100 shadow-inner text-3xl">
                       <div class="text-center">
-
                         <%= content_tag(:p, 'Search Filters', class:'mb-1 text-gray-600 text-lg font-medium') %>
                         <%= content_tag(:p, 'Select a filter for more accurate results', class:'mb-4 text-gray-600 text-base') %>
-
                         <ul class="mx-3 items-center text-sm font-medium text-gray-900 bg-white rounded-lg sm:flex">
-
                           <% filter_css_classes_resource_hover = "rounded-md select-none hover:underline hover:bg-slate-50" %>
-
                           <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
                             <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
                               <input id="order_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
@@ -103,7 +81,6 @@
                             </div>
                           </li>
                         </ul>
-
                       </div>
                     </div>
                   </div>
@@ -112,7 +89,7 @@
             </div>
           </div>
         </div>
-        <div class="flex divide-x divide-gray-100">
+        <div class="-mt-3 sm:-mt-1 flex divide-x divide-gray-100 border-t-2 border-slate-100">
           <div class="max-h-96 min-w-0 max-w-full flex-auto scroll-py-4 overflow-y-auto overflow-x-hidden px-6 sm:h-96">
             <ul class="-mx-2 text-sm text-gray-700" id="options" role="listbox">
               <%= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>

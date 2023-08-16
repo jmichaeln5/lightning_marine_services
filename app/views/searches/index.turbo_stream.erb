@@ -1,45 +1,40 @@
 <%= turbo_stream.append "search_results" do %>
   <% @results.each do | result | %>
-    <%#= render partial: "/orders/order", locals:{
-      details: true, # click summary details element to view details
-      order: result,
-    } %>
-
-    <% if !@query_str.nil? && (result.search_data.values.include? @query_str) %>
-      <div class="exactMatch<%= dom_id result %>">
-        <%= render partial: "/searches/orders/order", locals:{
-          details: true, # click summary details element to view details
-          order: result,
-        } %>
-      </div>
-      <turbo-stream action="update" targets=".exactMatch<%= dom_id result %>">
-        <template>
-          <div class="p-3 rounded-md" style="background: #f8fca8;">
-
-            <div class="w-full font-semibold">
-              <span class="font-bold mr-1">
-                Exact match:
-              </span>
-              <%= result.find_humanized_key_from_value(@query_str) %>
+    <% if result.matches_with? @query_str %>
+      <% result_is_exact_match = result.exactly_matches_with? @query_str  %>
+      <% matching_bg_css = "bg-green-100" if result_is_exact_match %>
+      <% matching_bg_css ||= "bg-gray-200" %>
+      <% match_text = "exact match" if result_is_exact_match %>
+      <% match_text ||= "match" %>
+      <% content_for :match_title, flush: true do %>
+        <div class="hidden sm:inline-flex justify-items-end max-w-full max-h-full text-center my-1 sm:my-0 space-x-1">
+          <div class="py-1">
+            <div>
+              <%= result.find_humanized_keys_from_value @query_str %>
             </div>
-            <%= render partial: "/searches/orders/order", locals:{
-              details: true, # click summary details element to view details
-              order: result,
-            } %>
           </div>
-        </template>
-      </turbo-stream>
-    <% else %>
-        <%= render partial: "/searches/orders/order", locals:{
-          details: true, # click summary details element to view details
-          order: result,
-        } %>
+          <div class="font-semibold <%= matching_bg_css %> rounded-full pl-2 pr-2 py-1">
+            <%= match_text %>
+          </div>
+        </div>
+        <div class="inline-flex sm:hidden max-w-full max-h-full text-center <%= matching_bg_css %> rounded-full px-3 py-1">
+          <%= match_text %>
+          <div class="font-semibold">
+            <div class="pl-1">
+              <%= result.find_humanized_keys_from_value @query_str %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     <% end %>
+    <%= render partial: "/searches/results/result", locals:{
+      details: true,
+      result: result,
+      title: "#{result.class.name} #{result.id}",
+      match_title: content_for?(:match_title) ? yield(:match_title) : nil,
+    } %>
   <% end %>
-  <%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
-  <%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} " %>
 <% end %>
-
 <% if @pagy.next.present? %>
   <%= turbo_stream.replace "pagination" do %>
       <%= turbo_frame_tag :pagination,
@@ -51,3 +46,5 @@
       ) %>
   <% end %>
 <% end %>
+<%= turbo_stream.update "results_amount", "#{@pagy.count}"  %>
+<%= turbo_stream.update "results_details", "Showing #{@pagy.from} to #{@pagy.to} of #{@pagy.count} " %>
