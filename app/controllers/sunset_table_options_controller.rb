@@ -1,4 +1,4 @@
-class TableOptionsController < ApplicationController
+class SunsetTableOptionsController < ApplicationController
   before_action :set_table_option, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
 
