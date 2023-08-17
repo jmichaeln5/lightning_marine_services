@@ -12,15 +12,8 @@ module Order::Searchable
       dept: dept,
       po_number: po_number,
       courrier: courrier,
-      # purchaser_name: purchaser.name,
       ship_name: purchaser.name,
       vendor_name: vendor.name
     }
   end
 end
-
-# Order.search_index.delete
-# Order.reindex
-# Order.search_index.delete && Order.reindex
-
-# Order.search("341", fields: [:po_number], match: :word_start)

@@ -1,6 +1,6 @@
 <%= turbo_stream.append "search_results" do %>
   <% @results.each do | result | %>
-    <% if result.matches_with? @query_str %>
+    <% if ((result.exactly_matches_with? @query_str) || (result.matches_with? @query_str)) %>
       <% result_is_exact_match = result.exactly_matches_with? @query_str  %>
       <% matching_bg_css = "bg-green-100" if result_is_exact_match %>
       <% matching_bg_css ||= "bg-gray-200" %>

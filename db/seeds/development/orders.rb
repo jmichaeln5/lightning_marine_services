@@ -15,8 +15,8 @@ def create_orders(orders_to_create)
   vendor_record_amount =  return_amount_of_records_for("vendor")
   purchaser_record_amount =  return_amount_of_records_for("purchaser")
 
-  create_vendor_or_puchasher_records("vendor", rand(5..10)) unless vendor_record_amount > 0
-  create_vendor_or_puchasher_records("purchaser", rand(5..10)) unless purchaser_record_amount > 0
+  create_vendor_or_puchasher_records('purchaser', rand(25..100)) unless purchaser_record_amount > 0
+  create_vendor_or_puchasher_records('vendor', rand(75..200)) unless vendor_record_amount > 0
 
   orders_to_create.times do
     archived_options = [true, false]
@@ -47,8 +47,6 @@ def create_orders(orders_to_create)
 
       order.dept = rand_order_depts.sample
     end
-
-
 
     order.date_delivered = "#{order_delivery_date.strftime("%Y-%m-%d")}" if [true, false].sample == true
 
@@ -88,8 +86,8 @@ def create_orders(orders_to_create)
 end
 
 # rand_amount = rand(150..300)
-# rand_amount = rand(300..900)
-rand_amount = rand(900..1500)
+rand_amount = rand(300..900)
+# rand_amount = rand(900..1500)
 create_orders(rand_amount)
 
 Order.search_index.delete
