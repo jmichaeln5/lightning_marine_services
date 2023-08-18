@@ -10,8 +10,12 @@ class Order < ApplicationRecord
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }
 
-  scope :filter_by_purchasers, ->(sort_direction) { includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction) }
-  scope :filter_by_vendors, ->(sort_direction) { includes(:vendor).references(:vendor).order("name" + " " + sort_direction) }
+  scope :filter_by_purchasers, ->(sort_direction) {
+    includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
+  }
+  scope :filter_by_vendors, ->(sort_direction) {
+    includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
+  }
 
   validates :purchaser_id, :vendor_id, :courrier, presence: true
   validate :before_validationz
