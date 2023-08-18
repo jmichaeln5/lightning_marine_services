@@ -10,10 +10,6 @@ export default class extends Controller {
     query: String,
   }
 
-  connect() {
-    console.log('search bar connected');
-  }
-
   urlValueChanged(value, previousValue) {
     // can change what url form action submits request to here
   }
