@@ -56,22 +56,30 @@
           <div class="bg-white rounded-md mb-9">
             <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
             <div class="pt-3 pb-9">
-              <div class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div id="yield_if_no_content_for_page_heading_card" class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-                <% if content_for?(:page_heading_card) %>
+                <%# if content_for?(:page_heading_card) %>
+                  <%#= render partial: "/layouts/stacked_shell/headings/card" %>
+                  <%#= yield :page_heading_card %>
+                <%# else %>
+                  <%#= yield %>
+                <%# end %>
+                <% if !content_for?(:page_heading_card) %>
+                  <%= yield %>
+                <% else %>
                   <%= render partial: "/layouts/stacked_shell/headings/card" %>
                   <%= yield :page_heading_card %>
-                <% else %>
-                  <%= yield %>
                 <% end %>
 
               </div>
             </div>
           </div>
 
-          <% unless !content_for?(:page_heading_card) %>
-            <%= yield %>
-          <% end %>
+          <div id="yield_unless_no_content_for_page_heading_card">
+            <% unless !content_for?(:page_heading_card) %>
+              <%= yield %>
+            <% end %>
+          </div>
 
           <%= turbo_frame_tag :modal %>
 
