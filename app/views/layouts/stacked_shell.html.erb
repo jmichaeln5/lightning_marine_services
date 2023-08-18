@@ -11,14 +11,13 @@
   </head>
   <body class="h-full">
     <div class="min-h-full">
-      <!-- <div class="bg-gray-800 min-h-full pb-32"> -->
       <div class="bg-gray-800 pb-32">
         <nav class="bg-gray-800">
           <%= render partial: "layouts/stacked_shell/nav", locals:{
             search_input_placeholder_text: "Search",
           } %>
         </nav>
-        <div id="flashes">   <%# New flashes appended to div #flashes %>
+        <div id="flashes">                            <%# New flashes appended to div #flashes %>
           <%= render "application/flash_messages" %>  <%# old flashes %>
         </div>
         <div class="flow-root py-10">
@@ -58,20 +57,24 @@
             <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
             <div class="pt-3 pb-9">
               <div class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
                 <% if content_for?(:page_heading_card) %>
                   <%= render partial: "/layouts/stacked_shell/headings/card" %>
                   <%= yield :page_heading_card %>
                 <% else %>
                   <%= yield %>
-                  <%= turbo_frame_tag :modal %>
                 <% end %>
+
               </div>
             </div>
           </div>
+
           <% unless !content_for?(:page_heading_card) %>
             <%= yield %>
-            <%= turbo_frame_tag :modal %>
           <% end %>
+
+          <%= turbo_frame_tag :modal %>
+
         </div>
       </main>
     </div>
