@@ -23,3 +23,12 @@ a:hover {
 .hoverWrapper:hover #hoverContent {
   display: block;
 }
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::marker, /* Latest Chrome, Edge, Firefox */
+details > summary::-webkit-details-marker /* Safari */ {
+  display: none;
+}

@@ -1,4 +1,8 @@
-class SearchesController < ApplicationController
+# class Searches::OrdersController < ApplicationController
+class Searches::OrdersController < SearchesController
+
+  ### Currently the same as: SearchesController, and not in use (8-14-23)
+
   layout "stacked_shell"
 
   before_action :ensure_frame_response, only: %i[ index ]

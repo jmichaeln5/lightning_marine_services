@@ -10,7 +10,10 @@ RSpec.describe Order, type: :model do
   let(:courrier) { ['Fedex', 'UPS', 'USPS', 'DHL'].sample }
   let(:date_delivered) { Faker::Date.between(from: '2017-01-23', to: Time.now) }
   let(:date_recieved) { Faker::Date.between(from: date_delivered.prev_month, to: date_delivered) }
-  let(:tracking_number) { Faker::Number.unique.within(range: 1000..9999999999) }
+
+  # Tracking Number
+  # let(:tracking_number) { Faker::Number.unique.within(range: 1000..9999999999) }
+  let(:tracking_number) { nil }
 
   let(:order) {
     build(

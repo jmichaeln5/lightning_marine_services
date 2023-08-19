@@ -1,13 +1,12 @@
 class OrdersController < ApplicationController
  layout "stacked_shell"
 
- include OrdersTableHelper
-  # before_action :ensure_frame_response, only: %i[ new ]
-  before_action :authorize_internal_user, only: %i[ new create edit destroy ]
+  include DestroyAttachable
+  include OrdersTableHelper
 
+  before_action :authorize_internal_user, only: %i[ new create edit destroy ]
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]
-  # before_action :set_index_orders, only: %i[ index ]
 
   def index
     orders = Order.unarchived
@@ -48,19 +47,16 @@ class OrdersController < ApplicationController
     set_new_order
   end
 
-  # GET /orders/1 or /orders/1.json
   def show
   end
 
   def hovercard
   end
 
-  # GET /orders/new
   def new
     set_new_order
   end
 
-  # GET /orders/1/edit
   def edit
     @order = Order.find(params[:id])
     @order.build_order_content if @order.order_content.nil?
@@ -85,11 +81,9 @@ class OrdersController < ApplicationController
         format.html { redirect_to @order, notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
-
         if Current.request_variant == :turbo_frame
           format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
-
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
@@ -100,13 +94,10 @@ class OrdersController < ApplicationController
     if !authorized_internal_user?
       veto_unauthorized_request unless authorized_customer? && order_params.keys == ["dept"]
     end
-
     # ApplicationPolicy.new(Current.user, Order.find_by_id(params[:id]))
     # OrdersPolicy.new(Current.user, Order.find_by_id(params[:id]))
-
     respond_to do |format|
       if @order.update(order_params)
-
         if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
           format.turbo_stream {
             render turbo_stream: [
@@ -125,9 +116,6 @@ class OrdersController < ApplicationController
         format.html { redirect_to @order, notice: "Order updated successfully." }
         format.json { render :show, status: :ok, location: @order }
       else
-        # if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
-        #   format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
-        # end
         if Current.request_variant == :turbo_frame
           format.turbo_stream { render turbo_stream: turbo_render_flash_order_errors, status: :unprocessable_entity }
         end
@@ -137,7 +125,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # DELETE /orders/1 or /orders/1.json
   def destroy
     @order.destroy
     respond_to do |format|
@@ -149,38 +136,17 @@ class OrdersController < ApplicationController
     end
   end
 
-  def destroy_attachment
-    # image = ActiveStorage::Attachment.find(params[:id])
-    image.purge
-    redirect_to request.referrer, notice: "Image deleted successfully."
-  end
-
   private
-
-    # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
     end
 
     def order_params
       params.require(:order).permit(
-        :dept,
-        :po_number,
-        :tracking_number,
-        :date_recieved,
-        :courrier,
-        :date_delivered,
-        :purchaser_id,
-        :vendor_id,
-        :order_sequence,
+        :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, :purchaser_id, :vendor_id, :order_sequence,
         images: [],
-        order_content_attributes: [
-          :id,
-          :box,
-          :crate,
-          :pallet,
-          :other,
-          :other_description
+        order_content_attributes:[
+          :id, :box, :crate, :pallet, :other, :other_description
         ]
       )
     end
@@ -228,5 +194,4 @@ class OrdersController < ApplicationController
         }
       )
     end
-
 end

@@ -33,14 +33,14 @@
                   </div>
 
                   <div class="sm:col-span-3">
-                    <%= form.label 'Ship', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <%= form.label :purchaser_id, 'Ship', class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
                       <%= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
                     </div>
                   </div>
 
                   <div class="sm:col-span-3">
-                    <%= form.label 'Vendor', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <%= form.label :vendor_id, 'vendor', class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
                       <%= form.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
                     </div>
@@ -54,7 +54,7 @@
                   </div>
 
                   <div class="sm:col-span-6">
-                    <%= form.label :po_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <%= form.label :po_number, "PO/Tracking Number", class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
                       <%= form.text_field :po_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                     </div>
@@ -68,25 +68,26 @@
                   </div>
 
                   <div class="sm:col-span-3">
-                    <%= form.label 'Date Recieved', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <%= form.label :date_recieved, 'Date Recieved', class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
                       <%= form.date_field :date_recieved, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                     </div>
                   </div>
                   <div class="sm:col-span-3">
-                    <%= form.label 'Date Delivered', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <%= form.label :date_delivered, 'Date Delivered', class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
                       <%= form.date_field :date_delivered, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                     </div>
                   </div>
-
+                  <!--
+                  <%# Tracking Number %>
                   <div class="sm:col-span-6">
-                    <%= form.label :tracking_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                    <%#= form.label :tracking_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
-                      <%= form.text_field :tracking_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                      <%#= form.text_field :tracking_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                     </div>
                   </div>
-
+                  -->
                   <div class="sm:col-span-6">
                     <%= form.label :images, "Attachments", class:"block text-sm font-medium leading-6 text-gray-900" %>
                     <div class="mt-2">
@@ -129,7 +130,7 @@
 
                       <div class="sm:col-span-2">
                         <div class="flex">
-                          <%= p.label 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                          <%= p.label :box, 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                           <div class="ml-3 w-full">
                             <%= p.text_field :box, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                           </div>
@@ -137,7 +138,7 @@
                       </div>
                       <div class="sm:col-span-2">
                         <div class="flex">
-                          <%= p.label 'Crates', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                          <%= p.label :crate, 'Crates', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                           <div class="ml-3 w-full">
                             <%= p.text_field :crate, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                           </div>
@@ -145,7 +146,7 @@
                       </div>
                       <div class="sm:col-span-2">
                         <div class="flex">
-                          <%= p.label 'Pallets', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                          <%= p.label :pallet, 'Pallets', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                           <div class="ml-3 w-full">
                             <%= p.text_field :pallet, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                           </div>

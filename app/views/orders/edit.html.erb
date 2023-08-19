@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="sm:col-span-6">
-                      <%= form.label :po_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label :po_number, "PO/Tracking Number", class:"block text-sm font-medium leading-6 text-gray-900" %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :po_number do %>
                           <%= form.text_field :po_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
@@ -117,17 +117,17 @@
                         <% end %>
                       </div>
                     </div>
-
-
+                    <!--
+                    <%# Tracking Number %>
                     <div class="sm:col-span-6">
-                      <%= form.label :tracking_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%#= form.label :tracking_number, class:"block text-sm font-medium leading-6 text-gray-900" %>
                       <div class="mt-2">
-                        <%= render "inline_fields", form: form, attribute: :tracking_number do %>
-                          <%= form.text_field :tracking_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-                        <% end %>
+                        <%#= render "inline_fields", form: form, attribute: :tracking_number do %>
+                          <%#= form.text_field :tracking_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                        <%# end %>
                       </div>
                     </div>
-
+                    -->
                     <div class="sm:col-span-6">
                       <%= form.label :images, "Attachments", class:"block text-sm font-medium leading-6 text-gray-900" %>
                       <div class="mt-2">
@@ -141,7 +141,17 @@
                               <div class="flex text-sm text-gray-600">
                                 <label for="order_images" class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                   <span>Click here to upload an attachment</span>
+
+
+                                  <%# if @order.images.attached? %>
+                                    <%# @order.images.each do |image| %>
+                                    <%#= form.hidden_field :images, multiple: true, value: image.signed_id %>
+                                    <%# end %>
+                                  <%# end %>
+
                                   <%= form.file_field :images, multiple: true, class: 'hidden' %>
+
+
                                 </label>
                               </div>
                               <p class="text-xs text-gray-500">Accepts PNG, JPG, JPEG</p>

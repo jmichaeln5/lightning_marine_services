@@ -11,7 +11,6 @@
         <span class="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer hover:underline"> Edit </span>
       <% end %>
     <% end %>
-
   </div>
 
   <%= content_tag(:p, order.id, class: primary_col_css_classes) %>
@@ -25,9 +24,6 @@
   <% end %>
 
   <div class="<%= primary_col_css_classes %>">
-    <%#= render "inline_edit", model: order, attribute: :dept do %>
-      <%#= content_tag(:div, order.dept, class: "text-sm text-gray-900") %>
-    <%# end %>
     <%= render "orders/inline_edit_dept", order: order, attribute: :dept do %>
       <%= content_tag(:div, order.dept, class: "text-sm text-gray-900") %>
     <% end %>
@@ -47,13 +43,14 @@
       <%= order.po_number %>
     <% end %>
   </div>
-
-  <div class="<%= primary_col_css_classes %>">
-    <%= render "inline_edit", model: order, attribute: :tracking_number do %>
-      <%= order.tracking_number.present? ? order.tracking_number : 'n/a' %>
-    <% end %>
+  <!--
+  <%# Tracking Number %>
+  <div class="<%#= primary_col_css_classes %>">
+    <%#= render "inline_edit", model: order, attribute: :tracking_number do %>
+      <%#= order.tracking_number.present? ? order.tracking_number : 'n/a' %>
+    <%# end %>
   </div>
-
+  -->
   <div class="<%= primary_col_css_classes %>">
     <%= render "inline_edit", model: order, attribute: :date_recieved do %>
     <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>

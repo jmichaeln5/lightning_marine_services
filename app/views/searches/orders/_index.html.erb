@@ -1,0 +1,74 @@
+
+
+<% if Current.request_variant == :turbo_frame  %>
+  <%= turbo_frame_tag :modal do %>
+    <%= render partial: "/searches/modal" %>
+  <% end %>
+<% else %>
+  <%= render partial: "/searches/index" %>
+<% end %>
+
+
+<% @page_heading_title = "Search Orders" %>
+
+<% content_for :page_heading_button do %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: dashboard_path,
+    fallback_location_text: "Dashboard",
+  } %>
+<% end %>
+
+<div class="inline-block my-3">
+<%= link_to '#', data: { turbo_frame: "modal" } do %>
+  <%= button_to "Call modal", '#', class: "rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 hover:cursor-pointer" %>
+<% end %>
+</div>
+
+  <%= form_with url: searches_path, method: :get, data: { turbo_frame: "results", turbo_action: "advance" } do |form| %>
+
+    <div class="p-2 mb-3 border-2 shadow-md">
+      <div class="w-full text-center p-3">
+        <div class="text-2xl my-3"> Auto submit </div>
+        <div class="flex w-full space-x-3">
+
+          <%= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()",  class: "w-full rounded-md bg-white py-1.5 pl-3 border-2 border-slate-200 shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search', placeholder:'Search' %>
+
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+
+
+<%= turbo_frame_tag "results", target: '_top', data: { turbo_action: 'advance' } do %>
+
+  <div id="results_text_container" class="w-full h-full">
+    <div class="ml-3 my-1 text-gray-700">
+      <div>
+        <span class="font-semibold">Results: </span>
+        <span id="results_amount"></span>  <%# placeholder span #results_amount updated by turbo stream %>
+      </div>
+
+      <div class="text-xs">
+          <span id="results_details"></span> <%# placeholder span #results_details updated by turbo stream %>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="search_results">
+  </div>
+
+  <%= turbo_frame_tag 'pagination',
+    src: searches_path(
+      # page: @pagy.next
+      query: params[:query],
+      # src: users_path(last_name: params[:last_name],
+      # category: params[:category],
+      format: :turbo_stream
+    ),
+  loading: :lazy %>
+
+<% end %>

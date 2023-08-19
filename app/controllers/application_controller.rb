@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   include Authentication
   include Authorization
   include Pagy::Backend
+  include TurboFlashable
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
