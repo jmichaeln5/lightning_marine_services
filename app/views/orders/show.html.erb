@@ -1,38 +1,28 @@
-  <% @page_heading_title = "Order" %>
-
+<% @page_heading_title = "Order" %>
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
     link_to_path: edit_order_path(@order),
     link_to_text: "Edit order",
   } %>
-
   <% if !authorized_internal_user? %>
     <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
       fallback_location: dashboard_path,
       fallback_location_text: "Dashboard",
     } %>
   <% end %>
-
 <% end %>
-
 <% content_for :page_heading_card do %>
   <%= turbo_stream.update "card_title", "Order #{@order.id}" %>
-
   <%= turbo_stream.update "card_content" do %>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
-
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Ship",
         card_description: @order.purchaser.name,
         card_link: (link_to "View Ship", purchaser_orders_path(@order.purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
       } %>
-
       <% vendor_data_overview_card_link = (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900") if authorized_internal_user?  %>
-
       <% vendor_data_overview_card_link = content_tag(:p, "Vendor", class:"font-medium hover:cursor-default") if !authorized_internal_user? %>
-
-
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         card_title: "Vendor",
         card_description: @order.vendor.name,
@@ -40,14 +30,9 @@
         card_link: vendor_data_overview_card_link,
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
       } %>
-
     </div>
   <% end %>
-
 <% end %>
-
-
-
 <span id="<%= dom_id @order %>">
   <section class="pb-12">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
@@ -64,7 +49,7 @@
       </div> -->
     </div>
     <div>
-      <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+      <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
         <div class="px-4 py-5 sm:px-6">
           <span>
             <div class="my-3 mt-2 flex rounded-md shadow-sm">
@@ -91,9 +76,7 @@
                 </span>
               </div>
             </div>
-
             <% if @order.order_content.other.present? %>
-
               <div class="my-3 mt-2 flex rounded-md shadow-sm">
                 <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Other</span>
                 <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -102,9 +85,19 @@
                   </span>
                 </div>
               </div>
-
             <% end %>
-
+            <% if @order.order_content && @order.order_content.other_description.present? %>
+              <div class="mt-3 mb-2 sm:my-3 mt-2 rounded-md shadow-sm">
+                <div class="block w-full text-gray-500 text-sm mb-1 sm:mb-0 sm:leading-9">
+                  Description:
+                </div>
+                <div class="block w-full min-w-0 flex-1 rounded-md border-1 border-gray-300 p-3 text-gray-500 text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                  <span>
+                    <%= @order.order_content.other_description %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
           </span>
           <!-- <span>
             <h2 class="mt-6 text-xl font-medium leading-6 text-gray-900 mb-3">Description</h2>
@@ -130,7 +123,6 @@
       </div>
       <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
         <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-
           <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
             <div class="cursor-default">
               <div class="text-sm font-medium text-gray-500">
@@ -259,32 +251,28 @@
                       <% if image.variable?  %>
                         <li data-controller="reveal" data-reveal-hidden-class="hidden">
                           <div class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
-                              <div class="flex w-0 flex-1 items-center">
-                                <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                  <path fill-rule="evenodd" d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="ml-2 w-0 flex-1 truncate"> <%= image.blob.filename %> </span>
+                            <div class="flex w-0 flex-1 items-center">
+                              <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z" clip-rule="evenodd" />
+                              </svg>
+                              <span class="ml-2 w-0 flex-1 truncate"> <%= image.blob.filename %> </span>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                              <button data-action="click->reveal#toggle" type="button" class="mx-2">
+                                Preview
+                              </button>
+                              <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"mx-2 font-medium text-indigo-600 hover:text-indigo-500" if image.variable? %>
+                              <div class="inline-block">
+                                <%= button_to "Delete", {
+                                    action: "destroy_attachment",
+                                    signed_id: image.signed_id
+                                  },
+                                  method: :delete,
+                                  data: {
+                                    turbo_confirm: "Are you sure you want to delete this attachment? Once deleted it cannot be recovered."
+                                  },
+                                  class: "font-medium text-red-600 hover:text-red-700" if current_user.has_role?('admin') || current_user.has_role?('staff') %>
                               </div>
-
-                              <div class="ml-4 flex-shrink-0">
-                                <button data-action="click->reveal#toggle" type="button" class="mx-2">
-                                  Preview
-                                </button>
-
-                                <%= link_to "Download", rails_blob_path(image, disposition: :attachment), class:"mx-2 font-medium text-indigo-600 hover:text-indigo-500" if image.variable? %>
-
-                                <div class="inline-block">
-                                  <%= button_to "Delete", {
-                                      action: "destroy_attachment",
-                                      signed_id: image.signed_id
-                                    },
-                                    method: :delete,
-                                    data: {
-                                      turbo_confirm: "Are you sure you want to delete this attachment? Once deleted it cannot be recovered."
-                                    },
-                                    class: "font-medium text-red-600 hover:text-red-700" if current_user.has_role?('admin') || current_user.has_role?('staff') %>
-                                </div>
-
                             </div>
                           </div>
                           <div data-reveal-target="item" class="hidden">
@@ -304,7 +292,6 @@
           </div>
         </dl>
       </div>
-
       <!-- <div data-controller="reveal" data-reveal-hidden-class="hidden">
         <button data-action="click->reveal#toggle" type="button" class="block bg-gray-100 w-full py-3 text-center text-sm font-medium text-gray-500 hover:text-gray-700 sm:rounded-b-lg">
           Upload Attachment - placeholder
@@ -333,11 +320,8 @@
           </div>
         </div>
       </div> -->
-
     </div>
   </section>
-
-
   <!-- <div>
     <div class="overflow-hidden bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:px-6">
