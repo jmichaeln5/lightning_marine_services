@@ -24,24 +24,6 @@ class OrdersController < Orders::BaseController
     end
   end
 
-  def all_orders
-    orders = Order.all
-    orders = orders.order(created_at: :desc)
-    @orders = resolve_orders_for_data_table(orders)
-
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
-  end
-
-  def completed_orders
-    orders = Order.archived
-    orders = orders.order(created_at: :desc)
-    @orders = resolve_orders_for_data_table(orders)
-
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
-  end
-
   def show
   end
 
@@ -52,16 +34,6 @@ class OrdersController < Orders::BaseController
   def edit
     @order = Order.find(params[:id])
     @order.build_order_content if @order.order_content.nil?
-  end
-
-  def edit_dept
-    ensure_frame_response
-    set_order
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def create
@@ -125,6 +97,34 @@ class OrdersController < Orders::BaseController
       end
       format.html { redirect_to orders_url, notice: "Order deleted successfully." }
       format.json { head :no_content }
+    end
+  end
+
+  def all_orders
+    orders = Order.all
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
+
+    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    set_new_order
+  end
+
+  def completed_orders
+    orders = Order.archived
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
+
+    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    set_new_order
+  end
+
+  def edit_dept
+    ensure_frame_response
+    set_order
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
     end
   end
 
