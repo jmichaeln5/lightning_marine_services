@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :directory_links
+  
   root 'static_pages#landing'
   get '/about', to: 'static_pages#about'
 
@@ -9,28 +10,16 @@ Rails.application.routes.draw do
     resources :roles, only: [:index, :show]
   end
 
-  # devise_for :users, controllers: {
-  #   sessions: 'users/sessions',
-  #   passwords: 'users/passwords',
-  #   confirmations: 'users/confirmations',
-  # }
-  #
-  # devise_scope :user do
-  #   get 'sign_in', to: 'users/sessions#new'
-  #   # get 'users/sign_out', to: 'users/sessions#destroy'
-  #   # delete 'users/sign_out', to: 'users/sessions#destroy'
-  # end
-
   devise_for :users, skip: [ :sessions, :registrations, :passwords ]
-
-  devise_scope :user do  # Users::SessionsController
+  # Users::SessionsController
+  devise_scope :user do
     get 'users/sign_in', to: 'users/sessions#new', as:'new_user_session'
     post 'users/sign_in', to: 'users/sessions#create', as:'user_session'
     get 'users/sign_out', to: 'users/sessions#destroy', as:'destroy_user_session'
     delete 'users/sign_out', to: 'users/sessions#destroy'
   end
-
-  devise_scope :user do  # Users::RegistrationsController
+  # Users::RegistrationsController
+  devise_scope :user do
     get '/users/sign_up', to: 'users/registrations#new', as:'new_user_registration'
     post '/users/sign_up', to: 'users/registrations#create'
 
@@ -42,8 +31,8 @@ Rails.application.routes.draw do
     get '/users/cancel', to: 'users/registrations#cancel', as:'cancel_user_registration'
     delete '/users/cancel', to: 'users/registrations#cancel'
   end
-
-  devise_scope :user do  # Users::PasswordsController
+  # Users::PasswordsController
+  devise_scope :user do
     get '/users/password/new', to: 'users/passwords#new', as:'new_user_password' # forgot password
     get '/users/password/edit', to: 'users/passwords#edit', as:'edit_user_password'
 

@@ -1,11 +1,11 @@
 class Order < ApplicationRecord
+  include Attachable::Images # change attr name, can attach more than images
+  include Searchable
+
   belongs_to :purchaser
   belongs_to :vendor
   has_one :order_content, dependent: :destroy
   accepts_nested_attributes_for :order_content
-
-  include Attachable::Images # change attr name, can attach more than images
-  include Searchable
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }
@@ -129,7 +129,7 @@ class Order < ApplicationRecord
 
   def ensure_order_content_exists
     def throw_missing_content_error
-      self.errors.add(:order_content, "missing, must have at least 1 box, crate, pallet, or description")
+      self.errors.add(:order_content, "missing, must have order content (at least 1 box, crate, pallet)")
       throw(:abort)
     end
 
@@ -144,7 +144,6 @@ class Order < ApplicationRecord
     blank_attrs_count +=1 if (self.order_content.other.nil? or self.order_content.other.blank?)
 
     if blank_attrs_count >= 4
-      # self.errors.add(:order_content,  "missing, must have at least 1 box, crate, pallet, or description" )
       self.errors.add(:order_content,  "missing, must have at least 1 box, crate, pallet, or description" ) unless self.errors[:order_content].any?
     end
   end

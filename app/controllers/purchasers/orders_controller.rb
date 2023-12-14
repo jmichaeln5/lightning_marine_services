@@ -1,5 +1,4 @@
 class Purchasers::OrdersController < OrdersController
-
   def index
     @purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
 
@@ -7,7 +6,7 @@ class Purchasers::OrdersController < OrdersController
     orders = orders.order(order_sequence: :asc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
+    set_new_purchaser_order
   end
 
   def all_orders
@@ -17,7 +16,7 @@ class Purchasers::OrdersController < OrdersController
     orders = orders.order(order_sequence: :asc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
+    set_new_purchaser_order
   end
 
   def completed_orders
@@ -27,7 +26,7 @@ class Purchasers::OrdersController < OrdersController
     orders = orders.order(order_sequence: :asc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
+    set_new_purchaser_order
   end
 
   def deliver_active
@@ -40,9 +39,7 @@ class Purchasers::OrdersController < OrdersController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-
-    def set_new_order
+    def set_new_purchaser_order
       if params[:purchaser_id]
         @purchaser = Purchaser.find(params[:purchaser_id])
       end
@@ -52,5 +49,4 @@ class Purchasers::OrdersController < OrdersController
       @order.build_order_content
       @page_heading_title = "Ship: #{@purchaser.name}"
     end
-
 end

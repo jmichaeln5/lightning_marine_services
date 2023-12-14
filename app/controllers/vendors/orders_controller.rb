@@ -8,7 +8,7 @@ class Vendors::OrdersController < OrdersController
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
+    set_new_vendor_order
   end
 
   def all_orders
@@ -18,7 +18,7 @@ class Vendors::OrdersController < OrdersController
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
+    set_new_vendor_order
   end
 
   def completed_orders
@@ -28,13 +28,11 @@ class Vendors::OrdersController < OrdersController
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
+    set_new_vendor_order
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-
-    def set_new_order
+    def set_new_vendor_order
       if params[:vendor_id]
         @vendor = Vendor.find(params[:vendor_id])
       end
@@ -44,5 +42,4 @@ class Vendors::OrdersController < OrdersController
       @order.build_order_content
       @page_heading_title = "Vendor: #{@vendor.name}"
     end
-
 end

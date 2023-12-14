@@ -1,9 +1,4 @@
-class OrdersController < ApplicationController
- layout "stacked_shell"
-
-  include DestroyAttachable
-  include OrdersTableHelper
-
+class OrdersController < Orders::BaseController
   before_action :authorize_internal_user, only: %i[ new create edit destroy ]
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]
@@ -48,9 +43,6 @@ class OrdersController < ApplicationController
   end
 
   def show
-  end
-
-  def hovercard
   end
 
   def new
@@ -156,41 +148,13 @@ class OrdersController < ApplicationController
       @order.build_order_content
     end
 
-    def set_page_heading_title
-      @page_heading_title = "Orders"
-    end
-
-    def turbo_render_flash_order_notice(flash_title)
+    def turbo_render_flash_order_notice(flash_title) # move to concern
       turbo_stream.append(
         'flashes',
         partial: "/layouts/stacked_shell/headings/flash_messages",
         locals: {
           flash_type: "notice",
           flash_title: flash_title,
-        }
-      )
-    end
-
-    def turbo_render_flash_order_errors
-      delay_value = 3000
-      flash_title = @order.errors.count > 1 ? "There were #{@order.errors.count} errors with your submission" : "There was #{@order.errors.count} error with your submission"
-
-      flash_description = []
-      @order.errors.each do |error|
-        flash_description << error.full_message
-        delay_value += 1500
-      end
-      flash_description = flash_description.join(" + ")  if flash_description.length > 1
-      flash_description = flash_description.join  if flash_description.length == 1
-
-      turbo_stream.append(
-        'flashes',
-        partial: "/layouts/stacked_shell/headings/flash_messages",
-        locals: {
-          delay_value: delay_value,
-          flash_type: "alert",
-          flash_title: @order.errors.count > 1 ? "There were #{@order.errors.count} errors with your submission" : "There was #{@order.errors.count} error with your submission",
-          flash_description: flash_description,
         }
       )
     end
