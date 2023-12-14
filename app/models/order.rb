@@ -55,7 +55,7 @@ class Order < ApplicationRecord
     end
   end
 
-  def self.to_csv # Also Formats for XLS
+  def self.to_csv # Also Formats for XLS # NOTE - Move to concern
     csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'Sequence','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
 
     CSV.generate do |csv|
@@ -87,7 +87,7 @@ class Order < ApplicationRecord
     end
   end
 
-  def self.to_xls # Also Formats for XLS
+  def self.to_xls # Move to concern
     csv_header = ['ID', '#', 'Dept', 'Ship', 'Vendor','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
 
     CSV.generate do |csv|

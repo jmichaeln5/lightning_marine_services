@@ -68,10 +68,9 @@ Rails.application.routes.draw do
   resources :searches, only: [:index]
 
   concern :searchable do
-      scope module: 'searches' do
-        get 'search'
-      end
-    # get 'search'
+    scope module: 'searches' do
+      get 'search'
+    end
   end
 
   concern :destroy_attachable do
