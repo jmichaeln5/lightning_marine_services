@@ -2,12 +2,9 @@ class PurchasersController < ApplicationController
   layout "stacked_shell"
 
   before_action :authorize_internal_user, only: %i[ new create edit update destroy ]
-
   before_action :set_page_heading_title, except: %i[ show ]
-
   before_action :set_purchaser, only: %i[ show edit update destroy export ]
 
-  # GET /purchasers or /purchasers.json
   def index
     @purchasers = Purchaser.all
     sort_purchasers if params[:sort]
@@ -28,7 +25,6 @@ class PurchasersController < ApplicationController
       @purchasers = nil
       purchasers = Purchaser.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
     else
-      # purchasers = @purchasers.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
       purchasers = @purchasers.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
       @purchasers = nil
     end
@@ -36,9 +32,6 @@ class PurchasersController < ApplicationController
     @purchasers = purchasers
   end
 
-  # GET /purchasers/1 or /purchasers/1.json
-  # def show
-  # end
   def show
     @page_heading_title = "Ship"
 
@@ -110,23 +103,18 @@ class PurchasersController < ApplicationController
     end
   end
 
-  # GET /purchasers/new
   def new
     @purchaser = Purchaser.new
   end
 
-  # GET /purchasers/1/edit
   def edit
   end
 
-  # POST /purchasers or /purchasers.json
   def create
     @purchaser = Purchaser.new(purchaser_params)
 
     respond_to do |format|
       if @purchaser.save
-        # format.html { redirect_to purchaser_url(@purchaser), notice: "Ship was successfully created." }
-
         format.html { redirect_to @purchaser, notice: "Ship was successfully created." }
         format.json { render :show, status: :created, location: @purchaser }
       else
@@ -136,7 +124,6 @@ class PurchasersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /purchasers/1 or /purchasers/1.json
   def update
     respond_to do |format|
       if @purchaser.update(purchaser_params)
@@ -149,7 +136,6 @@ class PurchasersController < ApplicationController
     end
   end
 
-  # DELETE /purchasers/1 or /purchasers/1.json
   def destroy
     if @purchaser.destroy
       redirect_to purchasers_url, notice: "#{@purchaser.name}(Ship) deleted successfully."
@@ -171,16 +157,12 @@ class PurchasersController < ApplicationController
       }
       format.xlsx {
         fName = filePrefix + "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
-        #response.headers['Content-Disposition'] = 'attachment; ' + fName
         response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
-        #send_data @orders,
-        #filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
       }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_page_heading_title
       @page_heading_title = "Ships"
     end
@@ -189,7 +171,6 @@ class PurchasersController < ApplicationController
       @purchaser = Purchaser.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def purchaser_params
       params.require(:purchaser).permit(:name)
     end
