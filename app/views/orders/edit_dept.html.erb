@@ -1,21 +1,15 @@
 <%= form_with model: @order, id: "order_form" do |form| %>
-
-<%= render partial: "/layouts/stacked_shell/headings/form_errors", locals: {
-  form: form,
-} %>
-
+  <%= render partial: "/layouts/stacked_shell/headings/form_errors", locals: {
+    form: form,
+  } %>
   <div class="space-y-8 divide-y divide-gray-200">
     <div class="sm:col-span-6">
-
       <div class="mb-3">
         <%= form.label :dept, class:"block text-sm font-medium leading-6 text-gray-900" %>
       </div>
-
       <%= render "inline_fields_dept", form: form, attribute: :dept do %>
         <%= form.text_field :dept, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
       <% end %>
-
     </div>
   </div>
-
 <% end %>

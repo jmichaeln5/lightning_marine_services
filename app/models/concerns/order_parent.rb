@@ -4,14 +4,14 @@ module OrderParent
   included do
     has_many :orders
 
-    before_destroy :check_associated_orders
+    before_destroy :check_associated_orders # Add Tombstone feature to represent destroyed record data instead of thorwing error?
   end
 
   def active_orders
     self.orders.where(archived: false)
   end
 
-  def order_amount
+  def order_amount # not in use + shitty, remove this method
     return self.order_ids.size unless (self.class.model_name.name == "Purchaser")
     return self.orders.unarchived.size
   end

@@ -4,7 +4,9 @@ class Order < ApplicationRecord
 
   belongs_to :purchaser
   belongs_to :vendor
+
   has_one :order_content, dependent: :destroy
+
   accepts_nested_attributes_for :order_content
 
   scope :archived, -> { where(archived: true) }
@@ -17,7 +19,8 @@ class Order < ApplicationRecord
     includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
   }
 
-  validates :purchaser_id, :vendor_id, :courrier, presence: true
+  validates :purchaser_id, :vendor_id, presence: true
+  validates :courrier, presence: true
   validate :before_validationz
 
   def purchaser_name
@@ -123,7 +126,7 @@ class Order < ApplicationRecord
 
   def before_validationz
     default_sequence
-    handle_archive
+    handle_archive        # NOTE - should be in after_commit NOT before_validation
     ensure_order_content_exists
   end
 
@@ -148,7 +151,7 @@ class Order < ApplicationRecord
     end
   end
 
-  def handle_archive
+  def handle_archive # NOTE - should be in after_commit NOT before_validation
     self.archived = true if self.date_delivered.present? == true
     self.archived = false if self.date_delivered.present? == false
   end

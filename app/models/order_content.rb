@@ -19,5 +19,4 @@ class OrderContent < ApplicationRecord
 
 
   end
-
 end
