@@ -4,19 +4,16 @@ class OrderContent < ApplicationRecord
   validate :content_existz
 
   private
+    def content_existz
+      blank_attrs_count = 0
 
-  def content_existz
-    blank_attrs_count = 0
-    blank_attrs_count +=1 if self.box.blank?
-    blank_attrs_count +=1 if self.crate.blank?
-    blank_attrs_count +=1 if self.pallet.blank?
-    blank_attrs_count +=1 if self.other.blank?
+      blank_attrs_count +=1 if self.box.blank?
+      blank_attrs_count +=1 if self.crate.blank?
+      blank_attrs_count +=1 if self.pallet.blank?
+      blank_attrs_count +=1 if self.other.blank?
 
-    if blank_attrs_count >= 4
-      # self.order.errors.add(:order_content,  "missing" )
-      self.order.errors.add(:order_content,  "missing" ) unless self.order.errors[:order_content].any?
+      if blank_attrs_count >= 4
+        self.order.errors.add(:order_content,  "missing" ) unless self.order.errors[:order_content].any?
+      end
     end
-
-
-  end
 end
