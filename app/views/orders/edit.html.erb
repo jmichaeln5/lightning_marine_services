@@ -1,3 +1,17 @@
+<% if Current.request_variant == :turbo_frame  %>
+  <%= turbo_frame_tag :modal do %>
+    <%= render "/layouts/stacked_shell/render_modal",
+      modal_title: (
+        link_to "Editing Order #{@order.id}",
+        edit_order_path(@order),
+        target: "_top",
+        class: default_link_to_css_classes
+      ) do %>
+        <%= render '/orders/form', order: @order %>
+      <% end %>
+    <% end %>
+<% else %>
+
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: order_path(@order),
@@ -133,9 +147,11 @@
                         </div>
                       </div>
                     </div>
+
+
                     <div class="sm:col-span-6 ml-2 mr-3">
                       <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                      <%= form.fields_for :order_content, @order.order_content do |p| %>
+                      <%= form.fields_for :order_contents, @order.order_contents do |p| %>
                         <div class="sm:col-span-2">
                           <div class="flex">
                             <%= p.label 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
@@ -160,6 +176,9 @@
                             </div>
                           </div>
                         </div>
+
+
+
                         <div class="sm:col-span-6">
                           <%= p.label :other_description, "Description", class:"block text-sm font-medium leading-6 text-gray-900" %>
                           <div class="mt-2">
@@ -170,6 +189,8 @@
                       <% end %>
                       </div>
                     </div>
+
+
                   </div>
                 </div>
               </div>
@@ -185,16 +206,4 @@
     </div>
   </div>
 </section>
-<% if Current.request_variant == :turbo_frame  %>
-  <%= turbo_frame_tag :modal do %>
-    <%= render "/layouts/stacked_shell/render_modal",
-      modal_title: (
-        link_to "Editing Order #{@order.id}",
-        edit_order_path(@order),
-        target: "_top",
-        class: default_link_to_css_classes
-      ) do %>
-        <%= render '/orders/form', order: @order %>
-      <% end %>
-    <% end %>
 <% end %>

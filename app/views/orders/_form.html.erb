@@ -102,42 +102,49 @@
                   </div>
                   <div class="sm:col-span-6 ml-2 mr-3">
                     <div class="my-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                      <%= form.fields_for :order_content, order.order_content do |p| %>
+                      <!-- HAS_ONE -->
+                      <!-- HAS_ONE -->
+                      <!-- HAS_ONE -->
+                      <!-- HAS_ONE -->
+                      <!-- HAS_ONE -->
+                      <!-- <%##= form.fields_for :order_content, order.order_content do |p| %>
+                      <%#= form.fields_for :order_contents, order.order_contents do |p| %>
                         <div class="sm:col-span-2">
                           <div class="flex">
-                            <%= p.label :box, 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                            <%#= p.label :box, 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                             <div class="ml-3 w-full">
-                              <%= p.text_field :box, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                              <%#= p.text_field :box, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                             </div>
                           </div>
                         </div>
                         <div class="sm:col-span-2">
                           <div class="flex">
-                            <%= p.label :crate, 'Crates', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                            <%#= p.label :crate, 'Crates', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                             <div class="ml-3 w-full">
-                              <%= p.text_field :crate, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                              <%#= p.text_field :crate, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                             </div>
                           </div>
                         </div>
                         <div class="sm:col-span-2">
                           <div class="flex">
-                            <%= p.label :pallet, 'Pallets', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                            <%#= p.label :pallet, 'Pallets', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                             <div class="ml-3 w-full">
-                              <%= p.text_field :pallet, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                              <%#= p.text_field :pallet, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                             </div>
                           </div>
                         </div>
                         <div class="sm:col-span-6">
-                          <%= p.label :other_description, "Description", class:"block text-sm font-medium leading-6 text-gray-900" %>
+                          <%#= p.label :other_description, "Description", class:"block text-sm font-medium leading-6 text-gray-900" %>
                           <div class="mt-2">
-                            <%= p.text_area :other_description, rows: 3, class: "block w-full rounded-md border-0 text-gray-900 shadow-sm placeholder:text-gray-400 sm:py-1.5 sm:text-sm sm:leading-6 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600" %>
+                            <%#= p.text_area :other_description, rows: 3, class: "block w-full rounded-md border-0 text-gray-900 shadow-sm placeholder:text-gray-400 sm:py-1.5 sm:text-sm sm:leading-6 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600" %>
                           </div>
                           <p class="mt-2 text-sm text-gray-500">Write a few details about the order.</p>
                         </div>
-                      <% end %>
+                      <%# end %> -->
+                      <%= render partial: "/orders/order_contents/deliver_individual_content", locals: { form: form, order: order } if order.persisted? %>
                     </div>
                     <div class="block border-y border-gray-200">
-                      <!-- border placeholder div to seperate sections -->
+                      <%= content_tag :span, "border placeholder div to seperate sections", class:'hidden' %>
                     </div>
                   </div>
                 </div>

@@ -6,9 +6,11 @@ class Order < ApplicationRecord
   belongs_to :purchaser
   belongs_to :vendor
 
-  has_one :order_content, dependent: :destroy
+  # has_one :order_content, dependent: :destroy
+  # accepts_nested_attributes_for :order_content
 
-  accepts_nested_attributes_for :order_content
+  has_many :order_contents, dependent: :destroy
+  accepts_nested_attributes_for :order_contents
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where(archived: false) }

@@ -1,0 +1,67 @@
+<section class="inline-flex sm:col-span-6">
+<div data-controller="reveal" data-reveal-hidden-class="hidden" class="block w-full">
+  <div data-action="click->reveal#toggle" class="w-full">
+    <button type="button" class="w-full text-center rounded-md bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 active:bg-indigo-200 focus:bg-indigo-100 focus:outline-none">Partially deliver order</button>
+  </div>
+  <div data-reveal-target="item" class="hidden">
+    <div class="h-full w-full rounded-md bg-slate-50">
+      <div class="p-3">
+        <div class="my-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-700">Partial Order Delivery</h3>
+          <p class="mt-1 text-sm text-gray-500">Deliver individual order contents</p>
+        </div>
+        <%= form.fields_for :order_contents do |order_content_form| %>
+
+
+        <!-- https://www.ombulabs.com/blog/learning/rails/nested-forms.html -->
+        <!-- https://dev.to/pezza/dynamic-nested-forms-with-turbo-3786 -->
+
+          <%#= content_tag :span, class:"my-3 block p-3 bg-yellow-100 text-center text-yellow-700" do %>
+            <%#= content_tag :div, "order_content_form.object.order.inspect", class: "font-bold" %>
+            <%#= content_tag :div, order_content_form.object.order.inspect, class: "text-sm mb-5" %>
+            <%#= content_tag :div, "order_content_form.object.inspect", class: "font-bold" %>
+            <%#= content_tag :div, order_content_form.object.inspect, class: "text-sm mb-5" %>
+          <%# end %>
+
+
+          <%= order_content_form.hidden_field :id %>
+
+          <div class="mb-3 flex justify-between text-center">
+            <div class="w-1/6 justify-self-start self-center">
+              <%= order_content_form.label :box, 'Boxes', class:'text-sm font-medium text-gray-500' %>
+            </div>
+            <%= order_content_form.text_field :box, class: 'mx-3 grow rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+            <div class="w-1/6 justify-self-end self-center rounded-md border-0 p-1.5 bg-white text-slate-500 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+            was:  <%= content_tag :span, (order_content_form.object.box || 0) %>
+            </div>
+          </div>
+          <div class="mb-3 flex justify-between text-center">
+            <div class="w-1/6 justify-self-start self-center">
+              <%= order_content_form.label :crate, 'Crates', class:'text-sm font-medium text-gray-500' %>
+            </div>
+            <%= order_content_form.text_field :crate, class: 'mx-3 grow rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+            <div class="w-1/6 justify-self-end self-center rounded-md border-0 p-1.5 bg-white text-slate-500 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+            was:  <%= content_tag :span, (order_content_form.object.crate || 0) %>
+            </div>
+          </div>
+          <div class="mb-3 flex justify-between text-center">
+            <div class="w-1/6 justify-self-start self-center">
+              <%= order_content_form.label :pallet, 'Pallets', class:'text-sm font-medium text-gray-500' %>
+            </div>
+            <%= order_content_form.text_field :pallet, class: 'mx-3 grow rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+            <div class="w-1/6 justify-self-end self-center rounded-md border-0 p-1.5 bg-white text-slate-500 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+            was:  <%= content_tag :span, (order_content_form.object.pallet || 0) %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="inline-block w-full">
+        <div class="m-3">
+          <p class="m-1 text-xs text-gray-500">*This will not archive the order.</p>
+          <button type="button" class="w-full rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Deliver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

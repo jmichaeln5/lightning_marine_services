@@ -5,11 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%#= stylesheet_link_tag "users", "data-turbo-track": "reload" if controller_path.include? "users" %>
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application", defer: true %>
   </head>
   <body class="h-full">
+
+
+
+
+
+
+    <!-- <div class="block p-3 bg-teal-100  text-teal-700">
+      <div class="grid grid-flow-row space-y-1 auto-rows-max text-center ">
+        <div>
+          <%#= content_tag :div, "Current.attributes", class:'font-bold' %>
+          <%#= content_tag :div, Current.attributes, class:'' %>
+        </div>
+        <div>
+          <%#= content_tag :div, "Current.user.inspect", class:'font-bold' %>
+          <%#= content_tag :div, Current.user.inspect, class:'' %>
+        </div>
+        <div>
+          <%#= content_tag :div, "(Current.user.roles.map &:itself)", class:'font-bold' %>
+          <%#= content_tag :div, (Current.user.roles.map &:itself), class:'' %>
+        </div>
+      </div>
+    </div> -->
+
+
+
+
+
     <div class="min-h-full">
       <div class="bg-gray-800 pb-32">
         <nav class="bg-gray-800">
@@ -17,7 +43,7 @@
             search_input_placeholder_text: "Search",
           } %>
         </nav>
-        <div id="flashes">                            <%# New flashes appended to div #flashes %>
+        <div id="flashes">  <%# New flashes appended to div #flashes %>
           <%= render "application/flash_messages" %>  <%# old flashes %>
         </div>
         <div class="flow-root py-10">
@@ -28,13 +54,11 @@
                   <div class="w-full sm:w-auto">
                     <h1 class="text-center sm:text-left">
                       <div id="page_heading_title" class="text-4xl font-bold tracking-tight text-white">
-
                         <% if content_for?(:page_heading_title) %>
                             <%= yield :page_heading_title %>
                         <% else %>
                             <%= turbo_stream.update "page_heading_title", @page_heading_title %>
                         <% end %>
-
                       </div>
                     </h1>
                   </div>
@@ -57,30 +81,20 @@
             <%= render partial: "layouts/stacked_shell/nav/secondary_nav" %>
             <div class="pt-3 pb-9">
               <div id="yield_if_no_content_for_page_heading_card" class=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-                <%# if content_for?(:page_heading_card) %>
-                  <%#= render partial: "/layouts/stacked_shell/headings/card" %>
-                  <%#= yield :page_heading_card %>
-                <%# else %>
-                  <%#= yield %>
-                <%# end %>
                 <% if !content_for?(:page_heading_card) %>
                   <%= yield %>
                 <% else %>
                   <%= render partial: "/layouts/stacked_shell/headings/card" %>
                   <%= yield :page_heading_card %>
                 <% end %>
-
               </div>
             </div>
           </div>
-
           <div id="yield_unless_no_content_for_page_heading_card">
             <% unless !content_for?(:page_heading_card) %>
               <%= yield %>
             <% end %>
           </div>
-
         </div>
         <%= turbo_frame_tag :modal %>
       </main>

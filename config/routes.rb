@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :directory_links
-  
+
   root 'static_pages#landing'
   get '/about', to: 'static_pages#about'
 
@@ -66,16 +66,49 @@ Rails.application.routes.draw do
     delete '/attachments/:signed_id', action: 'destroy_attachment'
   end
 
+
+
+
+
+
+
+
+
+  ############################################################
+  ############################################################
+  ############################################################
+  ############################################################
+  ############################################################
   resources :orders, concerns: [:hovercardable ] do
     collection do
       concerns :searchable
+      # get '/:status', to: 'orders#index', foo: 'bar'
     end
 
     member do
+      # patch '/deliver_contents', to: 'orders/order_contents#deliver_contents'
+      patch '/partial_delivery', to: 'orders/order_contents#partial_delivery'
       get :edit_dept
       concerns :destroy_attachable
     end
   end
+  # get '/orders/:archived', to: 'orders#index', foo: 'bar'
+  # get '/clients/:status', to: 'clients#index', foo: 'bar'
+  ############################################################
+  ############################################################
+  ############################################################
+  ############################################################
+  ############################################################
+
+
+
+
+
+
+
+
+
+
 
   resources :purchasers do
     resources :orders, only: [:index, :new, :create ], module: :purchasers do
