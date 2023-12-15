@@ -7,6 +7,16 @@ class Orders::BaseController < ApplicationController
   def hovercard
   end
 
+  def edit_dept
+    ensure_frame_response
+    set_order
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
   private
     def set_page_heading_title
       @page_heading_title = "Orders"

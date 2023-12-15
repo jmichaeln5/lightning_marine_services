@@ -118,16 +118,6 @@ class OrdersController < Orders::BaseController
     set_new_order
   end
 
-  def edit_dept
-    ensure_frame_response
-    set_order
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
-  end
-
   private
     def set_order
       @order = Order.find(params[:id])
