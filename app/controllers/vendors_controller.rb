@@ -1,14 +1,10 @@
 class VendorsController < ApplicationController
   layout "stacked_shell"
 
-  # before_action :authorize_internal_user, only: %i[ new create edit update destroy ]
   before_action :authorize_internal_user
-
   before_action :set_page_heading_title, except: %i[ show ]
-
   before_action :set_vendor, only: %i[ show edit update destroy ]
 
-  # GET /vendors or /vendors.json
   def index
     @vendors = Vendor.all
     sort_vendors if params[:sort]
@@ -29,7 +25,6 @@ class VendorsController < ApplicationController
       @vendors = nil
       vendors = Vendor.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
     else
-      # vendors = @vendors.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
       vendors = @vendors.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
       @vendors = nil
     end
@@ -37,9 +32,6 @@ class VendorsController < ApplicationController
     @vendors = vendors
   end
 
-  # GET /vendors/1 or /vendors/1.json
-  # def show
-  # end
   def show
     @page_heading_title = "Vendor"
 
@@ -111,16 +103,13 @@ class VendorsController < ApplicationController
     end
   end
 
-  # GET /vendors/new
   def new
     @vendor = Vendor.new
   end
 
-  # GET /vendors/1/edit
   def edit
   end
 
-  # POST /vendors or /vendors.json
   def create
     @vendor = Vendor.new(vendor_params)
 
@@ -136,7 +125,6 @@ class VendorsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /vendors/1 or /vendors/1.json
   def update
     respond_to do |format|
       if @vendor.update(vendor_params)
@@ -149,27 +137,16 @@ class VendorsController < ApplicationController
     end
   end
 
-  # DELETE /vendors/1 or /vendors/1.json
-  # def destroy
-  #   @vendor.destroy
-  #
-  #   respond_to do |format|
-  #     format.html { redirect_to vendors_url, notice: "Vendor was successfully destroyed." }
-  #     format.json { head :no_content }
-  #   end
-  # end
   def destroy
     if @vendor.destroy
       redirect_to vendors_url, notice: "#{@vendor.name}(Vendor) deleted successfully."
     else
       redirect_to request.referrer
-      # redirect_back fallback_location: orders_url
       @vendor.errors.full_messages.each.map {|message| flash[:alert] = message }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_page_heading_title
       @page_heading_title = "Vendors"
     end
@@ -178,7 +155,6 @@ class VendorsController < ApplicationController
       @vendor = Vendor.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def vendor_params
       params.require(:vendor).permit(:name)
     end
