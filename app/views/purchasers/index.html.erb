@@ -19,7 +19,6 @@
     </div>
   <% end %>
 <% end %>
-
 <section>
   <div data-controller="reveal" data-reveal-hidden-class="hidden">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
@@ -46,12 +45,10 @@
         </div>
       </div>
     </div>
-
     <% turbo_frame_table_id = "purchasers-table" %>
     <div data-reveal-target="item" class="hidden">
       <div class="pb-9">
           <div class="rounded-md bg-white py-3">
-
             <%= form_with url: "", method: :get, data: { turbo_frame: turbo_frame_table_id, turbo_action: "advance" } do |form| %>
               <div class="mx-3 flex flex-wrap justify-center sm:justify-between">
                 <div class="text-gray-700 text-center sm:text-left">
@@ -70,20 +67,15 @@
                 </div>
                 <div>
                   <div class="text-gray-700 mt-2 sm:mt-0 text-center sm:text-right">
-                    <!-- <p class="text-sm text-gray-700 sm:-ml-5"> Search </p>
-                    <%##= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()" %>
-                    <%#= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()", class: "w-full rounded-md bg-white py-1.5 pl-3 border-0 drop-shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search' %> -->
                   </div>
                 </div>
               </div>
             <% end %>
-
           </div>
       </div>
     </div>
   </div>
 </section>
-
 <div class="rounded-md bg-white">
   <div class="flex-1">
     <div class="pt-7 w-full px-4 sm:px-6 lg:px-8 ">
@@ -91,7 +83,6 @@
         <div class="mb-7 flex-auto text-center sm:text-left">
           <h1 class="text-3xl font-semibold leading-6 text-gray-900"> Ships </h1>
         </div>
-
         <div class="mt-3 min-w-full flex flex-wrap text-center sm:justify-between">
           <div class="w-full sm:w-auto">
             <p class="text-sm text-gray-700">
@@ -108,25 +99,13 @@
             <%== pagy_nav @pagy %>
           </div>
         </div>
-
         <div class="overflow-x-auto flow-root">
           <div class="min-w-full">
             <div class="table min-w-full border border-slate-50">
-
               <% tc_css_classes = "table-cell whitespace-nowrap py-3.5 pl-4 pr-3 sm:pl-6 lg:pl-8 align-middle text-center border-b border-gray-300 bg-white bg-opacity-7 text-sm font-semibold text-gray-900" %>
-
               <% sort_link_to_tc_css_classes = "text-indigo-800 hover:text-indigo-900 hover:underline" %>
-
               <div class="table-header-group sticky top-0 backdrop-blur backdrop-filter hover:cursor-default">
                 <div class="table-row">
-
-                  <!-- placeholder for edit th -->
-                  <!-- <%# if current_user_is_admin_or_staff? %>
-                    <div class="<%#= tc_css_classes %>">
-                      <%##= content_tag(:p, "", class:"text-center" ) %>
-                    </div>
-                  <%# end %> -->
-
                   <div class="<%= tc_css_classes %>">
                     <div class="group inline-flex p-3">
                       <%= sort_link_to "ID", :id, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
@@ -159,22 +138,16 @@
                   </div>
                 </div>
               </div>
-
               <div class="table-row-group">
-                <%#= render @orders %>
                 <%= render partial: "/purchasers/row", collection: @purchasers, as: :purchaser %>
               </div>
-
             </div>
           </div>
         </div>
-
         <div class="text-center">
           <%== pagy_nav @pagy %>
         </div>
-
       <% end %>
-
     </div>
   </div>
 </div>

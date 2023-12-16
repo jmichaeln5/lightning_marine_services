@@ -149,14 +149,6 @@
 
               <div class="table-header-group sticky top-0 backdrop-blur backdrop-filter hover:cursor-default">
                 <div class="table-row">
-
-                  <!-- placeholder for edit th -->
-                  <!-- <%# if current_user_is_admin_or_staff? %>
-                    <div class="<%#= tc_css_classes %>">
-                      <%##= content_tag(:p, "", class:"text-center" ) %>
-                    </div>
-                  <%# end %> -->
-
                   <div class="<%= tc_css_classes %>">
                     <div class="group inline-flex p-3">
                       <%= sort_link_to "ID", :id, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>
@@ -167,11 +159,6 @@
                       </span>
                     </div>
                   </div>
-
-                  <!-- <div class="<%#= tc_css_classes %>">
-                    <%#= content_tag(:p, "Dept", class:"text-center" ) %>
-                  </div> -->
-
                   <div class="<%= tc_css_classes %>">
                     <div class="group inline-flex ">
                       <%= sort_link_to "Vendor Name", :name, class: sort_link_to_tc_css_classes, data: { turbo_action: "advance" } %>

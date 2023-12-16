@@ -4,19 +4,17 @@
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: current_page?(all_orders_path),
         card_title: "All orders",
-        card_description: Order.all.count,
+        card_description: Order.all.size,
         card_link: (link_to "View all orders", all_orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
       } %>
-
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: current_page?(orders_path),
         card_title: "Active orders",
-        card_description: Order.all.unarchived.count,
+        card_description: Order.where(archived: false).size,
         card_link: (link_to "View active orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/box_truck"),
       } %>
-
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: current_page?(completed_orders_path),
         card_title: "Completed orders",
@@ -26,5 +24,4 @@
       } %>
     </div>
   <% end %>
-
 <% end %>

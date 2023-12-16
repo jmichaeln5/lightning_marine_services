@@ -6,7 +6,7 @@
   <div class="<%= primary_col_css_classes %>">
     <%= link_to "View", order, class:target_top_link_to_css_classes, target: "_top" %>
 
-    <% if current_user_is_admin_or_staff? %>
+    <% if authorized_internal_user? %>
       <%= link_to edit_order_path(order), data: {turbo_frame: "modal"} do %>
         <span class="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer hover:underline"> Edit </span>
       <% end %>

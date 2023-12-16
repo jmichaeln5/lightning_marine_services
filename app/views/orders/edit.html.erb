@@ -1,17 +1,3 @@
-<% if Current.request_variant == :turbo_frame  %>
-  <%= turbo_frame_tag :modal do %>
-    <%= render "/layouts/stacked_shell/render_modal",
-      modal_title: (
-        link_to "Editing Order #{@order.id}",
-        edit_order_path(@order),
-        target: "_top",
-        class: default_link_to_css_classes
-      ) do %>
-        <%= render '/orders/form', order: @order %>
-      <% end %>
-    <% end %>
-<% else %>
-
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: order_path(@order),
@@ -43,7 +29,7 @@
                         <p class="mt-1 text-sm text-gray-500">Add information about the order below.</p>
                       </div>
                       <div>
-                      <% if current_user_is_admin_or_staff? && !@order.new_record? %>
+                      <% if authorized_internal_user? && !@order.new_record? %>
                         <%= button_to "Delete", @order, method: :delete, data: {turbo: false }, class:" inline-flex items-center rounded border border-transparent bg-red-100 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
                       <% end %>
                       </div>
@@ -151,28 +137,28 @@
 
                     <div class="sm:col-span-6 ml-2 mr-3">
                       <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                      <%= form.fields_for :order_contents, @order.order_contents do |p| %>
+                      <%= form.fields_for :order_content, @order.order_content do |order_content_form| %>
                         <div class="sm:col-span-2">
                           <div class="flex">
-                            <%= p.label 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                            <%= order_content_form.label 'Boxes', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                             <div class="ml-3 w-full">
-                              <%= p.text_field :box, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                              <%= order_content_form.text_field :box, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                             </div>
                           </div>
                         </div>
                         <div class="sm:col-span-2">
                           <div class="flex">
-                            <%= p.label 'Crates', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                            <%= order_content_form.label 'Crates', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                             <div class="ml-3 w-full">
-                              <%= p.text_field :crate, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                              <%= order_content_form.text_field :crate, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                             </div>
                           </div>
                         </div>
                         <div class="sm:col-span-2">
                           <div class="flex">
-                            <%= p.label 'Pallets', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
+                            <%= order_content_form.label 'Pallets', class:"col-span-1 text-sm font-medium text-gray-900  m-auto" %>
                             <div class="ml-3 w-full">
-                              <%= p.text_field :pallet, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                              <%= order_content_form.text_field :pallet, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                             </div>
                           </div>
                         </div>
@@ -180,9 +166,9 @@
 
 
                         <div class="sm:col-span-6">
-                          <%= p.label :other_description, "Description", class:"block text-sm font-medium leading-6 text-gray-900" %>
+                          <%= order_content_form.label :other_description, "Description", class:"block text-sm font-medium leading-6 text-gray-900" %>
                           <div class="mt-2">
-                            <%= p.text_area :other_description, rows: 3, class: "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6" %>
+                            <%= order_content_form.text_area :other_description, rows: 3, class: "block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6" %>
                           </div>
                           <p class="mt-2 text-sm text-gray-500">Write a few details about the order.</p>
                         </div>
@@ -206,4 +192,16 @@
     </div>
   </div>
 </section>
+<% if Current.request_variant == :turbo_frame  %>
+  <%= turbo_frame_tag :modal do %>
+    <%= render "/layouts/stacked_shell/render_modal",
+      modal_title: (
+        link_to "Editing Order #{@order.id}",
+        edit_order_path(@order),
+        target: "_top",
+        class: default_link_to_css_classes
+      ) do %>
+        <%= render '/orders/form', order: @order %>
+      <% end %>
+    <% end %>
 <% end %>

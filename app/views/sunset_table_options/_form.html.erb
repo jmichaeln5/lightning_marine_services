@@ -15,7 +15,7 @@
 
   <div class="field">
 
-    <p class="text-3xl"> <%= "New" if table_option.id.nil? %> <%= current_controller.titleize.singularize %> Table Options </p>
+    <p class="text-3xl"> <%= "New" if table_option.id.nil? %> <%= ('purchasers' ? 'ships' : "#{controller_name}").titleize.singularize %> Table Options </p>
     <%= form.hidden_field :resource_table_type, value: controller_name.downcase %>
     <%= form.hidden_field :resource_table_action, value: action_name %>
     <%= form.hidden_field :user_id, value: current_user.id %>
@@ -58,7 +58,7 @@
 
     <div>
       <p class="text-2xl">
-        Amount of <%= current_controller.titleize %> to display
+        Amount of <%= ('purchasers' ? 'ships' : "#{controller_name}").titleize %> to display
       </p>
       <div class="text-xl">
         <%= form.select :resources_per_page, options_for_select(TableOptionsHelper.options_for_resources_per_page, @table_option.resources_per_page)  %>
@@ -70,7 +70,7 @@
         <hr>
       </div>
       <div class="pt-2">
-      <%= link_to "Remove #{current_controller.titleize} table options", @table_option, method: :delete, data: { confirm: "Are you sure?" } %>
+      <%= link_to "Remove #{('purchasers' ? 'ships' : "#{controller_name}").titleize} table options", @table_option, method: :delete, data: { confirm: "Are you sure?" } %>
       </div>
     <% end %>
   </div>

@@ -22,27 +22,7 @@
     <% end %>
   <% end %>
 <% end %>
-
 <% content_for :page_heading_card do %>
   <%= turbo_stream.update "card_title", "Dashboard" %>
   <%= render partial: 'orders/page_heading_card' %>
 <% end %>
-
-<!-- <div class="sm:flex sm:items-center mb-5 sm:mb-7">
-  <div class="sm:flex-auto">
-    <div class="text-center sm:text-left">
-      <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
-        Recent Orders
-      </h1>
-      <p class="mt-2 ml-2 mb-1 text-md text-gray-700">
-        A list of active orders that have been recently added.
-      </p>
-    </div>
-  </div>
-</div>
-
-<div class="w-full inline-block relative">
-  <div class="absolute">
-    <%#= render partial: "/orders/order", collection: @unarchived_orders.first(5), as: :order %>
-  </div>
-</div> -->
