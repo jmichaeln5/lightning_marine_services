@@ -1,6 +1,4 @@
 class Role < ApplicationRecord
-  scopify
-  
   has_and_belongs_to_many :users, :join_table => :users_roles
 
   belongs_to :resource,
@@ -20,10 +18,9 @@ class Role < ApplicationRecord
   end
 
   def self.generic_roles
-    customer = Role.where(name: 'customer').first_or_create
-    staff = Role.where(name: 'staff').first_or_create
-    admin = Role.where(name: 'admin').first_or_create
-    return [customer, staff, admin]
+    [Role.where(name: 'admin').first_or_create, Role.where(name: 'staff').first_or_create, Role.where(name: 'customer').first_or_create]
   end
 
+  delegate :generic_roles, to: :class
+  scopify # must be on last line of class
 end

@@ -1,42 +1,29 @@
-def create_user_by_role(users_to_create, role)
-  users_to_create.times do
-    user_count = 0 if !User.any?
-    user_count = User.all.count if User.any?
-    user_count += 1
+users_to_create = 17
+last_user_id = User.any? ? User.all.size : 1
 
-    first_name = Faker::Name.first_name
-    last_name = Faker::Name.last_name
-    email = "user#{user_count}@example.com"
-    username = "#{role.name}_user_#{user_count}"
-    phone_number = Faker::PhoneNumber.cell_phone
+def create_user_with_role(role: nil, confirmed: true)
+  next_user_id = User.any? ? (User.all.size + 1) : 1
+  role ||= Role.find_by_name("customer")
+  role_name = role.name
 
-    user = User.new(first_name:'User',
-      last_name: user_count.to_words,
-      email:"user#{user_count}@example.com",
-      password:"123456",
-      phone_number: phone_number,
-      username: username
-    )
-    user.skip_confirmation_notification!
-    user.skip_confirmation!
+  user = User.new name: "User #{next_user_id.to_words.capitalize}", email:"user#{next_user_id}@example.com", password:"123456", phone_number: Faker::PhoneNumber.cell_phone, username: "#{role.name}_user_#{next_user_id}"
 
-    if role.name != "customer"
-      user.remove_role :customer if user.has_role?(:customer)
-      user.add_role :admin if role.name == "admin"
-      user.add_role :staff if role.name == "staff"
-      user.save
-    end
+  user.skip_confirmation_notification!
+  user.skip_confirmation!
 
-    if user.save
-      puts "User #{user.id} created\n#{user.inspect}\nRole: #{role.name}\n\n"
-    else
-      puts "Invalid User\n#{user.inspect}\nCould not save User\n"
-    end
+  user.add_role role.name unless user.roles.include? role
 
+  if user.save
+    puts "User #{user.id} created\n#{user.inspect}\nRole: #{role_name}\n\n"
+  else
+    "Invalid User\n#{user.inspect}\nCould not save User\n"
   end
 end
 
-Role.generic_roles
+users_to_create_per_role = ((users_to_create / Role.generic_roles.size).round(0))
+
 Role.generic_roles.each do |role|
-  create_user_by_role(10, role)
+  users_to_create_per_role.times do
+    create_user_with_role(role: role, confirmed: true)
+  end
 end

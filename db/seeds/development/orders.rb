@@ -33,7 +33,6 @@ def create_orders(orders_to_create)
       archived:  archived_options.sample
     )
 
-    # order.dept = "#{Faker::Job.field}" if [true, false].sample == true
     if [true, false, false].sample == true
       rand_order_depts = ["deck", "hull", "nav bridge", "bridge", "cargo hood", "forecastle", "upper hold", "upper deck", "main deck", "derrick", "deckhouse", "3 hold", "chain locker"]
 
@@ -72,11 +71,10 @@ def create_orders(orders_to_create)
 
     other_desc = return_false_by_odds(50) ?  Faker::Lorem.sentence(word_count: rand(1..9)) : nil
 
-    order.build_order_content(
+    order.order_contents.build(
       box: return_order_content_amount_as_str,
       crate: return_order_content_amount_as_str,
       pallet: return_order_content_amount_as_str,
-      # other: return_order_content_amount_as_str,
       other_description: other_desc
     )
 
@@ -85,9 +83,7 @@ def create_orders(orders_to_create)
   end
 end
 
-# rand_amount = rand(150..300)
-rand_amount = rand(300..900)
-# rand_amount = rand(900..1500)
+rand_amount = rand(150..300)
 create_orders(rand_amount)
 
 Order.search_index.delete

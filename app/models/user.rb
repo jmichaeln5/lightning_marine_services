@@ -16,23 +16,18 @@ class User < ApplicationRecord
   validates :phone_number, length: { minimum: 4, maximum: 20  }
   validates :email, length: { minimum: 7, maximum: 100  }
 
-  before_create :set_default_role, if: :new_record?
   # before_save :bypass_email_confirmation
+  after_create :assign_default_role
 
   def bypass_email_confirmation # Needed to prevent error in UsersController < Admin::ApplicationController
   end
 
   private
-
-  def name
-    "#{first_name} #{last_name}"
-  end
-
-  def set_default_role
-    if self.roles.any? == false
-      self.add_role(:customer)
+    def default_role
+      :customer
     end
-  end
 
-
+    def assign_default_role
+      self.add_role(:customer) if self.roles.blank?
+    end
 end
