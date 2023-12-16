@@ -33,8 +33,7 @@ class OrdersController < Orders::BaseController
 
   def edit
     @order = Order.find(params[:id])
-    # @order.build_order_content if @order.order_content.nil?
-    # @order.order_contents.build if @order.order_content.nil?
+    @order.build_order_content if @order.order_content.nil?
   end
 
   def create
@@ -59,8 +58,6 @@ class OrdersController < Orders::BaseController
     if !authorized_internal_user?
       veto_unauthorized_request unless authorized_customer? && order_params.keys == ["dept"]
     end
-    # ApplicationPolicy.new(Current.user, Order.find_by_id(params[:id]))
-    # OrdersPolicy.new(Current.user, Order.find_by_id(params[:id]))
     respond_to do |format|
       if @order.update(order_params)
         if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
@@ -128,8 +125,7 @@ class OrdersController < Orders::BaseController
       params.require(:order).permit(
         :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, :purchaser_id, :vendor_id, :order_sequence,
         images: [],
-        # order_content_attributes:[
-        order_contents_attributes:[
+        order_content_attributes:[
           :id, :box, :crate, :pallet, :other, :other_description
         ]
       )
@@ -137,11 +133,7 @@ class OrdersController < Orders::BaseController
 
     def set_new_order
       @order = Order.new
-      # @order.build_order_content
-      @order.order_contents.build
-      # @order.order_contents.build if @order.order_content.nil?
-
-
+      @order.build_order_content
     end
 
     def turbo_render_flash_order_notice(flash_title) # move to concern

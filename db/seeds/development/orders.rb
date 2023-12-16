@@ -71,7 +71,7 @@ def create_orders(orders_to_create)
 
     other_desc = return_false_by_odds(50) ?  Faker::Lorem.sentence(word_count: rand(1..9)) : nil
 
-    order.order_contents.build(
+    order.build_order_content(
       box: return_order_content_amount_as_str,
       crate: return_order_content_amount_as_str,
       pallet: return_order_content_amount_as_str,
