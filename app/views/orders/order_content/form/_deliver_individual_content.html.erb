@@ -17,23 +17,23 @@
                 <p class="mt-1 text-sm text-gray-500">Deliver individual order contents</p>
               </div>
               <div class="m-auto grid grid-cols-1 gap-y-5 gap-x-3">
-                <%#= form.fields_for :order_content do |order_content_form| %>
-                <%= form.fields_for :order_content, order.order_content do |order_content_form| %>
-                  <% content = order_content_form.object %>
+                <%= form.fields_for :order_content do |partial_delivery_order_content_form| %>
+                <%#= form.fields_for :order_content, local_assigns[:order].order_content do |partial_delivery_order_content_form| %>
+                  <% content = partial_delivery_order_content_form.object %>
                   <div class="block">
                     <% content.package_types.each do |package_type| %>
                       <% if content.has_package_type_amount?(package_type) %>
                         <div class="mx-auto flex justify-between space-y-3 space-x-1 text-center">
                           <div class="justify-self-start self-center">
                             <div class="h-full">
-                              <%= order_content_form.label package_type, package_type.to_s.pluralize.capitalize, class: "mt-3 inline-block align-baseline text-sm text-gray-400 font-medium leading-6" %>
+                              <%= partial_delivery_order_content_form.label package_type, package_type.to_s.pluralize.capitalize, class: "mt-3 inline-block align-baseline text-sm text-gray-400 font-medium leading-6" %>
                             </div>
                           </div>
                           <%#= content_tag :span, "#{content.cast_package_amount_to_i! package_type}"%>
                           <%#= content_tag :span, "#{(content.send package_type)}" %>
                           <% if content.has_castable_package_amount? package_type %>
                             <div class="grow">
-                              <%= order_content_form.number_field package_type, min: 0, max: (content.cast_package_amount_to_i! package_type), data: { controller: "number-field-input", action: "number-field-input#rejectLetters"}, id: "partially_deliver_#{package_type}", class: 'w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
+                              <%= partial_delivery_order_content_form.number_field package_type, min: 0, max: (content.cast_package_amount_to_i! package_type), data: { controller: "number-field-input", action: "number-field-input#rejectLetters"}, id: "partially_deliver_#{package_type}", class: 'w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6' %>
                             </div>
                             <div class="justify-self-end self-center rounded-md border-0 p-1.5 bg-white text-slate-500 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
                               <span class="text-sm text-gray-400 font-medium leading-6">was: </span>

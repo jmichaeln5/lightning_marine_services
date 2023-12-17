@@ -1,16 +1,3 @@
-<% if Current.request_variant == :turbo_frame  %>
-  <%= turbo_frame_tag :modal do %>
-    <%= render "/layouts/stacked_shell/render_modal",
-      modal_title: (
-        link_to "New Order",
-        new_order_path,
-        target: "_top",
-        class: default_link_to_css_classes
-      ) do %>
-        <%= render '/orders/form', order: @order %>
-      <% end %>
-    <% end %>
-<% end %>
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: orders_path,
@@ -21,7 +8,20 @@
   <%= turbo_stream.update "card_title", "New Order" %>
   <%= turbo_stream.update "card_content" do %>
     <div class="p-3 overflow-hidden rounded-lg border border-gray-100 shadow">
-      <%= render 'form', order: @order %>
+      <%= render partial: '/orders/form', locals: { order: @order } %>
     </div>
   <% end %>
+<% end %>
+<% if Current.request_variant == :turbo_frame  %>
+  <%= turbo_frame_tag :modal do %>
+    <%= render "/layouts/stacked_shell/render_modal",
+      modal_title: (
+        link_to "New Order",
+        new_order_path,
+        target: "_top",
+        class: default_link_to_css_classes
+      ) do %>
+        <%= render partial:'/orders/form', order: @order %>
+      <% end %>
+    <% end %>
 <% end %>
