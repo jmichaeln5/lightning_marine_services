@@ -35,6 +35,10 @@ class Order < ApplicationRecord
     self.vendor.name
   end
 
+  def content
+    order_content
+  end
+
   def self.deliver_active
     all.each do |order|
       if order.archived == false

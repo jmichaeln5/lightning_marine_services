@@ -7,6 +7,9 @@ import { application } from "./application"
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import NumberFieldInputController from "./number_field_input_controller"
+application.register("number-field-input", NumberFieldInputController)
+
 import OrdersBulkController from "./orders_bulk_controller"
 application.register("orders-bulk", OrdersBulkController)
 

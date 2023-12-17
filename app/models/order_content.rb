@@ -1,5 +1,11 @@
 class OrderContent < ApplicationRecord
+  include CastablePackageTypeFields
+
   belongs_to :order
+
+  before_validation do
+    set_empty_package_type_amounts_to_zero
+  end
 
   validate :content_existz
 
