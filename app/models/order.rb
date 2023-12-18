@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: orders
+#
+#  id              :bigint           not null, primary key
+#  dept            :string
+#  purchaser_id    :bigint           not null
+#  vendor_id       :bigint           not null
+#  po_number       :string
+#  date_recieved   :datetime
+#  courrier        :string
+#  date_delivered  :datetime
+#  archived        :boolean
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  tracking_number :string
+#  order_sequence  :integer
+#
 class Order < ApplicationRecord
   include Attachable::Images # change attr name, can attach more than images
   include Searchable

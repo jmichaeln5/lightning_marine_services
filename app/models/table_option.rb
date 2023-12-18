@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: table_options
+#
+#  id                    :bigint           not null, primary key
+#  resource_table_type   :string
+#  resource_table_action :string
+#  option_list           :text
+#  user_id               :bigint           not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  resources_per_page    :integer          default(10), not null
+#
 class TableOption < ApplicationRecord
   belongs_to :user
 

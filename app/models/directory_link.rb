@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: directory_links
+#
+#  id         :bigint           not null, primary key
+#  title      :string
+#  link       :string
+#  desc       :text
+#  info       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class DirectoryLink < ApplicationRecord
 
   validates :link, :format => URI::regexp(%w(http https))
