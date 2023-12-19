@@ -12,12 +12,12 @@ class OrdersController < Orders::BaseController
 
     respond_to do |format|
       format.html
-      format.csv { # give these formats a better home, shouldn't be in this controller or action
+      format.csv { # give these formats a better home, shouldn't be in this controller or action ( ExportsController => Order.rb includes Ecportable )
         send_data (@orders).to_csv,
         filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
         type: 'text/csv; charset=utf-8'
       }
-      format.xls { # give these formats a better home, shouldn't be in this controller or action
+      format.xls { # give these formats a better home, shouldn't be in this controller or action ( ExportsController => Order.rb includes Ecportable )
         send_data (@orders).to_csv, # method should be to_xls
         filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
       }
