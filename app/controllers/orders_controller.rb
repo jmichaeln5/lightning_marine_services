@@ -25,6 +25,7 @@ class OrdersController < Orders::BaseController
   end
 
   def show
+    @order_content = @order.order_content
   end
 
   def new
