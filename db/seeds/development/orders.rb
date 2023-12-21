@@ -20,10 +20,9 @@ end
 
 def random_order_attributes
   date_recieved, date_delivered = nil
-  if random_odds == true
+  if ((random_odds(truthy_odds = 5, falsey_odd = 2)) == true)
     date_delivered = Faker::Date.between(from: '2017-01-23', to: Time.now)
     date_recieved = Faker::Date.between(from: date_delivered.prev_month, to: date_delivered)
-
     date_delivered = date_delivered.strftime("%Y-%m-%d")
     date_recieved = date_recieved.strftime("%Y-%m-%d")
   else
@@ -48,16 +47,20 @@ def rand_order_content_amt; "#{rand(0..7)}"; end;
 
 def random_order_content_attributes
   other, other_description = nil
-  other = [nil, nil, nil, nil, rand(0..7).to_s].sample
+  other = [nil, nil, nil, nil, nil, nil, nil, nil, rand(0..7).to_s].sample
 
   if [true, false].sample == true
     other_description = Faker::Lorem.words(number: rand(3..5)).join(" ") unless other.nil?
   end
 
+  box = rand_order_content_amt.to_s
+  crate = [nil, nil, rand_order_content_amt, rand_order_content_amt].sample
+  pallet = [nil, nil, nil, rand_order_content_amt, rand_order_content_amt].sample
+
   {
-    box: "#{rand_order_content_amt}",
-    crate: "#{rand_order_content_amt}",
-    pallet: "#{rand_order_content_amt}",
+    box: box.to_s,
+    crate: crate,
+    pallet: pallet,
     other: other,
     other_description: other_description,
     # packaging_materials_attributes: [
@@ -76,8 +79,23 @@ end
 orders_to_create.times do
   order = Order.new random_order_attributes_with_order_content
 
-  order.save ? return_msg = "Order #{order.id} created\n#{order.inspect}" : return_msg = "Invalid Order\n#{order.inspect}\nCould not save Order"
-  puts "\n\n#{return_msg}\n\n"
+  if order.order_content.box.to_i > 0
+    if (random_odds(truthy_odds = 3, falsey_odd = 10) == true)
+      new_val = ["ov", "OV", "xl", "XL"].sample
+      new_val = "+ #{rand(1..3)}#{new_val}"
+      order.order_content.box = "#{order.order_content.box} #{new_val}"
+    end
+  end
+
+  if order.save
+    puts "\n\n"
+    "Order #{order.id} created"
+    puts "#{' '*3} Order:\n#{' '*3}#{order.inspect}\n"
+    puts "#{' '*3} OrderContent:\n#{' '*3}#{order.order_content.inspect}"
+    puts "\n\n"
+  else
+    puts "Invalid Order\n#{order.inspect}\nCould not save Order"
+  end
 end
 
 Order.search_index.delete
