@@ -60,7 +60,6 @@ class OrderContents::PackagingMaterialsController < ApplicationController
     end
 
     def scope_packaging_material
-      # PackagingMaterial::Packageable::TYPES
       case params[:type]
       when 'Box'
         'PackagingMaterial::Box'

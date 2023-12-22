@@ -9,7 +9,6 @@ class PackagingMaterialsController < ApplicationController
   def update
     respond_to do |format|
       if @packaging_material.update(type: type_param, description: packaging_material_params[:description])
-
         format.html { redirect_to @order_content, notice: "Packaging material updated successfully." }
         format.json { render :show, status: :created, location: @order_content }
       else

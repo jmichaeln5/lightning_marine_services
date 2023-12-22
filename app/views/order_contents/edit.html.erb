@@ -1,12 +1,10 @@
 <% @page_heading_title = "Editing order content" %>
-
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: @order,
     fallback_location_text: "View order",
   } %>
 <% end %>
-
 <% content_for :page_heading_card do %>
   <%= turbo_stream.update "card_title", (link_to "Order #{@order.id}", order_path(@order), class:"font-medium text-cyan-700 hover:text-cyan-900") %>
   <%= turbo_stream.update "card_content" do %>

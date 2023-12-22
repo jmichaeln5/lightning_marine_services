@@ -1,32 +1,19 @@
 <% @page_heading_title = "Order Content" %>
-
-
-
-
-
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
     link_to_path: edit_order_content_path(@order_content),
     link_to_text: "Edit order content",
   } if authorized_internal_user? %>
-
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
-    fallback_location: dashboard_path,
-    fallback_location_text: "Dashboard",
+    fallback_location: @order,
+    fallback_location_text: "Back to order",
   } %>
 <% end %>
-
-
-
-
-
-
 <% content_for :page_heading_card do %>
   <% content_for :order_content_card_title do %>
     <span><%= link_to "Order #{@order.id}", order_path(@order), class: "font-medium text-cyan-700 hover:text-cyan-900" %>'s content</span>
   <% end %>
   <%= turbo_stream.update "card_title", yield(:order_content_card_title) %>
-
   <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
     <%= render partial: "/application/data_display/stats/overview_card", locals: {
       card_title: "Ship",
@@ -39,15 +26,11 @@
     <%= render partial: "/application/data_display/stats/overview_card", locals: {
       card_title: "Vendor",
       card_description: @order.vendor.name,
-      # card_link: (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
       card_link: vendor_data_overview_card_link,
       card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
     } %>
   </div>
 <% end %>
-
-
-
 <span id="order_content_#{@order_content.id}">
   <section class="pb-12">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
@@ -120,9 +103,6 @@
     <% end %>
   </div>
 </div>
-
-
-
 <div class="my-6 bg-slate-50 p-4 rounded-md overflow-x-auto">
   <div class="">
     <div class="grid grid-rows-1 gap-5">
@@ -138,8 +118,6 @@
     </div>
   </div>
 </div>
-
-
 <%#= render partial: "/order_contents/packaging_materials/table", locals: {
   order: @order,
   packaging_materials: @packaging_materials.crates,

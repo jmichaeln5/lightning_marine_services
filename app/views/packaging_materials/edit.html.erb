@@ -4,20 +4,15 @@
     fallback_location_text: "View order content",
   } %>
 <% end %>
-
 <h1>Editing Packaging Material</h1>
-
 <%= form_with(scope: :packaging_material, model: @packaging_material, url: packaging_material_path(@packaging_material), method: "patch") do |form| %>
-
   <div class="my-3">
     <%= render partial: "/layouts/stacked_shell/headings/form_errors", locals: {
       form: form,
     } if form.object.errors.any? %>
   </div>
-
   <% css_form_label = "block text-sm font-medium leading-6 text-gray-900" %>
   <% css_form_text_field = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-
   <div class="m-auto grid grid-rows-1 gap-y-3">
     <div>
       <%= form.label :type, 'Packaging material type', class: css_form_label %>

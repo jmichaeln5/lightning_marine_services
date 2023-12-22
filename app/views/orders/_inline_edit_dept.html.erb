@@ -1,14 +1,10 @@
 <% frame_id = dom_id(order, "#{attribute}_turbo_frame") %>
-
 <%= form_with model: order, class: "contents", data: { turbo_frame: frame_id } do |form| %>
-
   <%= turbo_frame_tag frame_id, class:"inline-edit" do %>
-
     <div>
       <%= dev_output_str("orders/_inline_edit_dept redered") %>
       <%= yield %>
     </div>
-
     <div>
       <%= link_to edit_dept_order_path(order), class: "inline-edit" do  %>
         <span class="ml-1 text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
@@ -17,8 +13,5 @@
         </span>
       <% end %>
     </div>
-
-
-
   <% end %>
 <% end %>
