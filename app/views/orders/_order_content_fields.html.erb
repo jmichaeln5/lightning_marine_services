@@ -1,10 +1,6 @@
 <% css_form_label = "inline-block align-middle text-sm font-medium leading-6" %>
 <% css_form_text_field = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-
 <div class="w-full">
-  <%#= form.fields_for :order_content do |order_content_form| %>
-  <%#= form.fields_for :order_content, order.order_content do |order_content_form| %>
-  <%#= form.fields_for local_assigns[:order].order_content do |order_content_form| %>
   <%= form.fields_for :order_content, local_assigns[:order].order_content do |order_content_form| %>
     <div class="h-auto">
       <div class="max-w-full max-h-full">

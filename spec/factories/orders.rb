@@ -15,15 +15,20 @@ order_date_recieved = order_recieval_date
 FactoryBot.define do
 
   factory :order do
+    # association :purchaser, factory: [:purchaser]
+    # association :vendor, factory: [:vendor]
+    purchaser { association :purchaser }
+    vendor { association :vendor }
+
     dept { order_dept }
     po_number { order_po_number }
     courrier { order_courrier }
     date_recieved { order_date_recieved }
     date_delivered { order_date_delivered }
     tracking_number { order_tracking_number }
-    association :purchaser, factory: [:purchaser]
-    association :vendor, factory: [:vendor]
-    association :order_content, factory: [:order_content]
+
+    # association :order_content, factory: [:order_content]
+    order_content { association :order_content }
 
     factory :valid_order do
       purchaser { create(:purchaser) }

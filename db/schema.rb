@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_20_213739) do
+ActiveRecord::Schema.define(version: 2023_12_19_084322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,16 @@ ActiveRecord::Schema.define(version: 2022_12_20_213739) do
     t.integer "order_sequence"
     t.index ["purchaser_id"], name: "index_orders_on_purchaser_id"
     t.index ["vendor_id"], name: "index_orders_on_vendor_id"
+  end
+
+  create_table "packaging_materials", force: :cascade do |t|
+    t.bigint "order_content_id", null: false
+    t.string "type"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_content_id"], name: "index_packaging_materials_on_order_content_id"
+    t.index ["type"], name: "index_packaging_materials_on_type"
   end
 
   create_table "purchasers", force: :cascade do |t|
@@ -155,5 +165,6 @@ ActiveRecord::Schema.define(version: 2022_12_20_213739) do
   add_foreign_key "order_contents", "orders"
   add_foreign_key "orders", "purchasers"
   add_foreign_key "orders", "vendors"
+  add_foreign_key "packaging_materials", "order_contents"
   add_foreign_key "table_options", "users"
 end

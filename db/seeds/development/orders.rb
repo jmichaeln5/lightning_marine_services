@@ -1,4 +1,5 @@
-vendors_to_create = rand(25..75)
+# vendors_to_create = rand(25..75)
+vendors_to_create = rand(9..25)
 purchasers_to_create = (vendors_to_create / 2).round(1)
 orders_to_create = vendors_to_create * 5
 

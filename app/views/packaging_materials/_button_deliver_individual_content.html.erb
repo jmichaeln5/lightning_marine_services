@@ -21,7 +21,7 @@
                 <%#= form.fields_for :order_content, local_assigns[:order].order_content do |partial_delivery_order_content_form| %>
                   <% content = partial_delivery_order_content_form.object %>
                   <div class="block">
-                    <% content.package_types.each do |package_type| %>
+                    <% %i(box crate pallet).each do |package_type| %>
                       <% if content.has_package_type_amount?(package_type) %>
                         <div class="mx-auto flex justify-between space-y-3 space-x-1 text-center">
                           <div class="justify-self-start self-center">

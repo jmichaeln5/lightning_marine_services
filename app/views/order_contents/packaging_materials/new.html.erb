@@ -1,0 +1,10 @@
+<% content_for :page_heading_button do %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: @order_content,
+    fallback_location_text: "View order content",
+  } %>
+<% end %>
+<%= render partial:'/order_contents/packaging_materials_fields', locals:{
+  order_content: @order_content,
+  packaging_material: @packaging_material,
+} %>

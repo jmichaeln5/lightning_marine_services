@@ -3,7 +3,7 @@
   <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
     link_to_path: edit_order_path(@order),
     link_to_text: "Edit order",
-  } %>
+  } if authorized_internal_user? %>
   <% if !authorized_internal_user? %>
     <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
       fallback_location: dashboard_path,
@@ -33,31 +33,87 @@
     </div>
   <% end %>
 <% end %>
+
 <span id="<%= dom_id @order %>">
-  <section class="pb-12">
+
+
+  <!-- <section class="pb-12">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
       <div class="sm:flex-auto">
         <div class="text-center sm:text-left">
-          <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
-            Order Content
-          </h1>
-          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about what was recieved in the order.</p>
+          <%#= tag.h1 'Order Content', class: %w( ml-2 text-2xl font-semibold leading-6 text-gray-900 ) %>
+          <%#= tag.p 'Information about what was recieved in the order.', class: %w( mt-2 ml-2 mb-1 text-md text-gray-700 ) %>
         </div>
       </div>
-      <!-- <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
-        <button type="button" class="rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Edit order content - placeholder</button>
-      </div> -->
     </div>
     <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
       <div class="px-4 py-5 sm:px-6">
-        <%= turbo_frame_tag @order_content, src: order_content_path(@order_content) do %>
-          Loading order content...
-        <% end %>
+        <%#= tag.p 'Order content' %>
+        <%# if (!@order_content.nil? && !(@order_content.new_record?)) %>
+          <%#= turbo_frame_tag "order_content_#{@order_content.id}", src: order_content_path(@order_content) do %>
+            <%#= tag.p 'Loading order content...' %>
+          <%# end %>
+        <%# end %>
       </div>
     </div>
-  </section>
+  </section> -->
+
+
+
+  <div class="pb-12">
+    <section>
+      <header class="sm:flex sm:items-center mb-5 sm:mb-7">
+        <div class="sm:flex-auto">
+          <div class="text-center sm:text-left">
+            <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+              Order content
+            </h1>
+            <%= tag.p 'Information about what was recieved in the order.', class: %w( mt-2 ml-2 mb-1 text-md text-gray-700 ) %>
+          </div>
+        </div>
+        <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
+           <%= button_to(
+             "View order content",
+             order_content_path(@order_content),
+             method: :get,
+             class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+           ) %>
+        </div>
+      </header>
+      <article>
+        <div class="w-full h-full overflow-hidden flex space-x-3 text-center sm:text-left">
+          <div class="grow rounded-md bg-white shadow">
+            <div class="">
+              <div class="overflow-hidden rounded-lg bg-white px-4 py-5 sm:p-6">
+                <%= tag.dt 'Boxes', class: %w( truncate text-sm font-medium text-gray-500 ) %>
+                <%= tag.dd @order_content.packaging_materials_boxes.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-900 ) %>
+              </div>
+            </div>
+          </div>
+          <div class="grow rounded-md bg-white shadow">
+            <div class="">
+              <div class="overflow-hidden rounded-lg bg-white px-4 py-5 sm:p-6">
+                <%= tag.dt 'Crates', class: %w( truncate text-sm font-medium text-gray-500 ) %>
+                <%= tag.dd @order_content.packaging_materials_crates.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-900 ) %>
+              </div>
+            </div>
+          </div>
+          <div class="grow rounded-md bg-white shadow">
+            <div class="">
+              <div class="overflow-hidden rounded-lg bg-white px-4 py-5 sm:p-6">
+                <%= tag.dt 'Pallets', class: %w( truncate text-sm font-medium text-gray-500 ) %>
+                <%= tag.dd @order_content.packaging_materials_pallets.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-900 ) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+
   <section class="pb-12" aria-labelledby="order-details-more">
-    <div class="bg-white shadow sm:rounded-lg">
+    <div class="bg-white shadow rounded-lg">
       <div class="px-4 pt-5 pb-3 sm:px-6">
         <h2 class="mb-2 text-xl font-medium leading-6 text-gray-900">More details</h2>
         <p class="mt-1 max-w-2xl text-sm text-gray-500">More information about order.</p>
@@ -88,21 +144,6 @@
               </div>
             </div>
           </div>
-          <!--
-          <%# Tracking Number %>
-          <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
-            <div class="cursor-default">
-              <div class="text-sm font-medium text-gray-500">
-                Tracking Number
-              </div>
-              <div class="text-sm text-gray-900">
-                <%#= render "inline_edit", model: @order, attribute: :tracking_number do %>
-                  <%#= @order.tracking_number %>
-                <%# end %>
-              </div>
-            </div>
-          </div>
-          -->
           <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
             <div class="cursor-default">
               <div class="text-sm font-medium text-gray-500">
@@ -264,7 +305,7 @@
     </div>
   </section>
   <!-- <div>
-    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+    <div class="overflow-hidden bg-white shadow rounded-lg">
       <div class="px-4 py-5 sm:px-6">
         <div class="flex flex-wrap justify-around sm:justify-between">
           <div class=" sm:mx-0">
@@ -278,3 +319,46 @@
     </div>
   </div> -->
 </span>
+
+
+<article class="w-full my-12 rounded-md bg-white">
+  <%= tag.div class: "m-auto m-1 p-3 overflow-x-auto" do %>
+    <%= tag.div 'Test content', class: %w( my-3 text-center text-3xl font-bold) %>
+    <div class="flex space-y-3 grid grid-rows-1 gap-1">
+      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+      <%= tag.div '@order.inspect', class: %w( text-xl font-bold) %>
+        <%= tag.div @order.inspect, class: %w( ) %>
+      <% end %>
+      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+        <%= tag.div '@order.order_content.inspect', class: %w( text-xl font-bold) %>
+        <%= link_to @order.order_content.inspect, @order.order_content, class: "#{default_link_to_css_classes}", target:'_top' %>
+      <% end %>
+      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+        <%= tag.div '(@order.packaging_materials.map &:itself)', class: %w( text-xl font-bold) %>
+        <%= tag.div (@order.packaging_materials.map &:itself), class: %w( ) %>
+      <% end %>
+
+      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+        <%= tag.div class: "flex space-y-3 grid grid-rows-1 gap-1" do %>
+
+          <%= tag.div do %>
+            <%= tag.div '(@order.packaging_materials_boxes.map &:itself)', class: %w( text-md font-bold) %>
+            <%= tag.div (@order.packaging_materials_boxes.map &:itself), class: %w( text-sm ) %>
+          <% end %>
+
+          <%= tag.div do %>
+            <%= tag.div '(@order.packaging_materials_crates.map &:itself)', class: %w( text-md font-bold) %>
+            <%= tag.div (@order.packaging_materials_crates.map &:itself), class: %w( text-sm ) %>
+          <% end %>
+
+          <%= tag.div do %>
+            <%= tag.div '(@order.packaging_materials_pallets.map &:itself)', class: %w( text-md font-bold) %>
+            <%= tag.div (@order.packaging_materials_pallets.map &:itself), class: %w( text-sm ) %>
+          <% end %>
+
+        <% end %>
+      <% end %>
+
+    </div>
+  <% end %>
+</article>

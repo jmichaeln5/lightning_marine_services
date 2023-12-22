@@ -25,10 +25,17 @@ class Order < ApplicationRecord
   belongs_to :vendor
 
   has_one :order_content, dependent: :destroy
-  accepts_nested_attributes_for :order_content
+
+  has_many :packaging_materials, through: :order_content
+  has_many :packaging_materials_boxes, through: :order_content
+  has_many :packaging_materials_pallets, through: :order_content
+  has_many :packaging_materials_crates, through: :order_content
+
+  accepts_nested_attributes_for :order_content, allow_destroy: true
+  accepts_nested_attributes_for :packaging_materials, allow_destroy: true
 
   scope :archived, -> { where(archived: true) }
-  scope :unarchived, -> { where(archived: false) }
+  scope :unarchived, -> { where.not(archived: true) }
 
   scope :filter_by_purchasers, ->(sort_direction) {
     includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
@@ -39,6 +46,8 @@ class Order < ApplicationRecord
 
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
+
+  # validates :order_content, presence: true
 
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
@@ -51,10 +60,6 @@ class Order < ApplicationRecord
 
   def vendor_name
     self.vendor.name
-  end
-
-  def content
-    order_content
   end
 
   def self.deliver_active

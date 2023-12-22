@@ -1,13 +1,6 @@
 module OrderContent::CastablePackageTypeFields
   extend ActiveSupport::Concern
 
-  included do
-  end
-
-  def package_types
-    %i(box crate pallet)
-  end
-
   def has_package_type_amount?(attr_name)
     attr_val = send(attr_name)
 
@@ -39,9 +32,4 @@ module OrderContent::CastablePackageTypeFields
     return false if attr_val.count("a-zA-Z") > 0
     return true
   end
-
-  private
-    def set_empty_package_type_amounts_to_zero
-      # debugger
-    end
 end

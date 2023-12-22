@@ -1,5 +1,6 @@
 class OrdersController < Orders::BaseController
   before_action :authorize_internal_user, only: %i[ new create edit destroy ]
+
   before_action :set_page_heading_title
   before_action :set_order, only: %i[ show hovercard update destroy ]
 
@@ -26,15 +27,21 @@ class OrdersController < Orders::BaseController
 
   def show
     @order_content = @order.order_content
+    @order_content ||= @order.build_order_content
+
+    @packaging_materials = @order.packaging_materials
   end
 
   def new
-    set_new_order
+    @order = Order.new
+    @order_content = @order.build_order_content
   end
 
   def edit
     @order = Order.find(params[:id])
-    @order.build_order_content if @order.order_content.nil?
+
+    @order_content = @order.order_content
+    @order_content ||= @order.build_order_content
   end
 
   def create

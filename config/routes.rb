@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, skip: [ :sessions, :registrations, :passwords ]
-  
+
   # Users::SessionsController
   devise_scope :user do
     get 'users/sign_in', to: 'users/sessions#new', as:'new_user_session'
@@ -79,9 +79,38 @@ Rails.application.routes.draw do
   end
 
   resources :orders do
-    resources :order_contents, only: [:index, :new, :create]
+    resources :order_contents, controller:'orders/order_contents', only: [:create]
   end
   resources :order_contents, only: [:show, :edit, :update, :destroy]
+
+  resources :packaging_materials, only: [:show, :edit, :update, :destroy]
+  # resources :packaging_materials, only: [:show], as: :packaging_material_box, type: 'Box'
+  get '/packaging_materials/:id', to: 'packaging_materials#show', as: :packaging_material_box, type: 'Box'
+  get '/packaging_materials/:id', to: 'packaging_materials#show', as: :packaging_material_crate, type: 'Crate'
+  get '/packaging_materials/:id', to: 'packaging_materials#show', as: :packaging_material_pallet, type: 'Pallet'
+
+  resources :order_contents, only: [:show] do  # NOTE # should match  # resources :packaging_materials, controller: :packaging_materials, only: [:index, :new, :create],  module: :order_contents, as: :order_content_packaging_materials
+    resources :packaging_materials, controller: 'order_contents/packaging_materials', only: [:index, :new, :create]
+  end
+  # resources :packaging_materials, controller: :packaging_materials, module: :order_contents, only: [:index, :new, :create], as: :order_content_packaging_materials
+
+  # get '/order_contents/:order_content_id/packaging_materials/boxes', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_boxes, type: 'Box'         # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
+  # get '/order_contents/:order_content_id/packaging_materials/crates', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_crates, type: 'Crate'     # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
+  # get '/order_contents/:order_content_id/packaging_materials/pallets', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_pallets, type: 'Pallet'  # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
+  get '/order_contents/:order_content_id/packaging_materials/boxes', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_material_boxes, type: 'Box'                ###  using 👈🏾  because ☝🏾 ☝🏾 ☝🏾
+  get '/order_contents/:order_content_id/packaging_materials/crates', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_material_crates, type: 'Crate'            ###  using 👈🏾  because ☝🏾 ☝🏾 ☝🏾
+  get '/order_contents/:order_content_id/packaging_materials/pallets', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_material_pallets, type: 'Pallet'         ###  using 👈🏾  because ☝🏾 ☝🏾 ☝🏾
+
+
+
+  get '/order_contents/:order_content_id/packaging_materials/new/boxes', to: 'order_contents/packaging_materials#new', as: :new_order_content_packaging_material_box, type: 'Box'
+  get '/order_contents/:order_content_id/packaging_materials/new/crates', to: 'order_contents/packaging_materials#new', as: :new_order_content_packaging_material_crate, type: 'Crate'
+  get '/order_contents/:order_content_id/packaging_materials/new/pallets', to: 'order_contents/packaging_materials#new', as: :new_order_content_packaging_material_pallet, type: 'Pallet'
+
+  post '/order_contents/:order_content_id/packaging_materials/boxes', to: 'order_contents/packaging_materials#create', type: 'Box'
+  post '/order_contents/:order_content_id/packaging_materials/crates', to: 'order_contents/packaging_materials#create', type: 'Crate'
+  post '/order_contents/:order_content_id/packaging_materials/pallets', to: 'order_contents/packaging_materials#create', type: 'Pallet'
+
 
   resources :purchasers do
     resources :orders, only: [:index, :new, :create ], module: :purchasers do
@@ -120,3 +149,14 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
+
+
+
+###########################
+###########################
+###########################
+###########################
+# resources :articles do
+#   resources :comments, only: [:index, :new, :create]
+# end
+# resources :comments, only: [:show, :edit, :update, :destroy]

@@ -1,2 +1,48 @@
-<h1>OrderContents#edit</h1>
-<p>Find me in app/views/order_contents/edit.html.erb</p>
+<% @page_heading_title = "Editing order content" %>
+
+<% content_for :page_heading_button do %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: @order,
+    fallback_location_text: "View order",
+  } %>
+<% end %>
+
+<% content_for :page_heading_card do %>
+  <%= turbo_stream.update "card_title", (link_to "Order #{@order.id}", order_path(@order), class:"font-medium text-cyan-700 hover:text-cyan-900") %>
+  <%= turbo_stream.update "card_content" do %>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
+        card_title: "Ship",
+        card_description: @order.purchaser.name,
+        card_link: (link_to "View Ship", purchaser_orders_path(@order.purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
+      } %>
+      <% vendor_data_overview_card_link = (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900") if authorized_internal_user?  %>
+      <% vendor_data_overview_card_link = content_tag(:p, "Vendor", class:"font-medium hover:cursor-default") if !authorized_internal_user? %>
+      <%= render partial: "/application/data_display/stats/overview_card", locals: {
+        card_title: "Vendor",
+        card_description: @order.vendor.name,
+        card_link: vendor_data_overview_card_link,
+        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
+      } %>
+    </div>
+  <% end %>
+<% end %>
+<section class="pb-12">
+  <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+    <div class="sm:flex-auto">
+      <div class="text-center sm:text-left">
+        <%= tag.h1 'Packaging materials', class: %w( ml-2 text-2xl font-semibold leading-6 text-gray-900 ) %>
+        <%= tag.p 'Edit information about the packaging materials recieved below.', class: %w( mt-2 ml-2 mb-1 text-md text-gray-700 ) %>
+      </div>
+    </div>
+  </div>
+  <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
+    <div class="px-4 py-5 sm:px-6">
+      <!-- <div class="my-6">
+        <%#= render partial:'/order_contents/packaging_materials/add_or_remove_form', locals:{ order: @order, order_content: @order_content} %>
+      </div> -->
+      <%= render partial:'/order_contents/form', locals:{ order: @order, order_content: @order_content} %>
+    </div>
+  </div>
+</section>

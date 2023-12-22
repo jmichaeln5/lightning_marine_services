@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @packaging_material.type %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @packaging_material.description %>
+</p>
+
+<%= link_to 'Edit', edit_packaging_material_path(@packaging_material) %> |
+<%= link_to 'Back', packaging_materials_path %>

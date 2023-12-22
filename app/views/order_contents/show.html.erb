@@ -1,64 +1,156 @@
-<span id="<%= dom_id @order_content %>">
-  <%= turbo_frame_tag @order_content do %>
-    <span>
-      <div class="my-3 mt-2 flex rounded-md shadow-sm">
-        <span class="hover:cursor-default inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Boxes</span>
-        <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-          <span class="ml-3">
-            <%= @order_content.box.present? ? @order_content.box : '0' %>
-          </span>
-        </div>
-      </div>
-      <div class="my-3 mt-2 flex rounded-md shadow-sm">
-        <span class="hover:cursor-default inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Crates</span>
-        <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-          <span class="ml-3">
-            <%= @order_content.crate.present? ? @order_content.crate : '0' %>
-          </span>
-        </div>
-      </div>
-      <div class="my-3 mt-2 flex rounded-md shadow-sm">
-        <span class="hover:cursor-default inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Pallets</span>
-        <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-          <span class="ml-3">
-            <%= @order_content.pallet.present? ? @order_content.pallet : '0' %>
-          </span>
-        </div>
-      </div>
-      <% if @order_content.other.present? %>
-        <div class="my-3 mt-2 flex rounded-md shadow-sm">
-          <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Other</span>
-          <div class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-            <span class="ml-3">
-              <%= @order_content.other.present? ? @order_content.other : '0' %>
-            </span>
-          </div>
-        </div>
-      <% end %>
-      <% if @order_content && @order_content.other_description.present? %>
-        <div class="mt-3 mb-2 sm:my-3 mt-2 rounded-md shadow-sm">
-          <div class="block w-full text-gray-500 text-sm mb-1 sm:mb-0 sm:leading-9">
-            Description:
-          </div>
-          <div class="block w-full min-w-0 flex-1 rounded-md border-1 border-gray-300 p-3 text-gray-500 text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-            <span>
-              <%= @order_content.other_description %>
-            </span>
-          </div>
-        </div>
-      <% end %>
-    </span>
-    <!-- <span>
-      <h2 class="mt-6 text-xl font-medium leading-6 text-gray-900 mb-3">Description</h2>
-      <%# if order.order_content.other_description.present? %>
-        <div class=" sm:col-span-4">
-          <p class="text-sm text-gray-900">
-            <%#= order.order_content.other_description %>
-          </p>
-        </div>
-      <%# else %>
-        <button type="button" class="rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Add description - placeholder</button>
-      <%# end %>
-    </span> -->
+<% @page_heading_title = "Order Content" %>
+
+
+
+
+
+<% content_for :page_heading_button do %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
+    link_to_path: edit_order_content_path(@order_content),
+    link_to_text: "Edit order content",
+  } if authorized_internal_user? %>
+
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: dashboard_path,
+    fallback_location_text: "Dashboard",
+  } %>
+<% end %>
+
+
+
+
+
+
+<% content_for :page_heading_card do %>
+  <% content_for :order_content_card_title do %>
+    <span><%= link_to "Order #{@order.id}", order_path(@order), class: "font-medium text-cyan-700 hover:text-cyan-900" %>'s content</span>
   <% end %>
+  <%= turbo_stream.update "card_title", yield(:order_content_card_title) %>
+
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
+    <%= render partial: "/application/data_display/stats/overview_card", locals: {
+      card_title: "Ship",
+      card_description: @order.purchaser.name,
+      card_link: (link_to "View Ship", purchaser_orders_path(@order.purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
+    } %>
+    <% vendor_data_overview_card_link = (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900") if authorized_internal_user?  %>
+    <% vendor_data_overview_card_link = content_tag(:p, "Vendor", class:"font-medium hover:cursor-default") if !authorized_internal_user? %>
+    <%= render partial: "/application/data_display/stats/overview_card", locals: {
+      card_title: "Vendor",
+      card_description: @order.vendor.name,
+      # card_link: (link_to "View Vendor", vendor_orders_path(@order.vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
+      card_link: vendor_data_overview_card_link,
+      card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
+    } %>
+  </div>
+<% end %>
+
+
+
+<span id="order_content_#{@order_content.id}">
+  <section class="pb-12">
+    <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+      <div class="sm:flex-auto">
+        <div class="text-center sm:text-left">
+          <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+            Packaging materials
+          </h1>
+          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about what was recieved in the order.</p>
+        </div>
+      </div>
+      <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
+        <%= button_to(
+          "Edit packaging materials",
+          edit_order_content_path(@order_content),
+          method: :get,
+          class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        ) %>
+      </div>
+    </div>
+    <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
+      <div class="px-4 py-5 sm:px-6">
+        <%#= turbo_frame_tag @order_content do %>
+          <%= render partial: "/packaging_materials/packaging_material", locals: {
+            order_content: @order_content,
+          } %>
+        <%# end %>
+      </div>
+    </div>
+  </section>
 </span>
+
+<!-- ******** PackagingMaterials ******** -->
+<!-- ******** PackagingMaterials ******** -->
+<!-- ******** PackagingMaterials ******** -->
+<!-- ******** PackagingMaterials ******** -->
+<!-- ******** PackagingMaterials ******** -->
+<!-- ******** PackagingMaterials ******** -->
+<!-- ******** PackagingMaterials ******** -->
+
+<!--
+  This example requires some changes to your config:
+
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+<div class="bg-white rounded-lg shadow pb-5 sm:pb-0">
+  <div class="pt-6 flex flex-wrap sm:flex-nowrap justify-center sm:justify-between sm:grid-rows-1 pb-6 border-b">
+    <div class="my-3 sm:my-0 mx-3 text-xl sm:text-base font-semibold leading-6 text-gray-900">
+      Packaging Materials
+    </div>
+    <div class="my-3 sm:my-0 mx-3 justify-self-end">
+      <%= link_to 'Add new packaging materials', new_order_content_packaging_material_path(@order_content), class: "btn btn_outline_indigo" %>
+      <%#= link_to 'Add new box', new_order_content_packaging_material_box_path(@order_content), class: "btn btn_outline_indigo" %>
+      <%#= link_to 'Add new crate', new_order_content_packaging_material_crate_path(@order_content), class: "btn btn_outline_indigo" %>
+      <%#= link_to 'Add new pallet', new_order_content_packaging_material_pallet_path(@order_content), class: "btn btn_outline_indigo" %>
+    </div>
+  </div>
+  <div class="mx-4 py-5 sm:mx-6">
+    <%= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
+        Loading packaging materials...
+    <% end %>
+  </div>
+</div>
+
+
+
+<div class="my-6 bg-slate-50 p-4 rounded-md overflow-x-auto">
+  <div class="">
+    <div class="grid grid-rows-1 gap-5">
+      <div class="bg-green-100 p-3 rounded-md text-xl">
+        <%= tag.h3 '@order_content.packaging_materials.boxes' %>
+        <%= tag.div @order_content.packaging_materials.boxes, class: %w( text-base ) %>
+      </div>
+
+      <div class="bg-green-100 p-3 rounded-md text-xl">
+        <%= tag.h3 '(@order_content.packaging_materials.map &:itself)' %>
+        <%= tag.div (@order_content.packaging_materials.map &:itself), class: %w( text-base ) %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<%#= render partial: "/order_contents/packaging_materials/table", locals: {
+  order: @order,
+  packaging_materials: @packaging_materials.crates,
+} %>
+
+<%#= render partial: "/order_contents/packaging_materials/table", locals: {
+  order: @order,
+  packaging_materials: @packaging_materials.pallets,
+} %>
+
+<%#= render partial: "/order_contents/packaging_materials/table", locals: {
+  order: @order,
+  packaging_materials: @packaging_materials.boxes,
+} %>

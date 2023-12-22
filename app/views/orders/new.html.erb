@@ -7,7 +7,7 @@
         target: "_top",
         class: default_link_to_css_classes
       ) do %>
-        <%= render '/orders/form', order: @order %>
+        <%= render partial:'/orders/form', locals: { order: @order, order_content: @order_content } %>
       <% end %>
     <% end %>
 <% end %>
@@ -21,7 +21,7 @@
   <%= turbo_stream.update "card_title", "New Order" %>
   <%= turbo_stream.update "card_content" do %>
     <div class="p-3 overflow-hidden rounded-lg border border-gray-100 shadow">
-      <%= render 'form', order: @order %>
+      <%= render partial:'/orders/form', locals: { order: @order, order_content: @order_content } %>
     </div>
   <% end %>
 <% end %>

@@ -11,9 +11,11 @@ ring-gray-300" %>
   <div class="overflow-hidden rounded-lg border border-gray-100 shadow">
     <div class="p-5">
       <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <%= card_icon %>
-        </div>
+        <% if local_assigns[:card_icon] %>
+          <div class="flex-shrink-0">
+            <%= card_icon %>
+          </div>
+        <% end %>
         <div class="ml-5 w-0 flex-1">
           <dl>
             <dt class="cursor-default truncate text-sm font-medium text-gray-500"> <%= card_title %> </dt>
@@ -24,10 +26,12 @@ ring-gray-300" %>
         </div>
       </div>
     </div>
-    <div class="bg-gray-50 px-5 py-3">
-      <div class="text-sm">
-        <%= card_link %>
+    <% if local_assigns[:card_link] %>
+      <div class="bg-gray-50 px-5 py-3">
+        <div class="text-sm">
+          <%= card_link %>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>
