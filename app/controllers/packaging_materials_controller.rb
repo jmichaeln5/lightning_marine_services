@@ -32,8 +32,7 @@ class PackagingMaterialsController < ApplicationController
     end
 
     def type_param
-      packaging_material_type_param = params.fetch(:type, '')
-
+      # packaging_material_type_param = params.fetch(:type, '')
       (packaging_material_params[:type].in? PackagingMaterial::Packageable::TYPES) ? packaging_material_params[:type] : 'PackagingMaterial'
     end
 

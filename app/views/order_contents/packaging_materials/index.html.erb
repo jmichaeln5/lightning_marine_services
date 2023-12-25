@@ -75,15 +75,9 @@
           </div>
         </div>
       </div>
-
-
-
-
       <div class="bg-white m-3 sm:p-3 rounded-b-md rounded-r-md shadow">
-
         <% if @packaging_materials.size == 0 %>
           <div class="bg-slate-50 w-full h-full p-6 text-center">
-
             <% if authorized_internal_user? %>
               <h3 class="mt-2 text-sm font-semibold text-gray-900">
                 No packaging material<%= " '#{params[:type]}'" if params[:type] %>
@@ -92,10 +86,8 @@
             <% else %>
               <p class="text-md font-semibold text-gray-900"> No packaging material<%= " '#{params[:type]}'" if params[:type] %> </p>
             <% end %>
-
           </div>
         <% end %>
-
         <% unless @packaging_materials.size == 0 %>
           <div class="overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full align-middle sm:px-6 lg:px-8">
@@ -129,7 +121,6 @@
           </div>
         <% end %>
       </div>
-
       <% if authorized_internal_user? %>
         <% case request.path %>
         <% when order_content_packaging_materials_path(@order_content) %>
@@ -148,12 +139,9 @@
           <% button_text_packaging_material = "New packaging material" %>
           <% button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
         <% end %>
-
         <div class="inline-block w-full my-6">
           <div data-controller="visibility" data-visibility-value-toggled="false" class="w-full relative text-center">
             <button type="button" data-action="visibility#toggleTargets" class="w-full btn btn_outline_indigo" aria-controls="" aria-expanded="false">
-              <!-- Add new packaging material -->
-              <%#= request.path %>
               <%= button_text_packaging_material %>
             </button>
             <div data-visibility-target="hideable" hidden class="max-w-full mx-auto bg-gray-50" id="sub-menu-1">

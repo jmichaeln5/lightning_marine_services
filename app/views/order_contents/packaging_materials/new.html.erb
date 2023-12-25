@@ -4,9 +4,7 @@
     fallback_location_text: "View order content",
   } %>
 <% end %>
-
 <%= tag.h1 "New packaging material#{(params[:type].in? PackagingMaterial.humanized_types) ? (' (' + params[:type].downcase + ')' ) : ''}" %>
-
 <turbo-frame id="new_packaging_material">
   <%= form_with model: [@order_content, @packaging_material] do |form| %>
     <div class="mx-auto">
@@ -63,9 +61,6 @@
           </div> -->
         </div>
       </div>
-
-
-
     <% else %>
       <div class="my-3 w-full flex space-x-1 sm:space-x-3">
         <div class="grow w-3/4">

@@ -1,5 +1,4 @@
 class OrderContents::PackagingMaterialsController < ApplicationController
-# class OrderContents::PackagingMaterialsController < PackagingMaterialsController
   layout "stacked_shell"
 
   before_action :set_order_content, :set_order, only: %i[ index new create ]
@@ -65,31 +64,13 @@ class OrderContents::PackagingMaterialsController < ApplicationController
         'PackagingMaterial::Crate'
       when 'Pallet'
         'PackagingMaterial::Pallet'
-      # when 'Other'
-      #   'PackagingMaterial::Other'
       else 'Other'
         'PackagingMaterial::Other'
-      # else
-      #   'PackagingMaterial'
       end
     end
 
-    # def packaging_material_params
-    #   if packaging_material_scoped?
-    #     params.require("packaging_material_#{set_type}".to_sym).permit(
-    #       :type,
-    #       :description,
-    #     ).with_defaults(order_content_id: @order_content.id)
-    #   else
-    #     params.require(:packaging_material).permit(
-    #       :type,
-    #       :description,
-    #     ).with_defaults(order_content_id: @order_content.id)
-    #   end
-    # end
     def packaging_material_params
       packaging_material_from_param = "packaging_material"
-
       if packaging_material_scoped?
         packaging_material_from_param << "_#{type_param.downcase}"
         params.require(packaging_material_from_param.to_sym).permit(
