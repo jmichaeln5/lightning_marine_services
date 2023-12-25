@@ -59,4 +59,11 @@ module ApplicationHelper
       get_resource(controller_name).find(params[:id])
     end
   end
+
+  def active_or_inactive_css(path:, active_css:, inactive_css:)
+    # if current_page?(path)
+    #   active_css
+    # end
+    current_page?(path) ? active_css : inactive_css
+  end
 end

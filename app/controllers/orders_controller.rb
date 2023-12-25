@@ -29,7 +29,8 @@ class OrdersController < Orders::BaseController
     @order_content = @order.order_content
     @order_content ||= @order.build_order_content
 
-    @packaging_materials = @order.packaging_materials
+    # @packaging_materials = @order.packaging_materials
+    @packaging_materials = @order.packaging_materials.order(created_at: :desc)
   end
 
   def new

@@ -54,7 +54,7 @@
       </div>
     </div>
   </section> -->
-  <div class="pb-12">
+  <div class="mb-6">
     <section>
       <header class="sm:flex sm:items-center mb-5 sm:mb-7">
         <div class="sm:flex-auto">
@@ -66,44 +66,122 @@
           </div>
         </div>
         <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
-           <%= button_to(
-             "View order content",
-             order_content_path(@order_content),
-             method: :get,
-             class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-           ) %>
+          <%#= button_to(
+            "View order content",
+            order_content_path(@order_content),
+            method: :get,
+            class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          ) %>
+          <%#= button_to(
+            "Edit order content",
+            edit_order_content_path(@order_content),
+            method: :get,
+            class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          ) %>
         </div>
       </header>
-      <article>
-        <div class="w-full h-full overflow-hidden flex space-x-3 text-center sm:text-left">
-          <div class="grow rounded-md bg-white shadow">
-            <div class="">
-              <div class="overflow-hidden rounded-lg bg-white px-4 py-5 sm:p-6">
-                <%= tag.dt 'Boxes', class: %w( truncate text-sm font-medium text-gray-500 ) %>
-                <%= tag.dd @order_content.packaging_materials_boxes.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-900 ) %>
-              </div>
-            </div>
+
+
+      <article class="">
+        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div class="overflow-hidden text-center sm:text-left rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <%= tag.dt 'Boxes', class: %w( truncate text-sm font-medium text-gray-500 ) %>
+            <%= tag.dd @order_content.packaging_materials.boxes.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-9000 ) %>
           </div>
-          <div class="grow rounded-md bg-white shadow">
-            <div class="">
-              <div class="overflow-hidden rounded-lg bg-white px-4 py-5 sm:p-6">
-                <%= tag.dt 'Crates', class: %w( truncate text-sm font-medium text-gray-500 ) %>
-                <%= tag.dd @order_content.packaging_materials_crates.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-900 ) %>
-              </div>
-            </div>
+          <div class="overflow-hidden text-center sm:text-left rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <%= tag.dt 'Crates', class: %w( truncate text-sm font-medium text-gray-500 ) %>
+            <%= tag.dd @order_content.packaging_materials.crates.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-9000 ) %>
           </div>
-          <div class="grow rounded-md bg-white shadow">
-            <div class="">
-              <div class="overflow-hidden rounded-lg bg-white px-4 py-5 sm:p-6">
-                <%= tag.dt 'Pallets', class: %w( truncate text-sm font-medium text-gray-500 ) %>
-                <%= tag.dd @order_content.packaging_materials_pallets.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-900 ) %>
-              </div>
-            </div>
+          <div class="overflow-hidden text-center sm:text-left rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+            <%= tag.dt 'Pallets', class: %w( truncate text-sm font-medium text-gray-500 ) %>
+            <%= tag.dd @order_content.packaging_materials.pallets.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-9000 ) %>
           </div>
-        </div>
+        </dl>
       </article>
     </section>
   </div>
+
+
+  <span>
+    <section class="pb-12">
+      <!-- <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+        <div class="sm:flex-auto">
+          <div class="text-center sm:text-left">
+            <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+              Packaging materials
+            </h1>
+            <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about packaging materials recieved in the order.</p>
+          </div>
+        </div>
+        <%#= tag.div class: "text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer" do %>
+          <%#= button_to(
+            "Edit order content",
+            edit_order_content_path(@order_content),
+            method: :get,
+            class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          ) %>
+        <%# end %>
+      </div> -->
+      <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
+        <div class="bg-white rounded-lg">
+          <div class="py-6 flex flex-wrap sm:flex-nowrap justify-center sm:justify-between sm:grid-rows-1 border-b">
+            <div class="mt-1 text-center block w-full sm:inline-flex sm:w-auto sm:mx-3 text-lg font-semibold leading-6 text-gray-900">
+              Packaging Materials
+            </div>
+            <div class="block sm:inline-flex sm:w-auto mx-3 sm:justify-self-end mt-3 sm:mt-0">
+              <%= button_to(
+                "Bulk edit packaging materials",
+                edit_order_content_path(@order_content),
+                method: :get,
+                class:"w-full btn rounded-md bg-white py-2.5 px-3.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              ) if authorized_internal_user? %>
+
+              <!-- <%# if authorized_internal_user? %>
+                <div class="mr-3">
+                  <div data-controller="visibility" data-visibility-value-toggled="false" class="inline-flex rounded-md shadow-sm">
+                    <button type="button" data-action="visibility#toggleTargets" class="relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-normal text-gray-600 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">Add new packaging material</button>
+                    <div class="relative -ml-px block">
+                      <button type="button"  data-action="visibility#toggleTargets" class="relative inline-flex items-center rounded-r-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
+                        <span class="sr-only">Open options</span>
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                      <div data-visibility-target="hideable" hidden class="absolute right-0 z-10 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
+                        <div class="py-1" role="none">
+                          <%# dropdown_css = 'text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-4 py-2 text-sm' %>
+                          <%#= link_to 'New box', new_order_content_packaging_material_box_path(@order_content), class: dropdown_css %>
+                          <%#= link_to 'New crate', new_order_content_packaging_material_crate_path(@order_content), class: dropdown_css %>
+                          <%#= link_to 'New pallet', new_order_content_packaging_material_pallet_path(@order_content), class: dropdown_css %>
+                          <%#= link_to 'New other', new_order_content_packaging_material_path(@order_content), class: dropdown_css %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <%# end %> -->
+
+            </div>
+          </div>
+          <div class="mx-4 sm:mx-6">
+          <%= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
+            <%= tag.p 'Loading packaging materials...' %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+  </span>
+
+
+  <!-- <section class="pb-12" aria-labelledby="order-content-packaging-materials">
+    <div class="pt-5 pb-3 px-4 sm:px-0">
+      <%#= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
+        <%#= tag.p 'Loading packaging materials...' %>
+      <%# end %>
+    </div>
+  </section> -->
+
   <section class="pb-12" aria-labelledby="order-details-more">
     <div class="bg-white shadow rounded-lg">
       <div class="px-4 pt-5 pb-3 sm:px-6">
@@ -311,46 +389,44 @@
     </div>
   </div> -->
 </span>
-
-
-<article class="w-full my-12 rounded-md bg-white">
-  <%= tag.div class: "m-auto m-1 p-3 overflow-x-auto" do %>
-    <%= tag.div 'Test content', class: %w( my-3 text-center text-3xl font-bold) %>
+<!-- <article class="w-full my-12 rounded-md bg-white">
+  <%#= tag.div class: "m-auto m-1 p-3 overflow-x-auto" do %>
+    <%#= tag.div 'Test content', class: %w( my-3 text-center text-3xl font-bold) %>
     <div class="flex space-y-3 grid grid-rows-1 gap-1">
-      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
-      <%= tag.div '@order.inspect', class: %w( text-xl font-bold) %>
-        <%= tag.div @order.inspect, class: %w( ) %>
-      <% end %>
-      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
-        <%= tag.div '@order.order_content.inspect', class: %w( text-xl font-bold) %>
-        <%= link_to @order.order_content.inspect, @order.order_content, class: "#{default_link_to_css_classes}", target:'_top' %>
-      <% end %>
-      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
-        <%= tag.div '(@order.packaging_materials.map &:itself)', class: %w( text-xl font-bold) %>
-        <%= tag.div (@order.packaging_materials.map &:itself), class: %w( ) %>
-      <% end %>
+      <%#= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+      <%#= tag.div '@order.inspect', class: %w( text-xl font-bold) %>
+        <%#= tag.div @order.inspect, class: %w( ) %>
+      <%# end %>
+      <%#= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+        <%#= tag.div '@order.order_content.inspect', class: %w( text-xl font-bold) %>
+        <%#= link_to @order.order_content.inspect, @order.order_content, class: "#{default_link_to_css_classes}", target:'_top' %>
+      <%# end %>
+      <%#= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+        <%#= tag.div '(@order.packaging_materials.map &:itself)', class: %w( text-xl font-bold) %>
+        <%#= tag.div (@order.packaging_materials.map &:itself), class: %w( ) %>
+      <%# end %>
 
-      <%= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
-        <%= tag.div class: "flex space-y-3 grid grid-rows-1 gap-1" do %>
+      <%#= tag.div class: "shrink rounded-md bg-green-100 p-3" do %>
+        <%#= tag.div class: "flex space-y-3 grid grid-rows-1 gap-1" do %>
 
-          <%= tag.div do %>
-            <%= tag.div '(@order.packaging_materials_boxes.map &:itself)', class: %w( text-md font-bold) %>
-            <%= tag.div (@order.packaging_materials_boxes.map &:itself), class: %w( text-sm ) %>
-          <% end %>
+          <%#= tag.div do %>
+            <%#= tag.div '(@order.packaging_materials_boxes.map &:itself)', class: %w( text-md font-bold) %>
+            <%#= tag.div (@order.packaging_materials_boxes.map &:itself), class: %w( text-sm ) %>
+          <%# end %>
 
-          <%= tag.div do %>
-            <%= tag.div '(@order.packaging_materials_crates.map &:itself)', class: %w( text-md font-bold) %>
-            <%= tag.div (@order.packaging_materials_crates.map &:itself), class: %w( text-sm ) %>
-          <% end %>
+          <%#= tag.div do %>
+            <%#= tag.div '(@order.packaging_materials_crates.map &:itself)', class: %w( text-md font-bold) %>
+            <%#= tag.div (@order.packaging_materials_crates.map &:itself), class: %w( text-sm ) %>
+          <%# end %>
 
-          <%= tag.div do %>
-            <%= tag.div '(@order.packaging_materials_pallets.map &:itself)', class: %w( text-md font-bold) %>
-            <%= tag.div (@order.packaging_materials_pallets.map &:itself), class: %w( text-sm ) %>
-          <% end %>
+          <%#= tag.div do %>
+            <%#= tag.div '(@order.packaging_materials_pallets.map &:itself)', class: %w( text-md font-bold) %>
+            <%#= tag.div (@order.packaging_materials_pallets.map &:itself), class: %w( text-sm ) %>
+          <%# end %>
 
-        <% end %>
-      <% end %>
+        <%# end %>
+      <%# end %>
 
     </div>
-  <% end %>
-</article>
+  <%# end %>
+</article> -->

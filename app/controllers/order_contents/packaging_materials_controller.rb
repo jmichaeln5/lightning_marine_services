@@ -1,10 +1,17 @@
 class OrderContents::PackagingMaterialsController < ApplicationController
+# class OrderContents::PackagingMaterialsController < PackagingMaterialsController
   layout "stacked_shell"
 
   before_action :set_order_content, :set_order, only: %i[ index new create ]
 
   def index
-    @packaging_materials = @order_content.packaging_materials
+    packaging_materials =
+      if packaging_material_scoped?
+        @order_content.packaging_materials.where(type: "PackagingMaterial::#{type_param}")
+      else
+        @order_content.packaging_materials
+      end
+    @packaging_materials = packaging_materials.order(created_at: :desc)
   end
 
   def new
@@ -12,43 +19,34 @@ class OrderContents::PackagingMaterialsController < ApplicationController
   end
 
   def create
-    packaging_material_klass = scope_packaging_material.constantize
-    @packaging_material = packaging_material_klass.new packaging_material_params
+    @packaging_material = PackagingMaterial.new packaging_material_params
 
     respond_to do |format|
       if @packaging_material.save
-        format.html { redirect_to @order_content, notice: "Packaging material was successfully created." }
-        format.json { render :show, status: :created, location: @order_content }
+        format.html { redirect_to @order, notice: "Packaging material was successfully created." }
+        format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @order_content.errors, status: :unprocessable_entity }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
   end
 
   private
+    def type_param
+      (params[:type].in? PackagingMaterial.humanized_types) ? params[:type] : PackagingMaterial::Packageable::TYPES
+    end
+
+    def packaging_material_scoped?
+      params[:type].in? PackagingMaterial.humanized_types
+    end
+
     def set_order_content
       @order_content = OrderContent.find(params[:order_content_id])
     end
 
     def set_order
       @order = @order_content.order
-    end
-
-    def set_type
-      case params[:type]
-      when 'Box'
-        'box'
-      when 'Crate'
-        'crate'
-      when 'Pallet'
-        'pallet'
-      end
-    end
-
-    def packaging_material_scoped?
-      valid_scopes = ['Box', 'Crate', 'Pallet']
-      params[:type].in? valid_scopes
     end
 
     def build_from_scoped
@@ -67,33 +65,47 @@ class OrderContents::PackagingMaterialsController < ApplicationController
         'PackagingMaterial::Crate'
       when 'Pallet'
         'PackagingMaterial::Pallet'
-      else
-        'PackagingMaterial'
+      # when 'Other'
+      #   'PackagingMaterial::Other'
+      else 'Other'
+        'PackagingMaterial::Other'
+      # else
+      #   'PackagingMaterial'
       end
     end
 
-    def get_scoped_subclass
-      case params[:type]
-      when 'Box'
-        'PackagingMaterial::Box'
-      when 'Crate'
-        'PackagingMaterial::Crate'
-      when 'Pallet'
-        'PackagingMaterial::Pallet'
-      end
-    end
-
+    # def packaging_material_params
+    #   if packaging_material_scoped?
+    #     params.require("packaging_material_#{set_type}".to_sym).permit(
+    #       :type,
+    #       :description,
+    #     ).with_defaults(order_content_id: @order_content.id)
+    #   else
+    #     params.require(:packaging_material).permit(
+    #       :type,
+    #       :description,
+    #     ).with_defaults(order_content_id: @order_content.id)
+    #   end
+    # end
     def packaging_material_params
+      packaging_material_from_param = "packaging_material"
+
       if packaging_material_scoped?
-        params.require("packaging_material_#{set_type}".to_sym).permit(
+        packaging_material_from_param << "_#{type_param.downcase}"
+        params.require(packaging_material_from_param.to_sym).permit(
           :type,
           :description,
-        ).with_defaults(order_content_id: @order_content.id)
+        ).with_defaults(
+          order_content_id: @order_content.id,
+          type: scope_packaging_material,
+        )
       else
-        params.require(:packaging_material).permit(
+        params.require(packaging_material_from_param.to_sym).permit(
           :type,
           :description,
-        ).with_defaults(order_content_id: @order_content.id)
+        ).with_defaults(
+          order_content_id: @order_content.id,
+        )
       end
     end
 end

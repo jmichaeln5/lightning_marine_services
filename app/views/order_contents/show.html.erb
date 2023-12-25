@@ -37,24 +37,24 @@
       <div class="sm:flex-auto">
         <div class="text-center sm:text-left">
           <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
-            Packaging materials
+            Order content
           </h1>
-          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about what was recieved in the order.</p>
+          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about content recieved in the order.</p>
         </div>
       </div>
       <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
-        <%= button_to(
-          "Edit packaging materials",
+        <%#= button_to(
+          "Bulk edit order content",
           edit_order_content_path(@order_content),
           method: :get,
           class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        ) %>
+        ) if authorized_internal_user? %>
       </div>
     </div>
     <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
       <div class="px-4 py-5 sm:px-6">
         <%#= turbo_frame_tag @order_content do %>
-          <%= render partial: "/packaging_materials/packaging_material", locals: {
+          <%= render partial: "/order_contents/order_content", locals: {
             order_content: @order_content,
           } %>
         <%# end %>
@@ -71,6 +71,100 @@
 <!-- ******** PackagingMaterials ******** -->
 <!-- ******** PackagingMaterials ******** -->
 
+<!-- <span>
+  <section class="pb-12">
+    <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+      <div class="sm:flex-auto">
+        <div class="text-center sm:text-left">
+          <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+            Packaging materials
+          </h1>
+          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about packaging materials recieved in the order.</p>
+        </div>
+      </div>
+      <%#= tag.div class: "text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer" do %>
+        <%#= button_to(
+          "Edit order content",
+          edit_order_content_path(@order_content),
+          method: :get,
+          class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        ) %>
+      <%# end %>
+    </div>
+    <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
+      <div class="bg-white rounded-lg shadow pb-5 sm:pb-0">
+        <div class="pt-6 flex flex-wrap sm:flex-nowrap justify-center sm:justify-between sm:grid-rows-1 pb-6 border-b">
+          <div class="my-3 sm:my-0 mx-3 text-xl sm:text-base font-semibold leading-6 text-gray-900">
+            Packaging Materials
+          </div>
+          <div class="my-3 sm:my-0 mx-3 justify-self-end">
+            <%#= link_to 'Add new box', new_order_content_packaging_material_box_path(@order_content), class: "btn btn_outline_indigo" %>
+            <%#= link_to 'Add new crate', new_order_content_packaging_material_crate_path(@order_content), class: "btn btn_outline_indigo" %>
+            <%#= link_to 'Add new pallet', new_order_content_packaging_material_pallet_path(@order_content), class: "btn btn_outline_indigo" %>
+            <%#= link_to 'Add new packaging materials', new_order_content_packaging_material_path(@order_content), class: "btn btn_indigo" %>
+          </div>
+        </div>
+        <div class="mx-4 py-5 sm:mx-6">
+          <%#= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
+            <%#= tag.p 'Loading packaging materials...' %>
+          <%# end %>
+        </div>
+      </div>
+    </div>
+  </section>
+</span> -->
+
+
+<span>
+  <section class="">
+    <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+      <div class="sm:flex-auto">
+        <div class="text-center sm:text-left">
+          <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+            Packaging materials
+          </h1>
+          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about packaging materials recieved in the order.</p>
+        </div>
+      </div>
+      <%#= tag.div class: "text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer" do %>
+        <%#= button_to(
+          "Edit order content",
+          edit_order_content_path(@order_content),
+          method: :get,
+          class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        ) %>
+      <%# end %>
+    </div>
+    <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
+      <div class="bg-white rounded-lg shadow">
+        <div class="pt-6 pb-6 flex flex-wrap sm:flex-nowrap justify-center sm:justify-between sm:grid-rows-1 border-b">
+          <div class="my-3 sm:my-0 mx-3 text-xl sm:text-base font-semibold leading-6 text-gray-900">
+            Packaging Materials
+          </div>
+          <div class="my-3 sm:my-0 mx-3 justify-self-end">
+            <%= link_to 'Add new box', new_order_content_packaging_material_box_path(@order_content), class: "btn btn_outline_indigo" %>
+            <%= link_to 'Add new crate', new_order_content_packaging_material_crate_path(@order_content), class: "btn btn_outline_indigo" %>
+            <%= link_to 'Add new pallet', new_order_content_packaging_material_pallet_path(@order_content), class: "btn btn_outline_indigo" %>
+            <%= link_to 'Add new packaging materials', new_order_content_packaging_material_path(@order_content), class: "btn btn_indigo" %>
+          </div>
+        </div>
+        <div class="mx-4 py-5 sm:mx-6">
+        <%= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
+          <%= tag.p 'Loading packaging materials...' %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+</span>
+
+
+
+<%#= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
+  <%#= tag.p 'Loading packaging materials...' %>
+<%# end %>
+
+
 <!--
   This example requires some changes to your config:
 
@@ -85,39 +179,24 @@
   }
   ```
 -->
-<div class="bg-white rounded-lg shadow pb-5 sm:pb-0">
-  <div class="pt-6 flex flex-wrap sm:flex-nowrap justify-center sm:justify-between sm:grid-rows-1 pb-6 border-b">
-    <div class="my-3 sm:my-0 mx-3 text-xl sm:text-base font-semibold leading-6 text-gray-900">
-      Packaging Materials
-    </div>
-    <div class="my-3 sm:my-0 mx-3 justify-self-end">
-      <%= link_to 'Add new packaging materials', new_order_content_packaging_material_path(@order_content), class: "btn btn_outline_indigo" %>
-      <%#= link_to 'Add new box', new_order_content_packaging_material_box_path(@order_content), class: "btn btn_outline_indigo" %>
-      <%#= link_to 'Add new crate', new_order_content_packaging_material_crate_path(@order_content), class: "btn btn_outline_indigo" %>
-      <%#= link_to 'Add new pallet', new_order_content_packaging_material_pallet_path(@order_content), class: "btn btn_outline_indigo" %>
-    </div>
-  </div>
-  <div class="mx-4 py-5 sm:mx-6">
-    <%= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
-        Loading packaging materials...
-    <% end %>
-  </div>
-</div>
-<div class="my-6 bg-slate-50 p-4 rounded-md overflow-x-auto">
+
+<!-- <div class="my-6 bg-slate-50 p-4 rounded-md overflow-x-auto">
   <div class="">
     <div class="grid grid-rows-1 gap-5">
       <div class="bg-green-100 p-3 rounded-md text-xl">
-        <%= tag.h3 '@order_content.packaging_materials.boxes' %>
-        <%= tag.div @order_content.packaging_materials.boxes, class: %w( text-base ) %>
+        <%#= tag.h3 '@order_content.packaging_materials.boxes' %>
+        <%#= tag.div @order_content.packaging_materials.boxes, class: %w( text-base ) %>
       </div>
 
       <div class="bg-green-100 p-3 rounded-md text-xl">
-        <%= tag.h3 '(@order_content.packaging_materials.map &:itself)' %>
-        <%= tag.div (@order_content.packaging_materials.map &:itself), class: %w( text-base ) %>
+        <%#= tag.h3 '(@order_content.packaging_materials.map &:itself)' %>
+        <%#= tag.div (@order_content.packaging_materials.map &:itself), class: %w( text-base ) %>
       </div>
     </div>
   </div>
-</div>
+</div> -->
+
+
 <%#= render partial: "/order_contents/packaging_materials/table", locals: {
   order: @order,
   packaging_materials: @packaging_materials.crates,

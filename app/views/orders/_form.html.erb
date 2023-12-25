@@ -91,6 +91,33 @@
                   </div>
                 </div>
               </fieldset>
+
+
+
+
+
+
+              <!-- https://gorails.com/episodes/dynamic-nested-forms-with-turbo?autoplay=1 -->
+              <!-- https://gorails.com/episodes/dynamic-nested-forms-with-turbo?autoplay=1 -->
+              <!-- https://gorails.com/episodes/dynamic-nested-forms-with-turbo?autoplay=1 -->
+              <!-- https://gorails.com/episodes/dynamic-nested-forms-with-turbo?autoplay=1 -->
+              <!-- https://gorails.com/episodes/dynamic-nested-forms-with-turbo?autoplay=1 -->
+              <!-- https://gorails.com/episodes/dynamic-nested-forms-with-turbo?autoplay=1 -->
+
+              <!-- https://github.com/gorails-screencasts/dynamic-nested-forms-with-turbo-get -->
+              <!-- https://github.com/gorails-screencasts/dynamic-nested-forms-with-turbo-get -->
+              <!-- https://github.com/gorails-screencasts/dynamic-nested-forms-with-turbo-get -->
+
+
+              <!-- https://www.driftingruby.com/episodes/nested-forms-from-scratch-with-stimulusjs?query=accepts+nested -->
+              <!-- https://www.driftingruby.com/episodes/nested-forms-from-scratch-with-stimulusjs?query=accepts+nested -->
+              <!-- https://www.driftingruby.com/episodes/nested-forms-from-scratch-with-stimulusjs?query=accepts+nested -->
+
+
+              <!-- https://dev.to/meaganewaller/use-a-nested-dynamic-form-with-a-hasmany-through-association-in-rails-33hf -->
+              <!-- https://dev.to/meaganewaller/use-a-nested-dynamic-form-with-a-hasmany-through-association-in-rails-33hf -->
+              <!-- https://dev.to/meaganewaller/use-a-nested-dynamic-form-with-a-hasmany-through-association-in-rails-33hf -->
+
               <fieldset id="order-order-content-fields">
                 <div class="block my-6 hover:cursor-default">
                   <div class="w-full relative">
@@ -106,7 +133,12 @@
                   <article>
                     <%= render partial: '/orders/order_content_fields', locals: { form: form, order: local_assigns[:order]} %>
                     <div id="order_content" class="mb-2">
-                      <%= render partial: "/orders/order_contents/order_content", locals: { order_content: order_content } %>
+                      <%#= render partial: "/orders/order_contents/order_content", locals: { order_content: order_content } %>
+
+                      <%= render partial: "/order_contents/packaging_materials/add_or_remove_form" %>
+                      <%#= render partial: "/packaging_materials/button_deliver_individual_content", locals: { order_content: order_content, form: form } %>
+
+
                     </div>
                     <%#= render partial: '/order_contents/packaging_materials/form', locals: { form: form, order_content: order_content } %>
                     <!-- <%# unless @order.new_record? %>
@@ -119,6 +151,15 @@
                   </article>
                 </div>
               </fieldset>
+
+
+
+
+
+
+
+
+
             </section>
           </section>
           <section class="form-submission">

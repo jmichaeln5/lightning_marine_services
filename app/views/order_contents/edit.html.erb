@@ -1,8 +1,8 @@
 <% @page_heading_title = "Editing order content" %>
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
-    fallback_location: @order,
-    fallback_location_text: "View order",
+    fallback_location: @order_content,
+    fallback_location_text: "Back to order content",
   } %>
 <% end %>
 <% content_for :page_heading_card do %>

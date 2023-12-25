@@ -1,7 +1,7 @@
 <% content_for :page_heading_button do %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
-    fallback_location: @order,
-    fallback_location_text: "View order",
+    fallback_location: @order_content,
+    fallback_location_text: "Back to order content",
   } %>
 <% end %>
 <article>
@@ -20,73 +20,152 @@
     </div>
   </div>
   <div class="mt-8 flow-root">
-    <turbo-frame id="packaging_materials">
+    <turbo-frame id="packaging_materials" class="bg-current">
       <div>
         <!-- Dropdown menu on small screens -->
-        <div class="sm:hidden mx-3">
+        <div class="sm:hidden mt-5 mb-3">
           <label for="current-tab" class="sr-only">Select a tab</label>
-          <select id="current-tab" name="current-tab" class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-            <option selected>All</option>
-            <option>Boxes</option>
-            <option>Crates</option>
-            <option>Pallets</option>
+          <select id="current-tab" name="current-tab" class="block rounded-md w-full border-gray-300 text-base text-center focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+            <%= tag.option 'All', selected: current_page?(order_content_packaging_materials_path(@order_content)) %>
+            <%= tag.option 'Boxes', selected: current_page?(order_content_packaging_material_boxes_path(@order_content)) %>
+            <%= tag.option 'Crates', selected: current_page?(order_content_packaging_material_crates_path(@order_content)) %>
+            <%= tag.option 'Pallets', selected: current_page?(order_content_packaging_material_pallets_path(@order_content)) %>
+            <%= tag.option 'Other', selected: current_page?(order_content_packaging_material_others_path(@order_content)) %>
           </select>
         </div>
         <!-- Tabs at small breakpoint and up -->
-        <div class="hidden sm:block ml-3">
-          <nav class="-mb-px flex space-x-8">
-            <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-            <% current_tab_css = "border-indigo-500 text-indigo-600 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium" %>
-            <% default_tab_css = "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium" %>
-            <a href="#" class="text-base <%= current_tab_css %>">All</a>
-            <a href="#" class="text-base <%= default_tab_css %>">Boxes</a>
-            <a href="#" class="text-base <%= default_tab_css %>">Crates</a>
-            <a href="#" class="text-base <%= default_tab_css %>">Pallets</a>
-          </nav>
-        </div>
-      </div>
-      <%#= turbo_frame_tag @packaging_materials do %>
-      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead>
-              <tr>
-                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Order ID</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Packaging Material</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Delivered</th>
-                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                  <span class="sr-only">Edit</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <% @packaging_materials.each do |packaging_material| %>
-              <tr>
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                  <%= packaging_material.order_content.id %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= packaging_material.model_name.human %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <div class="inline-block max-w-full">
-                    <%= content_tag :span, packaging_material.description, class:'text-wrap' %>
-                  </div>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  packaging_material.delivered?
-                </td>
-                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                  <%= link_to 'Edit', edit_packaging_material_path(packaging_material), target:"_top", class: "text-indigo-600 hover:text-indigo-900" %>
-                </td>
-              </tr>
+        <div class="hidden sm:block">
+          <div class="border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+              <% css_current_tab = "border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
+              <% css_default_tab = "border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
+              <% css_current_tab_count = "bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
+              <% css_default_tab_count = "bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
+              <%= link_to order_content_packaging_materials_path(@order_content) do %>
+                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_materials_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
+                  <%= tag.span 'All' %>
+                  <%= tag.span @order_content.packaging_materials.size, class: active_or_inactive_css(path: order_content_packaging_materials_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
+                <% end %>
               <% end %>
-              <!-- More people... -->
-            </tbody>
-          </table>
+              <%= link_to order_content_packaging_material_boxes_path(@order_content) do %>
+                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_boxes_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
+                  <%= tag.span 'Boxes' %>
+                  <%= tag.span @order_content.packaging_materials.boxes.size, class: active_or_inactive_css(path: order_content_packaging_material_boxes_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
+                <% end %>
+              <% end %>
+              <%= link_to order_content_packaging_material_crates_path(@order_content) do %>
+                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_crates_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
+                  <%= tag.span 'Crates' %>
+                  <%= tag.span @order_content.packaging_materials.crates.size, class: active_or_inactive_css(path: order_content_packaging_material_crates_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
+                <% end %>
+              <% end %>
+              <%= link_to order_content_packaging_material_pallets_path(@order_content) do %>
+                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_pallets_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
+                  <%= tag.span 'Pallets' %>
+                  <%= tag.span @order_content.packaging_materials.pallets.size, class: active_or_inactive_css(path: order_content_packaging_material_pallets_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
+                <% end %>
+              <% end %>
+              <%= link_to order_content_packaging_material_others_path(@order_content) do %>
+                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_others_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
+                  <%= tag.span 'Other' %>
+                  <%= tag.span @order_content.packaging_materials.others.size, class: active_or_inactive_css(path: order_content_packaging_material_others_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
+                <% end %>
+              <% end %>
+            </nav>
+          </div>
         </div>
       </div>
+
+
+
+
+      <div class="bg-white m-3 sm:p-3 rounded-b-md rounded-r-md shadow">
+
+        <% if @packaging_materials.size == 0 %>
+          <div class="bg-slate-50 w-full h-full p-6 text-center">
+
+            <% if authorized_internal_user? %>
+              <h3 class="mt-2 text-sm font-semibold text-gray-900">
+                No packaging material<%= " '#{params[:type]}'" if params[:type] %>
+              </h3>
+              <p class="mt-1 text-sm text-gray-500">Add new packaging material<%= " '#{params[:type].downcase}'" if (params[:type] && (params[:type].downcase != 'other')) %> by clicking button below.</p>
+            <% else %>
+              <p class="text-md font-semibold text-gray-900"> No packaging material<%= " '#{params[:type]}'" if params[:type] %> </p>
+            <% end %>
+
+          </div>
+        <% end %>
+
+        <% unless @packaging_materials.size == 0 %>
+          <div class="overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full align-middle sm:px-6 lg:px-8">
+              <table class="min-w-full bg-white divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Packaging Material</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                      <span class="sr-only">Edit</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  <% @packaging_materials.each do |packaging_material| %>
+                    <tr>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <%= "#{packaging_material.type_name} #{packaging_material.description}" %>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        packaging_material.status
+                      </td>
+                      <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                        <%= link_to 'Edit', edit_packaging_material_path(packaging_material), target:"_top", class: "text-indigo-600 hover:text-indigo-900" if authorized_internal_user? %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <% if authorized_internal_user? %>
+        <% case request.path %>
+        <% when order_content_packaging_materials_path(@order_content) %>
+            <% button_text_packaging_material = "New packaging material" %>
+            <% button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
+        <% when order_content_packaging_material_boxes_path(@order_content) %>
+            <% button_text_packaging_material = "New packaging material- box" %>
+            <% button_packaging_material_path = new_order_content_packaging_material_box_path(@order_content) %>
+        <% when order_content_packaging_material_crates_path(@order_content) %>
+            <% button_text_packaging_material = "New packaging material- crate" %>
+            <% button_packaging_material_path = new_order_content_packaging_material_crate_path(@order_content) %>
+        <% when order_content_packaging_material_pallets_path(@order_content) %>
+            <% button_text_packaging_material = "New packaging material- pallet" %>
+            <% button_packaging_material_path = new_order_content_packaging_material_pallet_path(@order_content) %>
+        <% when order_content_packaging_material_others_path(@order_content) %>
+          <% button_text_packaging_material = "New packaging material" %>
+          <% button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
+        <% end %>
+
+        <div class="inline-block w-full my-6">
+          <div data-controller="visibility" data-visibility-value-toggled="false" class="w-full relative text-center">
+            <button type="button" data-action="visibility#toggleTargets" class="w-full btn btn_outline_indigo" aria-controls="" aria-expanded="false">
+              <!-- Add new packaging material -->
+              <%#= request.path %>
+              <%= button_text_packaging_material %>
+            </button>
+            <div data-visibility-target="hideable" hidden class="max-w-full mx-auto bg-gray-50" id="sub-menu-1">
+              <div class="mx-auto">
+                <%= turbo_frame_tag "new_packaging_material", src: button_packaging_material_path, loading: "lazy" do %>
+                  <%= tag.p 'Loading packaging materials...' %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </turbo-frame>
   </div>
 </article>

@@ -30,6 +30,7 @@ class Order < ApplicationRecord
   has_many :packaging_materials_boxes, through: :order_content
   has_many :packaging_materials_pallets, through: :order_content
   has_many :packaging_materials_crates, through: :order_content
+  has_many :packaging_materials_others, through: :order_content
 
   accepts_nested_attributes_for :order_content, allow_destroy: true
   accepts_nested_attributes_for :packaging_materials, allow_destroy: true
@@ -46,7 +47,6 @@ class Order < ApplicationRecord
 
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
-
   # validates :order_content, presence: true
 
   before_validation do

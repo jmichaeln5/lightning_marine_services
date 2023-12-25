@@ -1,10 +1,7 @@
 class OrderContentsController < ApplicationController
   layout "stacked_shell"
 
-  # before_action :set_order_content, :set_order, only: %i[ show edit update destroy ]
-  before_action :set_order_content, only: %i[ show edit update destroy ]
-  before_action :set_order, only: %i[ show edit update destroy ]
-  before_action :set_packaging_materials, only: %i[ show edit update destroy ]
+  before_action :set_order_content, :set_order, :set_packaging_materials, only: %i[ show edit update destroy ]
 
   def show
   end
@@ -15,8 +12,8 @@ class OrderContentsController < ApplicationController
   def update
     respond_to do |format|
       if @order_content.update(order_content_params)
-        format.html { redirect_to @order_content, notice: "Order content updated successfully." }
-        format.json { render :show, status: :ok, location: @order_content }
+        format.html { redirect_to @order, notice: "Order content updated successfully." }
+        format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @order_content.errors, status: :unprocessable_entity }
@@ -37,7 +34,8 @@ class OrderContentsController < ApplicationController
     end
 
     def set_packaging_materials
-      @packaging_materials = @order_content.packaging_materials
+      # @packaging_materials = @order_content.packaging_materials
+      @packaging_materials = @order_content.packaging_materials.order(created_at: :desc)
     end
 
     def order_content_params

@@ -19,12 +19,13 @@ class OrderContent < ApplicationRecord
 
   has_many :packaging_materials, dependent: :destroy
   has_many :packaging_materials_boxes, class_name: 'PackagingMaterial::Box'
-  has_many :packaging_materials_pallets, class_name: 'PackagingMaterial::Pallet'
   has_many :packaging_materials_crates, class_name: 'PackagingMaterial::Crate'
+  has_many :packaging_materials_pallets, class_name: 'PackagingMaterial::Pallet'
+  has_many :packaging_materials_others, class_name: 'PackagingMaterial::Other'
 
   accepts_nested_attributes_for :packaging_materials, allow_destroy: true
 
-  validate :content_existz
+  # validate :content_existz
 
   before_validation do
     set_empty_package_type_amounts_to_zero

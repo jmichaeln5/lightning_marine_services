@@ -7,6 +7,9 @@ module PackagingMaterial::Packageables
     scope :boxes, -> { where(type: 'PackagingMaterial::Box') }
     scope :crates, -> { where(type: 'PackagingMaterial::Crate') }
     scope :pallets, -> { where(type: 'PackagingMaterial::Pallet') }
+
+    # scope :others, -> { where(type: 'PackagingMaterial::Other') }
+    scope :others, -> { where.not(type: (PackagingMaterial::Packageable::TYPES - ["PackagingMaterial::Other"])) }
   end
 end
 

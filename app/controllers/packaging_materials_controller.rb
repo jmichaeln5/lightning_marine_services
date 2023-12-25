@@ -1,7 +1,7 @@
 class PackagingMaterialsController < ApplicationController
   layout "stacked_shell"
 
-  before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ show edit update destroy ]
+  before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ edit update ]
 
   def edit
   end
@@ -9,8 +9,8 @@ class PackagingMaterialsController < ApplicationController
   def update
     respond_to do |format|
       if @packaging_material.update(type: type_param, description: packaging_material_params[:description])
-        format.html { redirect_to @order_content, notice: "Packaging material updated successfully." }
-        format.json { render :show, status: :created, location: @order_content }
+        format.html { redirect_to @order, notice: "Packaging material updated successfully." }
+        format.json { render :show, status: :created, location: @order }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @order_content.errors, status: :unprocessable_entity }
@@ -32,6 +32,8 @@ class PackagingMaterialsController < ApplicationController
     end
 
     def type_param
+      packaging_material_type_param = params.fetch(:type, '')
+
       (packaging_material_params[:type].in? PackagingMaterial::Packageable::TYPES) ? packaging_material_params[:type] : 'PackagingMaterial'
     end
 
