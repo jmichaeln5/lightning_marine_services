@@ -45,5 +45,30 @@
         </div>
       </div>
     </div>
+    <div class="p-3 shadow">
+      <div class="block hover:cursor-default">
+        <div class="w-full relative">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="w-full border-t border-gray-200"></div>
+          </div>
+          <div class="relative flex justify-center">
+            <span class="bg-white px-2 text-sm text-gray-400">Packaging materials</span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3 bg-gray-50 m-auto w-full">
+        <fieldset id="packaging_materials">
+          <div class="mx-auto my-3">
+            <%= render partial: "/order_contents/packaging_materials/packaging_material", collection: order_content_form.object.packaging_materials, locals: {
+              form: order_content_form,
+              order_content: order_content_form.object,
+            } %>
+          </div>
+          <div class="mt-3 bg-white text-center">
+            <%= button_tag "Add a packaging material", type: "button", class: "btn btn_outline_indigo", data: { action: "render-response#getPackagingMaterialPartial" } %>
+          </div>
+        </fieldset>
+      </div>
+    </div>
   <% end %>
 </div>

@@ -1,17 +1,15 @@
 class Orders::OrderContentsController < ApplicationController
   layout "stacked_shell"
 
-  def create
-  end
+  # def create
+  # end
 
   private
     def order_params
       params.require(:order_content).permit(
         :id, :box, :crate, :pallet, :other, :other_description,
-        # images: [],
         packaging_materials_attributes:[
-          # :id, :box, :crate, :pallet, :other, :other_description
-          :type, :description,
+          :id, :type, :description, :_destroy
         ]
       )
     end

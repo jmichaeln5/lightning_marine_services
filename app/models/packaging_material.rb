@@ -24,6 +24,6 @@ class PackagingMaterial < ApplicationRecord
   def non_specified_type?
     (self.type.in? (PackagingMaterial::Packageable::TYPES - ["PackagingMaterial::Other"])) == false
   end
-  
+
   delegate :types, :humanized_types, :types_options, to: :class
 end

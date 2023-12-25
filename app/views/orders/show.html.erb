@@ -80,8 +80,6 @@
           ) %>
         </div>
       </header>
-
-
       <article class="">
         <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
           <div class="overflow-hidden text-center sm:text-left rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -96,12 +94,16 @@
             <%= tag.dt 'Pallets', class: %w( truncate text-sm font-medium text-gray-500 ) %>
             <%= tag.dd @order_content.packaging_materials.pallets.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-9000 ) %>
           </div>
+          <% if @order_content.packaging_materials.others.any? %>
+            <div class="overflow-hidden text-center sm:text-left rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+              <%= tag.dt 'Others', class: %w( truncate text-sm font-medium text-gray-500 ) %>
+              <%= tag.dd @order_content.packaging_materials.others.size, class: %w( mt-1 text-3xl font-semibold tracking-tight text-gray-9000 ) %>
+            </div>
+          <% end %>
         </dl>
       </article>
     </section>
   </div>
-
-
   <span>
     <section class="pb-12">
       <!-- <div class="sm:flex sm:items-center mb-5 sm:mb-7">

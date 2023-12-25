@@ -29,13 +29,13 @@ class OrdersController < Orders::BaseController
     @order_content = @order.order_content
     @order_content ||= @order.build_order_content
 
-    # @packaging_materials = @order.packaging_materials
     @packaging_materials = @order.packaging_materials.order(created_at: :desc)
   end
 
   def new
     @order = Order.new
     @order_content = @order.build_order_content
+    @packaging_material = @order.order_content.packaging_materials.build
   end
 
   def edit
@@ -135,8 +135,11 @@ class OrdersController < Orders::BaseController
         :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, :purchaser_id, :vendor_id, :order_sequence,
         images: [],
         order_content_attributes:[
-          :id, :box, :crate, :pallet, :other, :other_description
-        ]
+          :id, :box, :crate, :pallet, :other, :other_description,
+          packaging_materials_attributes:[
+            :id, :type, :description, :_destroy,
+          ]
+        ],
       )
     end
 

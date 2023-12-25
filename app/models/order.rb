@@ -33,7 +33,6 @@ class Order < ApplicationRecord
   has_many :packaging_materials_others, through: :order_content
 
   accepts_nested_attributes_for :order_content, allow_destroy: true
-  accepts_nested_attributes_for :packaging_materials, allow_destroy: true
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where.not(archived: true) }
@@ -47,6 +46,7 @@ class Order < ApplicationRecord
 
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
+
   # validates :order_content, presence: true
 
   before_validation do
@@ -91,6 +91,6 @@ class Order < ApplicationRecord
     end
 
     def ensure_archived_val
-      self.archived = date_delivered.present?
+      self.archived = date_delivered.present? if (self.archived != date_delivered.present?)
     end
 end
