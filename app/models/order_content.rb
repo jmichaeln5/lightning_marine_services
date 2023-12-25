@@ -25,7 +25,7 @@ class OrderContent < ApplicationRecord
 
   accepts_nested_attributes_for :packaging_materials, allow_destroy: true
 
-  # validate :content_existz
+  validate :content_existz
 
   before_validation do
     set_empty_package_type_amounts_to_zero
@@ -49,9 +49,9 @@ class OrderContent < ApplicationRecord
 
   private
     def set_empty_package_type_amounts_to_zero
-      self.box = '0' if box.nil?
-      self.crate = '0' if crate.nil?
-      self.pallet = '0' if pallet.nil?
+      self.box = '0' if box.blank?
+      self.crate = '0' if crate.blank?
+      self.pallet = '0' if pallet.blank?
     end
 
     def content_existz
