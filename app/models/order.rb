@@ -47,8 +47,6 @@ class Order < ApplicationRecord
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
 
-  # validates :order_content, presence: true
-
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
     ensure_archived_val unless (archived == date_delivered.present?)

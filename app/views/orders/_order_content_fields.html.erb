@@ -1,7 +1,7 @@
 <% css_form_label = "inline-block align-middle text-sm font-medium leading-6" %>
 <% css_form_text_field = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 <div class="w-full">
-  <%= form.fields_for :order_content, local_assigns[:order].order_content do |order_content_form| %>
+  <%= local_assigns[:form].fields_for :order_content, local_assigns[:order_content] do |order_content_form| %>
     <div class="h-auto">
       <div class="max-w-full max-h-full">
         <div class="m-auto grid grid-cols-1 sm:grid-cols-3 gap-y-5 gap-x-3">
@@ -59,9 +59,9 @@
       <div class="mt-3 bg-gray-50 m-auto w-full">
         <fieldset id="packaging_materials">
           <div class="mx-auto my-3">
-            <%= render partial: "/order_contents/packaging_materials/packaging_material", collection: order_content_form.object.packaging_materials, locals: {
+            <%= render partial: "/order_contents/packaging_materials/packaging_material", collection: local_assigns[:order_content].packaging_materials, locals: {
               form: order_content_form,
-              order_content: order_content_form.object,
+              order_content: local_assigns[:order_content],
             } %>
           </div>
           <div class="mt-3 bg-white text-center">
