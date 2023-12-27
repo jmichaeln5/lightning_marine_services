@@ -39,7 +39,6 @@ class OrdersController < Orders::BaseController
 
   def edit
     @order = Order.find(params[:id])
-
     @order_content = @order.order_content
     @order_content ||= @order.build_order_content
   end

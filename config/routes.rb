@@ -82,19 +82,11 @@ Rails.application.routes.draw do
     resources :order_contents, controller:'orders/order_contents', only: [:create]
   end
   resources :order_contents, only: [:show, :edit, :update, :destroy]
+  resources :packaging_materials, only: [:edit, :update, :destroy]
 
-  resources :packaging_materials, only: [:show, :edit, :update, :destroy]
-
-  # resources :packaging_materials, only: [:show], as: :packaging_material_box, type: 'Box'
-  get '/packaging_materials/:id', to: 'packaging_materials#show', as: :packaging_material_box, type: 'Box'
-  get '/packaging_materials/:id', to: 'packaging_materials#show', as: :packaging_material_crate, type: 'Crate'
-  get '/packaging_materials/:id', to: 'packaging_materials#show', as: :packaging_material_pallet, type: 'Pallet'
-  get '/packaging_materials/:id', to: 'packaging_materials#show', as: :packaging_material_other, type: 'Other'
-
-  resources :order_contents, only: [:show] do  # NOTE # should match  # resources :packaging_materials, controller: :packaging_materials, only: [:index, :new, :create],  module: :order_contents, as: :order_content_packaging_materials
+  resources :order_contents, only: [:show] do
     resources :packaging_materials, controller: 'order_contents/packaging_materials', only: [:index, :new, :create]
   end
-  # resources :packaging_materials, controller: :packaging_materials, module: :order_contents, only: [:index, :new, :create], as: :order_content_packaging_materials
 
   # get '/order_contents/:order_content_id/packaging_materials/boxes', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_boxes, type: 'Box'         # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
   # get '/order_contents/:order_content_id/packaging_materials/crates', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_crates, type: 'Crate'     # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL

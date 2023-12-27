@@ -3,6 +3,8 @@ class PackagingMaterial < ApplicationRecord
 
   attribute :type_name, :string, default: model_name.human
 
+  # validates :description, presence: { message: "cannot be blank when packaging material type 'Other'" }, if: :non_specified_type?
+
   def self.types
     PackagingMaterial::Packageable::TYPES
   end
@@ -18,6 +20,10 @@ class PackagingMaterial < ApplicationRecord
     }
     type_options_arr
   end
+
+  # def non_specified_type?
+  #   (self.type.in? (PackagingMaterial::Packageable::TYPES - ["PackagingMaterial::Other"])) == false
+  # end
 
   delegate :types, :humanized_types, :types_options, to: :class
 end
