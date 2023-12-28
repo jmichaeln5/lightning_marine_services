@@ -33,11 +33,11 @@ class OrderContents::PackagingMaterialsController < ApplicationController
 
   private
     def type_param
-      (params[:type].in? PackagingMaterial.humanized_types) ? params[:type] : PackagingMaterial::Packageable::TYPES
+      (params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? params[:type] : PackagingMaterial::Packageable::TYPES
     end
 
     def packaging_material_scoped?
-      params[:type].in? PackagingMaterial.humanized_types
+      params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES
     end
 
     def set_order_content

@@ -21,122 +21,28 @@
   </div>
   <div class="mt-8 flow-root">
     <turbo-frame id="packaging_materials" class="bg-current">
-      <div>
-        <!-- Dropdown menu on small screens -->
-        <!-- <div class="sm:hidden mt-5 mb-3"> -->
-        <div class="hidden mt-5 mb-3">
-          <label for="current-tab" class="sr-only">Select a tab</label>
-          <select id="current-tab" name="current-tab" class="block rounded-md w-full border-gray-300 text-base text-center focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-            <%= tag.option 'All', selected: current_page?(order_content_packaging_materials_path(@order_content)) %>
-            <%= tag.option 'Boxes', selected: current_page?(order_content_packaging_material_boxes_path(@order_content)) %>
-            <%= tag.option 'Crates', selected: current_page?(order_content_packaging_material_crates_path(@order_content)) %>
-            <%= tag.option 'Pallets', selected: current_page?(order_content_packaging_material_pallets_path(@order_content)) %>
-            <%= tag.option 'Other', selected: current_page?(order_content_packaging_material_others_path(@order_content)) %>
-          </select>
-          <!-- <nav class="sm:hidden">
-            <div class="text-gray-700 bg-white">
-              <div data-controller="visibility" data-visibility-value-toggled="false" class="relative text-center">
-              <button type="button" data-action="visibility#toggleTargets" class="bg-white hover:bg-gray-50 flex justify-center items-center w-full rounded-md p-2 text-xl leading-6 font-semibold text-gray-700" aria-controls="sub-menu-1" aria-expanded="false">
-                <%# case request.path %>
-                <%# when order_content_packaging_materials_path(@order_content) %>
-                    <%# mobile_nav_text = "All packaging materials" %>
-                    <%# button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
-                <%# when order_content_packaging_material_boxes_path(@order_content) %>
-                <%# mobile_nav_text = "All packaging material (boxes)" %>
-                    <%# button_packaging_material_path = new_order_content_packaging_material_box_path(@order_content) %>
-                <%# when order_content_packaging_material_crates_path(@order_content) %>
-                <%# mobile_nav_text = "All packaging material (crates)" %>
-                    <%# button_packaging_material_path = new_order_content_packaging_material_crate_path(@order_content) %>
-                <%# when order_content_packaging_material_pallets_path(@order_content) %>
-                <%# mobile_nav_text = "All packaging material (pallets)" %>
-                    <%# button_packaging_material_path = new_order_content_packaging_material_pallet_path(@order_content) %>
-                <%# when order_content_packaging_material_others_path(@order_content) %>
-                <%# mobile_nav_text = "All packaging material (other)" %>
-                  <%# button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
-                <%# end %>
-                <%#= mobile_nav_text %>
-              </button>
-              <div data-visibility-target="hideable" hidden class="mt-1" id="sub-menu-1">
-                <%# css_current_tab = "border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
-                <%# css_default_tab = "border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
-                <%# css_current_tab_count = "bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
-                <%# css_default_tab_count = "bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
-                <%#= link_to order_content_packaging_materials_path(@order_content) do %>
-                  <%#= tag.span class: active_or_inactive_css(path: order_content_packaging_materials_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                    <%#= tag.span 'All' %>
-                    <%#= tag.span @order_content.packaging_materials.size, class: active_or_inactive_css(path: order_content_packaging_materials_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                  <%# end %>
-                <%# end %>
-                <%#= link_to order_content_packaging_material_boxes_path(@order_content) do %>
-                  <%#= tag.span class: active_or_inactive_css(path: order_content_packaging_material_boxes_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                    <%#= tag.span 'Boxes' %>
-                    <%#= tag.span @order_content.packaging_materials.boxes.size, class: active_or_inactive_css(path: order_content_packaging_material_boxes_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                  <%# end %>
-                <%# end %>
-                <%#= link_to order_content_packaging_material_crates_path(@order_content) do %>
-                  <%#= tag.span class: active_or_inactive_css(path: order_content_packaging_material_crates_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                    <%#= tag.span 'Crates' %>
-                    <%#= tag.span @order_content.packaging_materials.crates.size, class: active_or_inactive_css(path: order_content_packaging_material_crates_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                  <%# end %>
-                <%# end %>
-                <%#= link_to order_content_packaging_material_pallets_path(@order_content) do %>
-                  <%#= tag.span class: active_or_inactive_css(path: order_content_packaging_material_pallets_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                    <%#= tag.span 'Pallets' %>
-                    <%#= tag.span @order_content.packaging_materials.pallets.size, class: active_or_inactive_css(path: order_content_packaging_material_pallets_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                  <%# end %>
-                <%# end %>
-                <%#= link_to order_content_packaging_material_others_path(@order_content) do %>
-                  <%#= tag.span class: active_or_inactive_css(path: order_content_packaging_material_others_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                    <%#= tag.span 'Other' %>
-                    <%#= tag.span @order_content.packaging_materials.others.size, class: active_or_inactive_css(path: order_content_packaging_material_others_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                  <%# end %>
-                <%# end %>
-              </div>
-              </div>
-            </div>
-          </nav> -->
-        </div>
-        <!-- <div class="hidden sm:block"> -->
-        <div class="block">
-          <div class="border-b border-gray-200">
-            <!-- <nav class="-mb-px flex space-x-8" aria-label="Tabs"> -->
-            <nav class="-mb-px flex space-x-5" aria-label="Tabs">
-              <% css_current_tab = "border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
-              <% css_default_tab = "border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
-              <% css_current_tab_count = "bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
-              <% css_default_tab_count = "bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
-              <%= link_to order_content_packaging_materials_path(@order_content) do %>
-                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_materials_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                  <%= tag.span 'All' %>
-                  <%= tag.span @order_content.packaging_materials.size, class: active_or_inactive_css(path: order_content_packaging_materials_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
+      <div class="block">
+        <div class="border-b border-gray-200">
+          <nav class="-mb-px flex space-x-5" aria-label="Tabs">
+            <% current_tab_css = "border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
+            <% default_tab_css = "border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium" %>
+            <% current_tab_css_count = "bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
+            <% default_tab_css_count = "bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block" %>
+            <% PackagingMaterialDecorator.index_path_options(@order_content).keys.each do |key| %>
+              <% key_val = PackagingMaterialDecorator.index_path_options(@order_content)[key] %>
+              <% on_current_page = (current_page?(url_for(send("#{key_val[:path]}", @order_content)))) %>
+              <% tab_css = on_current_page ? current_tab_css : default_tab_css %>
+              <% tab_count_css = on_current_page ? current_tab_css_count : default_tab_css_count %>
+              <%= tag.span class: tab_css do %>
+                <%= link_to send("#{key_val[:path]}", @order_content) do %>
+                  <%= tag.span class: "flex space-x-1" do %>
+                    <%= tag.span key_val[:title] %>
+                    <%= tag.span @order_content.packaging_materials.send(key_val[:title].downcase ).size, class: tab_count_css %>
+                  <% end %>
                 <% end %>
               <% end %>
-              <%= link_to order_content_packaging_material_boxes_path(@order_content) do %>
-                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_boxes_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                  <%= tag.span 'Boxes' %>
-                  <%= tag.span @order_content.packaging_materials.boxes.size, class: active_or_inactive_css(path: order_content_packaging_material_boxes_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                <% end %>
-              <% end %>
-              <%= link_to order_content_packaging_material_crates_path(@order_content) do %>
-                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_crates_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                  <%= tag.span 'Crates' %>
-                  <%= tag.span @order_content.packaging_materials.crates.size, class: active_or_inactive_css(path: order_content_packaging_material_crates_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                <% end %>
-              <% end %>
-              <%= link_to order_content_packaging_material_pallets_path(@order_content) do %>
-                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_pallets_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                  <%= tag.span 'Pallets' %>
-                  <%= tag.span @order_content.packaging_materials.pallets.size, class: active_or_inactive_css(path: order_content_packaging_material_pallets_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                <% end %>
-              <% end %>
-              <%= link_to order_content_packaging_material_others_path(@order_content) do %>
-                <%= tag.span class: active_or_inactive_css(path: order_content_packaging_material_others_path(@order_content), active_css: css_current_tab, inactive_css: css_default_tab) do %>
-                  <%= tag.span 'Other' %>
-                  <%= tag.span @order_content.packaging_materials.others.size, class: active_or_inactive_css(path: order_content_packaging_material_others_path(@order_content), active_css: css_current_tab_count, inactive_css: css_default_tab_count) %>
-                <% end %>
-              <% end %>
-            </nav>
-          </div>
+            <% end %>
+          </nav>
         </div>
       </div>
       <div class="bg-white m-3 sm:p-3 rounded-b-md rounded-r-md shadow">

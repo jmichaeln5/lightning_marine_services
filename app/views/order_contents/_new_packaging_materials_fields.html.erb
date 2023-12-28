@@ -1,5 +1,6 @@
 <span data-controller="nested-form" class="block w-full">
   <% content_for :packaging_materials_fields, flush: true do %>
+
     <% fields_for_object = local_assigns[:order_content].new_record? ? PackagingMaterial.new : local_assigns[:order_content].packaging_materials %>
 
     <%= local_assigns[:form].fields_for :packaging_materials, fields_for_object, child_index: 'TEMPLATE_RECORD' do |ff| %>
@@ -8,7 +9,7 @@
         <div class="mx-auto">
           <%= ff.label :type, 'Type', class: "text-sm font-medium" %>
           <br>
-          <%= ff.select :type, PackagingMaterial.types_options, {}, { class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
+          <%= ff.select :type, PackagingMaterialDecorator.types_options, {}, { class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
         </div>
         <div class="mx-auto">
           <%= ff.label :description, "Description", class: "text-sm font-medium" %>
