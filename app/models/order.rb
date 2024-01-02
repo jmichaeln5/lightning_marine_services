@@ -27,6 +27,7 @@ class Order < ApplicationRecord
   has_one :order_content, dependent: :destroy
 
   has_many :packaging_materials, through: :order_content
+
   has_many :packaging_materials_boxes, through: :order_content
   has_many :packaging_materials_pallets, through: :order_content
   has_many :packaging_materials_crates, through: :order_content
@@ -37,10 +38,11 @@ class Order < ApplicationRecord
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where.not(archived: true) }
 
-  scope :filter_by_purchasers, ->(sort_direction) {
+  scope :filter_by_purchasers, -> (sort_direction) {
     includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
   }
-  scope :filter_by_vendors, ->(sort_direction) {
+  
+  scope :filter_by_vendors, -> (sort_direction) {
     includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
   }
 

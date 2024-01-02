@@ -106,24 +106,6 @@
   </div>
   <span>
     <section class="pb-12">
-      <!-- <div class="sm:flex sm:items-center mb-5 sm:mb-7">
-        <div class="sm:flex-auto">
-          <div class="text-center sm:text-left">
-            <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
-              Packaging materials
-            </h1>
-            <p class="mt-2 ml-2 mb-1 text-md text-gray-700">Information about packaging materials recieved in the order.</p>
-          </div>
-        </div>
-        <%#= tag.div class: "text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer" do %>
-          <%#= button_to(
-            "Edit order content",
-            edit_order_content_path(@order_content),
-            method: :get,
-            class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          ) %>
-        <%# end %>
-      </div> -->
       <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
         <div class="bg-white rounded-lg">
           <div class="py-6 flex flex-wrap sm:flex-nowrap justify-center sm:justify-between sm:grid-rows-1 border-b">
@@ -131,8 +113,8 @@
               Packaging Materials
             </div>
             <div class="block sm:inline-flex sm:w-auto mx-3 sm:justify-self-end mt-3 sm:mt-0">
-              <%= button_to(
-                "Bulk edit packaging materials",
+              <%#= button_to(
+                "Edit packaging materials",
                 edit_order_content_path(@order_content),
                 method: :get,
                 class:"w-full btn rounded-md bg-white py-2.5 px-3.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"

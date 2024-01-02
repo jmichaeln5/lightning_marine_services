@@ -6,8 +6,9 @@ class PackagingMaterial < ApplicationRecord
   validates :description, presence: { message: "cannot be blank when packaging material type 'Other'" }, if: :non_specified_type?
 
   def non_specified_type?
-    (self.type.in? (PackagingMaterial::Packageable::TYPES - ["PackagingMaterial::Other"])) == false
+    # (self.type.in? (PackagingMaterial::Packageable::TYPES - ["PackagingMaterial::Other"])) == false
+    !(self.type.in? (PackagingMaterial::Packageable::TYPES - ["PackagingMaterial::Other"]))
   end
 
-  delegate :types, :humanized_types, :types_options, to: :class
+  # delegate :types, :humanized_types, :types_options, to: :class
 end

@@ -62,15 +62,6 @@
     </div>
   </section>
 </span>
-
-<!-- ******** PackagingMaterials ******** -->
-<!-- ******** PackagingMaterials ******** -->
-<!-- ******** PackagingMaterials ******** -->
-<!-- ******** PackagingMaterials ******** -->
-<!-- ******** PackagingMaterials ******** -->
-<!-- ******** PackagingMaterials ******** -->
-<!-- ******** PackagingMaterials ******** -->
-
 <!-- <span>
   <section class="pb-12">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
@@ -113,8 +104,6 @@
     </div>
   </section>
 </span> -->
-
-
 <span>
   <section class="">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
@@ -157,57 +146,3 @@
     </div>
   </section>
 </span>
-
-
-
-<%#= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
-  <%#= tag.p 'Loading packaging materials...' %>
-<%# end %>
-
-
-<!--
-  This example requires some changes to your config:
-
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
-
-<!-- <div class="my-6 bg-slate-50 p-4 rounded-md overflow-x-auto">
-  <div class="">
-    <div class="grid grid-rows-1 gap-5">
-      <div class="bg-green-100 p-3 rounded-md text-xl">
-        <%#= tag.h3 '@order_content.packaging_materials.boxes' %>
-        <%#= tag.div @order_content.packaging_materials.boxes, class: %w( text-base ) %>
-      </div>
-
-      <div class="bg-green-100 p-3 rounded-md text-xl">
-        <%#= tag.h3 '(@order_content.packaging_materials.map &:itself)' %>
-        <%#= tag.div (@order_content.packaging_materials.map &:itself), class: %w( text-base ) %>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-
-<%#= render partial: "/order_contents/packaging_materials/table", locals: {
-  order: @order,
-  packaging_materials: @packaging_materials.crates,
-} %>
-
-<%#= render partial: "/order_contents/packaging_materials/table", locals: {
-  order: @order,
-  packaging_materials: @packaging_materials.pallets,
-} %>
-
-<%#= render partial: "/order_contents/packaging_materials/table", locals: {
-  order: @order,
-  packaging_materials: @packaging_materials.boxes,
-} %>

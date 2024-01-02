@@ -1,7 +1,7 @@
 class PackagingMaterialsController < ApplicationController
   layout "stacked_shell"
 
-  before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ edit update ]
+  before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ edit update destroy ]
 
   def edit
   end
@@ -15,6 +15,22 @@ class PackagingMaterialsController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @order_content.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    @packaging_material.destroy
+
+    respond_to do |format|
+      format.turbo_stream {
+        render turbo_stream: [
+          turbo_stream.remove(@packaging_material),
+          turbo_render_flash(delay_value = nil,  flash_type = "notice", flash_title = "Packaging material (#{@packaging_material.type_name.downcase}) destroyed successfully.")
+        ],
+        status: :ok
+      }
+      format.html { redirect_to people_url, notice: "Packaging material was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
 
