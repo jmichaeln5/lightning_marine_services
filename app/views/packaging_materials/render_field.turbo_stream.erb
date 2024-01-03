@@ -1,0 +1,9 @@
+<%= turbo_stream.append @target do %>
+  <% timestamp = Time.now.to_f.to_s.gsub(/[()-+.]/,'') %>
+  <%= fields_for "order[order_content_attributes][packaging_materials_attributes][#{timestamp}]" do |rendered_form| %>
+    <%= render partial: "/packaging_materials/form/nested_field", locals: {
+      nested_field: rendered_form,
+      type: @type,
+    } %>
+  <% end %>
+<% end %>

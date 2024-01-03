@@ -67,7 +67,7 @@
                     <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Packaging Material</th>
                     <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                      <span class="sr-only">Edit</span>
+                      <span class="sr-only">Delete</span>
                     </th>
                   </tr>
                 </thead>
@@ -81,8 +81,7 @@
                         packaging_material.status
                       </td>
                       <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                        <%= link_to 'Edit', edit_packaging_material_path(packaging_material), target:"_top", class: "text-indigo-600 hover:text-indigo-900 mr-1 sm:mr-3" if authorized_internal_user? %>
-                        <%#= button_to "Delete", packaging_material_path(packaging_material), method: :delete, data: {turbo_stream: true }, class:" inline-flex items-center rounded border border-transparent bg-red-100 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" if authorized_internal_user? %>
+                        <%= button_to "Delete", packaging_material_path(packaging_material), method: :delete, data: {turbo_stream: true }, class:" inline-flex items-center rounded border border-transparent bg-red-100 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" if authorized_internal_user? %>
                       </td>
                     </tr>
                   <% end %>

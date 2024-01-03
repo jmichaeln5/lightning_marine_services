@@ -1,152 +1,35 @@
-<!-- <span data-controller="nested-form" class="block w-full">
-  <%# content_for :packaging_materials_fields, flush: true do %>
-    <%# fields_for_object = local_assigns[:order_content].new_record? ? PackagingMaterial.new : local_assigns[:order_content].packaging_materials %>
+<%# NOTE- APPENDED VIA STIMULUS CONTROLLER- app/javascript/controllers/nested_form_controller.js %>
 
-    <%#= local_assigns[:form].fields_for :packaging_materials, fields_for_object, child_index: 'TEMPLATE_RECORD' do |ff| %>
-      <%#= ff.hidden_field :id %>
-      <div data-nested-form-target="nestedField" class="bg-gray-50 py-3 flex justify-around">
-        <div class="mx-auto">
-          <%#= ff.label :type, 'Type', class: "text-sm font-medium" %>
-          <br>
-          <%#= ff.select :type, PackagingMaterialDecorator.types_options, {}, { class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
-        </div>
-        <div class="mx-auto">
-          <%#= ff.label :description, "Description", class: "text-sm font-medium" %>
-          <br>
-          <%#= ff.text_field :description, data: { "nested-form-target": "descriptionField"}, class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm" %>
-        </div>
-        <div class="mx-auto">
-          <%#= ff.check_box :_destroy, class: "hidden" %>
-          <br>
-          <%#= link_to "Remove", "#", data: { "nested-form-target": "removeNestedFieldBtn", action: "click->nested-form#remove_association" }, class:'text-red-600 font-bold h-full' %>
-        </div>
+<%= local_assigns[:order_content_form].fields_for :packaging_materials do |ff| %>
+  <%= tag.span data: {"controller": "nested-form" }, class:"block w-full" do %>
+    <div data-nested-form-target="nestedField" class="nested-fields bg-gray-50 py-3 flex justify-around">
+      <%= ff.hidden_field :id %>
+      <div class="mx-auto">
+        <%= ff.label :type, 'Type', class: "text-sm font-medium" %>
+        <br>
+        <%= ff.select :type, PackagingMaterialDecorator.types_options, {}, { class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
       </div>
-    <%# end %>
-  <%# end %>
-
-  <%# content_for :add_item_button, flush: true do %>
-    <%#= link_to "Add packaging material", "#", data: { "nested-form-target": "addItem", action: "nested-form#add_association" }, class: "inline-block w-full mb-3 cursor-pointer rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-500 hover:text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300" %>
-  <%# end %>
-
-  <div class="mx-auto">
-    <div class="block w-full">
-      <%#= yield :add_item_button %>
-    </div>
-    <div class="inline-block w-full">
-      <div class="grid">
-        <%# if local_assigns[:form].object.new_record? %>
-          <template data-nested-form-target="template">
-            <%#= yield :packaging_materials_fields %>
-          </template>
-        <%# else %>
-          <%#= yield :packaging_materials_fields %>
-        <%# end %>
+      <div class="mx-auto">
+        <%= ff.label :description, "Description", class: "text-sm font-medium" %>
+        <br>
+        <%= ff.text_field :description, data: { "nested-form-target": "descriptionField"}, class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm" %>
       </div>
-    </div>
-  </div>
-</span> -->
-
-
-
-
-
-
-
-
-<%= ff.hidden_field :id %>
-<div data-nested-form-target="nestedField" class="nested-fields bg-gray-50 py-3 flex justify-around">
-  <div class="mx-auto">
-    <%= ff.label :type, 'Type', class: "text-sm font-medium" %>
-    <br>
-    <%= ff.select :type, PackagingMaterialDecorator.types_options, {}, { class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
-  </div>
-  <div class="mx-auto">
-    <%= ff.label :description, "Description", class: "text-sm font-medium" %>
-    <br>
-    <%= ff.text_field :description, data: { "nested-form-target": "descriptionField"}, class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm" %>
-  </div>
-  <div class="mx-auto justify-self-start">
-    <br>
-    <%#= link_to "Delete", "#", data: { "nested-form-target": "removeNestedFieldBtn", action: "click->nested-form#remove_association" }, class:'text-red-600 font-bold h-full' if ff.object.persisted? %>
-    <%#= link_to "Remove new", "#", data: { "nested-form-target": "removeNestedFieldBtn", action: "click->nested-form#remove_association" }, class:'text-red-600 font-semibold h-full' unless ff.object.persisted? %>
-    <%= ff.check_box :_destroy, class: "hidden" %>
-    <%= link_to "Remove", "#", data: { "nested-form-target": "removeNestedFieldBtn", action: "click->nested-form#remove_association" }, class:'text-sm text-red-600 font-semibold' %>
-    <!-- <button type="button" data-nested-form-target="removeNestedFieldBtn" data-action="click->nested-form#remove_association">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-1 w-auto h-5 sm:h-6 cursor-pointer text-red-400 hover:text-red-600 scale:110">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-      </svg>
-    </button> -->
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="my-6">
-  <div data-controller="reveal" data-reveal-hidden-class="hidden">
-    <div class="w-full inline-flex flex-wrap justify-center sm:justify-between space-y-3 sm:space-y-0">
-      <div class="w-full sm:w-auto mb-3 sm:mb-0">
-        <h1 class="text-center sm:text-left">
-          <div class="text-gray-700 mx-3">
-            <div class="text-sm">
-              <span class="font-medium">Packaging Materials: </span>
-            </div>
-            <div class="text-xs">
-              <span id="results_details">Add boxes, crates, pallets, to order</span> <%# placeholder span #results_details updated by turbo stream %>
-            </div>
+      <div class="mx-auto justify-self-start">
+        <br>
+        <%= ff.check_box :_destroy, class: "hidden" %>
+        <button type="button" data-nested-form-target="removeNestedFieldBtn" data-action="click->nested-form#remove_association" class="flex align-middle text-red-400 hover:text-red-600 hover:scale-105 mt-1 w-auto cursor-pointer">
+          <div class="inline-flex">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+            </svg>
           </div>
-        </h1>
-      </div>
-      <div class="w-full sm:w-auto">
-        <div class="align-baseline sm:text-right">
-          <div data-action="click->reveal#toggle" type="button" class="text-gray-700 mx-3 hover:cursor-pointer inline-block">
-            <div  id="" class="mx-auto my-1 px-4 py-1.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-purple-600 shadow-sm inline-block">
-            <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-purple-600 group-hover:h-full opacity-90"></span>
-            <span class="relative group-hover:text-white text-sm">Add packaging materials </span>
-            </div>
+          <div class="ml-1.5 inline-flex">
+            <%#= tag.div "Remove" unless ff.object.persisted? %>
+            <%#= tag.div "Remove #{ff.object.model_name.human.downcase}" if ff.object.persisted? %>
+            <%= tag.div "Delete" %>
           </div>
-        </div>
+        </button>
       </div>
     </div>
-    <div data-reveal-target="item" class="hidden pb-8 py-3 bg-gray-100 shadow-inner text-3xl">
-      <div class="text-center">
-        <%= content_tag(:p, 'Select a packaging material', class:'mb-1 text-gray-600 text-md font-medium') %>
-        <%#= content_tag(:p, 'Select a filter for more accurate results', class:'mb-4 text-gray-600 text-base') %>
-        <%#= content_tag(:p, 'Select a packaging material', class:'mb-4 text-gray-600 text-base') %>
-
-        <ul class="mx-3 items-center text-sm font-medium text-gray-900 bg-white rounded-lg sm:flex">
-          <% filter_css_classes_resource_hover = "rounded-md select-none hover:underline hover:bg-slate-50" %>
-          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
-            <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
-              <input id="order_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-              <label for="order_checkbox_list" class="cursor-pointer w-full py-3 text-sm font-medium text-gray-900">Box</label>
-            </div>
-          </li>
-          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r">
-            <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
-              <input id="vendor_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-              <label for="vendor_checkbox_list" class="cursor-pointer w-full py-3 text-sm font-medium text-gray-900">Pallet</label>
-            </div>
-          </li>
-          <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-l">
-            <div class="<%= filter_css_classes_resource_hover %> flex items-center pl-3">
-              <input id="purchaser_checkbox_list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-              <label for="purchaser_checkbox_list" class="cursor-pointer w-full py-3 text-sm font-medium text-gray-900">Crate</label>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div> -->
+  <% end %>
+<% end %>

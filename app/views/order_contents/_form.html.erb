@@ -43,8 +43,8 @@
 
   <fieldset class="mb-3">
     <div class="mx-auto">
-      <%= render partial:'/order_contents/packaging_materials_fields', locals: {
-        form: form,
+      <%= render partial:'/orders/order_contents/packaging_materials_fields', locals: {
+        nested_field: form,
         order_content: order_content,
       } %>
     </div>

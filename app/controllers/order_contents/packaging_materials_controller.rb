@@ -6,7 +6,10 @@ class OrderContents::PackagingMaterialsController < ApplicationController
   def index
     packaging_materials =
       if packaging_material_scoped?
-        @order_content.packaging_materials.where(type: "PackagingMaterial::#{type_param}")
+        index_types = (params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? params[:type] : PackagingMaterial::Packageable::TYPES
+        index_scoped_types = "PackagingMaterial::#{index_types}"
+
+        @order_content.packaging_materials.where(type: index_scoped_types)
       else
         @order_content.packaging_materials
       end
@@ -14,11 +17,24 @@ class OrderContents::PackagingMaterialsController < ApplicationController
   end
 
   def new
-    @packaging_material = packaging_material_scoped? ? build_from_scoped : @order_content.packaging_materials.build
+    if packaging_material_scoped?
+      new_scoped_type = ((params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? "PackagingMaterial::#{params[:type]}" : 'PackagingMaterial::Other')
+
+      @packaging_material = PackagingMaterial.new(
+        order_content: @order_content,
+        type: new_scoped_type,
+      )
+    else
+      @packaging_material = @order_content.packaging_materials.build
+    end
   end
 
   def create
-    @packaging_material = PackagingMaterial.new packaging_material_params
+    @packaging_material = PackagingMaterial.new(
+      order_content: @order_content,
+      type: ((packaging_material_params[:type].in? PackagingMaterial::Packageable::TYPES) ? packaging_material_params[:type] : 'PackagingMaterial::Other'),
+      description: packaging_material_params[:description],
+    )
 
     respond_to do |format|
       if @packaging_material.save
@@ -32,14 +48,6 @@ class OrderContents::PackagingMaterialsController < ApplicationController
   end
 
   private
-    def type_param
-      (params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? params[:type] : PackagingMaterial::Packageable::TYPES
-    end
-
-    def packaging_material_scoped?
-      params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES
-    end
-
     def set_order_content
       @order_content = OrderContent.find(params[:order_content_id])
     end
@@ -48,37 +56,23 @@ class OrderContents::PackagingMaterialsController < ApplicationController
       @order = @order_content.order
     end
 
-    def build_from_scoped
-      @order_content.packaging_materials
-
-      attr_to_build = params[:type].downcase.pluralize
-      build_type = @order_content.packaging_materials.send attr_to_build
-      build_type.build
-    end
-
-    def scope_packaging_material
-      case params[:type]
-      when 'Box'
-        'PackagingMaterial::Box'
-      when 'Crate'
-        'PackagingMaterial::Crate'
-      when 'Pallet'
-        'PackagingMaterial::Pallet'
-      else 'Other'
-        'PackagingMaterial::Other'
-      end
+    def packaging_material_scoped?
+      params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES
     end
 
     def packaging_material_params
       packaging_material_from_param = "packaging_material"
+
       if packaging_material_scoped?
-        packaging_material_from_param << "_#{type_param.downcase}"
+        packaging_material_type_from_params = (params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? params[:type] : 'Other'
+        packaging_material_from_param << "_#{packaging_material_type_from_params.downcase}"
+
         params.require(packaging_material_from_param.to_sym).permit(
           :type,
           :description,
         ).with_defaults(
           order_content_id: @order_content.id,
-          type: scope_packaging_material,
+          type: packaging_material_type_from_params,
         )
       else
         params.require(packaging_material_from_param.to_sym).permit(

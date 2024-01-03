@@ -82,6 +82,9 @@ Rails.application.routes.draw do
     resources :order_contents, controller:'orders/order_contents', only: [:create]
   end
   resources :order_contents, only: [:show, :edit, :update, :destroy]
+
+  get '/render_field', to: 'packaging_materials#render_field', as: 'render_field'
+
   resources :packaging_materials, only: [:edit, :update, :destroy]
 
   resources :order_contents, only: [:show] do

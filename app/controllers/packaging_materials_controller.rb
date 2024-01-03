@@ -3,6 +3,12 @@ class PackagingMaterialsController < ApplicationController
 
   before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ edit update destroy ]
 
+  def render_field
+    params.permit(:type, :target)
+    @type = (params[:type].in? PackagingMaterial::Packageable::TYPES) ? params[:type] : 'PackagingMaterial::Other'
+    @target = params[:target]
+  end
+
   def edit
   end
 
@@ -48,7 +54,7 @@ class PackagingMaterialsController < ApplicationController
     end
 
     def type_param
-      (packaging_material_params[:type].in? PackagingMaterial::Packageable::TYPES) ? packaging_material_params[:type] : 'PackagingMaterial'
+      (packaging_material_params[:type].in? PackagingMaterial::Packageable::TYPES) ? packaging_material_params[:type] : 'PackagingMaterial::Other'
     end
 
     def packaging_material_params

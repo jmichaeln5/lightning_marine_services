@@ -1,5 +1,5 @@
 <%= local_assigns[:form].fields_for :order_content, local_assigns[:order_content] do |order_content_form| %>
-  <div class="block my-6 w-full">
+  <div class="order_content_form block my-6 w-full">
     <article>
       <div class="block my-6 hover:cursor-default">
         <div class="w-full relative">
@@ -12,22 +12,46 @@
         </div>
       </div>
       <section>
-        <span data-controller="nested-form" class="block w-full">
-          <div data-nested-form-target="add_item">
-            <%= link_to "Add packaging material", "#", data: { action: "nested-form#add_association" }, class: "inline-block w-full mb-3 cursor-pointer rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-500 hover:text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300" %>
-          </div>
-          <template data-nested-form-target='template'>
-            <%= order_content_form.fields_for :packaging_materials, PackagingMaterial.new, child_index: 'TEMPLATE_RECORD' do |ff| %>
-              <%= render partial: "/orders/order_contents/packaging_materials_fields", locals: { ff: ff } %>
-            <% end %>
-          </template>
-          <%= order_content_form.fields_for :packaging_materials do |ff| %>
-            <%= render partial: "/orders/order_contents/packaging_materials_fields", locals: { ff: ff } %>
-          <% end %>
-          <!-- <div data-nested-form-target="add_item">
+        <%#= tag.span data: {"controller": "nested-form" }, class:"block w-full" do %>
+          <%#= tag.div data: {"nested-form-target": "add_item" } do %>
             <%#= link_to "Add packaging material", "#", data: { action: "nested-form#add_association" }, class: "inline-block w-full mb-3 cursor-pointer rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-500 hover:text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300" %>
-          </div> -->
-        </span>
+          <%# end %>
+          <%#= tag.template data: {"nested-form-target": "template" } do %>
+            <%#= order_content_form.fields_for :packaging_materials, PackagingMaterial.new, child_index: 'TEMPLATE_RECORD' do |ff| %>
+              <%#= render partial: "/orders/order_contents/packaging_materials_fields", locals: {
+                nested_field: ff,
+              } %>
+            <%# end %>
+          <%# end %>
+          <%#= order_content_form.fields_for :packaging_materials do |ff| %>
+            <%#= render partial: "/orders/order_contents/packaging_materials_fields", locals: {
+              nested_field: ff,
+            } %>
+          <%# end %>
+          <%##= tag.div data: {"nested-form-target": "add_item" } do %>
+            <%##= link_to "Add packaging material", "#", data: { action: "nested-form#add_association" }, class: "inline-block w-full mb-3 cursor-pointer rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-500 hover:text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300" %>
+          <%## end %>
+        <%# end %>
+
+        <%= tag.div class:"block w-full" do %>
+          <%#= render partial:"/order_contents/packaging_materials/radio_button_packaging_material_types_cards" %>
+          <%= render partial:"/packaging_materials/form/add_nested_field", locals: {
+            form: local_assigns[:form],
+            order_content_form: order_content_form,
+            order: local_assigns[:order],
+            order_content: local_assigns[:order_content],
+            packaging_materials: local_assigns[:order_content].packaging_materials,
+          } %>
+
+          <% if (order_content_form.object.persisted? || !order_content_form.object.new_record?) %>
+            <%= render partial:'/orders/order_contents/packaging_materials_fields', locals: {
+              order_content_form: order_content_form,
+              nested_field: form,
+              order_content: order_content,
+            } %>
+          <% end %>
+
+        <% end %>
       </section>
     </article>
   </div>
