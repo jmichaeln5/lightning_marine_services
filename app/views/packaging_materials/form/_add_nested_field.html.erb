@@ -1,4 +1,31 @@
 <section>
+  <!-- <div class="my-3 mt-2">
+    <div class="flex text-gray-500 text-sm">
+      <div class="w-full flex justify-start text-ce rounded-md rounded-md ring-1 ring-inset ring-gray-300">
+        <div class="w-14 inline-flex items-center">
+          <span class="ml-2">
+            Others
+          </span>
+        </div>
+        <div class="grow border rounded-r-md border-gray-300 inline-flex items-center">
+          <span class="ml-2">
+            <%#= local_assigns[:order_content].packaging_materials.others.size %>
+          </span>
+        </div>
+      </div>
+      <div class="pl-3">
+        <%= link_to render_field_path(type: 'PackagingMaterial::Other', target:'packaging_materials' ), method: :get, data: {turbo_stream: true} do %>
+          <button type="button" class="relative inline-flex items-center rounded-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
+            <span class="sr-only">Add other packaging material</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+        <% end %>
+      </div>
+    </div>
+  </div> -->
+
   <div>
     <div class="flex text-gray-500 text-sm">
       <div class="w-full flex justify-start text-ce rounded-md rounded-md ring-1 ring-inset ring-gray-300">
@@ -79,31 +106,45 @@
       </div>
     </div>
   </div>
-  <!-- <div class="my-3 mt-2">
-    <div class="flex text-gray-500 text-sm">
-      <div class="w-full flex justify-start text-ce rounded-md rounded-md ring-1 ring-inset ring-gray-300">
-        <div class="w-14 inline-flex items-center">
-          <span class="ml-2">
-            Others
-          </span>
+
+  <div class="w-auto">
+    <%= tag.span id: "packaging_materials" %>
+    <%# NOTE fields prepended to '#packaging_materials' %>
+  </div>
+
+  <% if (local_assigns[:order_content].persisted? || !local_assigns[:order_content].new_record?) %>
+    <%= local_assigns[:order_content_form].fields_for :packaging_materials do |ff| %>
+      <%= tag.span data: {"controller": "nested-form" }, class:"block w-full" do %>
+        <div data-nested-form-target="nestedField" class="nested-fields bg-gray-50 py-3 flex justify-around">
+          <%= ff.hidden_field :id %>
+          <div class="mx-auto">
+            <%= ff.label :type, 'Type', class: "text-sm font-medium" %>
+            <br>
+            <%= ff.select :type, PackagingMaterialDecorator.types_options, {}, { class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
+          </div>
+          <div class="mx-auto">
+            <%= ff.label :description, "Description", class: "text-sm font-medium" %>
+            <br>
+            <%= ff.text_field :description, data: { "nested-form-target": "descriptionField"}, class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm" %>
+          </div>
+          <div class="mx-auto justify-self-start">
+            <br>
+            <%= ff.check_box :_destroy, class: "hidden" %>
+            <button type="button" data-nested-form-target="removeNestedFieldBtn" data-action="click->nested-form#remove_association" class="flex align-middle text-red-400 hover:text-red-600 hover:scale-105 mt-1 w-auto cursor-pointer">
+              <div class="inline-flex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                </svg>
+              </div>
+              <div class="ml-1.5 inline-flex">
+                <%#= tag.div "Remove" unless ff.object.persisted? %>
+                <%#= tag.div "Remove #{ff.object.model_name.human.downcase}" if ff.object.persisted? %>
+                <%= tag.div "Delete" %>
+              </div>
+            </button>
+          </div>
         </div>
-        <div class="grow border rounded-r-md border-gray-300 inline-flex items-center">
-          <span class="ml-2">
-            <%#= local_assigns[:order_content].packaging_materials.others.size %>
-          </span>
-        </div>
-      </div>
-      <div class="pl-3">
-        <%= link_to render_field_path(type: 'PackagingMaterial::Other', target:'packaging_materials' ), method: :get, data: {turbo_stream: true} do %>
-          <button type="button" class="relative inline-flex items-center rounded-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-            <span class="sr-only">Add other packaging material</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-          </button>
-        <% end %>
-      </div>
-    </div>
-  </div> -->
-  <%= tag.span id: "packaging_materials" %>
+      <% end %>
+    <% end %>
+  <% end %>
 </section>

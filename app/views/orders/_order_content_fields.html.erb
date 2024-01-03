@@ -36,21 +36,9 @@
         <%= tag.div class:"block w-full" do %>
           <%#= render partial:"/order_contents/packaging_materials/radio_button_packaging_material_types_cards" %>
           <%= render partial:"/packaging_materials/form/add_nested_field", locals: {
-            form: local_assigns[:form],
-            order_content_form: order_content_form,
-            order: local_assigns[:order],
             order_content: local_assigns[:order_content],
-            packaging_materials: local_assigns[:order_content].packaging_materials,
+            order_content_form: order_content_form,
           } %>
-
-          <% if (order_content_form.object.persisted? || !order_content_form.object.new_record?) %>
-            <%= render partial:'/orders/order_contents/packaging_materials_fields', locals: {
-              order_content_form: order_content_form,
-              nested_field: form,
-              order_content: order_content,
-            } %>
-          <% end %>
-
         <% end %>
       </section>
     </article>
