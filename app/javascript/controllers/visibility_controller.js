@@ -1,3 +1,6 @@
+// NOTE- USE app/javascript/controllers/toggle_controller.js INSTEAD
+// TODO: REMOVE THIS FILE
+
 import { Controller } from "@hotwired/stimulus"
 import { useClickOutside } from "stimulus-use";
 
@@ -9,19 +12,15 @@ export default class extends Controller {
   static targets = [ "hideable" ]
 
   connect() {
-    // console.log("visibility#connect()")
     useClickOutside(this)
   };
 
   disconnect() {
-    // console.log("visibility#disconnect()")
-    // this.hideTargets()
     useClickOutside(this)
     this.hideTargets()
   };
 
   showTargets() {
-    // console.log("visibility#showTargets()")
     this.hideableTargets.forEach(el => {
       el.hidden = false
     })
@@ -29,7 +28,6 @@ export default class extends Controller {
   };
 
   hideTargets() {
-    // console.log("visibility#hideTargets()")
     this.hideableTargets.forEach(el => {
       el.hidden = true
     })
@@ -37,7 +35,6 @@ export default class extends Controller {
   };
 
   toggleTargets() {
-    // console.log("visibility#toggleTargets()")
     this.toggledValue = !this.toggledValue
 
     this.hideableTargets.forEach((el) => {
@@ -45,22 +42,7 @@ export default class extends Controller {
     });
   };
 
-  // toggledValueChanged(value, previousValue) {
-  //   if (previousValue != undefined) {
-  //     console.log("visibility#toggleTargets()")
-  //     // console.warn("visibility#toggleTargets()")
-  //     console.log("previousValue:")
-  //     console.log(previousValue)
-  //     console.log("\n")
-  //
-  //     console.log("value:")
-  //     console.log(value)
-  //     console.log("\n")
-  //   }
-  // };
-
   clickOutside(event) {
-    // console.log("visibility#clickOutside()")
     if (this.data.get("clickOutside") === "add") {
       this.toggleableTargets.forEach((target) => {
         target.classList.add(target.dataset.cssClass);
@@ -71,13 +53,7 @@ export default class extends Controller {
       })
     }
 
-    if (this.closeOnOutsideClickValue != true) {
-      return
-    }
-
-    if (this.toggledValue === true) {
-      this.hideTargets()
-    }
+    return (this.closeOnOutsideClickValue != true)  ? true : this.hideTargets();
   };
 
 };

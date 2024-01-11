@@ -3,7 +3,7 @@ class PackagingMaterialsController < ApplicationController
 
   before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ edit update destroy ]
 
-  def render_field
+  def new
     params.permit(:type, :target)
     @type = (params[:type].in? PackagingMaterial::Packageable::TYPES) ? params[:type] : 'PackagingMaterial::Other'
     @target = params[:target]

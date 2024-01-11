@@ -37,10 +37,17 @@
   </div>
   <div class="overflow-hidden bg-white rounded-md border border-gray-100 shadow">
     <div class="px-4 py-5 sm:px-6">
-      <!-- <div class="my-6">
-        <%#= render partial:'/order_contents/packaging_materials/add_or_remove_form', locals:{ order: @order, order_content: @order_content} %>
-      </div> -->
-      <%= render partial:'/order_contents/form', locals:{ order: @order, order_content: @order_content} %>
+      <%# NOTE: EDITING ORDER, NOT ORDER CONTENT (form_with model: @order) is this file necessary??? %>
+      <%= form_with model: @order, id: "order_form" do |form| %>
+        <%= render partial: '/orders/order_content_fields', locals: {
+          form: form,
+          order: @order,
+          order_content: @order.order_content,
+        } %>
+        <div class="inline-block flex justify-end">
+          <%= form.submit "#{(@order_content.new_record? ? 'Create new order content' : 'Save changes')}", class: 'w-full hover:cursor-pointer justify-center rounded-md bg-indigo-600 py-2 px-5 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' %>
+        </div>
+      <% end %>
     </div>
   </div>
 </section>

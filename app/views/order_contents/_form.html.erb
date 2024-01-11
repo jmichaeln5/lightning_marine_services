@@ -9,43 +9,10 @@
     <% end %>
   <% end %>
 
-  <!-- Old order_content old attrs: order_content.box; order_content.crate; order_content.pallet; -->
-  <!-- <div>
-    <fieldset>
-      <div class="grid grid-cols-3 gap-3">
-        <div class="flex w-full">
-          <div class="mt-1">
-            <%#= form.label :box, 'Boxes', class: css_form_label %>
-          </div>
-          <div class="w-full pl-3 sm:pl-1">
-            <%#= form.text_field :box, data: { controller: "number-field-input", action: "number-field-input#rejectLetters"}, class: css_form_text_field%>
-          </div>
-        </div>
-        <div class="flex w-full">
-          <div class="mt-1">
-            <%#= form.label :pallet, 'Pallets', class: css_form_label %>
-          </div>
-          <div class="w-full pl-3 sm:pl-1">
-            <%#= form.text_field :pallet, data: { controller: "number-field-input", action: "number-field-input#rejectLetters"}, class: css_form_text_field%>
-          </div>
-        </div>
-        <div class="flex w-full">
-          <div class="mt-1">
-            <%#= form.label :crate, 'Crates', class: css_form_label %>
-          </div>
-          <div class="w-full pl-3 sm:pl-1">
-            <%#= form.text_field :crate, data: { controller: "number-field-input", action: "number-field-input#rejectLetters"}, class: css_form_text_field%>
-          </div>
-        </div>
-      </div>
-    </fieldset>
-  </div> -->
-
   <fieldset class="mb-3">
     <div class="mx-auto">
-      <%= render partial:'/orders/order_contents/packaging_materials_fields', locals: {
-        nested_field: form,
-        order_content: order_content,
+      <%#= render partial: "/packaging_materials/form", locals: {
+        order_content_form: local_assigns[:form],
       } %>
     </div>
   </fieldset>

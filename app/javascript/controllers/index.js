@@ -4,11 +4,8 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-
-import NestedFormController from "./nested_form_controller"
-application.register("nested-form", NestedFormController)
+import ClickHiddenController from "./click_hidden_controller"
+application.register("click-hidden", ClickHiddenController)
 
 import NumberFieldInputController from "./number_field_input_controller"
 application.register("number-field-input", NumberFieldInputController)
@@ -18,6 +15,9 @@ application.register("orders-bulk", OrdersBulkController)
 
 import SearchController from "./search_controller"
 application.register("search", SearchController)
+
+import ToggleController from "./toggle_controller"
+application.register("toggle", ToggleController)
 
 import TurboModalController from "./turbo_modal_controller"
 application.register("turbo-modal", TurboModalController)

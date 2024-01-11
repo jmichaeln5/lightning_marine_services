@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, skip: [ :sessions, :registrations, :passwords ]
-
   # Users::SessionsController
   devise_scope :user do
     get 'users/sign_in', to: 'users/sessions#new', as:'new_user_session'
@@ -51,12 +50,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # namespace :orders do
-  #   resource :bulk, controller: :bulk, only: [:destroy]
-  # end
-
   resources :searches, only: [:index]
-
   concern :searchable do
     scope module: 'searches' do
       get 'search'
@@ -66,6 +60,10 @@ Rails.application.routes.draw do
   concern :destroy_attachable do
     delete '/attachments/:signed_id', action: 'destroy_attachment'
   end
+
+  # namespace :orders do
+  #   resource :bulk, controller: :bulk, only: [:destroy]
+  # end
 
   resources :orders, concerns: [:hovercardable ] do
     collection do
@@ -81,11 +79,9 @@ Rails.application.routes.draw do
   resources :orders do
     resources :order_contents, controller:'orders/order_contents', only: [:create]
   end
-  resources :order_contents, only: [:show, :edit, :update, :destroy]
+  resources :order_contents, only: %i(show edit update destroy)
 
-  get '/render_field', to: 'packaging_materials#render_field', as: 'render_field'
-
-  resources :packaging_materials, only: [:edit, :update, :destroy]
+  resources :packaging_materials, only: %i(new edit update destroy)
 
   resources :order_contents, only: [:show] do
     resources :packaging_materials, controller: 'order_contents/packaging_materials', only: [:index, :new, :create]
@@ -148,14 +144,3 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
-
-
-
-###########################
-###########################
-###########################
-###########################
-# resources :articles do
-#   resources :comments, only: [:index, :new, :create]
-# end
-# resources :comments, only: [:show, :edit, :update, :destroy]
