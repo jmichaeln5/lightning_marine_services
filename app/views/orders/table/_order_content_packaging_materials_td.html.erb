@@ -1,0 +1,38 @@
+<% order_content = order.order_content %>
+<% order_content_decorator = OrderContentDecorator.new(order.order_content) %>
+
+<%= link_to order, target: "_top"  do %>
+  <%= tag.div class: local_assigns[:target_top_link_to_css_classes] do %>
+    <span>
+      <% if order_content.packaging_materials.any? %>
+        <%= tag.div class: "w-auto grid justify-items-start grid-cols-2 grid-flow-row auto-rows-max whitespace-nowrap" do %>
+          <%= tag.div "Boxes:" %>
+          <%= tag.p order_content_decorator.packaging_materials_boxes_td, class: "text-sm" %>
+          <%= tag.div "Crates:" %>
+          <%= tag.p order_content_decorator.packaging_materials_crates_td, class: "text-sm" %>
+          <%= tag.div "Pallets:" %>
+          <%= tag.p order_content_decorator.packaging_materials_pallets_td, class: "text-sm" %>
+          <%= tag.div "Other:" if order_content.packaging_materials_others.exists? %>
+          <%= (tag.p order_content_decorator.packaging_materials_others_td, class: "text-sm") if order_content.packaging_materials_others.exists? %>
+        <% end %>
+      <% else %>
+        <%= tag.div class: "w-auto grid justify-items-start grid-cols-2 grid-flow-row auto-rows-max whitespace-nowrap" do %>
+          Boxes: <%= order.order_content.try(:box) || '0' %>
+          <br>
+          Crates: <%= order.order_content.try(:crate) || '0' %>
+          <br>
+          Pallets: <%= order.order_content.try(:pallet) || '0' %>
+          <br>
+          Others: <%= order.order_content.try(:other) || '0' %>
+          <br>
+          <% if (order.order_content.other.present? && order.order_content.other_description.present?) %>
+            <%= tag.p "Other Desc:" %>
+            <span class="whitespace-normal text-gray-500">
+              <%= order.order_content.other_description.length >= 25 ? "#{order.order_content.other_description[0..25]...}" : "#{order.order_content.other_description}" if order.order_content.other_description %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </span>
+  <% end %>
+<% end %>

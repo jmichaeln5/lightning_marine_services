@@ -41,13 +41,11 @@
         <div class="mx-auto flex space-x-3">
           <div>
             <%= form.label :type, 'Type', class: "text-sm font-medium" %>
-            <br>
-            <%= form.select :type, PackagingMaterialDecorator.types_options, {}, { class: "w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
+            <%= form.select :type, PackagingMaterialDecorator.types_options, {}, { class: "inline-block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"} %>
           </div>
           <div>
-            <%= form.label :description, "Description", class: "w-full text-sm font-medium" %>
-            <br>
-            <%= form.text_field :description, class: "hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm" %>
+            <%= form.label :description, "Description", class: "inline-block w-full text-sm font-medium" %>
+            <%= form.text_field :description, class: "inline-block hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm" %>
           </div>
           <div>
             <br>
