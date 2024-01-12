@@ -44,7 +44,7 @@ class OrderContentDecorator
       ids_with_description = with_desc.ids
 
       td_display_arr = Array.new
-      td_display_arr.push(ids_without_description.count.to_s) unless (ids_without_description.count < 0)
+      td_display_arr.push(ids_without_description.count.to_s) if (ids_without_description.count > 0)
 
       return td_display_arr.join unless (ids_with_description.count > 0)
 

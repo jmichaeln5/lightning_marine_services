@@ -1,22 +1,23 @@
 <% order_content = order.order_content %>
 <% order_content_decorator = OrderContentDecorator.new(order.order_content) %>
-
 <%= link_to order, target: "_top"  do %>
   <%= tag.div class: local_assigns[:target_top_link_to_css_classes] do %>
-    <span>
+    <div class="text-left">
       <% if order_content.packaging_materials.any? %>
-        <%= tag.div class: "w-auto grid justify-items-start grid-cols-2 grid-flow-row auto-rows-max whitespace-nowrap" do %>
-          <%= tag.div "Boxes:" %>
-          <%= tag.p order_content_decorator.packaging_materials_boxes_td, class: "text-sm" %>
-          <%= tag.div "Crates:" %>
-          <%= tag.p order_content_decorator.packaging_materials_crates_td, class: "text-sm" %>
-          <%= tag.div "Pallets:" %>
-          <%= tag.p order_content_decorator.packaging_materials_pallets_td, class: "text-sm" %>
-          <%= tag.div "Other:" if order_content.packaging_materials_others.exists? %>
-          <%= (tag.p order_content_decorator.packaging_materials_others_td, class: "text-sm") if order_content.packaging_materials_others.exists? %>
+        <%= tag.div class: "inline-block mx-auto grid gap-x-2 grid-cols-2 whitespace-nowrap" do %>
+          <%= tag.div "Boxes:", class:"" %>
+          <%= tag.div order_content_decorator.packaging_materials_boxes_td, class: "mt-1 text-xs" %>
+          <%= tag.div "Crates:", class:"" %>
+          <%= tag.div order_content_decorator.packaging_materials_crates_td, class: "mt-1 text-xs" %>
+          <%= tag.div "Pallets:", class:"" %>
+          <%= tag.div order_content_decorator.packaging_materials_pallets_td, class: "mt-1 text-xs" %>
+          <% if order_content.packaging_materials_others.exists? %>
+            <%= tag.div "Other:", class:"" %>
+            <%= tag.div order_content_decorator.packaging_materials_others_td, class: "mt-1 text-xs" %>
+          <% end %>
         <% end %>
       <% else %>
-        <%= tag.div class: "w-auto grid justify-items-start grid-cols-2 grid-flow-row auto-rows-max whitespace-nowrap" do %>
+        <%= tag.div class: "w-auto grid  grid-cols-2 grid-flow-row auto-rows-max whitespace-nowrap" do %>
           Boxes: <%= order.order_content.try(:box) || '0' %>
           <br>
           Crates: <%= order.order_content.try(:crate) || '0' %>
@@ -33,6 +34,6 @@
           <% end %>
         <% end %>
       <% end %>
-    </span>
+    </div>
   <% end %>
 <% end %>

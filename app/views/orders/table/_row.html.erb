@@ -1,8 +1,7 @@
-<div id="<%= dom_id order %>" class="table-row odd:bg-gray-50 even:bg-gray-100 hover:bg-slate-100">
+<%= tag.div id: dom_id(order), class: "table-row odd:bg-gray-50 odd:hover:shadow even:bg-white even:hover:shadow" do %>
   <% primary_col_css_classes = "table-cell py-2 align-middle text-center text-sm font-medium text-gray-900 h-full group" %>
   <% target_top_link_to_css_classes = "text-indigo-600 hover:text-indigo-800 hover:cursor-pointer" %>
-
-  <%= tag.div class: primary_col_css_classes do %>
+  <%= tag.div class: "pl-3 #{primary_col_css_classes}" do %>
     <%= link_to "View", order, class:target_top_link_to_css_classes, target: "_top" %>
     <%= link_to "Edit", edit_order_path(order), data: {turbo_frame: "modal" }, class: target_top_link_to_css_classes if authorized_internal_user? %>
   <% end %>
@@ -31,25 +30,15 @@
         <%= order.po_number %>
       <% end %>
     <% end %>
-    <%#= tag.div "#{'tracking_number'.humanize}: #{order.tracking_number}", class: "inline-block my-1 whitespace-nowrap" if order.tracking_number %>
   <% end %>
   <%= tag.div class: primary_col_css_classes do %>
     <%= render "inline_edit", model: order, attribute: :date_recieved do %>
       <%= order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
     <% end %>
   <% end %>
-
-
-
-
-
-
-
-
-
   <%= tag.div class: primary_col_css_classes do %>
     <% if order.try(:order_content).present? %>
-      <%= tag.div class: '' do %>
+      <%= tag.div class: 'inline-block' do %>
         <%= render partial: "/orders/table/order_content_packaging_materials_td", locals: {
           order: order,
           target_top_link_to_css_classes: "text-indigo-600 hover:font-semi-bold hover:text-indigo-800 hover:cursor-pointer hover:shadow-sm",
@@ -59,13 +48,6 @@
     <%= (tag.div "No order content", class: "block w-full rounded-md px-2 py-1 text-red-600 font-bold") %>
     <% end %>
   <% end %>
-
-
-
-
-
-
-
   <%= tag.div class: primary_col_css_classes do %>
     <%= render "inline_edit", model: order, attribute: :courrier do %>
       <%= order.courrier.present? ? order.courrier : 'n/a' %>
@@ -76,4 +58,4 @@
       <%= order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
     <% end %>
   <% end %>
-</div>
+<% end %>
