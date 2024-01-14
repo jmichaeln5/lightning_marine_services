@@ -1,11 +1,10 @@
 class OrderContentDecorator
-  delegate_missing_to :@order_content
+  delegate :packaging_materials, to: :order_content
 
-  attr_reader :order_content, :packaging_materials
+  attr_reader :order_content
 
   def initialize(order_content)
     @order_content = order_content
-    @packaging_materials = order_content.packaging_materials
   end
 
   def packaging_materials_others_td
@@ -44,7 +43,10 @@ class OrderContentDecorator
       ids_with_description = with_desc.ids
 
       td_display_arr = Array.new
-      td_display_arr.push(ids_without_description.count.to_s) if (ids_without_description.count > 0)
+
+      unless ((ids_without_description.count == 0) && (ids_with_description.count > 0))
+        td_display_arr.push(ids_without_description.count.to_s)
+      end
 
       return td_display_arr.join unless (ids_with_description.count > 0)
 
@@ -56,7 +58,10 @@ class OrderContentDecorator
       remaining_ids.each do |packaging_material_id|
         if packaging_material_id.in? remaining_ids
           packaging_material = with_desc.find packaging_material_id
-          matching_description_ids = materials.where('lower(description) = ?', packaging_material.description.downcase).ids
+
+          matching_description_ids = materials.where(
+            'lower(description) = ?', packaging_material.description.downcase
+          ).ids
 
           packaging_materials_with_description_hash[:packaging_materials].push(
             { ids: matching_description_ids, description: packaging_material.description.upcase }
