@@ -144,10 +144,9 @@
                   </div>
                 </div>
               <%# end %> -->
-
             </div>
           </div>
-          <div class="mx-4 sm:mx-6">
+          <div class="mx-4 sm:mx-6 pb-9">
           <%= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
             <%= tag.p 'Loading packaging materials...' %>
           <% end %>
@@ -156,8 +155,6 @@
       </div>
     </section>
   </span>
-
-
   <!-- <section class="pb-12" aria-labelledby="order-content-packaging-materials">
     <div class="pt-5 pb-3 px-4 sm:px-0">
       <%#= turbo_frame_tag "packaging_materials", src: order_content_packaging_materials_path(@order_content) do %>
@@ -165,7 +162,6 @@
       <%# end %>
     </div>
   </section> -->
-
   <section class="pb-12" aria-labelledby="order-details-more">
     <div class="bg-white shadow rounded-lg">
       <div class="px-4 pt-5 pb-3 sm:px-6">

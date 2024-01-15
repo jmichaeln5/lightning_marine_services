@@ -7,6 +7,9 @@ import { application } from "./application"
 import ClickHiddenController from "./click_hidden_controller"
 application.register("click-hidden", ClickHiddenController)
 
+import CounterController from "./counter_controller"
+application.register("counter", CounterController)
+
 import NumberFieldInputController from "./number_field_input_controller"
 application.register("number-field-input", NumberFieldInputController)
 

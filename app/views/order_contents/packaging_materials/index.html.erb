@@ -49,10 +49,8 @@
         <% if @packaging_materials.size == 0 %>
           <div class="bg-slate-50 w-full h-full p-6 text-center">
             <% if authorized_internal_user? %>
-              <h3 class="mt-2 text-sm font-semibold text-gray-900">
-                No packaging material<%= " '#{params[:type]}'" if params[:type] %>
-              </h3>
-              <p class="mt-1 text-sm text-gray-500">Add new packaging material<%= " '#{params[:type].downcase}'" if (params[:type] && (params[:type].downcase != 'other')) %> by clicking button below.</p>
+              <%= tag.h3 "No packaging material #{(params[:type] if params[:type])}", class:"mt-2 text-sm font-semibold text-gray-900" %>
+              <%= tag.p "Edit order to add new packaging material", class: "mt-1 text-sm text-gray-500" %>
             <% else %>
               <p class="text-md font-semibold text-gray-900"> No packaging material<%= " '#{params[:type]}'" if params[:type] %> </p>
             <% end %>
@@ -73,17 +71,9 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                   <% @packaging_materials.each do |packaging_material| %>
-                    <tr id="<%= dom_id packaging_material %>">
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <%= "#{packaging_material.type_name} #{packaging_material.description}" %>
-                      </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        packaging_material.status
-                      </td>
-                      <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                        <%= button_to "Delete", packaging_material_path(packaging_material), method: :delete, data: {turbo_stream: true }, class:" inline-flex items-center rounded border border-transparent bg-red-100 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" if authorized_internal_user? %>
-                      </td>
-                    </tr>
+                    <%= render partial: '/packaging_materials/packaging_material', locals: {
+                        packaging_material: packaging_material,
+                    } %>
                   <% end %>
                 </tbody>
               </table>
@@ -91,39 +81,39 @@
           </div>
         <% end %>
       </div>
-      <% if authorized_internal_user? %>
-        <% case request.path %>
-        <% when order_content_packaging_materials_path(@order_content) %>
-            <% button_text_packaging_material = "New packaging material" %>
-            <% button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
-        <% when order_content_packaging_material_boxes_path(@order_content) %>
-            <% button_text_packaging_material = "New packaging material- box" %>
-            <% button_packaging_material_path = new_order_content_packaging_material_box_path(@order_content) %>
-        <% when order_content_packaging_material_crates_path(@order_content) %>
-            <% button_text_packaging_material = "New packaging material- crate" %>
-            <% button_packaging_material_path = new_order_content_packaging_material_crate_path(@order_content) %>
-        <% when order_content_packaging_material_pallets_path(@order_content) %>
-            <% button_text_packaging_material = "New packaging material- pallet" %>
-            <% button_packaging_material_path = new_order_content_packaging_material_pallet_path(@order_content) %>
-        <% when order_content_packaging_material_others_path(@order_content) %>
-          <% button_text_packaging_material = "New packaging material" %>
-          <% button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
-        <% end %>
+      <!-- <%# if authorized_internal_user? %>
+        <%# case request.path %>
+        <%# when order_content_packaging_materials_path(@order_content) %>
+            <%# button_text_packaging_material = "New packaging material" %>
+            <%# button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
+        <%# when order_content_packaging_material_boxes_path(@order_content) %>
+            <%# button_text_packaging_material = "New packaging material- box" %>
+            <%# button_packaging_material_path = new_order_content_packaging_material_box_path(@order_content) %>
+        <%# when order_content_packaging_material_crates_path(@order_content) %>
+            <%# button_text_packaging_material = "New packaging material- crate" %>
+            <%# button_packaging_material_path = new_order_content_packaging_material_crate_path(@order_content) %>
+        <%# when order_content_packaging_material_pallets_path(@order_content) %>
+            <%# button_text_packaging_material = "New packaging material- pallet" %>
+            <%# button_packaging_material_path = new_order_content_packaging_material_pallet_path(@order_content) %>
+        <%# when order_content_packaging_material_others_path(@order_content) %>
+          <%# button_text_packaging_material = "New packaging material" %>
+          <%# button_packaging_material_path = new_order_content_packaging_material_path(@order_content) %>
+        <%# end %>
         <div class="inline-block w-full my-6">
           <div data-controller="visibility" data-visibility-value-toggled="false" class="w-full relative text-center">
             <button type="button" data-action="visibility#toggleTargets" class="w-full btn btn_outline_indigo" aria-controls="" aria-expanded="false">
-              <%= button_text_packaging_material %>
+              <%#= button_text_packaging_material %>
             </button>
             <div data-visibility-target="hideable" hidden class="max-w-full mx-auto bg-gray-50" id="sub-menu-1">
               <div class="mx-auto">
-                <%= turbo_frame_tag "new_packaging_material", src: button_packaging_material_path, loading: "lazy" do %>
-                  <%= tag.p 'Loading packaging materials...' %>
-                <% end %>
+                <%#= turbo_frame_tag "new_packaging_material", src: button_packaging_material_path, loading: "lazy" do %>
+                  <%#= tag.p 'Loading packaging materials...' %>
+                <%# end %>
               </div>
             </div>
           </div>
         </div>
-      <% end %>
+      <%# end %> -->
     </turbo-frame>
   </div>
 </article>

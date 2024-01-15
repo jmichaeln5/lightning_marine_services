@@ -39,8 +39,6 @@ export default class extends Controller {
   }
 
   clickOutside(event) {
-    console.log('\n   data-controller="toggle" toggle(event)\n')
-
     if (this.data.get("clickOutside") === "add") {
       this.toggleableTargets.forEach((target) => {
       target.classList.add(target.dataset.cssClass);
@@ -51,5 +49,4 @@ export default class extends Controller {
       });
     }
   }
-
 }

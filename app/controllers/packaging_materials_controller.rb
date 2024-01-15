@@ -1,11 +1,19 @@
 class PackagingMaterialsController < ApplicationController
   layout "stacked_shell"
 
-  before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ edit update destroy ]
+  before_action :set_packaging_material, :set_order_content, :set_order, only: %i[ show, edit update destroy ]
+
+  def show
+    set_packaging_material
+    set_order_content
+    set_order
+  end
 
   def new
-    params.permit(:type, :target)
+    params.permit(:type, :description, :target)
+
     @type = (params[:type].in? PackagingMaterial::Packageable::TYPES) ? params[:type] : 'PackagingMaterial::Other'
+    @description = params[:description]
     @target = params[:target]
   end
 

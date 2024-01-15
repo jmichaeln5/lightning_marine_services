@@ -3,6 +3,7 @@
     <%= fields_for "order[order_content_attributes][packaging_materials_attributes][#{timestamp}]" do |rendered_form| %>
       <%= render partial: "/packaging_materials/nested_field", locals: {
         form: rendered_form,
+        description: @description,
       } %>
     <% end %>
 <% end %>

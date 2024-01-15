@@ -1,3 +1,3 @@
 class PackagingMaterial::Crate < PackagingMaterial
-  include Packageable
+  include Packageable, TypeName
 end

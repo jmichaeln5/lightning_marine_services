@@ -7,35 +7,29 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "users#index"
     resources :users
-    resources :roles, only: [:index, :show]
+    resources :roles, only: %i(index show)
   end
 
-  devise_for :users, skip: [ :sessions, :registrations, :passwords ]
-  # Users::SessionsController
-  devise_scope :user do
+  devise_for :users, skip: %i(sessions registrations passwords)
+  devise_scope :user do # Users::SessionsController
     get 'users/sign_in', to: 'users/sessions#new', as:'new_user_session'
     post 'users/sign_in', to: 'users/sessions#create', as:'user_session'
     get 'users/sign_out', to: 'users/sessions#destroy', as:'destroy_user_session'
     delete 'users/sign_out', to: 'users/sessions#destroy'
   end
-  # Users::RegistrationsController
-  devise_scope :user do
+  devise_scope :user do # Users::RegistrationsController
     get '/users/sign_up', to: 'users/registrations#new', as:'new_user_registration'
     post '/users/sign_up', to: 'users/registrations#create'
-
     get '/account_settings', to: 'users/registrations#edit', as:'edit_user_registration'
     put '/users/edit', to: 'users/registrations#update', as:'user_registration'
     delete '/users/edit', to: 'users/registrations#destroy'
-
     delete '/users', to: 'users/registrations#destroy'
     get '/users/cancel', to: 'users/registrations#cancel', as:'cancel_user_registration'
     delete '/users/cancel', to: 'users/registrations#cancel'
   end
-  # Users::PasswordsController
-  devise_scope :user do
+  devise_scope :user do # Users::PasswordsController
     get '/users/password/new', to: 'users/passwords#new', as:'new_user_password' # forgot password
     get '/users/password/edit', to: 'users/passwords#edit', as:'edit_user_password'
-
     patch '/users/password', to: 'users/passwords#update'
     put '/users/password', to: 'users/passwords#update'
   end
@@ -50,7 +44,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :searches, only: [:index]
+  resources :searches, only: %i(index)
   concern :searchable do
     scope module: 'searches' do
       get 'search'
@@ -65,7 +59,7 @@ Rails.application.routes.draw do
   #   resource :bulk, controller: :bulk, only: [:destroy]
   # end
 
-  resources :orders, concerns: [:hovercardable ] do
+  resources :orders, concerns: %i(hovercardable) do
     collection do
       concerns :searchable
     end
@@ -76,50 +70,24 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :orders do
-    resources :order_contents, controller:'orders/order_contents', only: [:create]
-  end
-  resources :order_contents, only: %i(show edit update destroy)
+  resources :orders
 
-  resources :packaging_materials, only: %i(new edit update destroy)
-
-  resources :order_contents, only: [:show] do
-    resources :packaging_materials, controller: 'order_contents/packaging_materials', only: [:index, :new, :create]
-  end
-
-  # get '/order_contents/:order_content_id/packaging_materials/boxes', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_boxes, type: 'Box'         # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
-  # get '/order_contents/:order_content_id/packaging_materials/crates', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_crates, type: 'Crate'     # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
-  # get '/order_contents/:order_content_id/packaging_materials/pallets', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_pallets, type: 'Pallet'  # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
-  # get '/order_contents/:order_content_id/packaging_materials/others', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_materials_others, type: 'Other'  # NOTE # OrderContents::PackagingMaterials#new - THROWS ERROR WHEN PLURAL
-  get '/order_contents/:order_content_id/packaging_materials/boxes', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_material_boxes, type: 'Box'                ###  using 👈🏾  because ☝🏾 ☝🏾 ☝🏾
-  get '/order_contents/:order_content_id/packaging_materials/crates', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_material_crates, type: 'Crate'            ###  using 👈🏾  because ☝🏾 ☝🏾 ☝🏾
-  get '/order_contents/:order_content_id/packaging_materials/pallets', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_material_pallets, type: 'Pallet'         ###  using 👈🏾  because ☝🏾 ☝🏾 ☝🏾
-  get '/order_contents/:order_content_id/packaging_materials/others', to: 'order_contents/packaging_materials#index', as: :order_content_packaging_material_others, type: 'Other'            ###  using 👈🏾  because ☝🏾 ☝🏾 ☝🏾
-
-  get '/order_contents/:order_content_id/packaging_materials/boxes/new', to: 'order_contents/packaging_materials#new', as: :new_order_content_packaging_material_box, type: 'Box'
-  get '/order_contents/:order_content_id/packaging_materials/crates/new', to: 'order_contents/packaging_materials#new', as: :new_order_content_packaging_material_crate, type: 'Crate'
-  get '/order_contents/:order_content_id/packaging_materials/pallets/new', to: 'order_contents/packaging_materials#new', as: :new_order_content_packaging_material_pallet, type: 'Pallet'
-  get '/order_contents/:order_content_id/packaging_materials/others/new', to: 'order_contents/packaging_materials#new', as: :new_order_content_packaging_material_other, type: 'Other'
-
-  post '/order_contents/:order_content_id/packaging_materials/boxes', to: 'order_contents/packaging_materials#create', type: 'Box'
-  post '/order_contents/:order_content_id/packaging_materials/crates', to: 'order_contents/packaging_materials#create', type: 'Crate'
-  post '/order_contents/:order_content_id/packaging_materials/pallets', to: 'order_contents/packaging_materials#create', type: 'Pallet'
-  post '/order_contents/:order_content_id/packaging_materials/others', to: 'order_contents/packaging_materials#create', type: 'Other'
-
+  get '/archived_orders', to: 'orders#archived_index'
+  get '/all_orders', to: 'orders#all_orders'
+  get '/completed_orders', to: 'orders#completed_orders'
 
   resources :purchasers do
     resources :orders, only: [:index, :new, :create ], module: :purchasers do
       get 'deliver_active', on: :collection
     end
-
     member do
       get 'all_orders', controller: 'purchasers/orders'
       get 'active_orders', controller: 'purchasers/orders'
       get 'completed_orders', controller: 'purchasers/orders'
-
       get :export
     end
   end
+  # get '/purchasers_all', to: 'purchasers#show_all'
 
   resources :vendors do
     resources :orders, only: [:index, :new, :create ], module: :vendors
@@ -131,16 +99,38 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/archived_orders', to: 'orders#archived_index'
-  get '/all_orders', to: 'orders#all_orders'
-  get '/completed_orders', to: 'orders#completed_orders'
+  resources :order_contents, only: %i(show edit update destroy)
+  resources :packaging_materials, only: %i(show new edit update destroy)
 
-  get '/purchasers_all', to: 'purchasers#show_all'
-  #get '/all_ship_orders/:id', to: 'purchasers#show_all'
-  # get '/search', to: 'searches#index'
+  resources :order_contents, only: %i(show) do
+    resources :packaging_materials, controller: 'order_contents/packaging_materials', only: %i(new index create)
+  end
 
-  # Redirects to root if invalid path BUT, fucks up search params
-  # match '*path' => redirect('/'), :via => [:get, :post]
+  def generate_order_content_packaging_material_types_routes
+    %i(new index create).each do |_action_name|
+      PackagingMaterialDecorator.humanized_types.each do |packaging_material_type|
+        type = packaging_material_type.to_s.downcase.singularize
 
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+        case _action_name
+        when :new
+          get "/order_contents/:order_content_id/packaging_materials/#{type.pluralize}/new",
+            to: "order_contents/packaging_materials#new",
+            as: :new_order_content_packaging_material_box,
+            as: "new_order_content_packaging_material_#{type.singularize}".to_sym,
+            type: type.classify
+        when :index
+          get "/order_contents/:order_content_id/packaging_materials/#{type.pluralize}",
+            to: 'order_contents/packaging_materials#index',
+            as: "order_content_packaging_material_#{type.pluralize}".to_sym,
+            type: type.classify
+        when :create
+          post "/order_contents/:order_content_id/packaging_materials/#{type.pluralize}",
+            to: "order_contents/packaging_materials#create",
+            type: type.classify
+        end
+      end
+    end
+  end
+
+  generate_order_content_packaging_material_types_routes
 end

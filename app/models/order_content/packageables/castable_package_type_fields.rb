@@ -1,4 +1,4 @@
-module OrderContent::CastablePackageTypeFields
+module OrderContent::Packageables::CastablePackageTypeFields
   extend ActiveSupport::Concern
 
   def has_package_type_amount?(attr_name)

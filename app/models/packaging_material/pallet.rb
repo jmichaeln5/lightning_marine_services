@@ -1,3 +1,3 @@
 class PackagingMaterial::Pallet < PackagingMaterial
-  include Packageable
+  include Packageable, TypeName
 end

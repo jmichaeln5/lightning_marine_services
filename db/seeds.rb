@@ -1,19 +1,12 @@
-if !Rails.env.production?
-  valid_seed_env = Rails.env.to_s.downcase
+return true if Rails.env.production?
 
-  in_valid_seed_env = false
-  in_valid_seed_env = true if valid_seed_env == 'development'
-  in_valid_seed_env = true if valid_seed_env == 'test'
+seed_env = Rails.env.to_s.dup.downcase
 
-  if in_valid_seed_env == true
-    seed_dir_for_env = "db/seeds/#{valid_seed_env}"
-
-    current_env_seeds_dir = Rails.root.join(seed_dir_for_env)
-    env_has_seed_files =  Dir.exists? current_env_seeds_dir
-
-    Dir.glob("#{current_env_seeds_dir}/*.rb") do |seed|
+if seed_env.in? %w(development test)
+  env_seeds_dir = Rails.root.join("db/seeds/#{seed_env}")
+  if Dir.exists? env_seeds_dir
+    Dir.glob("#{env_seeds_dir}/*.rb") do |seed|
       load seed
     end
   end
-
 end

@@ -1,5 +1,4 @@
-# vendors_to_create = rand(25..75)
-vendors_to_create = rand(9..25)
+vendors_to_create = rand(20..80)
 purchasers_to_create = (vendors_to_create / 2).round(1)
 orders_to_create = vendors_to_create * 5
 
@@ -32,7 +31,7 @@ def random_order_attributes
   end
 
   {
-    dept: random_dept,
+    dept: (([false, false, false, false, true].sample == true) ? random_dept : nil),
     purchaser: Purchaser.all.sample,
     vendor: Vendor.all.sample,
     po_number: Faker::Number.number(digits: rand(7..11)),
@@ -42,7 +41,6 @@ def random_order_attributes
     order_content_attributes: [],
   }
 end
-
 
 def rand_order_content_amt; "#{rand(0..7)}"; end;
 
