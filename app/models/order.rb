@@ -17,6 +17,13 @@
 #  order_sequence  :integer
 #
 class Order < ApplicationRecord
+  # attribute :cast_packaging_materials, :boolean, default: false # 👈🏾 TODO attempt type cast if true
+
+  alias_attribute :ship, :purchaser
+
+  delegate :purchaser_name, :ship_name, to: :purchaser
+  delegate :vendor_name, to: :vendor
+
   include Attachable::Images # change attr name, can attach more than images
   include Searchable
   include Exportable
@@ -26,14 +33,14 @@ class Order < ApplicationRecord
 
   has_one :order_content, dependent: :destroy
 
+  accepts_nested_attributes_for :order_content, allow_destroy: true
+
   has_many :packaging_materials, through: :order_content
 
   has_many :packaging_materials_boxes, through: :order_content
-  has_many :packaging_materials_pallets, through: :order_content
   has_many :packaging_materials_crates, through: :order_content
+  has_many :packaging_materials_pallets, through: :order_content
   has_many :packaging_materials_others, through: :order_content
-
-  accepts_nested_attributes_for :order_content, allow_destroy: true
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where.not(archived: true) }
@@ -41,7 +48,7 @@ class Order < ApplicationRecord
   scope :filter_by_purchasers, -> (sort_direction) {
     includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
   }
-  
+
   scope :filter_by_vendors, -> (sort_direction) {
     includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
   }
@@ -52,14 +59,7 @@ class Order < ApplicationRecord
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
     ensure_archived_val unless (archived == date_delivered.present?)
-  end
-
-  def purchaser_name
-    self.purchaser.name
-  end
-
-  def vendor_name
-    self.vendor.name
+    # order_content.set_string_attrs_from_packaging_materials if cast_packaging_materials
   end
 
   def self.deliver_active
@@ -73,24 +73,19 @@ class Order < ApplicationRecord
 
   private
     def set_default_sequence
-      # if self.order_sequence.blank?
-        # if self.purchaser_id
-          ship = Purchaser.find(self.purchaser_id)
-          shipOrders = ship.orders.unarchived
-          #shipOrders = Order.find_by_purchaser_id(self.purchaser_id).unarchived
-          seq = 1
-          shipOrders.each do |ord|
-            iSeq = ord.try(:order_sequence)|| 0
-            if iSeq >= seq
-              seq = iSeq + 1
-            end
-          end
-          self.order_sequence = seq
-        # end
-      # end
+      ship = Purchaser.find(self.purchaser_id)
+      shipOrders = ship.orders.unarchived
+      seq = 1
+      shipOrders.each do |ord|
+        iSeq = ord.try(:order_sequence)|| 0
+        if iSeq >= seq
+          seq = iSeq + 1
+        end
+      end
+      self.order_sequence = seq
     end
 
     def ensure_archived_val
-      self.archived = date_delivered.present? if (self.archived != date_delivered.present?)
+      self.archived = date_delivered.present?
     end
 end

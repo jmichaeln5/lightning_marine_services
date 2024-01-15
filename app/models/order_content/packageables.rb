@@ -37,21 +37,31 @@ module OrderContent::Packageables
     end
 
     has_many :packaging_materials_boxes, class_name: 'PackagingMaterial::Box' do
-      def without_descriptions
-        where(description: [nil, ''])
-      end
-
-      def with_descriptions
-        where.not(description: [nil, ''])
-      end
+      include Describable
     end
 
-    # has_many :packaging_materials, dependent: :destroy
-    # has_many :packaging_materials_boxes, class_name: 'PackagingMaterial::Box'
-    has_many :packaging_materials_crates, class_name: 'PackagingMaterial::Crate'
-    has_many :packaging_materials_pallets, class_name: 'PackagingMaterial::Pallet'
-    has_many :packaging_materials_others, class_name: 'PackagingMaterial::Other'
+    has_many :packaging_materials_crates, class_name: 'PackagingMaterial::Crate' do
+      include Describable
+    end
+
+    has_many :packaging_materials_pallets, class_name: 'PackagingMaterial::Pallet' do
+      include Describable
+    end
+
+    has_many :packaging_materials_others, class_name: 'PackagingMaterial::Other' do
+      include Describable
+    end
 
     accepts_nested_attributes_for :packaging_materials, allow_destroy: true
   end
+
+  def get_packaging_materials_size_by_type(type); packaging_materials.where(type: type).size; end;
+
+  def get_packaging_materials_boxes_size; packaging_materials.where(type: 'PackagingMaterial::Box').size; end;
+
+  def get_packaging_materials_crates_size; packaging_materials.where(type: 'PackagingMaterial::Crate').size; end;
+
+  def get_packaging_materials_pallets_size; packaging_materials.where(type: 'PackagingMaterial::Pallet').size; end;
+
+  def get_packaging_materials_others_size; packaging_materials.where(type: 'PackagingMaterial::Other').size; end;
 end

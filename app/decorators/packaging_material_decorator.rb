@@ -13,6 +13,10 @@ class PackagingMaterialDecorator
     PackagingMaterial::Packageable::HUMANIZED_TYPES
   end
 
+  def self.types_with_humanized
+    self.types.collect { |packaging_material_type| [(packaging_material_type.delete_prefix "PackagingMaterial::"), packaging_material_type] }
+  end
+
   def self.options_for_select(packaging_material = nil)
     options_for_select_without_type = self.types.collect { |packaging_material_type| [packaging_material_type.safe_constantize.model_name.human, packaging_material_type ] }
 
@@ -23,17 +27,11 @@ class PackagingMaterialDecorator
     return packaging_material.type.in?(self.types) ? options_for_select_with_type : options_for_select_without_type
   end
 
-  def self.types_options
-    type_options_arr = Array.new
-    self.types.map { |packaging_material_type| type_options_arr.push [(packaging_material_type.delete_prefix "PackagingMaterial::"), packaging_material_type] }
-    type_options_arr
-  end
-
   def self.index_path_options(order_content, packaging_material_type = nil)
     path_options_hash = Hash.new
     path_options_hash[:all] = { type: 'all', title: 'All', path: "order_content_packaging_materials_url" }
 
-    self.types_options.each do |type|
+    self.types_with_humanized.each do |type|
       path_options_hash[type[0].downcase.to_sym] = {
         type: type[1],
         title: type[0].capitalize.pluralize,

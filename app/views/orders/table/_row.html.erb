@@ -22,13 +22,13 @@
     <%= link_to order.purchaser.name, purchaser_orders_path(order.purchaser), class: target_top_link_to_css_classes, target: "_top" %>
   <% end %>
   <%= tag.div class: primary_col_css_classes do %>
-    <%= authorized_internal_user? ? (link_to order.vendor.name, vendor_orders_path(order.vendor), class:target_top_link_to_css_classes, target: "_top") : (tag.p order.vendor.name, class: primary_col_css_classes)  %>
+    <%= tag.div class: "inline-block" do %>
+        <%= authorized_internal_user? ? (link_to order.vendor.name, vendor_orders_path(order.vendor), class: target_top_link_to_css_classes, target: "_top") : (tag.p order.vendor.name, class: primary_col_css_classes) %>
+    <% end %>
   <% end %>
   <%= tag.div class: primary_col_css_classes do %>
-    <%= tag.div class: "inline-block -mx-5" do %>
-      <%= render "inline_edit", model: order, attribute: :po_number do %>
-        <%= order.po_number %>
-      <% end %>
+    <%= render "inline_edit", model: order, attribute: :po_number do %>
+      <%= order.po_number %>
     <% end %>
   <% end %>
   <%= tag.div class: primary_col_css_classes do %>
@@ -37,15 +37,13 @@
     <% end %>
   <% end %>
   <%= tag.div class: primary_col_css_classes do %>
-    <% if order.try(:order_content).present? %>
-      <%= tag.div class: 'inline-block' do %>
+    <% unless order.try(:order_content).nil? %>
         <%= render partial: "/orders/table/order_content_packaging_materials_td", locals: {
-          order: order,
-          target_top_link_to_css_classes: "text-indigo-600 hover:font-semi-bold hover:text-indigo-800 hover:cursor-pointer hover:shadow-sm",
+        order: order,
+        target_top_link_to_css_classes: "text-indigo-600 hover:font-semi-bold hover:text-indigo-800 hover:cursor-pointer hover:shadow-sm",
         } %>
-      <% end %>
     <% else %>
-    <%= (tag.div "No order content", class: "block w-full rounded-md px-2 py-1 text-red-600 font-bold") %>
+    <%= (tag.div "No order content", class: "w-full rounded-md px-2 py-1 text-red-600 font-bold") %>
     <% end %>
   <% end %>
   <%= tag.div class: primary_col_css_classes do %>

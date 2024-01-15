@@ -1,14 +1,11 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Type:</strong>
-  <%= @packaging_material.type %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @packaging_material.description %>
-</p>
-
-<%= link_to 'Edit', edit_packaging_material_path(@packaging_material) %> |
-<%= link_to 'Back', packaging_materials_path %>
+<% content_for :page_heading_button do %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: @order,
+    fallback_location_text: "view order",
+  } %>
+<% end %>
+<%= tag.div class: "flex justify-around" do %>
+  <%= render partial: '/packaging_materials/packaging_material', locals: {
+      packaging_material: @packaging_material,
+  } %>
+<% end %>
