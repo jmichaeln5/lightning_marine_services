@@ -17,5 +17,5 @@ class OrderContent < ApplicationRecord
 
   belongs_to :order
 
-  validates :packaging_materials, presence: true
+  validates :packaging_materials, presence: { message: "required" }, unless: :has_packaging_materials?
 end

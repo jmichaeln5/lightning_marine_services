@@ -8,7 +8,7 @@ class Vendors::OrdersController < OrdersController
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_vendor_order
+    set_new_order
   end
 
   def all_orders
@@ -18,7 +18,7 @@ class Vendors::OrdersController < OrdersController
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_vendor_order
+    set_new_order
   end
 
   def completed_orders
@@ -28,11 +28,11 @@ class Vendors::OrdersController < OrdersController
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_vendor_order
+    set_new_order
   end
 
   private
-    def set_new_vendor_order
+    def set_new_order
       if params[:vendor_id]
         @vendor = Vendor.find(params[:vendor_id])
       end

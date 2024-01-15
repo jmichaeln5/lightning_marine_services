@@ -17,8 +17,6 @@
 #  order_sequence  :integer
 #
 class Order < ApplicationRecord
-  # attribute :cast_packaging_materials, :boolean, default: false # 👈🏾 TODO attempt type cast if true
-
   alias_attribute :ship, :purchaser
 
   delegate :purchaser_name, :ship_name, to: :purchaser
@@ -32,15 +30,9 @@ class Order < ApplicationRecord
   belongs_to :vendor
 
   has_one :order_content, dependent: :destroy
-
-  accepts_nested_attributes_for :order_content, allow_destroy: true
-
   has_many :packaging_materials, through: :order_content
 
-  has_many :packaging_materials_boxes, through: :order_content
-  has_many :packaging_materials_crates, through: :order_content
-  has_many :packaging_materials_pallets, through: :order_content
-  has_many :packaging_materials_others, through: :order_content
+  accepts_nested_attributes_for :order_content, allow_destroy: true
 
   scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where.not(archived: true) }
@@ -56,10 +48,14 @@ class Order < ApplicationRecord
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
 
+  validates :order_content, presence: { message: "must have packaging material" },
+    if: Proc.new { |obj| # handles silent failure of accepts_nested_attributes_for :order_content on create
+      order_content.nil? or obj.persisted?
+    }
+
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
     ensure_archived_val unless (archived == date_delivered.present?)
-    # order_content.set_string_attrs_from_packaging_materials if cast_packaging_materials
   end
 
   def self.deliver_active
@@ -77,7 +73,7 @@ class Order < ApplicationRecord
       shipOrders = ship.orders.unarchived
       seq = 1
       shipOrders.each do |ord|
-        iSeq = ord.try(:order_sequence)|| 0
+        iSeq = (ord.try(:order_sequence)|| 0)
         if iSeq >= seq
           seq = iSeq + 1
         end

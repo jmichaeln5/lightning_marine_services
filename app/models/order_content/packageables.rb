@@ -2,6 +2,8 @@ module OrderContent::Packageables
   extend ActiveSupport::Concern
 
   included do
+    # attribute :cast_packaging_materials, :boolean, default: false # 👈🏾  TODO attempt type cast if true
+
     include CastablePackageTypeFields
 
     has_many :packaging_materials, dependent: :destroy do
@@ -36,6 +38,8 @@ module OrderContent::Packageables
       end
     end
 
+    accepts_nested_attributes_for :packaging_materials, allow_destroy: true
+
     has_many :packaging_materials_boxes, class_name: 'PackagingMaterial::Box' do
       include Describable
     end
@@ -52,7 +56,18 @@ module OrderContent::Packageables
       include Describable
     end
 
-    accepts_nested_attributes_for :packaging_materials, allow_destroy: true
+    # before_validation do
+    #   order_content.set_string_attrs_from_packaging_materials if cast_packaging_materials # only for existing, so no need to call on create # 👈🏾  packaging_materials created via Order#accepts_nested_attributes_for :order_content
+    #   ## 👆🏾 would not be able to validate an association that does not yet exist
+    # end
+
+    def has_packaging_materials?
+      order_content_packaging_materials_size, marked_for_destruction_amount = packaging_materials.size, 0
+
+      packaging_materials.collect { |packaging_material| (marked_for_destruction_amount += 1) if packaging_material.marked_for_destruction? }
+
+      order_content_packaging_materials_size > marked_for_destruction_amount
+    end
   end
 
   def get_packaging_materials_size_by_type(type); packaging_materials.where(type: type).size; end;

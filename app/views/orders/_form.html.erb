@@ -1,5 +1,3 @@
-<% purchaser = params[:purchaser_id] ? Purchaser.find(params[:purchaser_id]) : nil %>
-<% vendor = params[:vendor_id] ? Vendor.find(params[:vendor_id]) : nil %>
 <%# https://tailwindui.com/components/application-ui/forms/form-layouts#component-30dffb06e58cdbe872820ed3f943d85a %>
 <% css_form_label = "block text-sm font-medium leading-6 text-gray-900" %>
 <% css_form_text_field = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
@@ -32,13 +30,13 @@
                 <div class="sm:col-span-3">
                   <legend><%= form.label :purchaser_id, 'Ship', class: css_form_label %></legend>
                   <div class="mt-1">
-                    <%= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
+                    <%= form.select :purchaser_id, PurchaserDecorator.options_for_select, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
                   </div>
                 </div>
                 <div class="sm:col-span-3">
                   <legend><%= form.label :vendor_id, 'Vendor', class: css_form_label %></legend>
                   <div class="mt-1">
-                    <%= form.select :vendor_id, Vendor.all.order(:name).collect  { |vendor| [ vendor.name, vendor.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
+                    <%= form.select :vendor_id, VendorDecorator.options_for_select, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
                   </div>
                 </div>
                 <div class="sm:col-span-6">

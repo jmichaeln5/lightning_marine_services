@@ -1,8 +1,9 @@
 class OrdersController < Orders::BaseController
   before_action :authorize_internal_user, only: %i[ new create edit destroy ]
-
   before_action :set_page_heading_title
-  before_action :set_order, only: %i[ show hovercard update destroy ]
+
+  before_action :set_order, only: %i(show hovercard update destroy)
+  before_action :set_new_order, only: %i(new) # callback required, overwriting in child controllers to build order on parent
 
   def index
     orders = Order.unarchived
@@ -32,9 +33,6 @@ class OrdersController < Orders::BaseController
   end
 
   def new
-    @order = Order.new
-    @order_content = @order.build_order_content
-    @packaging_material = @order.order_content.packaging_materials.build
   end
 
   def edit
@@ -123,10 +121,6 @@ class OrdersController < Orders::BaseController
   end
 
   private
-    def set_order
-      @order = Order.find(params[:id])
-    end
-
     def order_params
       params.require(:order).permit(
         :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, :purchaser_id, :vendor_id, :order_sequence,
@@ -140,9 +134,14 @@ class OrdersController < Orders::BaseController
       )
     end
 
-    def set_new_order
+    def set_order
+      @order = Order.find(params[:id])
+    end
+
+    def set_new_order  # method required, overwriting in child controllers to build order on parent
       @order = Order.new
-      @order.build_order_content
+      @order_content = @order.build_order_content
+      @packaging_material = @order.order_content.packaging_materials.build
     end
 
     def turbo_render_flash_order_notice(flash_title) # move to concern

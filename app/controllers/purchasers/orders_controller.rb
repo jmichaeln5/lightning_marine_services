@@ -6,7 +6,7 @@ class Purchasers::OrdersController < OrdersController
     orders = orders.order(order_sequence: :asc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_purchaser_order
+    set_new_order
   end
 
   def all_orders
@@ -16,7 +16,7 @@ class Purchasers::OrdersController < OrdersController
     orders = orders.order(order_sequence: :asc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_purchaser_order
+    set_new_order
   end
 
   def completed_orders
@@ -26,7 +26,7 @@ class Purchasers::OrdersController < OrdersController
     orders = orders.order(order_sequence: :asc)
     @orders = resolve_orders_for_data_table(orders)
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_purchaser_order
+    set_new_order
   end
 
   def deliver_active
@@ -39,7 +39,7 @@ class Purchasers::OrdersController < OrdersController
   end
 
   private
-    def set_new_purchaser_order
+    def set_new_order
       if params[:purchaser_id]
         @purchaser = Purchaser.find(params[:purchaser_id])
       end
