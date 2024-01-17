@@ -23,8 +23,8 @@ class Order < ApplicationRecord
   delegate :vendor_name, to: :vendor
 
   include Attachable::Images # change attr name, can attach more than images
-  include Searchable
-  include Exportable
+  include Exportable, Searchable, Statusable
+
 
   belongs_to :purchaser
   belongs_to :vendor
