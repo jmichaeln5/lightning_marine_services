@@ -48,10 +48,13 @@ class Order < ApplicationRecord
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
 
-  validates :order_content, presence: { message: "must have packaging material" },
-    if: Proc.new { |obj| # handles silent failure of accepts_nested_attributes_for :order_content on create
-      order_content.nil? or obj.persisted?
-    }
+  # validates :order_content, presence: { message: "must have packaging material" },
+  #   if: Proc.new { |obj| # handles silent failure of accepts_nested_attributes_for :order_content on create
+  #     order_content.nil? or obj.persisted?
+  #   }
+  validates_presence_of :packaging_materials, unless: -> {
+    order_content.nil? ? false : order_content.has_packaging_materials?
+  }
 
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
