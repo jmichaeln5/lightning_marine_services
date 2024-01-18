@@ -1,4 +1,4 @@
 <h1>Status</h1>
-<%= tag.div id: dom_id(@statusable, :status) do %>
+<%= tag.div id: @statusable.statusable_dom_id do %>
   <%= render partial: "/statuses/status", locals: { statusable: @statusable } %>
 <% end %>

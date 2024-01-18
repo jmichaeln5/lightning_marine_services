@@ -1,7 +1,7 @@
-module Order::Statusable
+module PackagingMaterial::Statusable
   extend ActiveSupport::Concern
 
-  STATUSES = %i(active partially_delivered delivered hold archived)
+  STATUSES = Order::Statusable::STATUSES - [:partially_delivered]
 
   included do
     delegate :statuses, :statusable?, to: :class
@@ -25,11 +25,11 @@ module Order::Statusable
     end
 
     def statusable_dom_id
-      "status_#{model_name.element}_#{id}"
+      "status_packaging_material_#{model_name.element}_#{id}"
     end
 
     def edit_statusable_dom_id
-      "edit_status_#{model_name.element}_#{id}"
+      "edit_status_packaging_material_#{model_name.element}_#{id}"
     end
   end
 end

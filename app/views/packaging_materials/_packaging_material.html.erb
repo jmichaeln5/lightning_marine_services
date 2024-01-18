@@ -1,12 +1,18 @@
-<tr id="<%= dom_id packaging_material %>">
-  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-    <%= tag.span "#{packaging_material.type_name} #{packaging_material.description}" %>
-    <%#= link_to "#{packaging_material.id} #{packaging_material.model_name.element.capitalize} #{packaging_material.description}", packaging_material_path(packaging_material), method: :get, target: '_top' %>
-  </td>
-  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-    packaging_material.status
-  </td>
-  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-    <%= button_to "Delete", packaging_material_path(packaging_material), method: :delete, data: {turbo_stream: true }, class:" inline-flex items-center rounded border border-transparent bg-red-100 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" if authorized_internal_user? %>
-  </td>
-</tr>
+<span id="<%= dom_id packaging_material %>">
+  <tr>
+    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+      <%= tag.span "#{packaging_material.type_name} #{packaging_material.description}" %>
+      <%#= link_to "#{packaging_material.id} #{packaging_material.model_name.element.capitalize} #{packaging_material.description}", packaging_material_path(packaging_material), method: :get, target: '_top' %>
+    </td>
+    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+      <%= tag.div class: "inline-block" do %>
+        <%= tag.div class: "grid justify-items-start" do %>
+        <%= render partial: 'statuses/status', locals:{ statusable: packaging_material } %>
+        <% end %>
+      <% end %>
+    </td>
+    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+      <%= button_to "Delete", packaging_material_path(packaging_material), method: :delete, data: {turbo_stream: true }, class:" inline-flex items-center rounded border border-transparent bg-red-100 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" if authorized_internal_user? %>
+    </td>
+  </tr>
+</span>

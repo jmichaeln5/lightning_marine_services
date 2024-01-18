@@ -1,26 +1,19 @@
 <%= render partial: "/application/append_flash_notice", locals: { notice: notice} if notice %>
-<% statusable_dom_id = dom_id(statusable, :status) %>
-<% statusable_dom_id ||= "status_#{statusable.model_name.element}_#{statusable.id}" %>
-<% edit_statusable_dom_id = "edit_#{statusable_dom_id}" %>
-<%= tag.div id: statusable_dom_id, class: "space-x-3" do %>
-  <%= tag.div class: "block w-full cursor-default" do %>
-    <%= tag.div class: "inline-block" do %>
-      <%= tag.div class: "w-full inline-flex justify-items-end" do %>
-        <%= tag.div "status:" %>
-        <%= tag.div statusable.status, class: "ml-1 font-bold" %>
-      <% end %>
+<%= tag.div id: statusable.statusable_dom_id, class: "inline-block w-full" do %>
+  <%= tag.div class: "inline-block" do %>
+    <%= tag.div class: "cursor-default inline-flex justify-items-center" do %>
+      <%= tag.div "status:" %>
+      <%= tag.div statusable.status.to_s.humanize, class: "ml-1 font-bold" %>
     <% end %>
-  <% end %>
-  <%= turbo_frame_tag edit_statusable_dom_id, class: "inline-flex space-x-3" do %>
-    <%= link_to edit_status_path(statusable_id: statusable.id, statusable_type: statusable.statusable_type) do %>
-      <%= tag.div class: "whitespace-nowrap inline-flex items-center gap-x-1.5 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300" do %>
-        <%= tag.span 'edit status' %>
-        <%= tag.span do %>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="-mr-0.5 h-5 w-5">
-            <path d="m2.695 14.762-1.262 3.155a.5.5 0 0 0 .65.65l3.155-1.262a4 4 0 0 0 1.343-.886L17.5 5.501a2.121 2.121 0 0 0-3-3L3.58 13.419a4 4 0 0 0-.885 1.343Z" />
-          </svg>
+    <% if authorized_internal_user? %>
+      <%= tag.div class: "" do %>
+        <%= turbo_frame_tag statusable.edit_statusable_dom_id, class: "inline-flex justify-center" do %>
+          <%= link_to 'edit', edit_status_path(
+          statusable,
+          params: { statusable_id: statusable.id, statusable_type: statusable.statusable_type},
+          ), class: "text-sm text-gray-400 underline underline-offset-2 hover:text-gray-600 hover:underline" %>
         <% end %>
       <% end %>
-    <% end%>
+    <% end %>
   <% end %>
 <% end %>

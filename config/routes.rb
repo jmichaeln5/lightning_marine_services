@@ -74,7 +74,6 @@ Rails.application.routes.draw do
       concerns :destroy_attachable
     end
   end
-  # resources :orders
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
@@ -103,7 +102,7 @@ Rails.application.routes.draw do
   end
 
   resources :order_contents, only: %i(show edit update destroy)
-  resources :packaging_materials, only: %i(show new edit update destroy)
+  resources :packaging_materials, only: %i(show new edit update destroy), concerns: %i(statusable)
 
   resources :order_contents, only: %i(show) do
     resources :packaging_materials, controller: 'order_contents/packaging_materials', only: %i(new index create)

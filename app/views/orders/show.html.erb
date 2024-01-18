@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
-          <%= render partial: 'statuses/status', locals:{ statusable: @order } %>
+          <%= render partial: 'statuses/status', locals:{ statusable: @order } if authorized_internal_user? %>
         </div>
       </header>
       <article class="">

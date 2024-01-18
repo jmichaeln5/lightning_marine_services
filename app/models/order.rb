@@ -33,7 +33,6 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :order_content, allow_destroy: true
 
-  scope :archived, -> { where(archived: true) }
   scope :unarchived, -> { where.not(archived: true) }
 
   scope :filter_by_purchasers, -> (sort_direction) {
@@ -46,11 +45,6 @@ class Order < ApplicationRecord
 
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
-
-  # validates :order_content, presence: { message: "must have packaging material" },
-  #   if: Proc.new { |obj| # handles silent failure of accepts_nested_attributes_for :order_content on create
-  #     order_content.nil? or obj.persisted?
-  #   }
   validates_presence_of :packaging_materials, unless: -> {
     order_content.nil? ? false : order_content.has_packaging_materials?
   }
@@ -84,6 +78,9 @@ class Order < ApplicationRecord
     end
 
     def ensure_archived_val
-      self.archived = date_delivered.present?
+      if date_delivered.present?
+        self.archived = date_delivered.present? unless (archived == date_delivered.present?)
+        self.status = 'archived' unless (status == "archived")
+      end
     end
 end

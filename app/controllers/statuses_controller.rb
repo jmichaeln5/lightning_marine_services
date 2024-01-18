@@ -11,15 +11,13 @@ class StatusesController < ApplicationController
     return nil unless (@statusable && @statusable.respond_to?(:statusable?))
 
     @statusable.update!(
-      status: (status_param.to_sym.in? @statusable.statuses) ? status_param.to_sym : @statusable.status
+      status: ((status_param.to_sym.in? @statusable.statuses) ? status_param.to_sym : @statusable.status)
     )
-
-    statusable_dom_id = "status_#{@statusable.model_name.element}_#{@statusable.id}"
     notice_msg = "#{@statusable.model_name.human} status updated to #{@statusable.status}"
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(statusable_dom_id, partial: "statuses/status",
+        render turbo_stream: turbo_stream.replace(@statusable.statusable_dom_id, partial: "statuses/status",
           locals: { statusable: @statusable, notice: notice_msg })
       end
       format.html { redirect_to @statusable, notice: notice_msg }
