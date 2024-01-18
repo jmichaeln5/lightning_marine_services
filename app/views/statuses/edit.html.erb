@@ -1,0 +1,5 @@
+<h1>Edit status</h1>
+<% edit_statusable_dom_id = "edit_status_#{@statusable.model_name.element}_#{@statusable.id}" %>
+<%= turbo_frame_tag edit_statusable_dom_id, class: "inline-block" do %>
+  <%= render partial: "/statuses/form", locals: { statusable: @statusable } %>
+<% end %>

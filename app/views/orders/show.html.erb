@@ -13,6 +13,7 @@
 <% end %>
 <% content_for :page_heading_card do %>
   <%= turbo_stream.update "card_title", "Order #{@order.id}" %>
+
   <%= turbo_stream.update "card_content" do %>
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
@@ -66,18 +67,7 @@
           </div>
         </div>
         <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
-          <%#= button_to(
-            "View order content",
-            order_content_path(@order_content),
-            method: :get,
-            class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          ) %>
-          <%#= button_to(
-            "Edit order content",
-            edit_order_content_path(@order_content),
-            method: :get,
-            class:"btn rounded-md bg-white py-2.5 px-3.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          ) %>
+          <%= render partial: 'statuses/status', locals:{ statusable: @order } %>
         </div>
       </header>
       <article class="">

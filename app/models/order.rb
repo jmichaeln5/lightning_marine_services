@@ -25,7 +25,6 @@ class Order < ApplicationRecord
   include Attachable::Images # change attr name, can attach more than images
   include Exportable, Searchable, Statusable
 
-
   belongs_to :purchaser
   belongs_to :vendor
 

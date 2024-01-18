@@ -44,12 +44,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :searches, only: %i(index)
   concern :searchable do
     scope module: 'searches' do
       get 'search'
     end
   end
+  resources :searches, only: %i(index)
 
   concern :destroy_attachable do
     delete '/attachments/:signed_id', action: 'destroy_attachment'
@@ -59,18 +59,22 @@ Rails.application.routes.draw do
   #   resource :bulk, controller: :bulk, only: [:destroy]
   # end
 
+  concern :statusable do
+    resources :statuses, only: %i(edit update show)
+  end
+  resources :statuses, only: %i(edit update show)
+
   resources :orders, concerns: %i(hovercardable) do
+    concerns :statusable
     collection do
       concerns :searchable
     end
-
     member do
       get :edit_dept
       concerns :destroy_attachable
     end
   end
-
-  resources :orders
+  # resources :orders
 
   get '/archived_orders', to: 'orders#archived_index'
   get '/all_orders', to: 'orders#all_orders'
@@ -91,7 +95,6 @@ Rails.application.routes.draw do
 
   resources :vendors do
     resources :orders, only: [:index, :new, :create ], module: :vendors
-
     member do
       get 'all_orders', controller: 'vendors/orders'
       get 'active_orders', controller: 'vendors/orders'
@@ -115,7 +118,6 @@ Rails.application.routes.draw do
         when :new
           get "/order_contents/:order_content_id/packaging_materials/#{type.pluralize}/new",
             to: "order_contents/packaging_materials#new",
-            as: :new_order_content_packaging_material_box,
             as: "new_order_content_packaging_material_#{type.singularize}".to_sym,
             type: type.classify
         when :index
