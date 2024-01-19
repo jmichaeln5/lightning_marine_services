@@ -2,12 +2,12 @@
 <%= tag.div id: statusable.statusable_dom_id, class: "inline-block w-full" do %>
   <%= tag.div class: "inline-block" do %>
     <%= tag.div class: "cursor-default inline-flex justify-items-center" do %>
-      <%= tag.div "status:" %>
+      <%#= tag.div "status:" %>
       <%= tag.div statusable.status.to_s.humanize, class: "ml-1 font-bold" %>
     <% end %>
     <% if authorized_internal_user? %>
-      <%= tag.div class: "" do %>
-        <%= turbo_frame_tag statusable.edit_statusable_dom_id, class: "inline-flex justify-center" do %>
+      <%= tag.div do %>
+        <%= turbo_frame_tag statusable.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
           <%= link_to 'edit', edit_status_path(
           statusable,
           params: { statusable_id: statusable.id, statusable_type: statusable.statusable_type},

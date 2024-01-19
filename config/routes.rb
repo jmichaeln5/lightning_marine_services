@@ -79,8 +79,8 @@ Rails.application.routes.draw do
   get '/all_orders', to: 'orders#all_orders'
   get '/completed_orders', to: 'orders#completed_orders'
 
-  resources :purchasers do
-    resources :orders, only: [:index, :new, :create ], module: :purchasers do
+  resources :purchasers, except: :show do
+    resources :orders, only: %i(index new create), module: :purchasers do
       get 'deliver_active', on: :collection
     end
     member do
@@ -90,10 +90,9 @@ Rails.application.routes.draw do
       get :export
     end
   end
-  # get '/purchasers_all', to: 'purchasers#show_all'
 
   resources :vendors do
-    resources :orders, only: [:index, :new, :create ], module: :vendors
+    resources :orders, only: %i(index new create), module: :vendors
     member do
       get 'all_orders', controller: 'vendors/orders'
       get 'active_orders', controller: 'vendors/orders'

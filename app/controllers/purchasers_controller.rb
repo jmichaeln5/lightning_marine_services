@@ -150,7 +150,8 @@ class PurchasersController < ApplicationController
     @orders = @purchaser.orders.unarchived
     respond_to do |format|
       format.html {
-        render :export }
+        render :export
+      }
       format.xls {
         send_data @orders.to_csv,
         filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"

@@ -1,49 +1,22 @@
-<!-- <%# statusable.statuses.each do |status| %>
-  <%#= tag.div class: "inline-block" do %>
-    <%#= button_to status.to_s.humanize.downcase, status_path(
-        statusable,
-        params: { statusable_type: statusable.statusable_type, statusable_id: statusable.id, status: status },
-      ),
-      method: :patch,
-      data: {
-        turbo_stream: true,
-        turbo_method: :patch,
-      }, class: "inline-flex items-center cursor-pointer rounded-full bg-gray-50 px-2.5 py-1.5 text-sm font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 hover:bg-gray-100" %>
-  <%# end %>
-<%# end %>
-<%#= link_to status_path(
-    statusable,
-    params: { statusable_type: statusable.statusable_type, statusable_id: statusable.id },
-  ) do %>
-  <%#= tag.span class: "inline-block" do %>
-    <%#= tag.div class: "whitespace-nowrap inline-flex items-center gap-x-1.5 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300" do %>
-      <%#= tag.span 'close' %>
-      <%#= tag.span do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-      </svg>
-      <%# end %>
-    <%# end %>
-  <%# end %>
-<%# end %> -->
 <%= tag.div class: "grid grid-rows-2" do %>
-  <%= tag.div class: "" do %>
-    <% dropdown_padding = "px-2.5 py-1.5" %>
-    <div data-controller="visibility" data-visibility-value-toggled="false" class="inline-flex rounded-md shadow-sm">
-      <button type="button" data-action="visibility#toggleTargets" class="relative inline-flex items-center rounded-l-md <%= dropdown_padding %> bg-white text-sm font-normal text-gray-600 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-        Update status
-      </button>
-      <div class="relative -ml-px block">
-        <button type="button"  data-action="visibility#toggleTargets" class="relative inline-flex items-center rounded-r-md <%= dropdown_padding %> bg-white text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
+  <%= tag.div class: "inline-block w-full relative" do %>
+    <div data-controller="visibility" data-visibility-value-toggled="false" class="inline-flex">
+      <div class="group inline-flex whitespace-nowrap rounded-md group ring-1 ring-gray-300 bg-white text-gray-600 group-active:ring-2 group-active:ring-offset-2">
+        <button type="button" data-action="visibility#toggleTargets" class="px-2.5 py-1.5 items-center rounded-l-md text-sm font-normal border-r-2 border-gray-200">
+          Update status
+        </button>
+        <button type="button"  data-action="visibility#toggleTargets" class="px-2.5 py-1.5 items-center rounded-r-md" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
           <span class="sr-only">Open options</span>
           <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
           </svg>
         </button>
-        <div data-visibility-target="hideable" hidden class="absolute right-0 z-10 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
-          <div class="py-1" role="none">
+      </div>
+      <div data-visibility-target="hideable" hidden class="w-full absolute right-0 z-10 -mr-1 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
+        <div class="py-1" role="none">
+          <div class="grid grid-flow-row auto-rows-max divide-y-2 divide-slate-600/5 text-center">
             <% statusable.statuses.each do |status| %>
-              <%= tag.div class: "text-gray-700 hover:text-gray-900 hover:bg-gray-100" do %>
+              <%= tag.div class: "px-3 py-1.5 cursor-pointer hover:bg-gray-100" do %>
                 <%= button_to status.to_s.humanize, status_path(
                     statusable,
                     params: { statusable_type: statusable.statusable_type, statusable_id: statusable.id, status: status },
@@ -52,7 +25,7 @@
                   data: {
                     turbo_stream: true,
                     turbo_method: :patch,
-                  }, class: "w-full h-full cursor-pointer px-4 py-2 text-gray-700" %>
+                  }, class: "cursor-pointer text-sm leading-loose font-medium text-gray-700" %>
               <% end %>
             <% end %>
           </div>

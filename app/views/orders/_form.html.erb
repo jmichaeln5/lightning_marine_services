@@ -31,13 +31,13 @@
                 <div class="sm:col-span-3">
                   <legend><%= form.label :purchaser_id, 'Ship', class: css_form_label %></legend>
                   <div class="mt-1">
-                    <%= form.select :purchaser_id, PurchaserDecorator.options_for_select, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+                    <%= form.select :purchaser_id, PurchaserDecorator.options_for_select, {}, { class: "block w-full cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
                   </div>
                 </div>
                 <div class="sm:col-span-3">
                   <legend><%= form.label :vendor_id, 'Vendor', class: css_form_label %></legend>
                   <div class="mt-1">
-                    <%= form.select :vendor_id, VendorDecorator.options_for_select, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
+                    <%= form.select :vendor_id, VendorDecorator.options_for_select, {}, { class: "block w-full cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
                   </div>
                 </div>
                 <div class="sm:col-span-6">
@@ -61,13 +61,13 @@
                 <div class="sm:col-span-3">
                   <legend><%= form.label :date_recieved, "Date recieved", class: css_form_label %></legend>
                   <div class="mt-1">
-                    <%= form.date_field :date_recieved, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    <%= form.date_field :date_recieved, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block cursor-pointer w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                   </div>
                 </div>
                 <div class="sm:col-span-3">
                   <legend><%= form.label :date_delivered, "Date delivered", class: css_form_label %></legend>
                   <div class="mt-1">
-                    <%= form.date_field :date_delivered, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                    <%= form.date_field :date_delivered, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block cursor-pointer w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                   </div>
                 </div>
               </fieldset>
@@ -117,14 +117,14 @@
                     <button type="button" name="button" data-action="turbo-modal#hideModal" class="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                       Cancel
                     </button>
-                    <%= form.submit "#{order.new_record? ? 'Create new order' : 'Save changes'}", data: {turbo: true }, class: 'inline-flex hover:cursor-pointer justify-center rounded-md bg-indigo-600 py-2 px-5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' %>
+                    <%= form.submit "#{order.new_record? ? 'Create new order' : 'Save changes'}", data: {turbo: true }, class: 'cursor-pointer inline-flex justify-center rounded-md bg-indigo-600 py-2 px-5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' %>
                   </div>
                 </div>
               </div>
             <% else %>
               <div class="block my-3 border-t border-gray-200">
                 <div class="mt-6">
-                    <%= form.submit "#{order.new_record? ? 'Create new order' : 'Save changes'}", data: {turbo: true }, class: 'inline-flex hover:cursor-pointer justify-center rounded-md bg-indigo-600 py-2 px-5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' %>
+                    <%= form.submit "#{order.new_record? ? 'Create new order' : 'Save changes'}", data: {turbo: true }, class: 'cursor-pointer inline-flex justify-center rounded-md bg-indigo-600 py-2 px-5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' %>
                 </div>
               </div>
             <% end %>

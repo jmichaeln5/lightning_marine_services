@@ -1,0 +1,8 @@
+<% if alert %>
+  <%= turbo_stream.append "flashes" do %>
+    <%= render partial: "/layouts/stacked_shell/headings/flash_messages", locals: {
+      flash_type: 'alert',
+      flash_title: alert,
+    } %>
+  <% end %>
+<% end %>

@@ -9,21 +9,27 @@ class OrdersController < Orders::BaseController
     orders = Order.unarchived
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
+
     @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
     set_new_order
+  end
 
-    respond_to do |format|
-      format.html
-      format.csv { # give these formats a better home, shouldn't be in this controller or action ( ExportsController => Order.rb includes Ecportable )
-        send_data (@orders).to_csv,
-        filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
-        type: 'text/csv; charset=utf-8'
-      }
-      format.xls { # give these formats a better home, shouldn't be in this controller or action ( ExportsController => Order.rb includes Ecportable )
-        send_data (@orders).to_csv, # method should be to_xls
-        filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
-      }
-    end
+  def all_orders
+    orders = Order.all
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
+
+    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    set_new_order
+  end
+
+  def completed_orders
+    orders = Order.archived
+    orders = orders.order(created_at: :desc)
+    @orders = resolve_orders_for_data_table(orders)
+
+    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    set_new_order
   end
 
   def show
@@ -45,7 +51,14 @@ class OrdersController < Orders::BaseController
 
     respond_to do |format|
       if @order.save
-        format.turbo_stream { render turbo_stream: turbo_render_flash_order_notice("Order was successfully created."), status: :created }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.append('flashes', partial: "/layouts/stacked_shell/headings/flash_messages", locals: {
+              flash_type: 'notice',
+              flash_title: "Order created successfully.",
+            }
+          ),
+          status: :created
+        }
         format.html { redirect_to @order, notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
@@ -64,21 +77,7 @@ class OrdersController < Orders::BaseController
     end
     respond_to do |format|
       if @order.update(order_params)
-        if ( (Current.request_variant == :turbo_frame) && !(request.referer.include? @order.id.to_s) )
-          format.turbo_stream {
-            render turbo_stream: [
-              turbo_stream.replace(
-                "order_#{@order.id}",
-                partial: "/orders/table/row",
-                locals: {
-                  order: @order,
-                }
-              ),
-              turbo_render_flash_order_notice("Order was successfully updated.")
-            ],
-            status: :ok
-          }
-        end
+        format.turbo_stream {}
         format.html { redirect_to @order, notice: "Order updated successfully." }
         format.json { render :show, status: :ok, location: @order }
       else
@@ -100,24 +99,6 @@ class OrdersController < Orders::BaseController
       format.html { redirect_to orders_url, notice: "Order deleted successfully." }
       format.json { head :no_content }
     end
-  end
-
-  def all_orders
-    orders = Order.all
-    orders = orders.order(created_at: :desc)
-    @orders = resolve_orders_for_data_table(orders)
-
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
-  end
-
-  def completed_orders
-    orders = Order.archived
-    orders = orders.order(created_at: :desc)
-    @orders = resolve_orders_for_data_table(orders)
-
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
   end
 
   private
@@ -142,16 +123,5 @@ class OrdersController < Orders::BaseController
       @order = Order.new
       @order_content = @order.build_order_content
       @packaging_material = @order.order_content.packaging_materials.build
-    end
-
-    def turbo_render_flash_order_notice(flash_title) # move to concern
-      turbo_stream.append(
-        'flashes',
-        partial: "/layouts/stacked_shell/headings/flash_messages",
-        locals: {
-          flash_type: "notice",
-          flash_title: flash_title,
-        }
-      )
     end
 end
