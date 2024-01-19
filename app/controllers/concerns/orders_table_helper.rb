@@ -4,10 +4,16 @@ module OrdersTableHelper
   def resolve_orders_for_data_table(orders)
     dev_output_str("OrdersTableHelper#resolve_orders_for_data_table")
 
+    orders = filter_orders_by_status if filter_orders_by_status?
+    orders = filter_orders_by_courrier if filter_orders_by_courrier?
     orders = sort_orders_against_params(orders) if sort_param.present?
     orders = search_orders_against_query(orders, query_param ) if query_param.present? and query_param.length > 1
 
     return orders
+  end
+
+  def filter_params #  NOTE # CHANGE FORM OBJ ID/NAME TO SUBMIT FILTERS FORM OBJ BEFORE SENDING TO AGGREGATOR/FILTERABLE
+    params[:filter]
   end
 
   def sort_param
@@ -22,7 +28,43 @@ module OrdersTableHelper
     params[:query]
   end
 
+  def filter_orders_by_status?
+    return false if params[:status].nil?
+
+    params[:status].to_sym.in? Order.statuses
+  end
+
+  def filter_orders_by_courrier?
+    return false if params[:courrier].nil?
+
+    courriers = Order.select(:courrier).distinct.map &:courrier
+    courriers.map {|_c| _c.downcase!}
+
+    params[:courrier].downcase.in? courriers
+  end
+
+  def filter_orders_by_dept?
+    return false if params[:dept].nil?
+
+    depts = Order.select(:dept).distinct.map &:dept
+    depts.map {|obj| obj.downcase!}
+
+    params[:dept].downcase.in? depts
+  end
+
   private
+    def filter_orders_by_status
+      Order.where(status: params[:status])
+    end
+
+    def filter_orders_by_courrier
+      Order.where(courrier: params[:courrier])
+    end
+
+    def filter_orders_by_dept
+      Order.where(dept: params[:dept])
+    end
+
     def search_orders_against_query(orders, query_str)
       dev_output_str("OrdersTableHelper#search_orders_against_query")
 
@@ -31,7 +73,6 @@ module OrdersTableHelper
       results.each do |result|
         results_arr << result.id if (result.archived? == false)
       end
-      # orders = orders.reorder('id ASC')
       orders = orders.where(id: results_arr)
       return orders
     end

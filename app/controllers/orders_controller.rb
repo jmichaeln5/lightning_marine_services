@@ -6,7 +6,7 @@ class OrdersController < Orders::BaseController
   before_action :set_new_order, only: %i(new) # callback required, overwriting in child controllers to build order on parent
 
   def index
-    orders = Order.unarchived
+    orders = Order.where(status: :active)
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
 

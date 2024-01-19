@@ -1,11 +1,7 @@
 <!-- https://tailwindui.com/components/application-ui/lists/tables#component-7b5a46e74e475708d966ca31716f1771 -->
-
-
-
 <div class="">
   <div class=""></div>
   <h3>
-    <%#= title -%>
     <%= title %>
   </h3>
   <div class="">
@@ -13,33 +9,28 @@
   </div>
 </div>
 
-
-
-
-
 <article class="pb-12">
   <div class="overflow-hidden rounded-md border border-gray-100 shadow">
     <div class="rounded-md bg-white">
-      <%# TABLE HEADING %>
-      <%= tag.div class: "bg-gray-100" do %>
-        <%= tag.div class: "overflow-x-auto pt-6 pb-6 sm:pb-7 grid gap-10 grid-flow-col auto-cols-max" do %>
 
+      <%# TABLE HEADING %>
+      <%#= tag.div class: "bg-gray-100" do %>
+        <%#= tag.div class: "overflow-x-auto pt-6 pb-6 sm:pb-7 grid gap-10 grid-flow-col auto-cols-max" do %>
           <%# div_counter, div_amount = 0, 50 %>
           <%# div_amount.times do |amt| %>
             <%#= tag.div (div_counter += 1), class: "bg-white" %>
           <%# end %>
 
-          <%# DataTableDecorator.ths.each do |th| %>
+          <%# DataTableDecorator.table_attrs.each do |th| %>
             <%#= tag.div th, class: "bg-white" %>
           <%# end %>
 
-          <% DataTableDecorator.sortable_table_headers_attrs.each do |th| %>
-            <%= tag.div th, class: "bg-white" %>
-          <% end %>
+          <%# DataTableDecorator.sortable_table_headers_attrs.each do |th| %>
+            <%#= tag.div th, class: "bg-white" %>
+          <%# end %>
+        <%# end %>
+      <%# end %>
 
-
-        <% end %>
-      <% end %>
       <%# TABLE HEADING %>
       <%#= tag.div class: "bg-white px-4 sm:px-6 lg:px-8" do %>
         <%#= tag.div class: "sm:flex sm:items-center" do %>
@@ -52,8 +43,10 @@
           <%# end %>
         <%# end %>
       <%# end %>
-      <div class="w-full px-4 sm:px-6 lg:px-8 ">
-        <%= tag.div  data: {
+
+      <div class="mt-8 w-full px-4 sm:px-6 lg:px-8 ">
+        <%= tag.div id: "orders",
+          data: {
           controller: 'table',
           "table-target": "rootElement",
 
@@ -70,102 +63,160 @@
         }, class: "flow-root" do %>
           <%= tag.div class: "-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8" do %>
             <%= tag.div class: "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8" do %>
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead>
-
-                <tr>
-                  <% css_th_first = "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0" %>
-                  <% css_th = "px-3 py-3.5 text-left text-sm font-semibold text-gray-900" %>
-                  <% css_th_last = "relative py-3.5 pl-3 pr-0" %>
-
-                  <% css_cheveron_active = %w(ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200) %>
-                  <% css_cheveron_not_active = %w(invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible) %>
-                  <% css_cheveron_no_sort_link_to = %w(invisible ml-2 flex-none rounded text-gray-400) %>
-
-
-                  <%# th_size = DataTableDecorator.ths.size %>
-                  <% th_first = DataTableDecorator.ths.first %>
-                  <% th_last = DataTableDecorator.ths.last %>
-
-                  <% ths = DataTableDecorator.ths %>
-                  <% sortable_ths = DataTableDecorator.sortable_table_headers_attrs %>
-
-                  <% DataTableDecorator.ths.each_with_index do |th, index| %>
-                    <% _th_css = css_th_first if (th == ths.first) %>
-                    <% _th_css = css_th_last if (th == ths.last) %>
-                    <% _th_css ||= css_th %>
-
-                    <% th_is_sortable = th.in?(sortable_ths) %>
-
-                    <% _cheveron_css = th_is_sortable ? css_cheveron_not_active : css_cheveron_no_sort_link_to %>
-
-                    <% content_for :table_header_content, flush: true do %>
-                      <%= tag.span class: "group inline-flex" do %>
-                        <%= th %>
-                        <%= tag.span class: _cheveron_css do %>
-                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                          </svg>
-                        <% end %>
-                      <% end %>
+              <%= turbo_frame_tag "orders" do %>
+                <div class="flex space-x-3">
+                  <div class="inline-flex text-gray-700 text-center sm:text-left">
+                    <%= form_with url: "", method: :get, data: { turbo_frame: "orders", turbo_action: "advance" } do |form| %>
+                    <%#= form_with url: "", method: :get, data: { turbo_frame: "orders" } do |form| %>
+                    <p class="text-sm text-gray-700 mb-1"> Filter by status </p>
+                      <div class="relative">
+                        <select onchange="this.form.requestSubmit()" name="status" id="status" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
+                          <option disabled selected value> -- select a status -- </option>
+                          <% Order.statuses.each do |status| %>
+                            <option value="<%= status %>"><%= status.to_s.humanize %></option>
+                          <% end %>
+                        </select>
+                      </div>
                     <% end %>
+                  </div>
 
-                    <th scope="col" class="<%= css_th %>" data-table-target="th">
-                      <% if th_is_sortable %>
-                        <%= link_to root_path do %>
-                          <%= yield :table_header_content %>
+                  <div class="inline-flex text-gray-700 text-center sm:text-left">
+                    <%= form_with url: "", method: :get, data: { turbo_frame: "orders", turbo_action: "advance" } do |form| %>
+                    <p class="text-sm text-gray-700 mb-1"> Filter by courrier </p>
+                      <div class="relative">
+                        <select onchange="this.form.requestSubmit()" name="courrier" id="courrier" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
+                          <option disabled selected value> -- select a courrier -- </option>
+                          <% Order.select(:courrier).distinct.each do |order|  %>
+                            <option value="<%= order.courrier %>"><%= order.courrier.upcase %></option>
+                          <% end %>
+                        </select>
+                      </div>
+                    <% end %>
+                  </div>
+
+                  <div class="inline-flex text-gray-700 text-center sm:text-left">
+                    <%= form_with url: "", method: :get, data: { turbo_frame: "orders", turbo_action: "advance" } do |form| %>
+                    <%#= form_with url: "", method: :get, data: { turbo_frame: "orders" } do |form| %>
+                    <p class="text-sm text-gray-700 mb-1"> Filter by dept </p>
+                      <div class="relative">
+                        <select onchange="this.form.requestSubmit()" name="dept" id="dept" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
+                          <option disabled selected value> -- select a dept -- </option>
+                          <% Order.select(:dept).distinct.each do |order| %>
+                            <option value="<%= order.dept %>"><%= order.dept %></option>
+                          <% end %>
+                        </select>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+
+                <table class="min-w-full divide-y divide-gray-300">
+                  <thead>
+                    <tr>
+                      <% css_cheveron_active = %w(ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200) %>
+                      <% css_cheveron_not_active = %w(invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible) %>
+                      <% css_cheveron_no_sort_link_to = %w(invisible ml-2 flex-none rounded text-gray-400) %>
+
+                      <% th_first = DataTableDecorator.table_attrs.first %>
+                      <% th_last = DataTableDecorator.table_attrs.last %>
+
+                      <% ths = DataTableDecorator.table_attrs %>
+                      <% sortable_ths = DataTableDecorator.sortable_table_headers_attrs %>
+
+                      <% css_th = "px-3 py-3.5 text-sm text-gray-900" %>
+                      <% css_th_first = "py-3.5 pl-4 pr-3 text-sm text-gray-900 sm:pl-0" %>
+                      <% css_th_last = "relative py-3.5 pl-3 pr-0 text-sm" %>
+
+                      <% DataTableDecorator.table_attrs.each_with_index do |th, index| %>
+                        <% _th_css = css_th_first if (th == DataTableDecorator.table_attrs.first) %>
+                        <% _th_css = css_th_last if (th == DataTableDecorator.table_attrs.last) %>
+                        <% _th_css ||= css_th %>
+
+                        <% th_is_sortable = th.in?(sortable_ths) %>
+
+                        <%# if 13 <= th.length %>
+                          <%# _th_css << " text-left" %>
+                        <%# else %>
+                          <%# _th_css << " whitespace-nowrap text-left" %>
+                        <%# end %>
+
+                        <% _th_css << " text-left" %>
+                        <%# _th_css << " whitespace-nowrap text-left" if 13 <= th.length %>
+                        <% _th_css << " whitespace-nowrap" if 13 <= th.length %>
+                        <% _th_css << " font-semibold" if th_is_sortable %>
+
+                        <% _cheveron_css = th_is_sortable ? css_cheveron_not_active : css_cheveron_no_sort_link_to %>
+
+                        <% content_for :table_header_content, flush: true do %>
+                          <%= tag.span class: "group inline-flex" do %>
+                            <%= th.to_s.humanize %>
+                            <%#= _th_css %>
+                            <%= tag.span class: _cheveron_css do %>
+                              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                              </svg>
+                            <% end %>
+                          <% end %>
                         <% end %>
-                      <% else %>
-                        <%= yield :table_header_content %>
+                        <th scope="col" class="<%= _th_css %>" data-table-target="th">
+                          <% if th_is_sortable %>
+                            <% direction = ((params[:direction] == "asc") ? "desc" : "asc") %>
+                            <%= link_to request.params.merge(sort: th, direction: direction), data: {
+                              turbo_frame: "orders",
+                              turbo_action: "advance"
+                            }  do %>
+                              <%= yield :table_header_content %>
+                            <% end %>
+                          <% else %>
+                            <%= yield :table_header_content %>
+                          <% end %>
+                        </th>
                       <% end %>
-                    </th>
-                  <% end %>
-                </tr>
-
-
-                <!-- <tr>
-                  <%# css_cheveron_active = "ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200" %>
-                  <%# css_cheveron_not_active = "invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible" %>
-                  <%#= render partial: "/data_tables/table_elements/header", locals: {
-                    css_th: css_th_first,
-                    title: "Name",
-                    sort_link_to: request.path,
-                    active: false,
-                  } %>
-                  <%#= render partial: "/data_tables/table_elements/header", locals: {
-                    css_th: css_th,
-                    title: "Title",
-                    sort_link_to: request.path,
-                    active: true,
-                  } %>
-                  <%#= render partial: "/data_tables/table_elements/header", locals: {
-                    css_th: css_th,
-                    title: "Email",
-                    sort_link_to: request.path,
-                    active: false,
-                  } %>
-                  <%#= render partial: "/data_tables/table_elements/header", locals: {
-                    css_th: css_th,
-                    title: "Role",
-                    sort_link_to: request.path,
-                    active: false,
-                  } %>
-                  <%## last th %>
-                  <th scope="col" class="relative py-3.5 pl-3 pr-0" data-table-target="th">
-                    <span class="sr-only">Edit</span>
-                  </th>
-                </tr> -->
-
-
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                <%= render partial: "/data_tables/table_elements/row" %>
-                <%= render partial: "/data_tables/table_elements/row" %>
-                <%= render partial: "/data_tables/table_elements/row" %>
-                <%= render partial: "/data_tables/table_elements/row" %>
-                <%= render partial: "/data_tables/table_elements/row" %>
-                <!-- More people... -->
-              </tbody>
+                    </tr>
+                    <!-- <tr>
+                      <%# css_cheveron_active = "ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200" %>
+                      <%# css_cheveron_not_active = "invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible" %>
+                      <%#= render partial: "/data_tables/table_elements/header", locals: {
+                        css_th: css_th_first,
+                        title: "Name",
+                        sort_link_to: request.path,
+                        active: false,
+                      } %>
+                      <%#= render partial: "/data_tables/table_elements/header", locals: {
+                        css_th: css_th,
+                        title: "Title",
+                        sort_link_to: request.path,
+                        active: true,
+                      } %>
+                      <%#= render partial: "/data_tables/table_elements/header", locals: {
+                        css_th: css_th,
+                        title: "Email",
+                        sort_link_to: request.path,
+                        active: false,
+                      } %>
+                      <%#= render partial: "/data_tables/table_elements/header", locals: {
+                        css_th: css_th,
+                        title: "Role",
+                        sort_link_to: request.path,
+                        active: false,
+                      } %>
+                      <%## last th %>
+                      <th scope="col" class="relative py-3.5 pl-3 pr-0" data-table-target="th">
+                        <span class="sr-only">Edit</span>
+                      </th>
+                    </tr> -->
+                  </thead>
+                  <tbody class="divide-y divide-gray-200 bg-white">
+                    <%#= render partial: "/data_tables/table_elements/row" %>
+                    <%#= render partial: "/data_tables/table_elements/row" %>
+                    <%#= render partial: "/data_tables/table_elements/row" %>
+                    <%#= render partial: "/data_tables/table_elements/row" %>
+                    <%#= render partial: "/data_tables/table_elements/row" %>
+                    <%# More people... %>
+                    <%= render partial: "/data_tables/table_elements/row", collection: orders, as: :order %>
+                  </tbody>
+                </table>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>

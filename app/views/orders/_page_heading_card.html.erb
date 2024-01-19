@@ -11,7 +11,7 @@
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: current_page?(orders_path),
         card_title: "Active orders",
-        card_description: Order.where(archived: false).size,
+        card_description: Order.where(status: :active).size,
         card_link: (link_to "View active orders", orders_path, class:"font-medium text-cyan-700 hover:text-cyan-900"),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/box_truck"),
       } %>
