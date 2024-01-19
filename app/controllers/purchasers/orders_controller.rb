@@ -1,7 +1,7 @@
 class Purchasers::OrdersController < OrdersController
   def index
     @purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
-
+    # orders = @purchaser.orders.active
     orders = @purchaser.orders.unarchived
     orders = orders.order(order_sequence: :asc)
     @orders = resolve_orders_for_data_table(orders)
@@ -30,12 +30,29 @@ class Purchasers::OrdersController < OrdersController
   end
 
   def deliver_active
-    @purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
+    purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
 
-    orders = @purchaser.orders.unarchived
-    orders.deliver_active
+    purchaser.orders.where(status: :active).update_all(status: :archived)
 
-    redirect_to purchaser_orders_path(@purchaser), notice: "#{@purchaser.name} active orders delivered successfully."
+    redirect_to purchaser_orders_path(purchaser), notice: "#{purchaser.name} active orders delivered successfully."
+  end
+
+  def export
+    filePrefix = (@purchaser.name + "_").parameterize(separator: '_')
+    @orders = @purchaser.orders.unarchived
+    respond_to do |format|
+      format.html {
+        render :export
+      }
+      format.xls {
+        send_data @orders.to_csv,
+        filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      }
+      format.xlsx {
+        fName = filePrefix + "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
+        response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
+      }
+    end
   end
 
   private

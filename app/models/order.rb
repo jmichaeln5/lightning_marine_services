@@ -33,7 +33,8 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :order_content, allow_destroy: true
 
-  scope :unarchived, -> { where.not(archived: true) }
+  # scope :unarchived, -> { where.not(archived: true) }
+  scope :unarchived, -> { where.not(status: :archived) }
 
   scope :filter_by_purchasers, -> (sort_direction) {
     includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
@@ -52,6 +53,8 @@ class Order < ApplicationRecord
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
     ensure_archived_val unless (archived == date_delivered.present?)
+    
+    attempt_type_cast_order_content_packaging_materials_attrs
   end
 
   def self.deliver_active
@@ -64,6 +67,12 @@ class Order < ApplicationRecord
   end
 
   private
+    def attempt_type_cast_order_content_packaging_materials_attrs
+      # order_content
+      # debugger
+      # order_content.build_records_from_castable_attrs unless order_content.packaging_materials_amounts_match_str_attrs?
+    end
+
     def set_default_sequence
       ship = Purchaser.find(self.purchaser_id)
       shipOrders = ship.orders.unarchived

@@ -1,0 +1,175 @@
+<!-- https://tailwindui.com/components/application-ui/lists/tables#component-7b5a46e74e475708d966ca31716f1771 -->
+
+
+
+<div class="">
+  <div class=""></div>
+  <h3>
+    <%#= title -%>
+    <%= title %>
+  </h3>
+  <div class="">
+    <%#= yield %>
+  </div>
+</div>
+
+
+
+
+
+<article class="pb-12">
+  <div class="overflow-hidden rounded-md border border-gray-100 shadow">
+    <div class="rounded-md bg-white">
+      <%# TABLE HEADING %>
+      <%= tag.div class: "bg-gray-100" do %>
+        <%= tag.div class: "overflow-x-auto pt-6 pb-6 sm:pb-7 grid gap-10 grid-flow-col auto-cols-max" do %>
+
+          <%# div_counter, div_amount = 0, 50 %>
+          <%# div_amount.times do |amt| %>
+            <%#= tag.div (div_counter += 1), class: "bg-white" %>
+          <%# end %>
+
+          <%# DataTableDecorator.ths.each do |th| %>
+            <%#= tag.div th, class: "bg-white" %>
+          <%# end %>
+
+          <% DataTableDecorator.sortable_table_headers_attrs.each do |th| %>
+            <%= tag.div th, class: "bg-white" %>
+          <% end %>
+
+
+        <% end %>
+      <% end %>
+      <%# TABLE HEADING %>
+      <%#= tag.div class: "bg-white px-4 sm:px-6 lg:px-8" do %>
+        <%#= tag.div class: "sm:flex sm:items-center" do %>
+          <%#= tag.div class: "sm:flex-auto" do %>
+            <%#= tag.h1 "Users", class: "text-base font-semibold leading-6 text-gray-900" %>
+            <%#= tag.p "A list of all the users in your account including their name, title, email and role.", class: "mt-2 text-sm text-gray-700" %>
+          <%# end %>
+          <%#= tag.div class: "mt-4 sm:ml-16 sm:mt-0 sm:flex-none" do %>
+            <%#= tag.button "Add user", type: 'button', class: "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+          <%# end %>
+        <%# end %>
+      <%# end %>
+      <div class="w-full px-4 sm:px-6 lg:px-8 ">
+        <%= tag.div  data: {
+          controller: 'table',
+          "table-target": "rootElement",
+
+          "table-th-class": "px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+          "table-th-first-class": "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0",
+          "table-th-last-class": "relative py-3.5 pl-3 pr-0",
+
+          "table-cheveron-active-class": "ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200",
+          "table-cheveron-inactive-class": "invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible",
+
+          "table-td-class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500",
+          "table-td-first-class": "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-0",
+          "table-td-last-class": "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-0",
+        }, class: "flow-root" do %>
+          <%= tag.div class: "-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8" do %>
+            <%= tag.div class: "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8" do %>
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead>
+
+                <tr>
+                  <% css_th_first = "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0" %>
+                  <% css_th = "px-3 py-3.5 text-left text-sm font-semibold text-gray-900" %>
+                  <% css_th_last = "relative py-3.5 pl-3 pr-0" %>
+
+                  <% css_cheveron_active = %w(ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200) %>
+                  <% css_cheveron_not_active = %w(invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible) %>
+                  <% css_cheveron_no_sort_link_to = %w(invisible ml-2 flex-none rounded text-gray-400) %>
+
+
+                  <%# th_size = DataTableDecorator.ths.size %>
+                  <% th_first = DataTableDecorator.ths.first %>
+                  <% th_last = DataTableDecorator.ths.last %>
+
+                  <% ths = DataTableDecorator.ths %>
+                  <% sortable_ths = DataTableDecorator.sortable_table_headers_attrs %>
+
+                  <% DataTableDecorator.ths.each_with_index do |th, index| %>
+                    <% _th_css = css_th_first if (th == ths.first) %>
+                    <% _th_css = css_th_last if (th == ths.last) %>
+                    <% _th_css ||= css_th %>
+
+                    <% th_is_sortable = th.in?(sortable_ths) %>
+
+                    <% _cheveron_css = th_is_sortable ? css_cheveron_not_active : css_cheveron_no_sort_link_to %>
+
+                    <% content_for :table_header_content, flush: true do %>
+                      <%= tag.span class: "group inline-flex" do %>
+                        <%= th %>
+                        <%= tag.span class: _cheveron_css do %>
+                          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                          </svg>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+
+                    <th scope="col" class="<%= css_th %>" data-table-target="th">
+                      <% if th_is_sortable %>
+                        <%= link_to root_path do %>
+                          <%= yield :table_header_content %>
+                        <% end %>
+                      <% else %>
+                        <%= yield :table_header_content %>
+                      <% end %>
+                    </th>
+                  <% end %>
+                </tr>
+
+
+                <!-- <tr>
+                  <%# css_cheveron_active = "ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200" %>
+                  <%# css_cheveron_not_active = "invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible" %>
+                  <%#= render partial: "/data_tables/table_elements/header", locals: {
+                    css_th: css_th_first,
+                    title: "Name",
+                    sort_link_to: request.path,
+                    active: false,
+                  } %>
+                  <%#= render partial: "/data_tables/table_elements/header", locals: {
+                    css_th: css_th,
+                    title: "Title",
+                    sort_link_to: request.path,
+                    active: true,
+                  } %>
+                  <%#= render partial: "/data_tables/table_elements/header", locals: {
+                    css_th: css_th,
+                    title: "Email",
+                    sort_link_to: request.path,
+                    active: false,
+                  } %>
+                  <%#= render partial: "/data_tables/table_elements/header", locals: {
+                    css_th: css_th,
+                    title: "Role",
+                    sort_link_to: request.path,
+                    active: false,
+                  } %>
+                  <%## last th %>
+                  <th scope="col" class="relative py-3.5 pl-3 pr-0" data-table-target="th">
+                    <span class="sr-only">Edit</span>
+                  </th>
+                </tr> -->
+
+
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <%= render partial: "/data_tables/table_elements/row" %>
+                <%= render partial: "/data_tables/table_elements/row" %>
+                <%= render partial: "/data_tables/table_elements/row" %>
+                <%= render partial: "/data_tables/table_elements/row" %>
+                <%= render partial: "/data_tables/table_elements/row" %>
+                <!-- More people... -->
+              </tbody>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</article>

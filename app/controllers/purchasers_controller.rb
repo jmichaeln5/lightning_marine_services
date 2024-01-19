@@ -32,76 +32,63 @@ class PurchasersController < ApplicationController
     @purchasers = purchasers
   end
 
-  def show
-    @page_heading_title = "Ship"
-
-    orders = Order.unarchived.where(purchaser: @purchaser)
-
-    if params[:query].present?
-      query_str = params[:query]
-      results = orders.search(query_str, misspellings: {below: 3}).results
-      results_arr = Array.new
-      results.each do |result|
-        results_arr << result.id if (result.archived? == false)
-      end
-      @orders = nil
-      orders = Order.unarchived.where(purchaser: @purchaser).reorder('id ASC')
-      orders = orders.where(id: results_arr)
-    end
-
-    if params[:sort]
-      sort_col = %w{ id dept date_recieved courrier date_delivered }.include?(params[:sort]) ? params[:sort] : "id"
-      sort_dir = %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
-
-      if ((params[:sort] == "ship_name") || ( params[:sort] == "purchaser_name" )) # None Order col
-        sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "ship_name"
-        sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "purchaser_name"
-        sorted_orders_ids = sorted_orders.ids
-        sorted_orders_ids_arr = Array.new
-
-        sorted_orders_ids.each do |order_id|
-          sorted_orders_ids_arr << order_id
-        end
-        # https://stackoverflow.com/a/61267426
-        order_query = <<-SQL
-          CASE orders.id
-            #{sorted_orders_ids_arr.map.with_index { |id, index| "WHEN #{id} THEN #{index}" } .join(' ')}
-            ELSE #{sorted_orders_ids_arr.length}
-          END
-        SQL
-
-        newly_sorted_orders = Order.where(id: sorted_orders_ids_arr).order(Arel.sql(order_query))
-        clear_active_record_query_cache
-      end
-
-      if ((params[:sort] != "ship_name") && ( params[:sort] != "purchaser_name" )) # Order col
-        newly_sorted_orders = orders.reorder(sort_col => sort_dir)
-      end
-
-      @orders = nil
-      orders = nil
-      orders = newly_sorted_orders
-    end
-
-    @orders ||= orders
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-
-    @order = Order.new
-    @order.build_order_content
-
-    respond_to do |format|
-      format.html
-      format.csv { # give these formats a better home, shouldn't be in this controller or action
-        send_data (Order.all).to_csv,
-        filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.csv",
-        type: 'text/csv; charset=utf-8'
-      }
-      format.xls { # give these formats a better home, shouldn't be in this controller or action
-        send_data (Order.all).to_csv,
-        filename: "LightningMarineServices_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
-      }
-    end
-  end
+  # def show
+  #   @page_heading_title = "Ship"
+  #
+  #   orders = Order.unarchived.where(purchaser: @purchaser)
+  #
+  #   if params[:query].present?
+  #     query_str = params[:query]
+  #     results = orders.search(query_str, misspellings: {below: 3}).results
+  #     results_arr = Array.new
+  #     results.each do |result|
+  #       results_arr << result.id if (result.archived? == false)
+  #     end
+  #     @orders = nil
+  #     orders = Order.unarchived.where(purchaser: @purchaser).reorder('id ASC')
+  #     orders = orders.where(id: results_arr)
+  #   end
+  #
+  #   if params[:sort]
+  #     sort_col = %w{ id dept date_recieved courrier date_delivered }.include?(params[:sort]) ? params[:sort] : "id"
+  #     sort_dir = %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
+  #
+  #     if ((params[:sort] == "ship_name") || ( params[:sort] == "purchaser_name" )) # None Order col
+  #       sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "ship_name"
+  #       sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "purchaser_name"
+  #       sorted_orders_ids = sorted_orders.ids
+  #       sorted_orders_ids_arr = Array.new
+  #
+  #       sorted_orders_ids.each do |order_id|
+  #         sorted_orders_ids_arr << order_id
+  #       end
+  #       # https://stackoverflow.com/a/61267426
+  #       order_query = <<-SQL
+  #         CASE orders.id
+  #           #{sorted_orders_ids_arr.map.with_index { |id, index| "WHEN #{id} THEN #{index}" } .join(' ')}
+  #           ELSE #{sorted_orders_ids_arr.length}
+  #         END
+  #       SQL
+  #
+  #       newly_sorted_orders = Order.where(id: sorted_orders_ids_arr).order(Arel.sql(order_query))
+  #       clear_active_record_query_cache
+  #     end
+  #
+  #     if ((params[:sort] != "ship_name") && ( params[:sort] != "purchaser_name" )) # Order col
+  #       newly_sorted_orders = orders.reorder(sort_col => sort_dir)
+  #     end
+  #
+  #     @orders = nil
+  #     orders = nil
+  #     orders = newly_sorted_orders
+  #   end
+  #
+  #   @orders ||= orders
+  #   @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+  #
+  #   @order = Order.new
+  #   @order.build_order_content
+  # end
 
   def new
     @purchaser = Purchaser.new
@@ -115,8 +102,7 @@ class PurchasersController < ApplicationController
 
     respond_to do |format|
       if @purchaser.save
-        format.html { redirect_to @purchaser, notice: "Ship was successfully created." }
-        format.json { render :show, status: :created, location: @purchaser }
+        format.html { redirect_to purchaser_orders_path(@purchaser), notice: "Ship created successfully." }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @purchaser.errors, status: :unprocessable_entity }
@@ -127,8 +113,7 @@ class PurchasersController < ApplicationController
   def update
     respond_to do |format|
       if @purchaser.update(purchaser_params)
-        format.html { redirect_to purchaser_url(@purchaser), notice: "Ship was successfully updated." }
-        format.json { render :show, status: :ok, location: @purchaser }
+        format.html { redirect_to purchaser_orders_path(@purchaser), notice: "Ship updated successfully." }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @purchaser.errors, status: :unprocessable_entity }
@@ -162,6 +147,14 @@ class PurchasersController < ApplicationController
       }
     end
   end
+
+  def deliver_active()
+    purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
+    purchaser.orders.where(status: :active).update_all(status: :archived)
+
+    redirect_to purchaser_orders_path(purchaser), notice: "#{purchaser.name} active orders delivered successfully."
+  end
+
 
   private
     def set_page_heading_title

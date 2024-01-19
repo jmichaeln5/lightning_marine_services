@@ -2,7 +2,7 @@ module Order::Exportable
   extend ActiveSupport::Concern
 
   included do
-    def self.to_csv # Also Formats for XLS # NOTE - Move to concern
+    def self.to_csv
       csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'Sequence','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
 
       CSV.generate do |csv|
@@ -34,7 +34,7 @@ module Order::Exportable
       end
     end
 
-    def self.to_xls # Move to concern
+    def self.to_xls
       csv_header = ['ID', '#', 'Dept', 'Ship', 'Vendor','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
 
       CSV.generate do |csv|

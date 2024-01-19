@@ -10,6 +10,9 @@ application.register("click-hidden", ClickHiddenController)
 import CounterController from "./counter_controller"
 application.register("counter", CounterController)
 
+import TableController from "./table_controller"
+application.register("table", TableController)
+
 import NumberFieldInputController from "./number_field_input_controller"
 application.register("number-field-input", NumberFieldInputController)
 

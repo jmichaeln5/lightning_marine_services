@@ -11,7 +11,7 @@
   <%= render partial: page_heading_card_partial_path %>
 <% end %>
 
-<%= render partial: "/orders/table", locals: {
+<%#= render partial: "/orders/table", locals: {
   table_turbo_frame_tag: "orders",
   orders: @orders,
   pagy: @pagy,
@@ -19,3 +19,27 @@
   table_section_heading_description: "All active orders that have not yet been completed.",
   table_title: "Active Orders Table",
 } %>
+
+<section>
+  <div class="rounded-md bg-white">
+    <div class="pt-7 w-full px-4 sm:px-6 lg:px-8 ">
+      <!-- <%#= render layout: "/data_tables/table", locals: { title: 'some title' } do %>
+        <p>Here is some content</p>
+      <%# end %> -->
+
+      <%= render partial: "/data_tables/table", locals: { title: 'some title' } %>
+    </div>
+  </div>
+</section>
+
+<!-- /orders/data_table -->
+<%#= render partial: "/orders/data_table", locals: {
+  table_turbo_frame_tag: "orders",
+  orders: @orders,
+  pagy: @pagy,
+  table_section_heading_title: "Active Orders",
+  table_section_heading_description: "All active orders that have not yet been completed.",
+  table_title: "Active Orders Table",
+} %>
+
+<!--  -->

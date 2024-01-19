@@ -5,7 +5,19 @@
     <%= link_to "View", order, class:target_top_link_to_css_classes, target: "_top" %>
     <%= link_to "Edit", edit_order_path(order), data: {turbo_frame: "modal" }, class: target_top_link_to_css_classes if authorized_internal_user? %>
   <% end %>
-  <%= tag.div order.id, class: primary_col_css_classes %>
+
+
+  <%#= tag.div order.id, class: primary_col_css_classes %>
+  <%= tag.div class: primary_col_css_classes do %>
+  <%= tag.div order.id, class: '' %>
+    <%= tag.div class: 'inline-block max-w-full' do %>
+      <%= tag.div class: 'mx-3 text-gray-600' do %>
+        <%= render "/statuses/status", statusable: order %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+
   <% unless @vendor %>
     <%= tag.div class: primary_col_css_classes do %>
       <%= render "inline_edit", model: order, attribute: :order_sequence do %>
