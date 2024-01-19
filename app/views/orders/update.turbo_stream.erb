@@ -5,9 +5,7 @@
   <% order_target_dom_id = dom_id(@order) %>
   <% order_partial_path = "/orders/table/row" %>
 <% end %>
-
 <%= turbo_stream.replace order_target_dom_id do %>
   <%= render partial: order_partial_path, locals: { order: @order } %>
 <% end %>
-
 <%= render partial: "/application/append_flash_notice", locals: { notice: "Order updated successfully."} %>
