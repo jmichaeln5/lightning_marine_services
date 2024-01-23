@@ -18,7 +18,6 @@ module Order::Sortable
     end
   end
 
-
   module SortableScopes
     def by_dept(dept)
       return self if dept.blank?
@@ -52,5 +51,4 @@ module Order::Sortable
         .where('lower(name) = ?', vendor_name.downcase)
     end
   end
-
 end

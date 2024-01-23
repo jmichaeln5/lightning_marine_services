@@ -59,18 +59,12 @@ class Order < ApplicationRecord
   # }
 
   def self.order_by_vendor_name(sort_direction)
-    puts "Order#order_by_vendor_name\n"*25
     includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
   end
 
   def self.order_by_purchaser_name(sort_direction)
-    puts "Order#order_by_purchaser_name\n"*25
     includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
   end
-
-  # def self.sortable_attrs
-  #   %w(id order_sequence status dept courrier purchaser_name vendor_name date_recieved date_delivered)
-  # end
 
   def self.archived
     where(archived: true)

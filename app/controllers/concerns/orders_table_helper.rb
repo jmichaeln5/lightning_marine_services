@@ -1,8 +1,7 @@
 module OrdersTableHelper
   extend ActiveSupport::Concern
 
-  include FilterableOrders
-  include SortableOrders
+  include FilterableOrders, SortableOrders
 
   def resolve_orders_for_data_table(orders)
     dev_output_str("OrdersTableHelper#resolve_orders_for_data_table")
