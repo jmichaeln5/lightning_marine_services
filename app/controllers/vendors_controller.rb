@@ -54,8 +54,8 @@ class VendorsController < ApplicationController
       sort_dir = %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
 
       if ((params[:sort] == "ship_name") || ( params[:sort] == "vendor_name" )) # None Order col
-        sorted_orders = Order.where(id: orders.ids).filter_by_purchasers(sort_dir) if params[:sort] == "ship_name"
-        sorted_orders = Order.where(id: orders.ids).filter_by_vendors(sort_dir) if params[:sort] == "vendor_name"
+        sorted_orders = Order.where(id: orders.ids).order_by_purchaser_name(sort_dir) if params[:sort] == "ship_name"
+        sorted_orders = Order.where(id: orders.ids).order_by_vendor_name(sort_dir) if params[:sort] == "vendor_name"
         sorted_orders_ids = sorted_orders.ids
         sorted_orders_ids_arr = Array.new
 

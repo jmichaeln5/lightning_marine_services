@@ -1,0 +1,105 @@
+<!-- https://tailwindui.com/components/ecommerce/components/category-filters -->
+
+<%= tag.div class: "w-full max-h-46 overflow-y-hidden relative" do %>
+<%= tag.div class: "max-h-full overflow-y-auto" do %>
+  <%#= tag.p 'Filter orders', class: "text-sm text-gray-700 mb-1" %>
+  <%#= form_with url: "", method: :get, data: { turbo_frame: "orders" } do |form| %>
+  <%= form_with url: "", method: :get, data: { turbo_frame: "orders", turbo_action: "advance" } do |form| %>
+    <%= form.fields_for :filter, html: { multipart: true }  do |filter_form| %>
+      <%= tag.div class: "grid grid-flow-col gap-1 " do %>
+        <%#= tag.div do %>
+          <%# status_select = Array.new %>
+          <%# Order.select([:status]).distinct.collect { |order| status_select.push([order.status.to_s.humanize, order.status]) if order.status?  } %>
+          <%#= filter_form.select :status, status_select, {prompt: '--- filter by status ---'}, { class: "relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6" } %>
+        <%# end %>
+        <%= tag.div do %>
+          <%= tag.p 'Filter status', class: "font-medium" %>
+          <%= filter_form.collection_check_boxes(:status, Order.statuses, :itself, :itself) do |status_field| %>
+            <%= tag.div do %>
+              <%= status_field.label class:"" do %>
+                 <%= status_field.check_box %>
+                 <%= status_field.text.to_s.humanize %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+
+        <%#= tag.div do %>
+          <%# courrier_select = Order.select([:courrier]).distinct.collect { |order| [ order.courrier, order.courrier ] } %>
+          <%#= filter_form.select :courrier, courrier_select, {prompt: '--- filter by courrier ---'}, { class: "relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6" } %>
+        <%# end %>
+        <%= tag.div do %>
+          <%= tag.p 'Filter courrier', class: "font-medium" %>
+          <% courrier_arr = Order.select([:courrier]).distinct %>
+          <%= filter_form.collection_check_boxes(:courrier, courrier_arr.collect { |order| order.courrier}, :itself, :itself) do |courrier_field| %>
+            <%= tag.div do %>
+              <%= courrier_field.label class:"" do %>
+                 <%= courrier_field.check_box %>
+                 <%= courrier_field.text %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <%= tag.div do %>
+        <%= tag.p 'Filter dept', class: "font-medium" %>
+          <% dept_select = Array.new %>
+          <% Order.select([:dept]).distinct.collect { |order| dept_select.push([order.dept, order.dept]) if order.dept?  } %>
+          <%= filter_form.select :dept, dept_select.sort, {prompt: '--- filter by dept ---'}, { class: "cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6" } %>
+        <% end %>
+        <%#= tag.div class: "" do %>
+          <%#= tag.p 'Filter dept', class: "font-medium" %>
+          <%# courrier_size = Order.select([:courrier]).distinct.size %>
+          <%#= tag.div class: "grid grid-rows-5 grid-flow-col auto-cols-max gap-x-3" do %>
+            <%#= filter_form.collection_check_boxes(:dept, Order.select([:dept]).distinct.collect { |order| order.dept}, :itself, :itself) do |dept_field| %>
+              <%#= tag.div do %>
+                <%#= dept_field.label class:"" do %>
+                  <%# unless dept_field.object.blank? %>
+                    <%#= dept_field.check_box %>
+                    <%#= dept_field.text %>
+                  <%# end %>
+                <%# end %>
+              <%# end %>
+            <%# end %>
+          <%# end %>
+        <%# end %>
+
+
+        <!-- <%#= tag.div class: "" do %>
+        <%##= tag.div class: "hidden md:inline-flex" do %>
+          <%#= button_tag(type: 'submit', class: "") do %>
+            <%#= tag.span class: "relative -ml-px inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="-ml-0.5 h-5 w-5 text-gray-400">
+                <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd" />
+              </svg>
+              <%#= tag.span "Filter orders", class: "whitespace-nowrap" %>
+            <%# end %>
+          <%# end %>
+        <%# end %> -->
+      <% end %>
+      <!-- <%#= button_tag(type: 'submit', class: "my-3 w-full") do %>
+      <%##= button_tag(type: 'submit', class: "my-3 w-full md:hidden") do %>
+        <%#= tag.span class: "relative -ml-px inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="-ml-0.5 h-5 w-5 text-gray-400">
+            <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd" />
+          </svg>
+          <%#= tag.span "Filter orders", class: "whitespace-nowrap" %>
+        <%# end %>
+      <%# end %> -->
+      <%= button_tag(type: 'submit', class: "w-full relative") do %>
+        <span class="btn btn_outline_indigo inline-flex -ml-px items-center gap-x-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="-ml-0.5 h-5 w-5">
+            <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd" />
+          </svg>
+          <%= tag.span "Apply filters", class: "whitespace-nowrap" %>
+        </span>
+      <% end %>
+
+
+
+
+    <% end %>
+  <% end %>
+<% end %>
+<% end %>

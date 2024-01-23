@@ -17,7 +17,7 @@ class DataTableDecorator
   end
 
   def self.sortable_table_headers_attrs
-    self.ths - %i(order_sequence dept po_number content)
+    self.ths - %i(order_sequence dept po_number order_content )
   end
 
 

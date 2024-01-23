@@ -10,7 +10,9 @@ class OrdersController < Orders::BaseController
     orders = orders.order(created_at: :desc)
     @orders = resolve_orders_for_data_table(orders)
 
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    # @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    @pagy, @orders = pagy(@orders, link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"', items: params.fetch(:count, 10))
+
     set_new_order
   end
 

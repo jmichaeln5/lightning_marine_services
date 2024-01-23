@@ -21,15 +21,23 @@
 } %>
 
 <section>
-  <div class="rounded-md bg-white">
+  <!-- <div class="rounded-md bg-white">
     <div class="pt-7 w-full px-4 sm:px-6 lg:px-8 ">
-      <!-- <%#= render layout: "/data_tables/table", locals: { title: 'some title' } do %>
-        <p>Here is some content</p>
-      <%# end %> -->
-      <%= render partial: "/data_tables/table", locals: { title: 'some title', orders: @orders } %>
-      <%#= render partial: "/data_tables/table", locals: { title: 'some title', orders: @orders } %>
+      <%#= render partial: "/data_tables/table", locals: {
+        title: 'Active Orders',
+        orders: @orders,
+      } %>
+      <%##= render partial: "/data_tables/table", locals: { title: 'some title', orders: @orders } %>
     </div>
-  </div>
+  </div> -->
+  <% title = "Active Orders" %>
+  <% description = "all orders that have not yet been completed." %>
+  <%= render partial: "/data_tables/layout", locals: {
+    title: title,
+    description: description,
+    orders: @orders,
+    pagy: @pagy,
+  } %>
 </section>
 
 <!-- /orders/data_table -->

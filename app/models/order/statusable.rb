@@ -1,7 +1,7 @@
 module Order::Statusable
   extend ActiveSupport::Concern
 
-  STATUSES = %i(active partially_delivered delivered hold archived)
+  STATUSES = %i(active partially_delivered delivered hold)
 
   included do
     delegate :statuses, :statusable?, to: :class

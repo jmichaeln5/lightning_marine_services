@@ -40,7 +40,28 @@
     </td>
 
     <td data-table-target="td" class="<%= css_td %>">
-      <%= tag.span order.order_content %>
+      <%#= tag.span order.order_content %>
+
+      <% unless order.order_content.nil? %>
+        <% order_content = order.order_content %>
+        <% if order_content.packaging_materials.any? %>
+          <%= tag.div class: "-my-3 grid grid-cols-2 text-xs" do %>
+            <%= tag.span "boxes:".capitalize, class: "font-semibold" %>
+            <%= tag.span order_content.packaging_materials_boxes.count %>
+
+            <%= tag.span "crates:".capitalize, class: "font-semibold" %>
+            <%= tag.span order_content.packaging_materials_crates.count %>
+
+            <%= tag.span "pallets:".capitalize, class: "font-semibold" %>
+            <%= tag.span order_content.packaging_materials_pallets.count %>
+
+            <% if order_content.packaging_materials_others.any? %>
+              <%= tag.span "others:".capitalize, class: "font-semibold" %>
+              <%= tag.span order_content.packaging_materials_others.count %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
     </td>
 
     <td class="<%= css_td %>">

@@ -181,17 +181,22 @@
 
 class OrderAggregator # FOR ORDERS DATA TABLE?
   module Scopes
+    def by_dept(dept)
+      return self if dept.blank?
+
+      where('lower(dept) = ?', dept.downcase)
+    end
+
     def by_courrier(courrier)
       return self if courrier.blank?
 
       where('lower(courrier) = ?', courrier.downcase)
     end
 
-    def by_vendor_name(vendor_name)
-      return self if vendor_name.blank?
+    def by_status(status)
+      return self if status.blank?
 
-      includes(:vendor).references(:vendor)
-        .where('lower(name) = ?', vendor_name.downcase)
+      where(status: status)
     end
 
     def by_purchaser_name(purchaser_name)
@@ -201,10 +206,11 @@ class OrderAggregator # FOR ORDERS DATA TABLE?
         .where('lower(name) = ?', purchaser_name.downcase)
     end
 
-    def by_status(status)
-      return self if status.blank?
+    def by_vendor_name(vendor_name)
+      return self if vendor_name.blank?
 
-      where(status: status)
+      includes(:vendor).references(:vendor)
+        .where('lower(name) = ?', vendor_name.downcase)
     end
   end
 
@@ -218,8 +224,9 @@ class OrderAggregator # FOR ORDERS DATA TABLE?
     # Order
     scope
       .extending(Scopes)
-      .by_status(filters[:status])
+      .by_dept(filters[:dept])
       .by_courrier(filters[:courrier])
+      .by_status(filters[:status])
       .by_purchaser_name(filters[:purchaser_name])
       .by_vendor_name(filters[:vendor_name])
 
@@ -275,7 +282,7 @@ end
 # # sort_direction = "asc"
 # # sort_direction = "desc"
 #
-# ### Order.where(id: orders.ids).filter_by_vendors(sort_dir)
+# ### Order.where(id: orders.ids).order_by_vendor_name(sort_dir)
 #
 #
 # Order.where(id: orders.ids).includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
