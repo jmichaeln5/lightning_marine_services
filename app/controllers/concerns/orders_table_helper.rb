@@ -8,15 +8,7 @@ module OrdersTableHelper
     dev_output_str("OrdersTableHelper#resolve_orders_for_data_table")
 
     orders = filtered_orders if filter?
-    # orders = sort_orders_against_params(orders) if sort_param.present?
     orders = sorted_orders(orders) if sort?
-
-    # if (params[:sort_option].nil? == false) && (params[:sort_direction].nil? == false)
-    #   orders = sorted_orders(orders)
-    # end
-
-
-
     orders = search_orders_against_query(orders, query_param ) if query_param.present? and query_param.length > 1
 
     return orders

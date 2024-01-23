@@ -65,7 +65,7 @@ class Order < ApplicationRecord
 
   def self.order_by_purchaser_name(sort_direction)
     puts "Order#order_by_purchaser_name\n"*25
-    includes(:purchaser).references(:vendor).order("name" + " " + sort_direction)
+    includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
   end
 
   # def self.sortable_attrs

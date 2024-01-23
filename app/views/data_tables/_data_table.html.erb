@@ -60,16 +60,23 @@
                       turbo_action: "advance"
                     }  do %>
 
-                    <% sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
-                    <% sort_params = { sort_direction: sort_direction, sort_option: th } %>
 
-                    <%= button_to request.path,
+                    <%# sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
+                    <%# sort_params = { sort_direction: sort_direction, sort_option: th } %>
+                    <%#= button_to request.path,
                      method: :get,
                      params: sort_params,
                      data: {
                        turbo_frame: "orders",
                        turbo_action: "advance",
                     } do %>
+
+                    <% sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
+                    <% sort_params = { sort_direction: sort_direction, sort_option: th } %>
+                    <%= link_to request.params.merge(sort_params), data: {
+                      turbo_frame: "orders",
+                      turbo_action: "advance"
+                    }  do %>
                       <%= yield :table_header_content %>
                     <% end %>
                   <% else %>
