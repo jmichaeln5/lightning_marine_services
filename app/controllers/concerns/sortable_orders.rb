@@ -25,7 +25,7 @@ module SortableOrders
     end
 
     def sort_orders(orders)
-      return orders unless sort_option.to_s.downcase.in?(Order.sortable_attrs)
+      return orders unless sort?
 
       return orders.reorder(sort_option => sort_direction) if !(sort_option.in?(%w(vendor_name purchaser_name ship_name)))
 
