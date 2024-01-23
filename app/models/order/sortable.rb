@@ -3,7 +3,7 @@ module Order::Sortable
 
   included do
     def self.sortable_attrs
-      %w(id order_sequence status dept courrier ship_name vendor_name date_recieved date_delivered)
+      %w(id order_sequence status dept courrier ship_name purchaser_name vendor_name date_recieved date_delivered)
     end
 
     def self.sort(scope = nil, filters = nil)

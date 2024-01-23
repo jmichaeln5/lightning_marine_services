@@ -24,13 +24,15 @@ module SortableOrders
       return true
     end
 
-    def sorted_orders(orders)
+    def sort_orders(orders)
+      return orders unless sort_option.to_s.downcase.in?(Order.sortable_attrs)
+
       return orders.reorder(sort_option => sort_direction) if !(sort_option.in?(%w(vendor_name purchaser_name ship_name)))
 
       _sort_option = (sort_option == 'ship_name') ? 'purchaser_name' : sort_option
-      _attr_name = _sort_option.downcase.gsub("_name", "")
+      _sort_option = _sort_option.downcase.gsub("_name", "")
 
-      return Order.where(id: orders.ids).includes(_attr_name.to_sym).references(_attr_name.to_sym).order("LOWER(name)" + " " + sort_direction)
+      return Order.where(id: orders.ids).includes(_sort_option.to_sym).references(_sort_option.to_sym).order("LOWER(name)" + " " + sort_direction)
     end
   end
 end

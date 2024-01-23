@@ -65,11 +65,11 @@ export default class extends Controller {
     // console.log(element)
     // console.log(`thTargetConnected\nthis.thTargets.length: ${this.thTargets.length}`);
     this.thAmountValue += 1
-    console.log(`\n this.thAmountValue ${this.thAmountValue}`);
+    // console.log(`\n this.thAmountValue ${this.thAmountValue}`);
   }
 
   tdTargetConnected(element) {
     this.tdAmountValue += 1
-    console.log(`\n this.tdAmountValue ${this.tdAmountValue}`);
+    // console.log(`\n this.tdAmountValue ${this.tdAmountValue}`);
   }
 }

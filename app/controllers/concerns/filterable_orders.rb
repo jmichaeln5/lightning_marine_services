@@ -15,10 +15,9 @@ module FilterableOrders
       _filter_params.blank? ? false : true
     end
 
-    def filtered_orders
+    def filter_orders
       filters = filter_params.to_hash
       Order.filter(filters)
     end
-
   end
 end
