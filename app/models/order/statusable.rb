@@ -2,14 +2,20 @@ module Order::Statusable
   extend ActiveSupport::Concern
 
   STATUSES = %i(active partially_delivered delivered hold)
+  
+  ACTIVE_STATUSES = %i(active partially_delivered hold)
 
   included do
-    delegate :statuses, :statusable?, to: :class
+    delegate :statuses, :active_statuses, :statusable?, to: :class
 
     enum status: STATUSES
 
     def self.statuses
       STATUSES
+    end
+
+    def self.active_statuses
+      ACTIVE_STATUSES
     end
 
     def self.statusable?
