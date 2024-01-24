@@ -25,12 +25,14 @@ module OrderContent::Packageables::CastablePackageTypeFields
 
   def castable?
     return false if packaging_materials.size > 0
-    return false if ((packaging_material_str_attrs.collect {|attr_str| attr_castable?(attr_str) }).include? false)
+    return false if ((order_content_packaging_materials_attribute_names.collect {|attr_str| attr_castable?(attr_str) }).include? false)
     return true
   end
 
   included do
-    def packaging_material_str_attrs
+    # attribute :cast_packaging_materials, :boolean, default: false # 👈🏾  TODO attempt type cast if true
+
+    def order_content_packaging_materials_attribute_names
       %w(box crate pallet other)
     end
 
@@ -47,7 +49,7 @@ module OrderContent::Packageables::CastablePackageTypeFields
       PackagingMaterialDecorator.types_with_humanized.each do |type|
         return false unless matching_vals
 
-        if type[0].downcase.in? packaging_material_str_attrs
+        if type[0].downcase.in? order_content_packaging_materials_attribute_names
           attr_amount_val = send(type[0].downcase)
 
           packaging_materials_type_amount_arr = Array.new
@@ -60,7 +62,7 @@ module OrderContent::Packageables::CastablePackageTypeFields
     end
 
     # def build_records_from_castable_attrs
-    #   packaging_material_str_attrs.each do |packaging_material_attr|
+    #   order_content_packaging_materials_attribute_names.each do |packaging_material_attr|
     #     packaging_material_klass_str = "PackagingMaterial::#{packaging_material_attr.classify}"
     #     packaging_material_records_size = get_packaging_materials_size_by_type packaging_material_klass_str
     #     attr_val = send packaging_material_attr
@@ -76,7 +78,7 @@ module OrderContent::Packageables::CastablePackageTypeFields
     # end
 
     def build_records_from_castable_attrs
-      packaging_material_str_attrs.each do |packaging_material_attr|
+      order_content_packaging_materials_attribute_names.each do |packaging_material_attr|
         packaging_material_klass_str = "PackagingMaterial::#{packaging_material_attr.classify}"
         packaging_material_records_size = get_packaging_materials_size_by_type packaging_material_klass_str
         attr_val = send packaging_material_attr

@@ -2,8 +2,6 @@ module OrderContent::Packageables
   extend ActiveSupport::Concern
 
   included do
-    # attribute :cast_packaging_materials, :boolean, default: false # 👈🏾  TODO attempt type cast if true
-
     include CastablePackageTypeFields
 
     has_many :packaging_materials, dependent: :destroy do
@@ -14,6 +12,7 @@ module OrderContent::Packageables
       def types_names
         select(:type).distinct.collect { |packaging_material| packaging_material.type_name }
       end
+      # OrderContent.last(5).map {|oc| oc.packaging_materials.types_names }
 
       def type_options
         select(:type).distinct.collect { |packaging_material|
@@ -29,6 +28,7 @@ module OrderContent::Packageables
       def by_type_name(type)
         filter_type = type.classify
         filtered_ids = Array.new
+
         return filtered_ids unless (filter_type.in? types_names)
 
         collect { |packaging_material|
@@ -63,11 +63,33 @@ module OrderContent::Packageables
 
     def has_packaging_materials?
       order_content_packaging_materials_size, marked_for_destruction_amount = packaging_materials.size, 0
-
       packaging_materials.collect { |packaging_material| (marked_for_destruction_amount += 1) if packaging_material.marked_for_destruction? }
 
       order_content_packaging_materials_size > marked_for_destruction_amount
     end
+
+    def packaging_materials_attributes_pair
+      matching_attr_values_hash = Hash.new
+      matching_attr_values_hash[:order_content_attributes], matching_attr_values_hash[:packaging_materials_attributes] = Array.new, Array.new
+
+      order_content_packaging_materials_attribute_names.map {|attr_name|
+        _attrs = self.attributes
+        matching_attr_values_hash[:order_content_attributes].push(_attrs) unless _attrs.in?(matching_attr_values_hash[:order_content_attributes])
+
+        matching_packaging_materials = packaging_materials.where(type: "PackagingMaterial::#{attr_name.classify}")
+        packaging_materials_attributes_hash = Hash.new
+
+        if matching_packaging_materials.any?
+          matching_packaging_materials.map {|_pm|
+            matching_attr_values_hash[:packaging_materials_attributes].push _pm.attributes
+          }
+        else
+          packaging_materials_attributes_hash["packaging_materials_#{attr_name.downcase.pluralize}".to_sym] = nil
+        end
+      }
+      matching_attr_values_hash
+    end
+
   end
 
   def get_packaging_materials_size_by_type(type); packaging_materials.where(type: type).size; end;
