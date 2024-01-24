@@ -27,6 +27,12 @@ module SortableOrders
     def sort_orders(orders)
       return orders unless sort?
 
+      ### NOTE SORTING NIL AND "" VALUES for string data type attributes
+      ### e.g. sorting ascending
+      ### "" (👈🏾  empty string) will appear before populated string value
+      ### "foo" string value will appear in between empty string and nil values
+      ### nil values will appear last
+
       return orders.reorder(sort_option => sort_direction) unless sort_option.in?(Order.sortable_attrs - Order.attribute_names)
 
       _sort_option = (sort_option == 'ship_name') ? 'purchaser_name' : sort_option

@@ -15,8 +15,11 @@ module FilterableOrders
       _filter_params.blank? ? false : true
     end
 
-    def filter_orders
-      filters = filter_params.to_hash
+    def filter_orders(orders)
+      filters = Hash.new
+      filter_params.to_hash.collect {|key, value| filters["#{key.downcase}"] = value}
+      filters["id"] = orders.ids if orders.any?
+
       Order.filter(filters)
     end
   end

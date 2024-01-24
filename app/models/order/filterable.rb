@@ -3,20 +3,16 @@ module Order::Filterable
 
   included do
     def self.filterable_attrs
-      %w(status dept courrier)
+      %w(id status dept courrier)
     end
   end
 
-
   module ClassMethods
     def filter(filtering_params)
-      results = self.where(nil)
-
       filters = Hash.new
       filtering_params.collect {|key, value| (filters[key] = value) if key.in?(filterable_attrs)}
 
-      results = where(filters)
-      results
+      where(filters)
     end
   end
 end

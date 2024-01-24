@@ -6,7 +6,7 @@ module OrdersTableHelper
   def resolve_orders_for_data_table(orders)
     dev_output_str("OrdersTableHelper#resolve_orders_for_data_table")
 
-    orders = filter_orders if filter?
+    orders = filter_orders(orders) if filter?
     orders = sort_orders(orders) if sort?
     orders = search_orders_against_query(orders, query_param ) if query_param.present? and query_param.length > 1
 
