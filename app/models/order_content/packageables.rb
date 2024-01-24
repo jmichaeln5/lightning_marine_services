@@ -12,7 +12,6 @@ module OrderContent::Packageables
       def types_names
         select(:type).distinct.collect { |packaging_material| packaging_material.type_name }
       end
-      # OrderContent.last(5).map {|oc| oc.packaging_materials.types_names }
 
       def type_options
         select(:type).distinct.collect { |packaging_material|
@@ -89,7 +88,6 @@ module OrderContent::Packageables
       }
       matching_attr_values_hash
     end
-
   end
 
   def get_packaging_materials_size_by_type(type); packaging_materials.where(type: type).size; end;
