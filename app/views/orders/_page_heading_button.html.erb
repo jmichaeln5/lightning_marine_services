@@ -38,7 +38,7 @@
 <% if !add_order_to_nested_resource_path && !add_order_to_nested_resource_text  %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_add", locals: {
     with_turbo_modal: true,
-    link_to_path: new_order_path,
+    link_to_path: ({ controller: "orders", action: "new" }),
     link_to_text: "Add order",
   } %>
 <% end %>

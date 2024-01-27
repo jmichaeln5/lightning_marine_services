@@ -10,7 +10,7 @@
     <%= render partial: "/application/data_display/stats/overview_card", locals: {
     is_active_card: current_page?(vendor_orders_path(@vendor)),
     card_title: "Active vendor orders",
-    card_description: @vendor.orders.where(status: Order::Statusable::ACTIVE_STATUSES).size,
+    card_description: @vendor.orders.all_active.size,
     card_link: (link_to "View active vendor orders", vendor_orders_path(@vendor), class:"font-medium text-cyan-700 hover:text-cyan-900"),
     card_icon: (render partial: "/layouts/stacked_shell/headings/icons/vendor"),
     } %>

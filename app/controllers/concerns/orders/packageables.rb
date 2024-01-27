@@ -42,25 +42,18 @@ module OrderContent::Packageables
     has_many :packaging_materials_boxes, class_name: 'PackagingMaterial::Box' do
       include Describable
     end
-    alias_method :boxes, :packaging_materials_boxes
-
 
     has_many :packaging_materials_crates, class_name: 'PackagingMaterial::Crate' do
       include Describable
     end
-    alias_method :crates, :packaging_materials_crates
-
 
     has_many :packaging_materials_pallets, class_name: 'PackagingMaterial::Pallet' do
       include Describable
     end
-    alias_method :pallets, :packaging_materials_pallets
-
 
     has_many :packaging_materials_others, class_name: 'PackagingMaterial::Other' do
       include Describable
     end
-    alias_method :others, :packaging_materials_others
 
     # before_validation do
     #   order_content.set_string_attrs_from_packaging_materials if cast_packaging_materials # only for existing, so no need to call on create # 👈🏾  packaging_materials created via Order#accepts_nested_attributes_for :order_content

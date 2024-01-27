@@ -10,7 +10,7 @@
     <%= render partial: "/application/data_display/stats/overview_card", locals: {
     is_active_card: current_page?(purchaser_orders_path(@purchaser)),
     card_title: "Active ship orders",
-    card_description: @purchaser.orders.where(status: Order::Statusable::ACTIVE_STATUSES).size,
+    card_description: @purchaser.orders.all_active.size,
     card_link: (link_to "View active ship orders", purchaser_orders_path(@purchaser), class:"font-medium text-cyan-700 hover:text-cyan-900"),
     card_icon: (render partial: "/layouts/stacked_shell/headings/icons/purchaser"),
     } %>

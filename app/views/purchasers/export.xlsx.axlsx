@@ -10,14 +10,16 @@ ordstyle = wb.styles.add_style(:fg_color=>"#FF000000",:border=>Axlsx::STYLE_THIN
 @orders.order("order_sequence ASC")
 wb.add_worksheet(name: "Orders", :page_setup => {:fit_to_width=>1, :orientation => :landscape}) do |sheet|
     sheet
-    sheet.add_row ["Ship:", @purchaser.name,'','','Printed:',sNow], :style=>title
+    sheet.add_row [@heading_title, @heading_title_value,'','','Printed:',sNow], :style=>title
     sheet.add_row ["#","Department","Vendor","PO #","Tracking #","Received Date","Boxes","Crates","Pallet", "Courrier", "Delivery Date"], :style=>bold
 
   @orders.order("order_sequence ASC").each do |ord|
     dept = ord.try(:dept) || ''
+
     boxes = ord.try(:order_content).box || '0'
     crates = ord.try(:order_content).crate || '0'
     pallet = ord.try(:order_content).pallet || '0'
+
     rec_date = ord.try(:date_recieved) ? ord.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a'
     del_date = ord.try(:date_delivered) ? ord.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a'
 

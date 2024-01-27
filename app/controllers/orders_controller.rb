@@ -1,37 +1,35 @@
 class OrdersController < Orders::BaseController
-  before_action :authorize_internal_user, only: %i[ new create edit destroy ]
-  before_action :set_page_heading_title
-
+  before_action :authorize_internal_user, only: %i(new create edit destroy)
   before_action :set_order, only: %i(show hovercard update destroy)
-  before_action :set_new_order, only: %i(new) # callback required, overwriting in child controllers to build order on parent
+  before_action :invoke_scoped_resource_methods, if: :scoped_resource?
+
+  before_action :set_page_heading_title, only: %i(index show new edit)
+
+  # ⚠️ 👇🏾  wayyyy too many status helper methods, using for link+button_to.., refactor said fuckery
+  helper_method %i(
+    status_param
+    scoped_status?
+    scoped_status
+    valid_status_params
+    status_param_valid?
+    status_scopes
+    status_display_name
+  )
+
+  helper_method %i(
+    scoped_resource?
+    purchaser?
+    vendor?
+  )
 
   def index
-    orders = Order.where(status: :active)
-    orders = orders.order(created_at: :desc)
-    @orders = resolve_orders_for_data_table(orders)
+    set_orders
 
-    # @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
+    @exportables = @orders
+    @orders = resolve_orders_for_data_table(@orders)
     @pagy, @orders = pagy(@orders, link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"', items: params.fetch(:count, 10))
 
-    set_new_order
-  end
-
-  def all_orders
-    orders = Order.all
-    orders = orders.order(created_at: :desc)
-    @orders = resolve_orders_for_data_table(orders)
-
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
-  end
-
-  def completed_orders
-    orders = Order.archived
-    orders = orders.order(created_at: :desc)
-    @orders = resolve_orders_for_data_table(orders)
-
-    @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-    set_new_order
+    respond_to_do_format_exports
   end
 
   def show
@@ -41,6 +39,9 @@ class OrdersController < Orders::BaseController
   end
 
   def new
+    @order = set_scoped_resource? ? set_new_scoped_resource_order : Order.new
+    @order_content = @order.build_order_content
+    @packaging_material = @order.order_content.packaging_materials.build
   end
 
   def edit
@@ -121,9 +122,18 @@ class OrdersController < Orders::BaseController
       @order = Order.find(params[:id])
     end
 
-    def set_new_order  # method required, overwriting in child controllers to build order on parent
-      @order = Order.new
-      @order_content = @order.build_order_content
-      @packaging_material = @order.order_content.packaging_materials.build
+    def set_orders
+      set_scoped_resource if scoped_resource?
+      orders = scoped_resource? ? @scoped_resource.orders : Order.all
+      @orders = orders.where(status: status_scopes)
+    end
+
+    def set_page_heading_title
+      if scoped_resource? and !@scoped_resource.nil?
+        page_heading_title = "#{@scoped_resource.name}"
+      else
+        page_heading_title = "Orders"
+      end
+      @page_heading_title = page_heading_title if @page_heading_title != page_heading_title
     end
 end

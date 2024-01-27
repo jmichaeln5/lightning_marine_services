@@ -34,7 +34,7 @@
 
 @layer components {
   .btn {
-    @apply cursor-pointer rounded-md py-2 px-3 text-center text-sm font-semibold leading-6;
+    @apply cursor-pointer rounded-md py-1.5 px-3 text-center text-sm font-semibold leading-6;
   }
 
   .btn_indigo {

@@ -22,8 +22,11 @@ class Order < ApplicationRecord
   delegate :purchaser_name, :ship_name, to: :purchaser
   delegate :vendor_name, to: :vendor
 
+  delegate :has_packaging_materials?, to: :order_content
+  delegate :boxes, :crates, :pallets, :others, to: :order_content
+
   include Attachable::Images # change attr name, can attach more than images
-  # include Exportable, Searchable, Statusable
+
   include Exportable, Filterable, Searchable, Sortable, Statusable
 
   belongs_to :purchaser
@@ -42,21 +45,14 @@ class Order < ApplicationRecord
 
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
-    ensure_archived_val unless (archived == date_delivered.present?)
+
+    ensure_archived_val unless (archived == date_delivered.present?)  # NOTE # move method to Order::Statusable
+    ensure_status_val unless new_record? # NOTE # move method to Order::Statusable
 
     attempt_type_cast_order_content_packaging_materials_attrs
   end
 
-  # scope :archived, -> { where(status: [:delivered]) }
-  # scope :unarchived, -> { where.not(status: [:delivered]) }
 
-  # scope :order_by_vendor_name, -> (sort_direction) {
-  #   includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
-  # }
-  #
-  # scope :order_by_purchaser_name, -> (sort_direction) {
-  #   includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
-  # }
 
   def self.order_by_vendor_name(sort_direction)
     includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
@@ -85,8 +81,6 @@ class Order < ApplicationRecord
 
   private
     def attempt_type_cast_order_content_packaging_materials_attrs
-      # order_content
-      # debugger
       # order_content.build_records_from_castable_attrs unless order_content.packaging_materials_amounts_match_str_attrs?
     end
 
@@ -103,10 +97,11 @@ class Order < ApplicationRecord
       self.order_sequence = seq
     end
 
-    def ensure_archived_val
-      if date_delivered.present?
-        self.archived = date_delivered.present? unless (archived == date_delivered.present?)
-        self.status = 'delivered' unless (status == "delivered")
-      end
+    def ensure_archived_val # NOTE # move method to Order::Statusable
+      self.archived = date_delivered.present?
+    end
+
+    def ensure_status_val # NOTE # move method to Order::Statusable
+      self.status = 'delivered' if (date_delivered.present? && status.in?(active_statuses))
     end
 end

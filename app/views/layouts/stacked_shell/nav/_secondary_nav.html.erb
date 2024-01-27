@@ -1,5 +1,4 @@
 <nav id="secondary-nav" class="rounded-t-md bg-slate-200 py-3  mx-auto px-4 sm:px-6 lg:px-8">
-
   <% if user_signed_in? %>
     <nav class="sm:hidden">
       <div class="text-gray-700 bg-white">
@@ -14,9 +13,8 @@
          <div data-visibility-target="hideable" hidden class="mt-1" id="sub-menu-1">
            <% mobile_navigation_resource_css_classes = "hover:bg-gray-50 block rounded-md py-2  text-sm leading-6 text-gray-700" %>
            <% mobile_navigation_resource_css_classes_current = "hover:bg-gray-50 block rounded-md py-2  text-sm leading-6 text-gray-700" %>
-
            <%= link_to "Dashboard", dashboard_path, class: mobile_navigation_resource_css_classes unless current_page?(dashboard_path) %>
-           <%= link_to "Orders", orders_path, class: mobile_navigation_resource_css_classes unless (request_controller_class == "OrdersController")  %>
+           <%= link_to "Orders", orders_path(status: "active"), class: mobile_navigation_resource_css_classes unless (request_controller_class == "OrdersController") %>
            <%= link_to "Ships", purchasers_path, class: mobile_navigation_resource_css_classes unless (request_controller_class == "PurchasersController") || (request_controller_class == "Purchasers::OrdersController") %>
            <% if authorized_internal_user? %>
              <%= link_to "Vendors", vendors_path, class: mobile_navigation_resource_css_classes if !"vendors".in? controller_path %>
@@ -26,13 +24,11 @@
       </div>
     </nav>
   <% end %>
-
   <div class="hidden sm:block">
     <div class="flex justify-between">
       <nav class="flex space-x-4 inline-flex" aria-label="Tabs">
         <% secondary_desktop_navigation_resource_css_classes = "text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-200 rounded-md px-3 py-2 text-sm font-medium" %>
         <% secondary_desktop_navigation_resource_css_classes_current = "bg-slate-50 text-gray-900 rounded-md px-3 py-2 text-sm font-semibold"  %>
-
         <%= render partial: "layouts/stacked_shell/nav/resource_links", locals:{
           resource_links_css_classes_current: secondary_desktop_navigation_resource_css_classes_current,
           resource_links_css_classes: secondary_desktop_navigation_resource_css_classes,

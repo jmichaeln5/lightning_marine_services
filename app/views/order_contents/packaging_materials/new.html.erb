@@ -4,7 +4,7 @@
     fallback_location_text: "View order content",
   } %>
 <% end %>
-<%= tag.h1 "New packaging material#{(params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? (' (' + params[:type].downcase + ')' ) : ''}" %>
+<%= tag.h1 "New packaging material#{(params[:type].in? PackagingMaterial::Packageable::TYPE_NAMES) ? (' (' + params[:type].downcase + ')' ) : ''}" %>
 <turbo-frame id="new_packaging_material">
 <div class="w-full">
   <%= form_with model: [@order_content, @packaging_material] do |form| %>

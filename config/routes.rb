@@ -55,49 +55,44 @@ Rails.application.routes.draw do
     delete '/attachments/:signed_id', action: 'destroy_attachment'
   end
 
-  # namespace :orders do
-  #   resource :bulk, controller: :bulk, only: [:destroy]
-  # end
-
   concern :statusable do
     resources :statuses, only: %i(edit update show)
   end
   resources :statuses, only: %i(edit update show)
 
+  concern :exportable do
+    get :export, defaults: { format: 'xlsx' }
+  end
+
   resources :orders, concerns: %i(hovercardable) do
-    concerns :statusable
     collection do
       concerns :searchable
+      concerns :exportable
+      concerns :statusable
     end
+
     member do
       get :edit_dept
       concerns :destroy_attachable
     end
   end
 
-  get '/archived_orders', to: 'orders#archived_index'
-  get '/all_orders', to: 'orders#all_orders'
-  get '/completed_orders', to: 'orders#completed_orders'
-
-  resources :purchasers, except: :show do
-    resources :orders, only: %i(index new create), module: :purchasers do
-      get 'deliver_active', on: :collection
-    end
-    member do
-      get 'all_orders', controller: 'purchasers/orders'
-      get 'active_orders', controller: 'purchasers/orders'
-      get 'completed_orders', controller: 'purchasers/orders'
-      get :export
+  concern :orders_scoped do
+    resources :orders, only: %i(index new create), defaults: { route_scoped?: true, resource: @scope.frame.dig(:controller) } do
+      collection do
+        get '/new', to: 'orders#new'
+        get '(/:status)', to: 'orders#index'
+        concerns :exportable
+      end
     end
   end
 
-  resources :vendors do
-    resources :orders, only: %i(index new create), module: :vendors
-    member do
-      get 'all_orders', controller: 'vendors/orders'
-      get 'active_orders', controller: 'vendors/orders'
-      get 'completed_orders', controller: 'vendors/orders'
-    end
+  resources :purchasers, except: :show do
+    concerns :orders_scoped
+  end
+
+  resources :vendors, except: :show do
+    concerns :orders_scoped
   end
 
   resources :order_contents, only: %i(show edit update destroy)
@@ -109,7 +104,7 @@ Rails.application.routes.draw do
 
   def generate_order_content_packaging_material_types_routes
     %i(new index create).each do |_action_name|
-      PackagingMaterialDecorator.humanized_types.each do |packaging_material_type|
+      PackagingMaterial::Packageable::TYPE_NAMES.each do |packaging_material_type|
         type = packaging_material_type.to_s.downcase.singularize
 
         case _action_name

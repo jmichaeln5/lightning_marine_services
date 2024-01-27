@@ -7,74 +7,109 @@
 <%= tag.span id: dom_id(order), class: "table-row" do %>
   <tr>
     <td data-table-target="td" class="<%= css_td_first %>">
-      <%= link_to order.id, order_path(order), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+      <%= link_to order.id, order_path(order.id), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
       <%= tag.span order.order_sequence %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
       <%= tag.span order.status %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
       <%= tag.span order.dept %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
-      <%= link_to order.purchaser_name, purchaser_orders_path(order.purchaser), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+      <% if purchaser? %>
+        <%= tag.span order.purchaser.name %>
+      <% else %>
+        <%= link_to order.purchaser_name, purchaser_orders_path(order.purchaser, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+      <% end %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
-      <%= link_to order.vendor_name, vendor_orders_path(order.vendor), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+      <% if vendor? %>
+        <%= tag.span order.vendor.name %>
+      <% else %>
+        <%= link_to order.vendor_name, vendor_orders_path(order.vendor, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+      <% end %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
       <%= tag.span order.po_number %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
       <%= tag.span (order.date_recieved.strftime("%m/%d/%Y")) if order.date_recieved? %>
       <%= tag.span "n/a" unless order.date_recieved? %>
     </td>
-
     <td data-table-target="td" class="<%= css_td %>">
       <%#= tag.span order.order_content %>
 
-      <% unless order.order_content.nil? %>
-        <% order_content = order.order_content %>
+      <%# unless order.order_content.nil? %>
+        <%# order_content = order.order_content %>
+        <%# if order_content.packaging_materials.any? %>
+          <%#= tag.div class: "-my-3 grid grid-cols-2 text-xs" do %>
+            <%#= tag.span "boxes:".capitalize, class: "font-semibold" %>
+            <%#= tag.span order_content.packaging_materials_boxes.count %>
+
+            <%#= tag.span "crates:".capitalize, class: "font-semibold" %>
+            <%#= tag.span order_content.packaging_materials_crates.count %>
+
+            <%#= tag.span "pallets:".capitalize, class: "font-semibold" %>
+            <%#= tag.span order_content.packaging_materials_pallets.count %>
+
+            <%# if order_content.packaging_materials_others.any? %>
+              <%#= tag.span "others:".capitalize, class: "font-semibold" %>
+              <%#= tag.span order_content.packaging_materials_others.count %>
+            <%# end %>
+          <%# end %>
+        <%# end %>
+      <%# end %>
+      <% order_content = order.order_content %>
+      <% order_content_decorator = OrderContentDecorator.new(order.order_content) %>
+      <div class="m-auto">
         <% if order_content.packaging_materials.any? %>
-          <%= tag.div class: "-my-3 grid grid-cols-2 text-xs" do %>
-            <%= tag.span "boxes:".capitalize, class: "font-semibold" %>
-            <%= tag.span order_content.packaging_materials_boxes.count %>
-
-            <%= tag.span "crates:".capitalize, class: "font-semibold" %>
-            <%= tag.span order_content.packaging_materials_crates.count %>
-
-            <%= tag.span "pallets:".capitalize, class: "font-semibold" %>
-            <%= tag.span order_content.packaging_materials_pallets.count %>
-
+          <%= tag.div class: "inline-block grid justify-items-stretch gap-x-px grid-cols-2" do %>
+            <%= tag.div "Boxes:" %>
+            <%= tag.span order_content_decorator.packaging_materials_boxes_td, class: "justify-self-start whitespace-nowrap" %>
+            <%= tag.div "Crates:" %>
+            <%= tag.span order_content_decorator.packaging_materials_crates_td, class: "justify-self-start whitespace-nowrap" %>
+            <%= tag.div "Pallets:" %>
+            <%= tag.span order_content_decorator.packaging_materials_pallets_td, class: "justify-self-start whitespace-nowrap" %>
+            <%#= tag.span (order_content_decorator.packaging_materials_pallets_td)[0..10] %>
+            <%# ^^^ formatted desc with elipeses should go here %>
             <% if order_content.packaging_materials_others.any? %>
-              <%= tag.span "others:".capitalize, class: "font-semibold" %>
-              <%= tag.span order_content.packaging_materials_others.count %>
+              <%= tag.div "Others:" %>
+              <%= tag.span order_content_decorator.packaging_materials_others_td, class: "justify-self-start whitespace-nowrap" %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= tag.div class: "inline-block align-middle mx-auto grid gap-x-2 grid-cols-2 whitespace-nowrap" do %>
+            <%= tag.div "Boxes:" %>
+            <%= tag.span (order_content.try(:box) || '0') %>
+            <%= tag.div "Crates:" %>
+            <%= tag.span (order_content.try(:crate) || '0') %>
+            <%= tag.div "Pallets:" %>
+            <%= tag.span (order_content.try(:pallet) || '0') %>
+            <% unless order_content.try(:other).nil? %>
+              <%= tag.div "Others:" %>
+              <%= tag.span (order_content.try(:other) || '0') %>
+            <% end %>
+          <% end %>
+          <% if !(order_content.try(:other).nil?) && order_content.other_description.present? %>
+            <%= tag.div class: "inline-block align-middle mx-auto" do %>
+              <%= tag.div "Other Desc:" %>
+              <%= tag.span ((order_content.other_description.length >= 25 ? "#{order_content.other_description[0..25]...}" : "#{order_content.other_description}")), class: "whitespace-normal text-gray-500" %>
             <% end %>
           <% end %>
         <% end %>
-      <% end %>
+      </div>
     </td>
-
     <td class="<%= css_td %>">
       <%= tag.span order.courrier %>
     </td>
-
     <td class="<%= css_td %>">
       <%= tag.span (order.date_delivered.strftime("%m/%d/%Y")) if order.date_delivered? %>
       <%= tag.span "n/a" unless order.date_delivered? %>
     </td>
-
     <td class="<%= css_td_last %>">
-      <%#= link_to order.id, edit_order_path(order), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
       <%= link_to "edit", edit_order_path(order), data: {turbo_frame: "modal" }, class: "text-indigo-600 hover:text-indigo-900" if authorized_internal_user? %>
     </td>
   </tr>

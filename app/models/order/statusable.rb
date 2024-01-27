@@ -1,25 +1,48 @@
 module Order::Statusable
   extend ActiveSupport::Concern
 
-  STATUSES = %i(active partially_delivered delivered hold)
-  
-  ACTIVE_STATUSES = %i(active partially_delivered hold)
+  STATUS_NAMES = %i(active partially_delivered delivered hold)
+  ACTIVE_STATUS_NAMES = %i(active partially_delivered hold)
+  INACTIVE_STATUS_NAMES = STATUS_NAMES - ACTIVE_STATUS_NAMES
 
   included do
-    delegate :statuses, :active_statuses, :statusable?, to: :class
+    delegate :statusable?, to: :class
 
-    enum status: STATUSES
+    delegate :active_statuses, :inactive_statuses, to: :class
+    delegate :status_names, :active_status_names, :inactive_status_names, to: :class
 
-    def self.statuses
-      STATUSES
-    end
-
-    def self.active_statuses
-      ACTIVE_STATUSES
-    end
+    enum status: %i(active partially_delivered delivered hold)
 
     def self.statusable?
       true
+    end
+
+    def self.status_names
+      STATUS_NAMES
+    end
+
+    def self.active_status_names
+      ACTIVE_STATUS_NAMES.collect {|status_name| status_name.to_s }
+    end
+
+    def self.inactive_status_names
+      INACTIVE_STATUS_NAMES.collect {|status_name| status_name.to_s }
+    end
+
+    def self.active_statuses
+      statuses.select {|_status| _status if _status.in?  ACTIVE_STATUS_NAMES.collect {|status| status.to_s } }
+    end
+
+    def self.inactive_statuses
+      statuses.select {|_status| _status unless _status.in?  ACTIVE_STATUS_NAMES.collect {|status| status.to_s } }
+    end
+
+    def self.all_inactive
+      where(status: INACTIVE_STATUS_NAMES)
+    end
+
+    def self.all_active
+      where.not(status: INACTIVE_STATUS_NAMES)
     end
 
     def statusable_type

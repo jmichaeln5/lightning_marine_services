@@ -10,7 +10,7 @@ class PackagingMaterialDecorator
   end
 
   def self.humanized_types
-    PackagingMaterial::Packageable::HUMANIZED_TYPES
+    PackagingMaterial::Packageable::TYPE_NAMES
   end
 
   def self.types_with_humanized

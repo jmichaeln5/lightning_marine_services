@@ -1,0 +1,64 @@
+
+
+
+
+<%# export_params_hash = Hash.new %>
+<%## export_params_hash[:format] = nil %>
+<%# export_params_hash[:orders_parent_type] = nil %>
+<%# export_params_hash[:orders_parent_id] = nil %>
+<%# export_params_hash[:title] = nil %>
+<%# export_params_hash[:order_ids] = [] %>
+<%# export_params_hash[:order_filters] = [] %>
+
+<%# exports_local_vars = {} %>
+
+<%# _orders_parent = Vendor.find(params[:vendor_id]) if params[:vendor_id].present? %>
+<%# _orders_parent = Purchaser.find(params[:purchaser_id]) if params[:purchaser_id].present? %>
+<%# _orders_parent ||= nil %>
+
+<%# exports_local_vars[:orders] = local_assigns[:orders] %>
+<%# exports_local_vars[:orders_parent] = _orders_parent %>
+
+<%# vendor_for_export = Vendor.find(params[:vendor_id]) if params[:vendor_id].present? %>
+<%# purchaser_for_export = Purchaser.find(params[:purchaser_id]) if params[:purchaser_id].present? %>
+
+<%# export_button_text = "Export active" %>
+
+<%# if params[:vendor_id].present? && current_page?(vendor_orders_path(vendor_for_export)) %>
+  <%# orders_parent_for_export = vendor_for_export %>
+  <%# export_button_text += " vendor" %>
+<%# end %>
+<%# if params[:purchaser_id].present? && current_page?(purchaser_orders_path(purchaser_for_export)) %>
+  <%# orders_parent_for_export = purchaser_for_export %>
+  <%# export_button_text += " ship" %>
+<%# end %>
+<%# export_button_text += " orders" %>
+
+<%# if orders_parent_for_export %>
+  <%# export_params_hash[:orders_parent_type] = orders_parent_for_export.model_name.name %>
+  <%# export_params_hash[:orders_parent_id] = orders_parent_for_export.id %>
+
+  <%# export_params_hash[:order_ids] = orders_parent_for_export.orders.unarchived.ids %>
+  <%# display_export_button = true %>
+<%# end %>
+
+<%# if current_page?(orders_path) %>
+  <%# display_export_button = true %>
+  <%# export_params_hash[:order_ids] = Order.unarchived.ids %>
+<%# end %>
+
+<%# if params[:vendor_id].present? && current_page?(vendor_orders_path(vendor_for_export)) %>
+  <%# export_button_path = export_vendor_orders_path(vendor_for_export)  %>
+<%# end %>
+
+<%# if params[:purchaser_id].present? && current_page?(purchaser_orders_path(purchaser_for_export)) %>
+  <%# export_button_path = export_purchaser_orders_path(purchaser_for_export)  %>
+<%# end %>
+
+<%# export_button_path ||= export_orders_path  %>
+
+<%# display_export_button ||= false %>
+
+<%# if display_export_button == true %>
+  <%# export_btn_css = "inline-block btn btn_outline_indigo" if local_assigns[:export_btn_css].nil? %>
+<%# end %>

@@ -1,4 +1,4 @@
-module FilterableOrders
+module Orders::Filterable
   extend ActiveSupport::Concern
 
   included do

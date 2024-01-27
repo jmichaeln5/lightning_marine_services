@@ -2,12 +2,11 @@
 <% resource_links_css_classes_current = "" unless defined?(resource_links_css_classes_current) %>
 
 <% if current_user %>
-
   <%= link_to "Dashboard", dashboard_path, class: resource_links_css_classes_current if current_page?(dashboard_path) %>
   <%= link_to "Dashboard", dashboard_path, class: resource_links_css_classes if !current_page?(dashboard_path) %>
 
-  <%= link_to "Orders", orders_path, class: resource_links_css_classes_current if "orders".in? controller_path %>
-  <%= link_to "Orders", orders_path, class: resource_links_css_classes if !"orders".in? controller_path %>
+  <%= link_to "Orders", orders_path(status: 'active'), class: resource_links_css_classes_current if "orders".in? controller_path %>
+  <%= link_to "Orders", orders_path(status: 'active'), class: resource_links_css_classes unless "orders".in? controller_path %>
 
   <%= link_to "Ships", purchasers_path, class: resource_links_css_classes_current if "purchasers".in? controller_path %>
   <%= link_to "Ships", purchasers_path, class: resource_links_css_classes if !"purchasers".in? controller_path %>
@@ -16,5 +15,4 @@
     <%= link_to "Vendors", vendors_path, class: resource_links_css_classes_current if "vendors".in? controller_path %>
     <%= link_to "Vendors", vendors_path, class: resource_links_css_classes if !"vendors".in? controller_path %>
   <% end %>
-
 <% end %>

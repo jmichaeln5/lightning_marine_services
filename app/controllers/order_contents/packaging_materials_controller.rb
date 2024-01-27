@@ -6,7 +6,7 @@ class OrderContents::PackagingMaterialsController < ApplicationController
   def index
     packaging_materials =
       if packaging_material_scoped?
-        index_types = (params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? params[:type] : PackagingMaterial::Packageable::TYPES
+        index_types = (params[:type].in? PackagingMaterial::Packageable::TYPE_NAMES) ? params[:type] : PackagingMaterial::Packageable::TYPES
         index_scoped_types = "PackagingMaterial::#{index_types}"
 
         @order_content.packaging_materials.where(type: index_scoped_types)
@@ -18,7 +18,7 @@ class OrderContents::PackagingMaterialsController < ApplicationController
 
   def new
     if packaging_material_scoped?
-      new_scoped_type = ((params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? "PackagingMaterial::#{params[:type]}" : 'PackagingMaterial::Other')
+      new_scoped_type = ((params[:type].in? PackagingMaterial::Packageable::TYPE_NAMES) ? "PackagingMaterial::#{params[:type]}" : 'PackagingMaterial::Other')
 
       @packaging_material = PackagingMaterial.new(
         order_content: @order_content,
@@ -57,14 +57,14 @@ class OrderContents::PackagingMaterialsController < ApplicationController
     end
 
     def packaging_material_scoped?
-      params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES
+      params[:type].in? PackagingMaterial::Packageable::TYPE_NAMES
     end
 
     def packaging_material_params
       packaging_material_from_param = "packaging_material"
 
       if packaging_material_scoped?
-        packaging_material_type_from_params = (params[:type].in? PackagingMaterial::Packageable::HUMANIZED_TYPES) ? params[:type] : 'Other'
+        packaging_material_type_from_params = (params[:type].in? PackagingMaterial::Packageable::TYPE_NAMES) ? params[:type] : 'Other'
         packaging_material_from_param << "_#{packaging_material_type_from_params.downcase}"
 
         params.require(packaging_material_from_param.to_sym).permit(

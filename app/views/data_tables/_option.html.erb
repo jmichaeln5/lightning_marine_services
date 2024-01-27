@@ -1,0 +1,9 @@
+<% unless local_assigns[:title].nil? and local_assigns[:description].nil?  %>
+  <%= tag.div class: "border-b border-gray-200 mb-3" do %>
+    <%= tag.h3 local_assigns[:title], class: "mb-2 text-base font-semibold leading-6 text-gray-900 text-wrap" if local_assigns[:title] %>
+    <%= tag.p local_assigns[:description], class: "mb-2 max-w-4xl text-sm text-gray-500" if local_assigns[:description] %>
+  <% end %>
+<% end %>
+<%= tag.div do %>
+  <%= yield %>
+<% end %>

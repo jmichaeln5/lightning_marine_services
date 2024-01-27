@@ -13,7 +13,7 @@
           <%# end %>
           <%= tag.div do %>
             <%= tag.p 'Filter status', class: "font-medium" %>
-            <%= filter_form.collection_check_boxes(:status, Order.statuses, :itself, :itself) do |status_field| %>
+            <%= filter_form.collection_check_boxes(:status, Order.status_names, :itself, :itself) do |status_field| %>
               <%= tag.div do %>
                 <%= status_field.label do %>
                    <%= status_field.check_box %>

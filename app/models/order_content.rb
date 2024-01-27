@@ -20,7 +20,7 @@ class OrderContent < ApplicationRecord
   validates :packaging_materials, presence: { message: "required" }, unless: :has_packaging_materials?
 
   def self.all_packaging_materials_attributes_pairs
-    _all_packaging_materials_attributes_pair = all.map {|_order_content| _order_content.packaging_materials_attributes_pair }
+    _all_packaging_materials_attributes_pair = includes(:packaging_materials).map {|_order_content| _order_content.packaging_materials_attributes_pair }
     _all_packaging_materials_attributes_pair
   end
 end

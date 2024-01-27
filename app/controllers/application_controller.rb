@@ -9,9 +9,16 @@ class ApplicationController < ActionController::Base
 
   # before_action :set_request_variant
 
-  helper_method :authorized_admin?
-  helper_method :authorized_internal_user?
-  helper_method :authorized_customer?
+  helper_method %i(
+    format_datetime_now_str
+    authorized_admin?
+    authorized_internal_user?
+    authorized_customer?
+  )
+
+  def format_datetime_now_str
+    DateTime.now.try(:strftime,"%m/%d/%Y")
+  end
 
   def after_sign_in_path_for(resource)
     dashboard_path

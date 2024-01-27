@@ -11,7 +11,7 @@
 <div class="rounded-md bg-white">
   <div class="pt-7">
     <%= tag.div id: 'table-container', class: "inline-block max-w-full rounded-md bg-white pb-8" do %>
-      <%= tag.div class: "w-full mb-5 sm:mb-7 #{x_axis_padding}" do %>
+      <%= tag.div class: "w-full mb-5 #{x_axis_padding}" do %>
         <div data-controller="reveal" data-reveal-hidden-class="hidden">
           <div class="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
             <div class="-ml-2 -mt-2 flex flex-wrap items-baseline">
@@ -43,23 +43,26 @@
               </div>
             </div>
           </div>
-          <div data-reveal-target="item" class="hidden mt-5 rounded-lg p-3 border-2 border-slate-100">
-            <%= tag.p 'Options', class: "leading-tight text-xl font-medium" %>
-            <%= tag.div class: "my-3 bg-gray-50 p-3" do %>
-              <%#= tag.p 'Amount per page', class: "text-sm text-gray-700 mb-1" %>
-              <%= form_with url: "", method: :get, data: { turbo_frame: "orders", turbo_action: "advance" } do |form| %>
-                <div class="relative">
-                  <select onchange="this.form.requestSubmit()" name="count" id="count" class="relative cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left border-0 drop-shadow-md shadow-sm ring-1 ring-inset ring-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-6">
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                  </select>
-                </div>
+          <div data-reveal-target="item" class="hidden mt-5 rounded-lg border-2 border-slate-100">
+            <%= tag.section do %>
+              <%= tag.h2 'Options', class: "m-3" %>
+              <%= tag.div class: "m-3 block" do %>
+                <%= tag.div class: "my-3" do %>
+                  <%= tag.div class: "bg-gray-50 rounded-md p-3 mb-3 md:mb-5" do %>
+                    <%= render layout:"/data_tables/option", locals:{ title: 'Orders per page', description: 'Select the amount of orders you would like to display on table below.' } do %>
+                      <%= render partial: "/data_tables/amount_per_page" %>
+                    <% end %>
+                  <% end %>
+                  <%= tag.div class: "bg-gray-50 rounded-md p-3 mb-3 md:mb-5" do %>
+                    <%= render layout:"/data_tables/option", locals:{
+                      title: 'Orders filters',
+                      description: 'Select one or more filters below to display to filter for matching orders.',
+                    } do %>
+                      <%= render partial: "/data_tables/filters" %>
+                    <% end %>
+                  <% end %>
+                <% end %>
               <% end %>
-            <% end %>
-            <%= tag.div class: "my-3 bg-gray-50 p-3" do %>
-              <%= render partial: "/data_tables/filters" %>
             <% end %>
           </div>
         </div>
@@ -68,6 +71,19 @@
         <%= tag.div class: x_axis_padding do %>
           <section>
             <%= turbo_frame_tag "orders" do %>
+              <%#= tag.div class: "bg-gray-50 rounded-md p-3 mb-3 md:mb-5" do %>
+                <%#= render layout:"/data_tables/option", locals:{ title: nil, description: nil } do %>
+                  <%#= render partial: "/exports/button" %>
+                  <%##= render partial: "/exports/form", locals: {
+                  orders: local_assigns[:orders],
+                  } %>
+                <%# end %>
+              <%# end %>
+              <%#= tag.div class: "min-w-full mb-3 flex flex-wrap justify-end" do %>
+                <%#= render partial: "/exports/button", locals:{
+                  # export_btn_css: "inline-block btn btn_indigo",
+                } %>
+              <%# end %>
               <div class="min-w-full flex flex-wrap justify-between">
                 <div class="w-full text-center sm:w-auto">
                   <p class="text-sm text-gray-700 inline-block align-baseline">

@@ -1,7 +1,7 @@
 module PackagingMaterial::Statusable
   extend ActiveSupport::Concern
 
-  STATUSES = Order::Statusable::STATUSES - [:partially_delivered]
+  STATUSES = Order::Statusable::STATUS_NAMES - [:partially_delivered]
 
   included do
     delegate :statuses, :statusable?, to: :class

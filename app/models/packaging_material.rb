@@ -8,8 +8,4 @@ class PackagingMaterial < ApplicationRecord
   def non_specified_type?
     (self.type.in? (PackagingMaterialDecorator.types - ["PackagingMaterial::Other"])) == false
   end
-
-  def type_name
-    model_name.element.classify
-  end
 end

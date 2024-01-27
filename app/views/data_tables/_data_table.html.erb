@@ -39,6 +39,7 @@
                 <% _th_css ||= css_th %>
 
                 <% th_is_sortable = th.in?(sortable_ths) %>
+
                 <% _th_css << " whitespace-nowrap" if 13 <= th.length %>
                 <% _cheveron_css = th_is_sortable ? css_cheveron_not_active : css_cheveron_no_sort_link_to %>
                 <% content_for :table_header_content, flush: true do %>
@@ -59,8 +60,6 @@
                       turbo_frame: "orders",
                       turbo_action: "advance"
                     }  do %>
-
-
                     <%# sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
                     <%# sort_params = { sort_direction: sort_direction, sort_option: th } %>
                     <%#= button_to request.path,
@@ -70,7 +69,6 @@
                        turbo_frame: "orders",
                        turbo_action: "advance",
                     } do %>
-
                     <% sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
                     <% sort_params = { sort_direction: sort_direction, sort_option: th } %>
                     <%= link_to request.params.merge(sort_params), data: {

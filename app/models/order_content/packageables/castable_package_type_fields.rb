@@ -106,10 +106,10 @@ module OrderContent::Packageables::CastablePackageTypeFields
       end
 
       def set_castable_str_attrs_from_records
-        self.box = get_packaging_materials_boxes_size.to_s if box != get_packaging_materials_boxes_size.to_s
-        self.crate = get_packaging_materials_crates_size.to_s if crate != get_packaging_materials_crates_size.to_s
-        self.pallet = get_packaging_materials_pallets_size.to_s if pallet != get_packaging_materials_pallets_size.to_s
-        self.other = get_packaging_materials_others_size.to_s if other != get_packaging_materials_others_size.to_s
+        self.box = packaging_materials_boxes.size.to_s if box != get_packaging_materials.boxes_size.to_s
+        self.crate = get_packaging_materials_crates.size.to_s if crate != get_packaging_materials.crates_size.to_s
+        self.pallet = get_packaging_materials_pallets.size.to_s if pallet != get_packaging_materials.pallets_size.to_s
+        self.other = get_packaging_materials_others.size.to_s if other != get_packaging_materials.others_size.to_s
       end
   end
 end
