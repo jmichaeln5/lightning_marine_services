@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :directory_links
-
   root 'static_pages#landing'
   get '/about', to: 'static_pages#about'
 
@@ -36,6 +34,8 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#show', as: 'dashboard'
 
+  resources :directory_links
+
   resources :table_options
 
   concern :hovercardable do
@@ -61,16 +61,18 @@ Rails.application.routes.draw do
   resources :statuses, only: %i(edit update show)
 
   concern :exportable do
-    get :export, defaults: { format: 'xlsx' }
+    # _export_format = 'csv'
+    # _export_format = 'xls'
+    _export_format = 'xlsx'
+    get :export, defaults: { format: _export_format }
+    post :export, defaults: { format: _export_format }
   end
 
-  resources :orders, concerns: %i(hovercardable) do
+  resources :orders, concerns: %i(hovercardable statusable) do
     collection do
       concerns :searchable
       concerns :exportable
-      concerns :statusable
     end
-
     member do
       get :edit_dept
       concerns :destroy_attachable
@@ -96,6 +98,7 @@ Rails.application.routes.draw do
   end
 
   resources :order_contents, only: %i(show edit update destroy)
+
   resources :packaging_materials, only: %i(show new edit update destroy), concerns: %i(statusable)
 
   resources :order_contents, only: %i(show) do

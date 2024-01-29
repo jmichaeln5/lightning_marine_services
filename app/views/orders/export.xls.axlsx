@@ -1,0 +1,75 @@
+wb = xlsx_package.workbook
+
+#title = wb.styles.add_style(:bg_color => "#00D9DDDC", :fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "FFFF0000"})
+title = wb.styles.add_style(:fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "#FF000000"})
+bold = wb.styles.add_style(:b=>true,:fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "#FF000000"},:alignment=>{:horizontal => :left})
+ordstyle = wb.styles.add_style(:fg_color=>"#FF000000",:border=>Axlsx::STYLE_THIN_BORDER,:sz=>8, :alignment=>{:horizontal => :left})
+
+
+wb.add_worksheet(name: "Orders", :page_setup => {:fit_to_width=>1, :orientation => :landscape}) do |sheet|
+  # sheet
+  sheet.add_row [@filename], :style=>title
+  #  sheet.add_row ["#","Department","Vendor","PO #","Tracking #","Received Date","Boxes","Crates","Pallet", "Courrier", "Delivery Date"], :style=>bold
+
+  humanized_cols = @columns.collect {|col| col.to_s.humanize}
+  sheet.add_row humanized_cols, :style=>bold
+
+  if "order_sequence".in? @columns
+    records = @export_records.order("order_sequence ASC")
+  else
+    records = @export_records.order("id ASC")
+  end
+
+  records.order("order_sequence ASC").each do |order|
+    order_content_decorator = OrderContentDecorator.new(order.order_content)
+
+    row = Array.new
+
+    @columns.each do |column|
+      _column = column.parameterize
+
+      if order.respond_to?(_column)
+        row.push order.send(_column)
+      end
+
+      packaging_material_attrs = %w(box crate pallet other)
+
+      if column.in? packaging_material_attrs
+        case column
+        when "box"
+          packaging_material_val = order_content_decorator.packaging_materials_boxes_td
+          packaging_material_attrs.delete "box"
+
+        when "crate"
+          packaging_material_val = order_content_decorator.packaging_materials_crates_td
+          packaging_material_attrs.delete "crate"
+
+        when "pallet"
+          packaging_material_val = order_content_decorator.packaging_materials_pallets_td
+          packaging_material_attrs.delete "pallet"
+
+        when "other"
+          packaging_material_val = order_content_decorator.packaging_materials_others_td
+          packaging_material_attrs.delete "other"
+        end
+
+        row.push(packaging_material_val)
+      end
+    end
+
+    sheet.add_row row
+
+    # sheet.add_row [
+    #  order.order_sequence,
+    #  order.dept,
+    #  order.vendor.name,
+    #  order.po_number,
+    #  order.tracking_number,
+    #  boxes,
+    #  crates,
+    #  pallet,
+    #  order.courrier,
+    # ], :style=>ordstyle
+
+  end
+end

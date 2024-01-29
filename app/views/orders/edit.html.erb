@@ -33,17 +33,24 @@
                       </div>
                     </div>
                   </div>
+                  <% css_form_label = "block text-sm font-medium leading-6 text-gray-900" %>
                   <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                    <div class="sm:col-span-6">
-                      <%= form.label :order_sequence, class:"block text-sm font-medium leading-6 text-gray-900" %>
-                      <div class="mt-2">
+                    <%= tag.div class: "sm:col-span-6" do %>
+                      <%= form.label :order_sequence, class: css_form_label %>
+                      <%= tag.div class: "mt-2" do %>
                         <%= render "inline_fields", form: form, attribute: :order_sequence do %>
                           <%= form.text_field :order_sequence, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                         <% end %>
-                      </div>
-                    </div>
+                      <% end %>
+                    <% end %>
+                    <%= tag.div class: "sm:col-span-6" do %>
+                      <%= form.label :status, class: css_form_label %>
+                      <%= tag.div class: "mt-2" do %>
+                        <%= form.select :status, Order.statuses.collect { |status| [ status[0].humanize, status[0] ] }, {}, { class: "block w-full cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+                      <% end %>
+                    <% end %>
                     <div class="sm:col-span-3">
-                      <%= form.label 'Ship', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label 'Ship', class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :purchaser do %>
                           <%= form.select :purchaser_id, Purchaser.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
@@ -51,7 +58,7 @@
                       </div>
                     </div>
                     <div class="sm:col-span-3">
-                      <%= form.label 'Vendor', class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label 'Vendor', class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :vendor do %>
                           <%= form.select :vendor_id, Vendor.all.order(:name).collect  { |purchaser| [ purchaser.name, purchaser.id ] }, {}, { class: "block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"} %>
@@ -59,7 +66,7 @@
                       </div>
                     </div>
                     <div class="sm:col-span-6">
-                      <%= form.label :dept, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label :dept, class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :dept do %>
                           <%= form.text_field :dept, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
@@ -67,7 +74,7 @@
                       </div>
                     </div>
                     <div class="sm:col-span-6">
-                      <%= form.label :po_number, "PO/Tracking Number", class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label :po_number, "PO/Tracking Number", class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :po_number do %>
                           <%= form.text_field :po_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
@@ -75,7 +82,7 @@
                       </div>
                     </div>
                     <div class="sm:col-span-6">
-                      <%= form.label :courrier, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label :courrier, class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :courrier do %>
                           <%= form.text_field :courrier, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
@@ -83,7 +90,7 @@
                       </div>
                     </div>
                     <div class="sm:col-span-3">
-                      <%= form.label :date_recieved, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label :date_recieved, class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :date_recieved do %>
                           <%= form.date_field :date_recieved, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
@@ -91,7 +98,7 @@
                       </div>
                     </div>
                     <div class="sm:col-span-3">
-                      <%= form.label :date_delivered, class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label :date_delivered, class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :date_delivered do %>
                           <%= form.date_field :date_delivered, as: :date, value: form.object.try(:strftime,"%m/%d/%Y"), class:"block w-full hover:cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
@@ -99,7 +106,7 @@
                       </div>
                     </div>
                     <div class="sm:col-span-6">
-                      <%= form.label :images, "Attachments", class:"block text-sm font-medium leading-6 text-gray-900" %>
+                      <%= form.label :images, "Attachments", class: css_form_label %>
                       <div class="mt-2">
                         <%= render "inline_fields", form: form, attribute: :images do %>
                         <div class="p-3 w-full rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">

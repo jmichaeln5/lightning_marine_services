@@ -64,7 +64,9 @@
                         <%= render partial: "/data_tables/amount_per_page" %>
                       <% end %>
                     <% end %>
-                    <%= tag.div class: "bg-gray-50 rounded-md p-3 mb-3 md:mb-5" do %>
+
+                    <!-- <div class="rounded-lg bg-gray-50 shadow-sm ring-1 ring-gray-900/5"> -->
+                    <%= tag.div class: "rounded-lg bg-gray-50 shadow-sm p-3 mb-3 md:mb-5" do %>
                       <%= render layout:"/data_tables/option", locals:{
                         title: 'Orders filters',
                         description: 'Select one or more filters below to display to filter for matching orders.',
@@ -77,6 +79,25 @@
               <% end %>
             </div>
           </div>
+        <% end %>
+        <%= tag.div class: "block mb-5 h-full w-full #{x_axis_padding}" do %>
+          <%= tag.div class: "" do %>
+            <% export_orders_form_default_filename = "" %>
+            <% (export_orders_form_default_filename << @scoped_resource.name) if scoped_resource? %>
+            <% export_orders_form_default_filename << " " if scoped_resource? %>
+            <% export_orders_form_default_filename << scoped_status.humanize  %>
+            <% export_orders_form_default_filename << " " if scoped_status? %>
+            <% export_orders_form_default_filename << "Orders" %>
+            <% export_orders_form_default_filename << " " %>
+            <% export_orders_form_default_filename = export_orders_form_default_filename.gsub("-", "_") %>
+            <% export_orders_form_default_filename << format_datetime_now_str.gsub("/", "-") %>
+            <% export_orders_form_default_filename = export_orders_form_default_filename.gsub(" ", "_") %>
+            <%= render partial: "/exports/dropdown_form", locals: {
+              # export_orders_form_url: export_orders_form_url,
+              export_orders_form_default_filename: export_orders_form_default_filename,
+              scoped_resource: @scoped_resource,
+            } %>
+          <% end %>
         <% end %>
         <%= tag.div class: "inline-block w-full" do %>
           <%= tag.div class: x_axis_padding do %>
@@ -97,10 +118,11 @@
                     <% _filename_str = "#{_filename_str_orders}" %>
                   <% end %>
                   <% _filename = "#{_filename_str} #{format_datetime_now_str.parameterize}" %>
+
                   <% export_param_format = scoped_status %>
                   <% export_param_exportable_class = scoped_resource? ? @resource_class_scoped : "Order" %>
                   <% export_param_exportable_id = scoped_resource? ? @scoped_resource.id : nil %>
-                  <%= button_to "export to Excel",
+                  <%#= button_to "export to Excel",
                     export_orders_path(format: 'xls'),
                     action: "export",
                     params: {
@@ -116,7 +138,7 @@
                     method: :get,
                     class: "inline-flex btn btn_indigo" %>
 
-                  <%= button_to "export to CSV",
+                  <%#= button_to "export to CSV",
                     export_orders_path(format: 'csv'),
                     action: "export",
                     params: {

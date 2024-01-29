@@ -20,14 +20,19 @@
               </div>
             </div>
             <section id="order-form-fields">
-              <%#= render partial: 'statuses/status', locals:{ statusable: form.object } unless form.object.new_record?  %>
               <fieldset id="main-order-form-fields" class="my-6 grid grid-cols-1 sm:grid-cols-6 gap-y-6 gap-x-4">
-                <div class="sm:col-span-6">
+                <%= tag.div class: "sm:col-span-6" do %>
                   <%= form.label :order_sequence, class: css_form_label %>
-                  <div class="mt-1">
+                  <%= tag.div class: "mt-1" do %>
                     <%= form.text_field :order_sequence, class: css_form_text_field %>
-                  </div>
-                </div>
+                  <% end %>
+                <% end %>
+                <%= tag.div class: "sm:col-span-6" do %>
+                  <%= form.label :status, class: css_form_label %>
+                  <%= tag.div class: "mt-1" do %>
+                    <%= form.select :status, Order.statuses.collect { |status| [ status[0].humanize, status[0] ] }, {}, { class: "block w-full cursor-pointer rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+                  <% end %>
+                <% end %>
                 <div class="sm:col-span-3">
                   <legend><%= form.label :purchaser_id, 'Ship', class: css_form_label %></legend>
                   <div class="mt-1">

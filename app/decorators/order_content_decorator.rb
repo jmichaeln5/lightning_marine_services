@@ -27,7 +27,7 @@ class OrderContentDecorator
     packaging_material_summary_by_type('PackagingMaterial::Pallet')
   end
 
-  private
+  private  
     def packaging_material_summary_by_type(type)
       return '0' unless (type.in? PackagingMaterial::Packageable::TYPES)
 

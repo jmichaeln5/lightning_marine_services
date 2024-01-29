@@ -11,7 +11,12 @@ class Purchaser < ApplicationRecord
   alias_attribute :purchaser_name, :name
   alias_attribute :ship_name, :name
 
-  include OrderParent
+  include ResourceOrders
+
   has_many :vendors, through: :orders
   validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 50 }
+
+  def self.display_name
+    "Ship"
+  end
 end

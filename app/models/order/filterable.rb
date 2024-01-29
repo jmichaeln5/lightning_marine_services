@@ -3,7 +3,7 @@ module Order::Filterable
 
   included do
     def self.filterable_attrs
-      %w(id status dept courrier)
+      %w(id order_sequence status dept purchaser_id vendor_id date_recieved courrier date_delivered)
     end
   end
 

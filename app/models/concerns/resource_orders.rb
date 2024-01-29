@@ -1,4 +1,4 @@
-module OrderParent
+module ResourceOrders # for route - concern :orders_scoped - rename route concern to resource_orders to match
   extend ActiveSupport::Concern
 
   included do

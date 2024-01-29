@@ -107,14 +107,14 @@ class OrdersController < Orders::BaseController
   private
     def order_params
       params.require(:order).permit(
-        :dept, :po_number, :tracking_number, :date_recieved, :courrier, :date_delivered, :purchaser_id, :vendor_id, :order_sequence,
+        :order_sequence, :status, :dept, :purchaser_id, :vendor_id, :po_number, :date_recieved, :courrier, :date_delivered,
         images: [],
         order_content_attributes:[
           :id, :box, :crate, :pallet, :other, :other_description,
           packaging_materials_attributes:[
             :id, :type, :description, :_destroy,
           ]
-        ],
+        ]
       )
     end
 

@@ -26,8 +26,9 @@ class Order < ApplicationRecord
   delegate :boxes, :crates, :pallets, :others, to: :order_content
 
   include Attachable::Images # change attr name, can attach more than images
-
+  include Archivable
   include Exportable, Filterable, Searchable, Sortable, Statusable
+
 
   belongs_to :purchaser
   belongs_to :vendor
@@ -45,14 +46,10 @@ class Order < ApplicationRecord
 
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
-
-    ensure_archived_val unless (archived == date_delivered.present?)  # NOTE # move method to Order::Statusable
-    ensure_status_val unless new_record? # NOTE # move method to Order::Statusable
-
+    ensure_status
+    ensure_archived_val if ensure_archived_val?
     attempt_type_cast_order_content_packaging_materials_attrs
   end
-
-
 
   def self.order_by_vendor_name(sort_direction)
     includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
@@ -60,14 +57,6 @@ class Order < ApplicationRecord
 
   def self.order_by_purchaser_name(sort_direction)
     includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
-  end
-
-  def self.archived
-    where(archived: true)
-  end
-
-  def self.unarchived
-    where(archived: false)
   end
 
   def self.deliver_active
@@ -97,11 +86,12 @@ class Order < ApplicationRecord
       self.order_sequence = seq
     end
 
-    def ensure_archived_val # NOTE # move method to Order::Statusable
-      self.archived = date_delivered.present?
-    end
+    def nested_attributes
+      nested_attributes_hash = Hash.new
+      nested_attributes_hash[:order_content_attributes], nested_attributes_hash[:packaging_materials_attributes] = Array.new, Array.new
+      nested_attributes_hash[:order_content_attributes].push order_content.attributes
+      nested_attributes_hash[:packaging_materials_attributes].push packaging_materials.collect(&:attributes)
 
-    def ensure_status_val # NOTE # move method to Order::Statusable
-      self.status = 'delivered' if (date_delivered.present? && status.in?(active_statuses))
+      nested_attributes_hash
     end
 end
