@@ -1,19 +1,36 @@
 module PackagingMaterial::Statusable
   extend ActiveSupport::Concern
 
-  STATUSES = Order::Statusable::STATUS_NAMES - [:partially_delivered]
+  STATUS_NAMES = Order::Statusable::STATUS_NAMES - [:partially_delivered]
+  ACTIVE_STATUS_NAMES = Order::Statusable::ACTIVE_STATUS_NAMES - [:partially_delivered]
+  INACTIVE_STATUS_NAMES = STATUS_NAMES - ACTIVE_STATUS_NAMES
 
   included do
-    delegate :statuses, :statusable?, to: :class
+    delegate :statusable?, to: :class
+    delegate :statuses, to: :class
+    delegate :status_names, :active_status_names, :inactive_status_names, to: :class
+    delegate :active_statuses, :inactive_statuses, to: :class
 
-    enum status: STATUSES
-
-    def self.statuses
-      STATUSES
-    end
+    enum status: STATUS_NAMES
 
     def self.statusable?
       true
+    end
+
+    def self.active_status_names
+      ACTIVE_STATUS_NAMES.collect {|status_name| status_name.to_s }
+    end
+
+    def self.inactive_status_names
+      INACTIVE_STATUS_NAMES.collect {|status_name| status_name.to_s }
+    end
+
+    def self.active_statuses
+      statuses.select {|_status| _status if _status.in?  ACTIVE_STATUS_NAMES.collect {|status| status.to_s } }
+    end
+
+    def self.inactive_statuses
+      statuses.select {|_status| _status unless _status.in?  ACTIVE_STATUS_NAMES.collect {|status| status.to_s } }
     end
 
     def statusable_type

@@ -8,6 +8,7 @@ module Order::Statusable
   included do
     delegate :statusable?, to: :class
 
+    delegate :statuses, to: :class
     delegate :active_statuses, :inactive_statuses, to: :class
     delegate :status_names, :active_status_names, :inactive_status_names, to: :class
 
