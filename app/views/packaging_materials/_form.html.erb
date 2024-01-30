@@ -1,84 +1,39 @@
 <section data-controller="counter">
-  <div>
-    <div class="flex text-gray-500 text-sm">
-      <div class="w-full flex justify-start rounded-md rounded-md ring-1 ring-inset ring-gray-300">
-        <div class="w-14 inline-flex items-center">
-          <span class="ml-2">
-            Boxes
-          </span>
-        </div>
-        <div class="grow border rounded-r-md border-gray-300 inline-flex items-center">
-          <span class="ml-2">
-            <%= tag.span local_assigns[:order_content_form].object.packaging_materials.boxes.size, id:'packaging_materials_box_count', data: {"counter-target": "counterElement"} %>
-          </span>
-        </div>
-      </div>
-      <div class="pl-3">
-        <%= link_to new_packaging_material_path(type: 'PackagingMaterial::Box', target:'packaging_materials' ), method: :get, data: {turbo_stream: true, "counter-target-param": "packaging_materials_box_count", 'action': 'counter#add'} do %>
-          <button type="button" class="relative inline-flex items-center rounded-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-            <span class="sr-only">Add box</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-          </button>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="my-3 mt-2">
-    <div class="flex text-gray-500 text-sm">
-      <div class="w-full flex justify-start rounded-md rounded-md ring-1 ring-inset ring-gray-300">
-        <div class="w-14 inline-flex items-center">
-          <span class="ml-2">
-            Crates
-          </span>
-        </div>
-        <div class="grow border rounded-r-md border-gray-300 inline-flex items-center">
-          <span class="ml-2">
-            <%= tag.span local_assigns[:order_content_form].object.packaging_materials.crates.size, id:'packaging_materials_crate_count', data: {"counter-target": "counterElement" } %>
-          </span>
-        </div>
-      </div>
-      <div class="pl-3">
-        <%= link_to new_packaging_material_path(type: 'PackagingMaterial::Crate', target:'packaging_materials' ), method: :get, data: {turbo_stream: true, "counter-target-param": "packaging_materials_crate_count", 'action': 'counter#add'} do %>
-          <button type="button" class="relative inline-flex items-center rounded-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-            <span class="sr-only">Add crate</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-          </button>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="my-3 mt-2">
-    <div class="flex text-gray-500 text-sm">
-      <div class="w-full flex justify-start rounded-md rounded-md ring-1 ring-inset ring-gray-300">
-        <div class="w-14 inline-flex items-center">
-          <span class="ml-2">
-            Pallets
-          </span>
-        </div>
-        <div class="grow border rounded-r-md border-gray-300 inline-flex items-center">
-          <span class="ml-2">
-            <%= tag.span local_assigns[:order_content_form].object.packaging_materials.pallets.size, id:'packaging_materials_pallet_count', data: {"counter-target": "counterElement" } %>
-          </span>
-        </div>
-      </div>
-      <div class="pl-3">
-        <%= link_to new_packaging_material_path(type: 'PackagingMaterial::Pallet', target:'packaging_materials' ), method: :get, data: {turbo_stream: true, "counter-target-param": "packaging_materials_pallet_count", 'action': 'counter#add'} do %>
-          <button type="button" class="relative inline-flex items-center rounded-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-            <span class="sr-only">Add pallet</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-          </button>
-        <% end %>
-      </div>
-    </div>
+  <% _local_order_content = local_assigns[:order_content_form].object %>
+  <div data-controller="sort-children" class="grid grid-flow-row auto-rows-max">
+    <% type_name = "box" %>
+    <% type_amount = _local_order_content.packaging_materials.send(type_name.to_s.downcase.pluralize).size %>
+    <% target = "packaging_material_#{type_name.to_s.downcase.pluralize}_fields" %>
+    <%= tag.div id: target, class: "pb-3" do %>
+    <%= render partial: "/packaging_materials/form/row", locals: {
+      type_name: type_name.to_s.downcase,
+      type_amount: type_amount,
+      target: target,
+      } %>
+    <% end %>
+    <% type_name = "crate" %>
+    <% type_amount = _local_order_content.packaging_materials.send(type_name.to_s.downcase.pluralize).size %>
+    <% target = "packaging_material_#{type_name.to_s.downcase.pluralize}_fields" %>
+    <%= tag.div id: target, class: "pb-3" do %>
+    <%= render partial: "/packaging_materials/form/row", locals: {
+      type_name: type_name.to_s.downcase,
+      type_amount: type_amount,
+      target: target,
+      } %>
+    <% end %>
+    <% type_name = "pallet" %>
+    <% type_amount = _local_order_content.packaging_materials.send(type_name.to_s.downcase.pluralize).size %>
+    <% target = "packaging_material_#{type_name.to_s.downcase.pluralize}_fields" %>
+    <%= tag.div id: target, class: "pb-3" do %>
+    <%= render partial: "/packaging_materials/form/row", locals: {
+      type_name: type_name.to_s.downcase,
+      type_amount: type_amount,
+      target: target,
+      } %>
+    <% end %>
   </div>
   <% display_other_field_css = (local_assigns[:order_content_form].object.packaging_materials.others.size > 0) ? '' : 'hidden' %>
-  <div class="<%= display_other_field_css %> my-3 mt-2">
+  <%= tag.div class: ((local_assigns[:order_content_form].object.packaging_materials.others.size > 0) ? '' : 'hidden') do %>
     <div class="flex text-gray-500 text-sm">
       <div class="w-full flex justify-start rounded-md rounded-md ring-1 ring-inset ring-gray-300">
         <div class="w-14 inline-flex items-center">
@@ -103,20 +58,37 @@
         <% end %>
       </div>
     </div>
-  </div>
+  <% end %>
+  <% has_existing_materials =  (local_assigns[:order_content_form].object.persisted? || !local_assigns[:order_content_form].object.new_record?) %>
+  <%= tag.div class: (has_existing_materials ? "" : "pb-3") do %>
     <div class="w-auto">
       <ul class="list-decimal">
-        <% if (local_assigns[:order_content_form].object.persisted? || !local_assigns[:order_content_form].object.new_record?) %>
-          <%= local_assigns[:order_content_form].fields_for :packaging_materials do |packaging_materials_form| %>
-            <%= tag.span class:"block w-full" do %>
-              <%= render partial: "/packaging_materials/nested_field", locals: {
-                form: packaging_materials_form,
-              } %>
+        <% if has_existing_materials %>
+          <div class="block pb-3">
+            <%= render layout: '/application/reveal' do %>
+              <% content_for :reveal_toggle, flush: true do %>
+                <%= tag.div class: "w-full text-center cursor-pointer" do %>
+                  <%= tag.dig "Show/hide existing packaging materials", class: "mb-3 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:bg-gray-50" %>
+                <% end %>
+              <% end %>
+              <% content_for :reveal_content, flush: true do %>
+                <%= local_assigns[:order_content_form].fields_for :packaging_materials do |packaging_materials_form| %>
+                  <%= tag.span class:"mt-3 block w-full" do %>
+                  <% type_name =  packaging_materials_form.object.type_name.downcase %>
+                  <% target = "packaging_material_#{type_name.pluralize}_fields" %>
+                    <%= render partial: "/packaging_materials/nested_field", locals: {
+                      form: packaging_materials_form,
+                      type_name: type_name,
+                      target: target,
+                    } %>
+                  <% end %>
+                <% end %>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         <% end %>
-        <%# NOTE packaging_materials fields prepended to span '#packaging_materials' below%>
-        <%= tag.span id: "packaging_materials" %>
+        <%#= tag.span id: "packaging_materials" %>
       </ul>
     </div>
+  <% end %>
 </section>

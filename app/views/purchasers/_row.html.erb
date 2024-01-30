@@ -5,7 +5,7 @@
     <%= content_tag :span, purchaser.id, class: 'cursor-default' %>
   </div>
   <div class="<%= secondary_col_css_classes %> h-full group">
-    <%= link_to purchaser.name, purchaser_orders_path(purchaser), class:'text-indigo-600 hover:text-indigo-800', target: "_top" %>
+    <%= link_to purchaser.name, purchaser_orders_path(purchaser, status: "active"), target: '_top', class: 'text-indigo-600 hover:text-indigo-800' %>
   </div>
   <div class="<%= primary_col_css_classes %>">
     <div class="-ml-12">

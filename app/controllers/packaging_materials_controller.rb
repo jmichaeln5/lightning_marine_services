@@ -10,9 +10,10 @@ class PackagingMaterialsController < ApplicationController
   end
 
   def new
-    params.permit(:type, :description, :target)
+    params.permit(:type_name, :description, :target)
 
-    @type = (params[:type].in? PackagingMaterial::Packageable::TYPES) ? params[:type] : 'PackagingMaterial::Other'
+    type_name = params[:type_name]
+    @type_name = type_name if type_name.classify.in?(PackagingMaterial::Packageable::TYPE_NAMES)
     @description = params[:description]
     @target = params[:target]
   end
@@ -66,6 +67,6 @@ class PackagingMaterialsController < ApplicationController
     end
 
     def packaging_material_params
-      params.require(:packaging_material).permit(:type, :description)
+      params.require(:packaging_material).permit(:type, :type_name, :description)
     end
 end
