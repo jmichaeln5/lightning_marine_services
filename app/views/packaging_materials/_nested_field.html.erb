@@ -2,7 +2,7 @@
 <% description_value = form.object ? form.object.description : nil %>
 <%= tag.span data: { "counter-target": "element", controller: 'click-hidden toggle', "toggle-target": "toggleable", "css-class": "hidden"  }, class: type_name do %>
   <!-- <li> -->
-    <div class="bg-gray-50 py-3 flex justify-around text-xs">
+    <div class="my-3 bg-gray-50 py-3 flex justify-around text-xs">
       <%= local_assigns[:form].hidden_field :id %>
       <div>
         <%= local_assigns[:form].label :type, 'Type', class: "block mb-1 font-medium" %>

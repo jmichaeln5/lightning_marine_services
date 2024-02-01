@@ -76,7 +76,7 @@ module OrderContent::Packageables
 
     def packaging_materials_attributes_pair
       matching_attr_values_hash = Hash.new
-      matching_attr_values_hash[:order_content_attributes], matching_attr_values_hash[:order_content_packaging_materials_attributes] = Array.new, Array.new
+      matching_attr_values_hash[:order_content_attributes], matching_attr_values_hash[:packaging_materials_attributes] = Array.new, Array.new
 
       order_content_packaging_materials_attribute_names.map {|attr_name|
         _attrs = self.attributes
@@ -87,7 +87,7 @@ module OrderContent::Packageables
 
         if matching_packaging_materials.any?
           matching_packaging_materials.map {|_pm|
-            matching_attr_values_hash[:order_content_packaging_materials_attributes].push _pm.attributes
+            matching_attr_values_hash[:packaging_materials_attributes].push _pm.attributes
           }
         else
           packaging_materials_attributes_hash["packaging_materials_#{attr_name.downcase.pluralize}".to_sym] = nil

@@ -3,50 +3,41 @@
     <% card_link_to_css_classes = "font-medium text-cyan-700 hover:text-cyan-900" %>
     <%= tag.div class: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" do %>
       <% orders_status = "all" %>
-      <% orders_text = "#{orders_status} orders" %>
-      <% card_description = @scoped_resource.orders.where(
-        status: status_scopes(status_scope: orders_status)
-      ).size if scoped_resource? %>
-      <% card_description = Order.where(
-        status: status_scopes(status_scope: orders_status)
-      ).size if !scoped_resource? %>
+      <% card_description = scoped_resource? ? @scoped_resource.orders.where(status: status_scopes(status_scope: orders_status)).size : Order.where(status: status_scopes(status_scope: orders_status)).size %>
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: (orders_status == status_display_name),
-        card_title: orders_text.capitalize,
+        card_title: "#{status_display_name(status_scope: orders_status).capitalize} orders",
         card_description: card_description,
-        card_link: (link_to orders_text, { controller: "orders", status: orders_status }, class: card_link_to_css_classes),
+        card_link: (link_to "View orders", { controller: "orders", params: { status: orders_status }}, class: card_link_to_css_classes),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
       } %>
       <% orders_status = "active" %>
-      <% orders_text = "#{orders_status} orders" %>
-      <% card_description = @scoped_resource.orders.where(
-        status: status_scopes(status_scope: orders_status)
-      ).size if scoped_resource? %>
-      <% card_description = Order.where(
-        status: status_scopes(status_scope: orders_status)
-      ).size if !scoped_resource? %>
+      <% card_description = scoped_resource? ? @scoped_resource.orders.where(status: status_scopes(status_scope: orders_status)).size : Order.where(status: status_scopes(status_scope: orders_status)).size %>
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: (orders_status == status_display_name),
-        card_title: orders_text.capitalize,
+        card_title: "#{status_display_name(status_scope: orders_status).capitalize} orders",
         card_description: card_description,
-        card_link: (link_to orders_text, { controller: "orders", status: orders_status }, class: card_link_to_css_classes),
-        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/box_truck"),
+        card_link: (link_to "View orders", { controller: "orders", params: { status: orders_status }}, class: card_link_to_css_classes),
+        card_icon: (render partial: "/layouts/stacked_shell/headings/icons/#{(scoped_resource? ? @scoped_resource.model_name.singular : "box_truck")}" ),
       } %>
       <% orders_status = "completed" %>
-      <% orders_text = "#{orders_status} orders" %>
-      <% card_description = @scoped_resource.orders.where(
-        status: status_scopes(status_scope: orders_status)
-      ).size if scoped_resource? %>
-      <% card_description = Order.where(
-        status: status_scopes(status_scope: orders_status)
-      ).size if !scoped_resource? %>
+      <% card_description = scoped_resource? ? @scoped_resource.orders.where(status: status_scopes(status_scope: orders_status)).size : Order.where(status: status_scopes(status_scope: orders_status)).size %>
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: (orders_status == status_display_name),
-        card_title: orders_text.capitalize,
+        card_title: "#{status_display_name(status_scope: orders_status).capitalize} orders",
         card_description: card_description,
-        card_link: (link_to orders_text, { controller: "orders", status: orders_status }, class: card_link_to_css_classes),
+        card_link: (link_to "View orders", { controller: "orders", params: { status: orders_status }}, class: card_link_to_css_classes),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
       } %>
     <% end %>
   <% end %>
 <% end %>
+<% if scoped_resource? %>
+  <% additional_card_title_text = "ship" if purchaser? %>
+  <% additional_card_title_text = "vendor" if vendor? %>
+  <% table_section_heading_title = "#{scoped_status.humanize} #{additional_card_title_text} orders" %>
+<% else %>
+  <% table_section_heading_title = "#{scoped_status.humanize} orders" %>
+<% end %>
+<%= turbo_stream.update "page_heading_title", "#{@scoped_resource.class.display_name}: #{@scoped_resource.name}" if scoped_resource? %>
+<%= turbo_stream.update "card_title", table_section_heading_title %>

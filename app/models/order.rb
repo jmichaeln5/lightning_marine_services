@@ -26,9 +26,9 @@ class Order < ApplicationRecord
   delegate :boxes, :crates, :pallets, :others, to: :order_content
 
   include Attachable::Images # change attr name, can attach more than images
-  include Archivable
-  include Exportable, Filterable, Searchable, Sortable, Statusable
-
+  # include Archivable
+  include EligiblePackagingMaterialsForValidation
+  include Archivable, Exportable, Filterable, Searchable, Sortable, Statusable
 
   belongs_to :purchaser
   belongs_to :vendor
@@ -40,15 +40,18 @@ class Order < ApplicationRecord
 
   validates :purchaser_id, :vendor_id, presence: true
   validates :courrier, presence: true
-  validates_presence_of :packaging_materials, unless: -> {
-    order_content.nil? ? false : order_content.has_packaging_materials?
+
+  # validates_presence_of :packaging_materials, unless: -> {
+  #   order_content.nil? ? false : order_content.has_packaging_materials?
+  # }
+  validates_presence_of :packaging_materials, if: -> {
+    eligible_for_packaging_materials_validation?
   }
 
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)
-    ensure_status
-    ensure_archived_val if ensure_archived_val?
     attempt_type_cast_order_content_packaging_materials_attrs
+    set_associated_statuses_from_order if set_associated_statuses_from_order?
   end
 
   def self.order_by_vendor_name(sort_direction)
@@ -59,12 +62,11 @@ class Order < ApplicationRecord
     includes(:purchaser).references(:purchaser).order("name" + " " + sort_direction)
   end
 
+  # NOTE add bulk concern + struct to add errors to, render errors in bulk controller action if operation failed(orders not saved/rollback)
   def self.deliver_active
     all.each do |order|
-      if order.archived == false
-        order.date_delivered = DateTime.now
-        order.save
-      end
+      order.delivered!
+      order.save
     end
   end
 
@@ -84,14 +86,5 @@ class Order < ApplicationRecord
         end
       end
       self.order_sequence = seq
-    end
-
-    def nested_attributes
-      nested_attributes_hash = Hash.new
-      nested_attributes_hash[:order_content_attributes], nested_attributes_hash[:packaging_materials_attributes] = Array.new, Array.new
-      nested_attributes_hash[:order_content_attributes].push order_content.attributes
-      nested_attributes_hash[:packaging_materials_attributes].push packaging_materials.collect(&:attributes)
-
-      nested_attributes_hash
     end
 end

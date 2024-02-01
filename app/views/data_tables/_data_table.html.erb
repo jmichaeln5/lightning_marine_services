@@ -84,8 +84,11 @@
               <% end %>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <%= render partial: "/data_tables/table_elements/row", collection: orders, as: :order %>
+          <tbody id="orders_table" class="divide-y divide-gray-200 bg-white">
+            <%#= render partial: "/data_tables/table_elements/row", collection: orders, as: :order %>
+            <% orders.each do |order| %>
+              <%= render partial: "/data_tables/table_elements/row", locals: {order: order} %>
+            <% end %>
           </tbody>
         </table>
       <% end %>

@@ -1,0 +1,37 @@
+<%= tag.section do %>
+  <%= tag.h2 'Options', class: "m-3" %>
+  <%= tag.div class: "m-3 block" do %>
+    <%= tag.div class: "my-3" do %>
+
+
+
+      <%= tag.div class: "bg-gray-50 rounded-md p-3 mb-3 md:mb-5" do %>
+        <%= render layout:"/data_tables/option", locals:{
+          title: 'Orders per page',
+          description: 'Select the amount of orders you would like to display on table below.'
+          } do %>
+
+          <%= render partial: "/data_tables/table_options/amount_per_page" %>
+
+        <% end %>
+      <% end %>
+
+
+
+      <%= tag.div class: "rounded-lg bg-gray-50 shadow-sm p-3 mb-3 md:mb-5" do %>
+        <%= render layout:"/data_tables/option", locals:{
+          title: 'Orders filters',
+          description: 'Select one or more filters below to display to filter for matching orders.',
+        } do %>
+
+          <%= render partial: "/data_tables/filters" %>
+
+        <% end %>
+      <% end %>
+
+
+
+
+    <% end %>
+  <% end %>
+<% end %>

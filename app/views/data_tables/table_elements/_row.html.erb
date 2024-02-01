@@ -16,17 +16,18 @@
     <%= tag.span order.dept %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <% if purchaser? %>
-      <%= tag.span order.purchaser.name %>
+    <% if !purchaser? %>
+      <%= link_to order.purchaser.name, purchaser_orders_path(order.purchaser, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
     <% else %>
-      <%= link_to order.purchaser_name, purchaser_orders_path(order.purchaser, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+      <%= tag.span order.purchaser.name %>
     <% end %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <% if vendor? %>
-      <%= tag.span order.vendor.name %>
+    <% if !vendor? %>
+      <%= link_to order.vendor.name, vendor_orders_path(order.vendor, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' if authorized_internal_user? %>
+      <%= tag.span order.vendor.name if !authorized_internal_user? %>
     <% else %>
-      <%= link_to order.vendor_name, vendor_orders_path(order.vendor, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+      <%= tag.span order.vendor.name %>
     <% end %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
@@ -37,28 +38,6 @@
     <%= tag.span "n/a" unless order.date_recieved? %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <%#= tag.span order.order_content %>
-
-    <%# unless order.order_content.nil? %>
-      <%# order_content = order.order_content %>
-      <%# if order_content.packaging_materials.any? %>
-        <%#= tag.div class: "-my-3 grid grid-cols-2 text-xs" do %>
-          <%#= tag.span "boxes:".capitalize, class: "font-semibold" %>
-          <%#= tag.span order_content.packaging_materials_boxes.count %>
-
-          <%#= tag.span "crates:".capitalize, class: "font-semibold" %>
-          <%#= tag.span order_content.packaging_materials_crates.count %>
-
-          <%#= tag.span "pallets:".capitalize, class: "font-semibold" %>
-          <%#= tag.span order_content.packaging_materials_pallets.count %>
-
-          <%# if order_content.packaging_materials_others.any? %>
-            <%#= tag.span "others:".capitalize, class: "font-semibold" %>
-            <%#= tag.span order_content.packaging_materials_others.count %>
-          <%# end %>
-        <%# end %>
-      <%# end %>
-    <%# end %>
     <% order_content = order.order_content %>
     <% order_content_decorator = OrderContentDecorator.new(order.order_content) %>
     <div class="m-auto">

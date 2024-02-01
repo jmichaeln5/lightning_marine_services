@@ -2,7 +2,7 @@
   "name": "lightning_marine_services",
   "private": true,
   "dependencies": {
-    "@hotwired/stimulus": "^3.2.1",
+    "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^7.3.0",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
@@ -17,7 +17,7 @@
     "stimulus-dropdown": "^2.1.0",
     "stimulus-notification": "^2.2.0",
     "stimulus-reveal-controller": "^4.1.0",
-    "stimulus-use": "^0.52.0",
+    "stimulus-use": "^0.52.2",
     "tailwindcss": "^3.2.7"
   },
   "version": "0.1.0",

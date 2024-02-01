@@ -28,7 +28,6 @@ class StatusesController < ApplicationController
             locals: {
               flash_type: 'alert', flash_title: title, flash_description: @statusable.errors.collect {|e| e.full_message }
             })
-
         end
       end
     end

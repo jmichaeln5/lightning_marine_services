@@ -28,7 +28,7 @@ module Orders::Statusable
       end
 
       def status_scopes(status_scope: nil)
-        status_scope ||= status_param if status_scope.nil?
+        status_scope ||= status_param
 
         case status_scope
         when "all"
@@ -40,6 +40,23 @@ module Orders::Statusable
         else
           return Order.statuses.values
         end
+      end
+
+      def status_scopes_names(status_scope: nil)
+        status_scope ||= status_param
+
+        case status_scope
+        when "all"
+          status_names = Order.statuses.keys
+        when "active"
+          status_names = Order.active_statuses.keys
+        when "completed"
+          status_names = Order.inactive_statuses.keys
+        else
+          status_names = Order.statuses.keys
+        end
+        status_names = status_names.map {|status_name| status_name.humanize.downcase}
+        status_names.join(", ")
       end
 
       def status_display_name(status_scope: nil)

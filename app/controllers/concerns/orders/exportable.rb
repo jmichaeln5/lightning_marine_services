@@ -30,12 +30,20 @@ module Orders::Exportable
       }
     end
 
-    def export
-      set_ivars_from_export_params unless params[:export].blank?
+    def set_ivars_from_export_params?
+      @options.nil? && !params[:export].blank?
     end
 
-    def respond_to_do_format_exports
-      set_ivars_from_export_params if !(:html.in?(formats)) && !params[:export].blank?
+    def export
+      format_export if format_export?
+    end
+
+    def format_export?
+      (:html.in?(formats)) ? false : true
+    end
+
+    def format_export
+      set_ivars_from_export_params if set_ivars_from_export_params?
 
       respond_to do |format|
         format.xls {
@@ -48,7 +56,6 @@ module Orders::Exportable
           send_data @export_records.to_csv(options: @options),
           filename: "#{@filename}.csv"
         }
-        format.html
       end
     end
 

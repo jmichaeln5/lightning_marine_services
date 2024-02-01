@@ -1,6 +1,7 @@
 <% if Current.request_variant == :turbo_frame  %>
   <%= turbo_frame_tag :modal do %>
     <%= render "/layouts/stacked_shell/render_modal",
+      close_on_outside_click: false,
       modal_title: (
         link_to "New Order",
         new_order_path,

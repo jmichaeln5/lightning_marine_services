@@ -1,5 +1,4 @@
 <% content_for :button_el, flush: true do %>
-
   <div class="inline-block">
     <div class="w-full">
       <span class="relative inline-flex items-center justify-center inline-block px-5 py-2.5 overflow-hidden font-bold rounded-full group">
@@ -15,25 +14,18 @@
       </span>
     </div>
   </div>
-
 <% end %>
-
 <% if authorized_internal_user? %>
   <% if local_assigns[:with_turbo_modal] %>
-
     <%= link_to link_to_path, data: { turbo_frame: "modal" } do %>
       <%= yield :button_el %>
     <% end %>
-
   <% else %>
-
     <%= link_to link_to_path do %>
       <%= yield :button_el %>
     <% end %>
-
   <% end %>
 <% end %>
-
 <% if !authorized_internal_user? %>
   <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
     fallback_location: dashboard_path,

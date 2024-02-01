@@ -13,6 +13,7 @@ class OrdersController < Orders::BaseController
     valid_status_params
     status_param_valid?
     status_scopes
+    status_scopes_names
     status_display_name
   )
 
@@ -23,13 +24,17 @@ class OrdersController < Orders::BaseController
   )
 
   def index
+    authorize_internal_user if vendor?
+
     set_orders
-
-    @exportables = @orders
     @orders = resolve_orders_for_data_table(@orders)
-    @pagy, @orders = pagy(@orders, link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"', items: params.fetch(:count, 10))
-
-    respond_to_do_format_exports
+    @pagy, @orders = pagy(
+      @orders,
+      link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"',
+      items: params.fetch(:count, 10)
+    )
+    
+    format_export if format_export?
   end
 
   def show
@@ -125,7 +130,7 @@ class OrdersController < Orders::BaseController
     def set_orders
       set_scoped_resource if scoped_resource?
       orders = scoped_resource? ? @scoped_resource.orders : Order.all
-      @orders = orders.where(status: status_scopes)
+      @orders = orders.where(status: status_scopes).order(id: :desc)
     end
 
     def set_page_heading_title

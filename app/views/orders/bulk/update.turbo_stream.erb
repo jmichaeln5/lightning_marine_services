@@ -1,0 +1,7 @@
+<%= turbo_stream.append "flashes" do %>
+  <%= render partial: "/layouts/stacked_shell/headings/flash_messages", locals: {
+    delay_value: "2000",
+    flash_type: "notice",
+    flash_title: "Orders updated successfully.",
+  } %>
+<% end %>

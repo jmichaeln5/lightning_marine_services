@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get '/new', to: 'orders#new'
         get '(/:status)', to: 'orders#index'
         concerns :exportable
+        patch '/update', to: 'orders/bulk#update'
       end
     end
   end
