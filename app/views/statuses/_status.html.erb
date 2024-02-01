@@ -2,8 +2,7 @@
 <%= tag.div id: statusable.statusable_dom_id, class: "inline-block w-full" do %>
   <%= tag.div class: "inline-block" do %>
     <%= tag.div class: "cursor-default inline-flex justify-items-center" do %>
-      <%#= tag.div "status:" %>
-      <%= tag.div statusable.status.to_s.humanize, class: "ml-1 font-bold" %>
+      <%= status_badge statusable.status, "rounded-full text-base px-3 py-1.5"  %>
     <% end %>
     <% if authorized_internal_user? %>
       <%= tag.div do %>

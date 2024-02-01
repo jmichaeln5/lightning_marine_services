@@ -41,6 +41,20 @@ module ApplicationHelper
     return content_tag( :span, kurrent_user_badge[0], class:"inline-flex items-center rounded-full #{kurrent_user_badge[1]} px-3 py-1 text-xs font-medium text-gray-800")
   end
 
+  def status_badge(status, options = nil)
+    case status
+    when "active"
+      default_badge_options = "badge badge-red"
+    when "partially_delivered"
+      default_badge_options = "badge badge-pink"
+    when "hold"
+      default_badge_options = "badge badge-gray"
+    when "delivered"
+      default_badge_options = "badge badge-green"
+    end
+    tag.span(status, class: "#{default_badge_options} #{options}")
+  end
+
   def controller_name_and_action
       "#{controller_name}##{action_name}"
   end
