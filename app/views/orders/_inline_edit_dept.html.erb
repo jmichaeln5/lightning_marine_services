@@ -1,17 +1,21 @@
 <% frame_id = dom_id(order, "#{attribute}_turbo_frame") %>
 <%= form_with model: order, class: "contents", data: { turbo_frame: frame_id } do |form| %>
-  <%= turbo_frame_tag frame_id, class:"inline-edit" do %>
-    <div>
-      <%= dev_output_str("orders/_inline_edit_dept redered") %>
-      <%= yield %>
-    </div>
-    <div>
-      <%= link_to edit_dept_order_path(order), class: "inline-edit" do  %>
-        <span class="ml-1 text-gray-400 hover:text-gray-500 decoration-gray-300 decoration-2 underline underline-offset-4">
-          <%= "Edit" if order.send(attribute).present? %>
-          <%= "Add" if !order.send(attribute).present? %>
-        </span>
+  <%= turbo_frame_tag frame_id, class:"inline-edit max-w-fit" do %>
+    <% if order.dept? %>
+      <%= link_to edit_dept_order_path(order), type: "button", class:"m-1 group inline-flex items-center gap-x-1 rounded-md bg-inherit px-2.5 py-1.5 text-sm  text-gray-400 transition ease-in-out delay-150 duration-300 hover:shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 hover:shadow" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="hidden w-4 h-4 stroke-gray-500 group-hover:inline-flex shrink ">
+          <path fill-rule="evenodd" d="M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z" clip-rule="evenodd" />
+        </svg>
+        <%= tag.span order.dept, class: "inline-flex group-hover:hidden" %>
+        <%= tag.span "Edit dept", class: "hidden transition ease-in-out delay-150 duration-300 group-hover:inline-flex shrink" %>
       <% end %>
-    </div>
+    <% else %>
+      <%= link_to edit_dept_order_path(order), type: "button", class:"m-1 group inline-flex items-center gap-x-1 rounded-md bg-gray-50 px-2.5 py-1.5 text-sm  text-gray-400 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 hover:shadow" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5Z" clip-rule="evenodd" />
+        </svg>
+        Add dept
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

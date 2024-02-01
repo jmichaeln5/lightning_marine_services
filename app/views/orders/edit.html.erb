@@ -156,10 +156,11 @@
   <%= turbo_frame_tag :modal do %>
     <%= render "/layouts/stacked_shell/render_modal",
       modal_title: (
-        link_to "Editing Order #{@order.id}",
-        edit_order_path(@order),
-        target: "_top",
-        class: default_link_to_css_classes
+        tag.span "Editing Order #{@order.id}", class:"font-semibold"
+        # link_to "Editing Order #{@order.id}",
+        # edit_order_path(@order),
+        # target: "_top",
+        # class: default_link_to_css_classes
       ) do %>
         <%= render partial:'/orders/form', locals: { order: @order, order_content: @order_content } %>
       <% end %>

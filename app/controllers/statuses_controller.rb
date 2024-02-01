@@ -17,13 +17,16 @@ class StatusesController < ApplicationController
         notice_msg = "#{@statusable.model_name.human} status updated to #{status_name.humanize}"
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(@statusable.statusable_dom_id, partial: "statuses/status",
-            locals: { statusable: @statusable, notice: notice_msg })
+            locals: {
+              statusable: @statusable,
+              status_badge_css: @status_badge_css,
+              notice: notice_msg,
+              })
         end
         format.html { redirect_to @statusable, notice: notice_msg }
       else
         format.turbo_stream do
           title = "There was #{@statusable.errors.size} #{(@statusable.errors.size > 1) ? 'errors' : 'error'} with your submission:"
-
           render turbo_stream: turbo_stream.append('flashes', partial: "/layouts/stacked_shell/headings/flash_messages",
             locals: {
               flash_type: 'alert', flash_title: title, flash_description: @statusable.errors.collect {|e| e.full_message }
@@ -39,6 +42,7 @@ class StatusesController < ApplicationController
         :id,
         :statusable_id,
         :statusable_type,
+        :status_badge_css,
         status:[],
       )
     end
@@ -59,6 +63,7 @@ class StatusesController < ApplicationController
     def set_statusable
       statusable_id = statusable_params.fetch(:statusable_id, :id)
       @statusable = statusable_params[:statusable_type].safe_constantize.find(statusable_id)
+      @status_badge_css = statusable_params.fetch(:status_badge_css, "rounded-full")
     end
 
     def status_name

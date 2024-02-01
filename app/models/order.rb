@@ -44,9 +44,9 @@ class Order < ApplicationRecord
   # validates_presence_of :packaging_materials, unless: -> {
   #   order_content.nil? ? false : order_content.has_packaging_materials?
   # }
-  validates_presence_of :packaging_materials, if: -> {
-    eligible_for_packaging_materials_validation?
-  }
+  validates_presence_of :packaging_materials, unless: -> {
+    order_content.nil? ? false : order_content.has_packaging_materials?
+  }, if: :eligible_for_packaging_materials_validation?
 
   before_validation do
     set_default_sequence if (order_sequence.nil? && purchaser_id)

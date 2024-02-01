@@ -44,15 +44,15 @@ module ApplicationHelper
   def status_badge(status, options = nil)
     case status
     when "active"
-      default_badge_options = "badge badge-red"
-    when "partially_delivered"
-      default_badge_options = "badge badge-pink"
-    when "hold"
-      default_badge_options = "badge badge-gray"
-    when "delivered"
       default_badge_options = "badge badge-green"
+    when "partially_delivered"
+      default_badge_options = "badge badge-yellow"
+    when "hold"
+      default_badge_options = "badge badge-purple"
+    when "delivered"
+      default_badge_options = "badge badge-gray"
     end
-    tag.span(status, class: "#{default_badge_options} #{options}")
+    tag.span(status.humanize.downcase, class: "#{default_badge_options} #{options}")
   end
 
   def controller_name_and_action

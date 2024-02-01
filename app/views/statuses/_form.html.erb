@@ -18,7 +18,12 @@
             <% statusable.statuses.each do |status| %>
               <%= button_to status[0].to_s.humanize, status_path(
                   statusable,
-                  params: { statusable_type: statusable.statusable_type, statusable_id: statusable.id, status: status },
+                  params: {
+                    statusable_type: statusable.statusable_type,
+                    statusable_id: statusable.id,
+                    status: status,
+                    status_badge_css: status_badge_css,
+                  },
                 ),
                 method: :patch,
                 data: {
@@ -34,7 +39,11 @@
   <%= tag.div do %>
     <%= link_to "close", status_path(
         statusable,
-        params: { statusable_type: statusable.statusable_type, statusable_id: statusable.id },
+        params: {
+          statusable_type: statusable.statusable_type,
+          status_badge_css: status_badge_css,
+          statusable_id: statusable.id,
+        },
       ), class: "text-sm text-gray-400 underline underline-offset-2 hover:text-gray-600 hover:underline" %>
   <% end %>
 <% end %>

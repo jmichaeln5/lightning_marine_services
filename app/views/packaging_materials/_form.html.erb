@@ -59,19 +59,18 @@
       </div>
     </div>
   <% end %>
-  <% has_existing_materials =  (local_assigns[:order_content_form].object.persisted? || !local_assigns[:order_content_form].object.new_record?) %>
-  <%= tag.div class: (has_existing_materials ? "" : "pb-3") do %>
+  <% order_content_has_persisted = (local_assigns[:order_content_form].object.persisted? || !local_assigns[:order_content_form].object.new_record?) %>
+  <% display_show_or_hide_dropdown = order_content_has_persisted && local_assigns[:order_content_form].object.packaging_materials.any? %>
+  <%= tag.div class: ((display_show_or_hide_dropdown == true) ? "" : "pb-3") do %>
     <div class="w-auto">
       <ul class="list-decimal">
-        <% if has_existing_materials %>
-          <div class="block pb-3">
-            <%= render layout: '/application/reveal' do %>
-              <% content_for :reveal_toggle, flush: true do %>
-                <%= tag.div class: "w-full text-center cursor-pointer" do %>
-                  <%= tag.dig "Show/hide existing packaging materials", class: "mb-3 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:bg-gray-50" %>
-                <% end %>
+        <% if display_show_or_hide_dropdown %>
+          <div class="block mt-1.5 pb-3">
+            <div data-controller="reveal" data-reveal-hidden-class="hidden">
+              <%= tag.div type: "button", data: {"action": "click->reveal#toggle"}, class: "w-full text-center cursor-pointer" do %>
+                <%= tag.dig "Show/hide existing packaging materials", class: "mb-3 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:bg-gray-50" %>
               <% end %>
-              <% content_for :reveal_content, flush: true do %>
+              <div data-reveal-target="item" class="hidden rounded-lg p-3 mt-3 border-2 border-slate-100">
                 <%= local_assigns[:order_content_form].fields_for :packaging_materials do |packaging_materials_form| %>
                   <%= tag.span class:"mt-3 block w-full" do %>
                   <% type_name =  packaging_materials_form.object.type_name.downcase %>
@@ -83,8 +82,8 @@
                     } %>
                   <% end %>
                 <% end %>
-              <% end %>
-            <% end %>
+              </div>
+            </div>
           </div>
         <% end %>
         <%#= tag.span id: "packaging_materials" %>

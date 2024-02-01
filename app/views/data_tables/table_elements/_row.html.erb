@@ -1,19 +1,40 @@
-<tr class="table-row" id="<%= dom_id(order) %>">
-  <% css_td = "whitespace-nowrap px-3 py-4 text-sm text-gray-500" %>
-  <% css_td_first = "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0" %>
-  <% css_td_last = "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-0" %>
+<!-- <tr class="table-row odd:bg-gray-50 odd:hover:bg-slate-100 even:bg-white even:hover:bg-slate-100" id="<%#= dom_id(order) %>"> -->
+<tr class="table-row hover:bg-slate-100 transition ease-in-out delay-150 duration-300" id="<%= dom_id(order) %>">
+  <% css_td = "whitespace-nowrap px-1.5 py-4 text-sm text-gray-500" %>
+  <% css_td_first = "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-1" %>
+  <% css_td_last = "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-3" %>
   <% css_td_anchor = "text-indigo-600 hover:text-indigo-900" %>
   <td data-table-target="td" class="<%= css_td_first %>">
-    <%= link_to order.id, order_path(order.id), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+    <%= link_to order.id, order_path(order.id), target: '_top', class: 'pl-0.5 text-indigo-600 hover:text-indigo-900' %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <%= tag.span order.order_sequence %>
+    <%= tag.div class: "w-full max-w-96 relative text-center" do %>
+      <%= render "inline_edit", model: order, attribute: :order_sequence %>
+    <% end %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <%= tag.span order.status %>
+    <%= tag.div id: order.statusable_dom_id, class: "" do %>
+      <% status_badge_css = "rounded-full px-3 py-1.5" %>
+      <%= tag.div class: "inline-block" do %>
+        <% if authorized_internal_user? %>
+          <%= tag.div do %>
+            <%= turbo_frame_tag order.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
+              <%= link_to edit_status_path(
+              order,
+              params: { statusable_id: order.id, statusable_type: order.statusable_type, status_badge_css: status_badge_css},
+              ) do %>
+                <%= status_badge order.status, status_badge_css %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= status_badge order.status, status_badge_css %>
+        <% end %>
+      <% end %>
+    <% end %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <%= tag.span order.dept %>
+    <%= render "orders/inline_edit_dept", order: order, attribute: :dept %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
     <% if !purchaser? %>
@@ -31,11 +52,10 @@
     <% end %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <%= tag.span order.po_number %>
+    <%= render "inline_edit", model: order, attribute: :po_number %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <%= tag.span (order.date_recieved.strftime("%m/%d/%Y")) if order.date_recieved? %>
-    <%= tag.span "n/a" unless order.date_recieved? %>
+    <%= render "inline_edit", model: order, attribute: :date_recieved %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
     <% order_content = order.order_content %>
@@ -79,11 +99,10 @@
     </div>
   </td>
   <td class="<%= css_td %>">
-    <%= tag.span order.courrier %>
+    <%= render "inline_edit", model: order, attribute: :courrier %>
   </td>
   <td class="<%= css_td %>">
-    <%= tag.span (order.date_delivered.strftime("%m/%d/%Y")) if order.date_delivered? %>
-    <%= tag.span "n/a" unless order.date_delivered? %>
+    <%= render "inline_edit", model: order, attribute: :date_delivered %>
   </td>
   <td class="<%= css_td_last %>">
     <%= link_to "edit", edit_order_path(order), data: {turbo_frame: "modal" }, class: "text-indigo-600 hover:text-indigo-900" if authorized_internal_user? %>

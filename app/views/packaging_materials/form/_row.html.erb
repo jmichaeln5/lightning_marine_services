@@ -20,12 +20,6 @@
     "counter-target-param": "packaging_materials_#{type_name.downcase.singularize}_count",
     'action': 'counter#add'
     } do %>
-    <%#= link_to new_packaging_material_path(type: "PackagingMaterial::#{type_name.to_s.singularize.classify}", target: target),
-    data: {
-    turbo_stream: true,
-    "counter-target-param": "packaging_materials_#{type_name.downcase.singularize}_count",
-    'action': 'counter#add'
-    } do %>
       <%= button_tag(
         type: 'button',
         class: "relative inline-flex items-center rounded-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10") do %>

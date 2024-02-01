@@ -74,8 +74,6 @@
 
                   <% if (scoped_status? && status_param_valid?) %>
                     <% _filename_str_orders = "#{scoped_status.capitalize} Orders" %>
-                  <% else %>
-                    <%# _filename_str_orders = "Orders" %>
                   <% end %>
 
                   <% _filename_str_orders ||= "Orders" %>
@@ -123,29 +121,11 @@
                     class: "inline-flex btn btn_indigo" %>
                     <%#= link_to "export orders xsls", export_orders_path(export: { order_ids: @orders.ids}, format: :xsls), action: "export", params: { export: { order_ids: @orders.ids} }, method: :get, class: "inline-block btn btn_outline_indigo" %>
                 <% end %>
-                <div class="min-w-full flex flex-wrap justify-between">
-                  <div class="w-full text-center sm:w-auto">
-                    <p class="text-sm text-gray-700 inline-block align-baseline">
-                      Showing
-                      <span class="font-medium"><%= @pagy.from %></span>
-                      to
-                      <span class="font-medium"><%= @pagy.to %></span>
-                      of
-                      <span class="font-medium"><%= @pagy.count %> </span>
-                      results
-                    </p>
-                  </div>
-                  <div class="w-full text-center sm:w-auto">
-                    <div class="text-sm inline-block align-baseline">
-                      <%== pagy_nav @pagy %>
-                    </div>
-                  </div>
-                </div>
+                <%= render partial: "/data_tables/pagy_nav", locals: { pagy: @pagy } %>
                 <%= tag.div class: "overflow-x-auto rounded-lg bg-white #{x_axis_padding} shadow border border-slate-50" do %>
-                  <%= render partial: "/data_tables/data_table", locals: {
-                    orders: @orders,
-                  } %>
+                  <%= render partial: "/data_tables/data_table", locals: { orders: @orders } %>
                 <% end %>
+                <%= render partial: "/data_tables/pagy_nav", locals: { pagy: @pagy } %>
               <% end %>
             </section>
           <% end %>

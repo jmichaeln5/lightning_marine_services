@@ -1,4 +1,4 @@
 <h1>Edit status</h1>
 <%= turbo_frame_tag @statusable.edit_statusable_dom_id, class: "inline-block" do %>
-  <%= render partial: "/statuses/form", locals: { statusable: @statusable } %>
+  <%= render partial: "/statuses/form", locals: { statusable: @statusable, status_badge_css: @status_badge_css } %>
 <% end %>

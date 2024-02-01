@@ -1,18 +1,25 @@
 <%= render partial: "/application/append_flash_notice", locals: { notice: notice} if notice %>
+<% status_badge_css_classes = "" %>
+<% local_assigns[:status_badge_css].nil? ? (status_badge_css_classes << "rounded-full") : (status_badge_css_classes << " #{local_assigns[:status_badge_css]}") %>
 <%= tag.div id: statusable.statusable_dom_id, class: "inline-block w-full" do %>
   <%= tag.div class: "inline-block" do %>
-    <%= tag.div class: "cursor-default inline-flex justify-items-center" do %>
-      <%= status_badge statusable.status, "rounded-full text-base px-3 py-1.5"  %>
-    <% end %>
     <% if authorized_internal_user? %>
       <%= tag.div do %>
         <%= turbo_frame_tag statusable.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
-          <%= link_to 'edit', edit_status_path(
+          <%= link_to edit_status_path(
           statusable,
-          params: { statusable_id: statusable.id, statusable_type: statusable.statusable_type},
-          ), class: "text-sm text-gray-400 underline underline-offset-2 hover:text-gray-600 hover:underline" %>
+          params: {
+            statusable_id: statusable.id,
+            statusable_type: statusable.statusable_type,
+            status_badge_css: local_assigns[:status_badge_css],
+          },
+          ) do %>
+            <%= status_badge statusable.status, status_badge_css_classes %>
+          <% end %>
         <% end %>
       <% end %>
+    <% else %>
+      <%= status_badge statusable.status, status_badge_css_classes  %>
     <% end %>
   <% end %>
 <% end %>

@@ -1,15 +1,19 @@
 <% @page_heading_title = "Order" %>
 <% content_for :page_heading_button do %>
-  <%= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
+  <%#= render partial: "/layouts/stacked_shell/headings/buttons/animated_edit", locals: {
     link_to_path: edit_order_path(@order),
     link_to_text: "Edit order",
   } if authorized_internal_user? %>
-  <% if !authorized_internal_user? %>
-    <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+  <%# if !authorized_internal_user? %>
+    <%#= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
       fallback_location: dashboard_path,
       fallback_location_text: "Dashboard",
     } %>
-  <% end %>
+  <%# end %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: dashboard_path,
+    fallback_location_text: "Dashboard",
+  } %>
 <% end %>
 <% content_for :page_heading_card do %>
   <%= turbo_stream.update "card_title", "Order #{@order.id}" %>
@@ -66,8 +70,27 @@
             <%= tag.p 'Information about what was recieved in the order.', class: %w( mt-2 ml-2 mb-1 text-md text-gray-700 ) %>
           </div>
         </div>
-        <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
-          <%= render partial: 'statuses/status', locals:{ statusable: @order } if authorized_internal_user? %>
+        <div class="text-center sm:text-right mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+          <%= tag.div id: @order.statusable_dom_id, class: "inline-block w-full" do %>
+            <% status_badge_css = "rounded-full text-base px-3 py-1.5" %>
+            <% status_badge_css << (authorized_internal_user? ? "hover:cursor-pointer" : "cursor-default") %>
+            <%= tag.div class: "inline-block" do %>
+              <% if authorized_internal_user? %>
+                <%= tag.div do %>
+                  <%= turbo_frame_tag @order.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
+                    <%= link_to edit_status_path(
+                    @order,
+                    params: { statusable_id: @order.id, statusable_type: @order.statusable_type, status_badge_css: status_badge_css},
+                    ) do %>
+                      <%= status_badge @order.status,  "rounded-full text-base px-3 py-1.5"  %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <%= status_badge @order.status, "rounded-full text-base px-3 py-1.5"  %>
+              <% end %>
+            <% end %>
+          <% end %>
         </div>
       </header>
       <article class="">
@@ -109,7 +132,6 @@
                 method: :get,
                 class:"w-full btn rounded-md bg-white py-2.5 px-3.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               ) if authorized_internal_user? %>
-
               <!-- <%# if authorized_internal_user? %>
                 <div class="mr-3">
                   <div data-controller="visibility" data-visibility-value-toggled="false" class="inline-flex rounded-md shadow-sm">
