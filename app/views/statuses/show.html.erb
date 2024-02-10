@@ -1,6 +1,6 @@
-<h1>Status</h1>
+<%= tag.h1 "Status" %>
 <%= tag.div id: @statusable.statusable_dom_id do %>
-  <div class="inline-block">
+  <%= tag.div class: "inline-block" do %>
     <%= render partial: "/statuses/status", locals: { statusable: @statusable, status_badge_css: @status_badge_css } %>
-  </div>
+  <% end %>
 <% end %>

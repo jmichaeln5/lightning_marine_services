@@ -58,6 +58,10 @@ module Order::Statusable
       id
     end
 
+    def statusable_path
+      "#{Rails.application.routes.url_helpers.orders_path}/#{id}"
+    end
+
     def statusable_dom_id
       "status_#{model_name.element}_#{id}"
     end
@@ -67,6 +71,13 @@ module Order::Statusable
     end
 
     private
+      def self.deliver_active
+        all.each do |order|
+          order.delivered!
+          order.save
+        end
+      end
+
       def set_associated_statuses_from_order?
         status_changed?
       end

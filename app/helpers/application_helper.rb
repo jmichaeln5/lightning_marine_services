@@ -1,15 +1,6 @@
 module ApplicationHelper
   include Pagy::Frontend
 
-  def dev_output_str(str)
-    return unless Rails.env == "development"
-    puts (" \n")*5
-    puts ("*"*50 + "\n")*5
-    puts (" #{str} \n")*5
-    puts ("*"*50 + "\n")*5
-    puts (" \n")*5
-  end
-
   def default_link_to_css_classes
     "font-medium hover:underline text-indigo-600 hover:text-indigo-800 hover:cursor-pointer"
   end
@@ -51,8 +42,10 @@ module ApplicationHelper
       default_badge_options = "badge badge-purple"
     when "delivered"
       default_badge_options = "badge badge-gray"
+    else
+      default_badge_options = "inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ring-gray-300 text-gray-400 font-semibold"
     end
-    tag.span(status.humanize.downcase, class: "#{default_badge_options} #{options}")
+    tag.span(status.humanize, class: "lowercase #{default_badge_options} #{options}")
   end
 
   def controller_name_and_action

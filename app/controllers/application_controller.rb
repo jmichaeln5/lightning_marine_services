@@ -14,7 +14,26 @@ class ApplicationController < ActionController::Base
     authorized_admin?
     authorized_internal_user?
     authorized_customer?
+    check_referrer
   )
+
+  CheckReferer = Struct.new(:referrer_path, keyword_init: true) do
+    def extracted_path
+      Rails.application.routes.recognize_path(referrer_path)
+    end
+
+    def controller
+      extracted_path[:controller]
+    end
+
+    def action
+      extracted_path[:action]
+    end
+  end
+
+  def check_referrer(referrer_path = request.referrer)
+    return CheckReferer.new(referrer_path: referrer_path)
+  end
 
   def format_datetime_now_str
     DateTime.now.try(:strftime,"%m/%d/%Y")

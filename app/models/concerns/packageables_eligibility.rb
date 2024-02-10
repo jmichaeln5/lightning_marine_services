@@ -1,4 +1,4 @@
-module EligiblePackagingMaterialsForValidation
+module PackageablesEligibility
   extend ActiveSupport::Concern
 
   PACKAGING_MATERIALS_IMPLEMENTATION_DATE = Date.parse('2024-01-27')

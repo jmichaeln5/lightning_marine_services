@@ -2,7 +2,6 @@ class OrdersController < Orders::BaseController
   before_action :authorize_internal_user, only: %i(new create edit destroy)
   before_action :set_order, only: %i(show hovercard update destroy)
   before_action :invoke_scoped_resource_methods, if: :scoped_resource?
-
   before_action :set_page_heading_title, only: %i(index show new edit)
 
   # ⚠️ 👇🏾  wayyyy too many status helper methods, using for link+button_to.., refactor said fuckery
@@ -33,7 +32,7 @@ class OrdersController < Orders::BaseController
       link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"',
       items: params.fetch(:count, 10)
     )
-    
+
     format_export if format_export?
   end
 
@@ -130,7 +129,12 @@ class OrdersController < Orders::BaseController
     def set_orders
       set_scoped_resource if scoped_resource?
       orders = scoped_resource? ? @scoped_resource.orders : Order.all
-      @orders = orders.where(status: status_scopes).order(id: :desc)
+
+      if purchaser?
+        @orders = orders.where(status: status_scopes).order(order_sequence: :asc, id: :asc)
+      else
+        @orders = orders.where(status: status_scopes).order(id: :desc)
+      end
     end
 
     def set_page_heading_title

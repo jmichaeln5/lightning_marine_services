@@ -8,7 +8,10 @@
     link_to_path: ({ controller: "orders", action: "new" }),
     link_to_text: "Add order",
   } if authorized_internal_user? %>
-  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback" unless authorized_internal_user? %>
+  <%= render partial: "/layouts/stacked_shell/headings/buttons/back_btn_with_fallback", locals: {
+    fallback_location: dashboard_path,
+    fallback_location_text: "Dashboard",
+  } unless authorized_internal_user? %>
 <% end %>
 <%= render partial: 'orders/page_heading_card' %>
 <% table_section_heading_title = "#{scoped_status.humanize}#{scoped_resource? ? " #{@scoped_resource.class.display_name.downcase} " : " "}orders" %>
@@ -26,32 +29,13 @@
                 <%= tag.h3 "#{scoped_status.humanize} orders", class: "ml-2 mt-2 text-base font-semibold leading-6 text-gray-900" %>
                 <%= tag.p "orders with the following statuses: #{status_scopes_names(status_scope: scoped_status)}", class: "ml-2 mt-1 truncate text-sm text-gray-500" %>
               </div>
-              <!-- <%#= form_with url: "", method: :get, data: { turbo_frame: "orders", turbo_action: "advance" } do |form| %>
-                <div>
-                  <div class="text-gray-700 mt-2 sm:mt-0 text-center sm:text-right">
-                    <p class="text-sm text-gray-700 sm:-ml-5"> Search </p>
-                    <%#= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()", class: "w-full rounded-md bg-white py-1.5 pl-3 border-0 drop-shadow-md text-left text-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder:'Search' %>
-                  </div>
-                </div>
-              <%# end %> -->
               <div class="mt-3 sm:ml-4 sm:mt-0">
-                <label for="mobile-search-orders" class="sr-only">Search</label>
-                <label for="desktop-search-orders" class="sr-only">Search</label>
-                <div class="flex rounded-md shadow-sm">
-                  <div class="relative flex-grow focus-within:z-10">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-                      </svg>
-                    </div>
-                    <input type="text" name="mobile-search-orders" id="mobile-search-orders" class="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:hidden" placeholder="Search">
-                    <input type="text" name="desktop-search-orders" id="desktop-search-orders" class="hidden w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 text-sm leading-6 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:block" placeholder="Search orders">
-                  </div>
-                  <button type="button" data-action="click->reveal#toggle" class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-medium ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                    <svg class="-ml-0.5 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M2 3.75A.75.75 0 012.75 3h11.5a.75.75 0 010 1.5H2.75A.75.75 0 012 3.75zM2 7.5a.75.75 0 01.75-.75h6.365a.75.75 0 010 1.5H2.75A.75.75 0 012 7.5zM14 7a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02l-1.95-2.1v6.59a.75.75 0 01-1.5 0V9.66l-1.95 2.1a.75.75 0 11-1.1-1.02l3.25-3.5A.75.75 0 0114 7zM2 11.25a.75.75 0 01.75-.75H7A.75.75 0 017 12H2.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+                <div class="flex">
+                  <button type="button" data-action="click->reveal#toggle" class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-medium ring-1 ring-inset ring-gray-300 rounded-md shadow-sm hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 w-6 h-6 text-gray-400">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5" />
                     </svg>
-                    <%= tag.span 'options', class: "whitespace-nowrap " %>
+                    <%= tag.span 'Table options', class: "whitespace-nowrap " %>
                     <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                     </svg>
@@ -69,57 +53,20 @@
             <section>
               <%= turbo_frame_tag "orders" do %>
                 <%= tag.div class: "mb-3 flex justify-end space-x-3" do %>
-
                   <% _filename_str = "#{@scoped_resource.name}" if scoped_resource? %>
-
                   <% if (scoped_status? && status_param_valid?) %>
                     <% _filename_str_orders = "#{scoped_status.capitalize} Orders" %>
                   <% end %>
-
                   <% _filename_str_orders ||= "Orders" %>
-
                   <% if _filename_str %>
                     <% _filename_str = "#{_filename_str} #{_filename_str_orders}" %>
                   <% else %>
                     <% _filename_str = "#{_filename_str_orders}" %>
                   <% end %>
                   <% _filename = "#{_filename_str} #{format_datetime_now_str.parameterize}" %>
-
                   <% export_param_format = scoped_status %>
                   <% export_param_exportable_class = scoped_resource? ? @resource_class_scoped : "Order" %>
                   <% export_param_exportable_id = scoped_resource? ? @scoped_resource.id : nil %>
-                  <%#= button_to "export to Excel",
-                    export_orders_path(format: 'xls'),
-                    action: "export",
-                    params: {
-                      export: {
-                        format: export_param_format,
-                        filename: "#{_filename}.xls",
-                        exportable_class: export_param_exportable_class,
-                        exportable_id: export_param_exportable_id,
-                        export_class: "Order",
-                        export_ids: @exportables.pluck(:id),
-                      }
-                    },
-                    method: :get,
-                    class: "inline-flex btn btn_indigo" %>
-
-                  <%#= button_to "export to CSV",
-                    export_orders_path(format: 'csv'),
-                    action: "export",
-                    params: {
-                      export: {
-                        format: scoped_status,
-                        filename: "#{_filename}.csv",
-                        exportable_class: export_param_exportable_class,
-                        exportable_id: export_param_exportable_id,
-                        export_class: "Order",
-                        export_ids: @exportables.pluck(:id),
-                      }
-                    },
-                    method: :get,
-                    class: "inline-flex btn btn_indigo" %>
-                    <%#= link_to "export orders xsls", export_orders_path(export: { order_ids: @orders.ids}, format: :xsls), action: "export", params: { export: { order_ids: @orders.ids} }, method: :get, class: "inline-block btn btn_outline_indigo" %>
                 <% end %>
                 <%= render partial: "/data_tables/pagy_nav", locals: { pagy: @pagy } %>
                 <%= tag.div class: "overflow-x-auto rounded-lg bg-white #{x_axis_padding} shadow border border-slate-50" do %>

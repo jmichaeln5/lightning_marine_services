@@ -61,11 +61,8 @@ Rails.application.routes.draw do
   resources :statuses, only: %i(edit update show)
 
   concern :exportable do
-    # _export_format = 'csv'
-    # _export_format = 'xls'
-    _export_format = 'xlsx'
-    get :export, defaults: { format: _export_format }
-    post :export, defaults: { format: _export_format }
+    get :export, defaults: { format: 'xlsx' }
+    post :export, defaults: { format: 'xlsx' }
   end
 
   resources :orders, concerns: %i(hovercardable statusable) do

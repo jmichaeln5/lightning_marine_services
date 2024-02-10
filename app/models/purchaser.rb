@@ -14,9 +14,4 @@ class Purchaser < ApplicationRecord
   include ResourceOrders
 
   has_many :vendors, through: :orders
-  validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 50 }
-
-  def self.display_name
-    "Ship"
-  end
 end

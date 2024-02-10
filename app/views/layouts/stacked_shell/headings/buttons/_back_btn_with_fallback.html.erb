@@ -1,10 +1,10 @@
-<% modified_link_to_path = :back unless (!(request.referer) || (request.referer.include? request.fullpath )) %>
-<% modified_link_to_text = "Back" unless (!(request.referer) || (request.referer.include? request.fullpath )) %>
-
-<% modified_link_to_path ||= local_assigns[:fallback_location] %>
-<% modified_link_to_text ||= local_assigns[:fallback_location_text] %>
-
-<%= link_to modified_link_to_path do %>
+<% _fallback_location = (local_assigns[:fallback_location] || dashboard_path) %>
+<% _fallback_location_text = (local_assigns[:fallback_location_text] || "Dashboard") %>
+<% unless request.referrer.nil? %>
+  <% _fallback_location = :back %>
+  <% _fallback_location_text = "Back" %>
+<% end %>
+<%= link_to _fallback_location do %>
   <div class="inline-block">
     <div class="w-full">
       <span class=" relative inline-flex items-center justify-center px-5 py-2 overflow-hidden font-bold text-white transition duration-300 ease-out border-2 border-gray-200 rounded-full shadow-md group">
@@ -13,8 +13,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
         </span>
-        <span class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease tracking-wide"> <%= modified_link_to_text %></span>
-        <span class="relative invisible tracking-wide"> <%= modified_link_to_text %></span>
+        <span class="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease tracking-wide"> <%= _fallback_location_text %></span>
+        <span class="relative invisible tracking-wide"> <%= _fallback_location_text %></span>
       </span>
     </div>
   </div>

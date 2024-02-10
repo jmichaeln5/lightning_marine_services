@@ -3,6 +3,7 @@
 <% local_assigns[:status_badge_css].nil? ? (status_badge_css_classes << "rounded-full") : (status_badge_css_classes << " #{local_assigns[:status_badge_css]}") %>
 <%= tag.div id: statusable.statusable_dom_id, class: "inline-block w-full" do %>
   <%= tag.div class: "inline-block" do %>
+    <% status = (statusable.status || "missing status") %>
     <% if authorized_internal_user? %>
       <%= tag.div do %>
         <%= turbo_frame_tag statusable.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
@@ -14,12 +15,12 @@
             status_badge_css: local_assigns[:status_badge_css],
           },
           ) do %>
-            <%= status_badge statusable.status, status_badge_css_classes %>
+            <%= status_badge status, status_badge_css_classes %>
           <% end %>
         <% end %>
       <% end %>
     <% else %>
-      <%= status_badge statusable.status, status_badge_css_classes  %>
+      <%= status_badge status, status_badge_css_classes  %>
     <% end %>
   <% end %>
 <% end %>

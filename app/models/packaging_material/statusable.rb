@@ -45,6 +45,10 @@ module PackagingMaterial::Statusable
       id
     end
 
+    def statusable_path
+      "#{Rails.application.routes.url_helpers.orders_path}/#{order_content.order_id}"
+    end
+
     def statusable_dom_id
       "status_packaging_material_#{model_name.element}_#{id}"
     end

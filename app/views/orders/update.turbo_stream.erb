@@ -1,12 +1,10 @@
-<% if request.referer.include? @order.id.to_s  %>
+<% if check_referrer.action == "show" %>
   <%= turbo_stream.replace dom_id(@order, :more_details) do %>
     <%= render partial: "/orders/more_details", locals: { order: @order } %>
   <% end %>
-<% end %>
-<% unless request.referer.include? @order.id.to_s  %>
-  <% order_partial_path = "/data_tables/table_elements/row" %>
+<% else %>
   <%= turbo_stream.replace dom_id(@order) do %>
-    <%= render partial: order_partial_path, locals: { order: @order } %>
+    <%= render partial: "/data_tables/table_elements/row", locals: { order: @order } %>
   <% end %>
 <% end %>
 <%= render partial: "/application/append_flash_notice", locals: { notice: "Order updated successfully."} %>

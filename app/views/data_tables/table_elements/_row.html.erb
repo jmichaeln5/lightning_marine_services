@@ -21,7 +21,10 @@
             <%= turbo_frame_tag order.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
               <%= link_to edit_status_path(
               order,
-              params: { statusable_id: order.id, statusable_type: order.statusable_type, status_badge_css: status_badge_css},
+              params: {
+                statusable_id: order.id,
+                statusable_type: order.statusable_type,
+                status_badge_css: status_badge_css },
               ) do %>
                 <%= status_badge order.status, status_badge_css %>
               <% end %>
@@ -58,44 +61,8 @@
     <%= render "inline_edit", model: order, attribute: :date_recieved %>
   </td>
   <td data-table-target="td" class="<%= css_td %>">
-    <% order_content = order.order_content %>
-    <% order_content_decorator = OrderContentDecorator.new(order.order_content) %>
     <div class="m-auto">
-      <% if order_content.packaging_materials.any? %>
-        <%= tag.div class: "inline-block grid justify-items-stretch gap-x-px grid-cols-2" do %>
-          <%= tag.div "Boxes:" %>
-          <%= tag.span order_content_decorator.packaging_materials_boxes_td, class: "justify-self-start whitespace-nowrap" %>
-          <%= tag.div "Crates:" %>
-          <%= tag.span order_content_decorator.packaging_materials_crates_td, class: "justify-self-start whitespace-nowrap" %>
-          <%= tag.div "Pallets:" %>
-          <%= tag.span order_content_decorator.packaging_materials_pallets_td, class: "justify-self-start whitespace-nowrap" %>
-          <%#= tag.span (order_content_decorator.packaging_materials_pallets_td)[0..10] %>
-          <%# ^^^ formatted desc with elipeses should go here %>
-          <% if order_content.packaging_materials_others.any? %>
-            <%= tag.div "Others:" %>
-            <%= tag.span order_content_decorator.packaging_materials_others_td, class: "justify-self-start whitespace-nowrap" %>
-          <% end %>
-        <% end %>
-      <% else %>
-        <%= tag.div class: "inline-block align-middle mx-auto grid gap-x-2 grid-cols-2 whitespace-nowrap" do %>
-          <%= tag.div "Boxes:" %>
-          <%= tag.span (order_content.try(:box) || '0') %>
-          <%= tag.div "Crates:" %>
-          <%= tag.span (order_content.try(:crate) || '0') %>
-          <%= tag.div "Pallets:" %>
-          <%= tag.span (order_content.try(:pallet) || '0') %>
-          <% unless order_content.try(:other).nil? %>
-            <%= tag.div "Others:" %>
-            <%= tag.span (order_content.try(:other) || '0') %>
-          <% end %>
-        <% end %>
-        <% if !(order_content.try(:other).nil?) && order_content.other_description.present? %>
-          <%= tag.div class: "inline-block align-middle mx-auto" do %>
-            <%= tag.div "Other Desc:" %>
-            <%= tag.span ((order_content.other_description.length >= 25 ? "#{order_content.other_description[0..25]...}" : "#{order_content.other_description}")), class: "whitespace-normal text-gray-500" %>
-          <% end %>
-        <% end %>
-      <% end %>
+      <%= render partial: "/data_tables/table_elements/order_content_td", locals:{ order_content: order.order_content} %>
     </div>
   </td>
   <td class="<%= css_td %>">
@@ -105,6 +72,6 @@
     <%= render "inline_edit", model: order, attribute: :date_delivered %>
   </td>
   <td class="<%= css_td_last %>">
-    <%= link_to "edit", edit_order_path(order), data: {turbo_frame: "modal" }, class: "text-indigo-600 hover:text-indigo-900" if authorized_internal_user? %>
+    <%= link_to "Edit order", edit_order_path(order), data: {turbo_frame: "modal" }, class: "text-indigo-600 hover:text-indigo-900" if authorized_internal_user? %>
   </td>
 </tr>

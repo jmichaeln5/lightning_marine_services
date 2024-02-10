@@ -6,7 +6,8 @@ class PurchasersController < ApplicationController
   before_action :set_purchaser, only: %i[ show edit update destroy export ]
 
   def index
-    @purchasers = Purchaser.all
+    @purchasers = Purchaser.includes(:orders).left_joins(:orders).group(:id).reorder("COUNT(orders.id) DESC")
+    
     sort_purchasers if params[:sort]
     @pagy, @purchasers = pagy @purchasers, items: params.fetch(:count, 10)
   end
@@ -31,64 +32,6 @@ class PurchasersController < ApplicationController
     clear_active_record_query_cache
     @purchasers = purchasers
   end
-
-  # def show
-  #   @page_heading_title = "Ship"
-  #
-  #   orders = Order.unarchived.where(purchaser: @purchaser)
-  #
-  #   if params[:query].present?
-  #     query_str = params[:query]
-  #     results = orders.search(query_str, misspellings: {below: 3}).results
-  #     results_arr = Array.new
-  #     results.each do |result|
-  #       results_arr << result.id if (result.archived? == false)
-  #     end
-  #     @orders = nil
-  #     orders = Order.unarchived.where(purchaser: @purchaser).reorder('id ASC')
-  #     orders = orders.where(id: results_arr)
-  #   end
-  #
-  #   if params[:sort]
-  #     sort_col = %w{ id dept date_recieved courrier date_delivered }.include?(params[:sort]) ? params[:sort] : "id"
-  #     sort_dir = %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
-  #
-  #     if ((params[:sort] == "ship_name") || ( params[:sort] == "purchaser_name" )) # None Order col
-  #       sorted_orders = Order.where(id: orders.ids).order_by_purchaser_name(sort_dir) if params[:sort] == "ship_name"
-  #       sorted_orders = Order.where(id: orders.ids).order_by_purchaser_name(sort_dir) if params[:sort] == "purchaser_name"
-  #       sorted_orders_ids = sorted_orders.ids
-  #       sorted_orders_ids_arr = Array.new
-  #
-  #       sorted_orders_ids.each do |order_id|
-  #         sorted_orders_ids_arr << order_id
-  #       end
-  #       # https://stackoverflow.com/a/61267426
-  #       order_query = <<-SQL
-  #         CASE orders.id
-  #           #{sorted_orders_ids_arr.map.with_index { |id, index| "WHEN #{id} THEN #{index}" } .join(' ')}
-  #           ELSE #{sorted_orders_ids_arr.length}
-  #         END
-  #       SQL
-  #
-  #       newly_sorted_orders = Order.where(id: sorted_orders_ids_arr).order(Arel.sql(order_query))
-  #       clear_active_record_query_cache
-  #     end
-  #
-  #     if ((params[:sort] != "ship_name") && ( params[:sort] != "purchaser_name" )) # Order col
-  #       newly_sorted_orders = orders.reorder(sort_col => sort_dir)
-  #     end
-  #
-  #     @orders = nil
-  #     orders = nil
-  #     orders = newly_sorted_orders
-  #   end
-  #
-  #   @orders ||= orders
-  #   @pagy, @orders = pagy @orders, items: params.fetch(:count, 10)
-  #
-  #   @order = Order.new
-  #   @order.build_order_content
-  # end
 
   def new
     @purchaser = Purchaser.new
@@ -129,32 +72,6 @@ class PurchasersController < ApplicationController
       @purchaser.errors.full_messages.each.map {|message| flash[:alert] = message }
     end
   end
-
-  def export
-    filePrefix = (@purchaser.name + "_").parameterize(separator: '_')
-    @orders = @purchaser.orders.unarchived
-    respond_to do |format|
-      format.html {
-        render :export
-      }
-      format.xls {
-        send_data @orders.to_csv,
-        filename: filePrefix + "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
-      }
-      format.xlsx {
-        fName = filePrefix + "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
-        response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
-      }
-    end
-  end
-
-  def deliver_active()
-    purchaser = Purchaser.includes(:orders).find(params[:purchaser_id])
-    purchaser.orders.where(status: :active).update_all(status: :archived)
-
-    redirect_to purchaser_orders_path(purchaser), notice: "#{purchaser.name} active orders delivered successfully."
-  end
-
 
   private
     def set_page_heading_title

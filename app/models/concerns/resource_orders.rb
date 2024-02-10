@@ -4,14 +4,21 @@ module ResourceOrders # for route - concern :orders_scoped - rename route concer
   included do
     has_many :orders
 
+    validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 50 }
+
     before_destroy :check_associated_orders # Add Tombstone feature to represent destroyed record data instead of thorwing error?
+
+    def self.display_name
+      return "Ship" if (model_name.name == "Purchaser")
+      return model_name.name
+    end
   end
 
   def active_orders
     self.orders.where(archived: false)
   end
 
-  def order_amount # not in use + shitty, remove this method
+  def order_amount
     return self.order_ids.size unless (self.class.model_name.name == "Purchaser")
     return self.orders.unarchived.size
   end

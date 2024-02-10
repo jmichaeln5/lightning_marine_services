@@ -38,7 +38,10 @@ module Orders::Sortable
       _sort_option = (sort_option == 'ship_name') ? 'purchaser_name' : sort_option
       _sort_option = _sort_option.downcase.gsub("_name", "")
 
-      return Order.where(id: orders.ids).includes(_sort_option.to_sym).references(_sort_option.to_sym).order("LOWER(name)" + " " + sort_direction)
+      return Order.where(id: orders.ids)
+        .includes(_sort_option.to_sym)
+        .references(_sort_option.to_sym)
+        .order("LOWER(name)" + " " + sort_direction)
     end
   end
 end
