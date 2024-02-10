@@ -1,7 +1,7 @@
 module PackageablesEligibility
   extend ActiveSupport::Concern
 
-  PACKAGING_MATERIALS_IMPLEMENTATION_DATE = Date.parse('2024-02-09')
+  PACKAGING_MATERIALS_IMPLEMENTATION_DATE = Date.parse('2024-02-10')
 
   included do
     delegate :packaging_materials_implementation_date, to: :class
