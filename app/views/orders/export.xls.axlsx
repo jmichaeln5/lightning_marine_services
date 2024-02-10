@@ -5,53 +5,64 @@ title = wb.styles.add_style(:fg_color=>"#FF000000", :sz=>8,  :border=> {:style =
 bold = wb.styles.add_style(:b=>true,:fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "#FF000000"},:alignment=>{:horizontal => :left})
 ordstyle = wb.styles.add_style(:fg_color=>"#FF000000",:border=>Axlsx::STYLE_THIN_BORDER,:sz=>8, :alignment=>{:horizontal => :left})
 
-
 wb.add_worksheet(name: "Orders", :page_setup => {:fit_to_width=>1, :orientation => :landscape}) do |sheet|
-  # sheet
   sheet.add_row [@filename], :style=>title
-  #  sheet.add_row ["#","Department","Vendor","PO #","Tracking #","Received Date","Boxes","Crates","Pallet", "Courrier", "Delivery Date"], :style=>bold
-
   humanized_cols = @columns.collect {|col| col.to_s.humanize}
   sheet.add_row humanized_cols, :style=>bold
 
-  if "order_sequence".in? @columns
-    records = @export_records.order("order_sequence ASC")
-  else
-    records = @export_records.order("id ASC")
-  end
+  records = "order_sequence".in?(@columns) ? @export_records.order("order_sequence ASC") : @export_records.order("id ASC")
 
-  records.order("order_sequence ASC").each do |order|
-    order_content_decorator = OrderContentDecorator.new(order.order_content)
-
+  records.each do |order|
     row = Array.new
 
+    order_content = order.order_content
+    order_content_decorator = order_content.nil? ? nil : OrderContentDecorator.new(order_content)
+
     @columns.each do |column|
-      _column = column.parameterize
-
-      if order.respond_to?(_column)
-        row.push order.send(_column)
-      end
-
       packaging_material_attrs = %w(box crate pallet other)
 
-      if column.in? packaging_material_attrs
-        case column
-        when "box"
-          packaging_material_val = order_content_decorator.packaging_materials_boxes_td
-          packaging_material_attrs.delete "box"
+      _column = column.parameterize
 
-        when "crate"
-          packaging_material_val = order_content_decorator.packaging_materials_crates_td
-          packaging_material_attrs.delete "crate"
+      if !column.parameterize.in?(packaging_material_attrs)
+        order_column_value = nil
 
-        when "pallet"
-          packaging_material_val = order_content_decorator.packaging_materials_pallets_td
-          packaging_material_attrs.delete "pallet"
+        if (_column.in?(Order.columns_hash.keys))
+          order_has_column_value = order.send("#{_column}?".to_sym)
 
-        when "other"
-          packaging_material_val = order_content_decorator.packaging_materials_others_td
-          packaging_material_attrs.delete "other"
+          if order_has_column_value
+            order_column_value = order.send(_column)
+            order_column_value = order_column_value.try(:strftime,"%m/%d/%Y") if (Order.columns_hash[_column].type == :datetime)
+          end
+        else
+          order_column_value = order.send(_column) if order.respond_to?(_column)
         end
+
+        order_column_value ||= ""
+
+        row.push order_column_value
+      end
+
+      if column.parameterize.in?(packaging_material_attrs)
+        packaging_material_val = nil
+
+        if order_content_decorator.nil?
+          order_content_column_parameterized_value = order_content.nil? ? nil : order_content.send(column.parameterize)
+          packaging_material_val = order_content_column_parameterized_value unless order_content_column_parameterized_value.blank?
+        end
+
+        if !order_content_decorator.nil? && order_content.has_packaging_materials?
+          order_content_packaging_materials_column_value = order_content_decorator.send("packaging_materials_#{column.pluralize.parameterize}_td")
+          packaging_material_val = order_content_packaging_materials_column_value unless (order_content_packaging_materials_column_value == "0")
+        end
+
+        if packaging_material_val.nil?
+          order_content_column_parameterized_value = order_content.send(column.parameterize)
+          packaging_material_val = order_content_column_parameterized_value unless order_content_column_parameterized_value.blank?
+        end
+
+        packaging_material_val ||= "0"
+
+        packaging_material_attrs.delete column
 
         row.push(packaging_material_val)
       end

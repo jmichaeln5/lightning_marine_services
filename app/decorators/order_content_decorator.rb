@@ -5,6 +5,7 @@ class OrderContentDecorator
 
   def initialize(order_content)
     @order_content = order_content
+    @order_content = OrderContent.includes(:packaging_materials).find_by_id(order_content.id) if order_content.id
   end
 
   def packaging_materials_others_td
@@ -27,8 +28,8 @@ class OrderContentDecorator
     packaging_material_summary_by_type('PackagingMaterial::Pallet')
   end
 
-  private  
-    def packaging_material_summary_by_type(type)
+  private
+    def packaging_material_summary_by_type(type) # ⚠️  # Refactor
       return '0' unless (type.in? PackagingMaterial::Packageable::TYPES)
 
       materials = packaging_materials.where(type: type)
