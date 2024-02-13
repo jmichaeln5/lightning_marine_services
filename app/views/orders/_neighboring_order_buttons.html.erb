@@ -1,39 +1,39 @@
 <div class="overflow-hidden rounded-lg flex justify-between rounded-md text-sm font-semibold leading-6">
   <% button_css = "relative whitespace-nowrap inline-flex items-center bg-white px-2 py-2 border-1 border-inset border-gray-300 focus:z-10 m-1" %>
-  <% prev_order_button_css = order.prev_order.nil? ? "#{button_css.dup} cursor-not-allowed text-gray-400" : "#{button_css.dup} text-gray-500 hover:bg-gray-50 hover:shadow-sm" %>
-  <% prev_order_button_css << " rounded-l-lg pr-4" %>
-  <% next_order_button_css = order.next_order.nil? ? "#{button_css.dup} cursor-not-allowed text-gray-400" : "#{button_css.dup} text-gray-500 hover:bg-gray-50 hover:shadow-sm" %>
-  <% next_order_button_css << " rounded-r-lg pl-4" %>
-  <% content_for :prev_order_content, flush: true do %>
+  <% previous_record_button_css = !order.previous_record? ? "#{button_css.dup} cursor-not-allowed text-gray-400" : "#{button_css.dup} text-gray-500 hover:bg-gray-50 hover:shadow-sm" %>
+  <% previous_record_button_css << " rounded-l-lg pr-4" %>
+  <% next_record_button_css = !order.next_record? ? "#{button_css.dup} cursor-not-allowed text-gray-400" : "#{button_css.dup} text-gray-500 hover:bg-gray-50 hover:shadow-sm" %>
+  <% next_record_button_css << " rounded-r-lg pl-4" %>
+  <% content_for :previous_record_content, flush: true do %>
     <span class="sr-only">Previous order</span>
-    <svg class="h-5 w-5 <%= order.prev_order.nil? ? "text-gray-400" : "text-gray-600" %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <svg class="h-5 w-5 <%= order.previous_record? ? "text-gray-600" : "text-gray-400" %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
     </svg>
     Previous order
   <% end %>
-  <% content_for :next_order_content, flush: true do %>
+  <% content_for :next_record_content, flush: true do %>
     <span class="sr-only">Next order</span>
     Next order
-    <svg class="h-5 w-5 <%= order.next_order.nil? ? "text-gray-400" : "text-gray-600" %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <svg class="h-5 w-5 <%= order.next_record? ? "text-gray-600" : "text-gray-400" %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
     </svg>
   <% end %>
-  <% if order.prev_order.nil? %>
-    <%= tag.div class: prev_order_button_css do %>
-      <%= yield :prev_order_content %>
+  <% if order.previous_record? %>
+    <%= link_to order_path(order.previous_record), class: previous_record_button_css do %>
+      <%= yield :previous_record_content %>
     <% end %>
   <% else %>
-    <%= link_to order_path(order.prev_order), class: prev_order_button_css do %>
-      <%= yield :prev_order_content %>
+    <%= tag.div class: previous_record_button_css do %>
+      <%= yield :previous_record_content %>
     <% end %>
   <% end %>
-  <% if order.next_order.nil? %>
-    <%= tag.div class: next_order_button_css do %>
-      <%= yield :next_order_content %>
+  <% if order.next_record? %>
+    <%= link_to order_path(order.next_record), class: next_record_button_css do %>
+      <%= yield :next_record_content %>
     <% end %>
   <% else %>
-    <%= link_to order_path(order.next_order), class: next_order_button_css do %>
-      <%= yield :next_order_content %>
+    <%= tag.div class: next_record_button_css do %>
+      <%= yield :next_record_content %>
     <% end %>
   <% end %>
 </div>

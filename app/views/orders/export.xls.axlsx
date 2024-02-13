@@ -45,22 +45,29 @@ wb.add_worksheet(name: "Orders", :page_setup => {:fit_to_width=>1, :orientation 
       if column.parameterize.in?(packaging_material_attrs)
         packaging_material_val = nil
 
-        if order_content_decorator.nil?
-          order_content_column_parameterized_value = order_content.nil? ? nil : order_content.send(column.parameterize)
-          packaging_material_val = order_content_column_parameterized_value unless order_content_column_parameterized_value.blank?
+        if (order_content.has_packaging_materials? == true)
+          if order_content_decorator.nil?
+            order_content_column_parameterized_value = order_content.nil? ? nil : order_content.send(column.parameterize)
+            packaging_material_val = order_content_column_parameterized_value unless order_content_column_parameterized_value.blank?
+          end
+
+          if !order_content_decorator.nil? && order_content.has_packaging_materials?
+            order_content_packaging_materials_column_value = order_content_decorator.send("packaging_materials_#{column.pluralize.parameterize}_td")
+            packaging_material_val = order_content_packaging_materials_column_value unless (order_content_packaging_materials_column_value == "0")
+          end
+
+          if packaging_material_val.nil?
+            order_content_column_parameterized_value = order_content.send(column.parameterize)
+            packaging_material_val = order_content_column_parameterized_value unless order_content_column_parameterized_value.blank?
+          end
         end
 
-        if !order_content_decorator.nil? && order_content.has_packaging_materials?
-          order_content_packaging_materials_column_value = order_content_decorator.send("packaging_materials_#{column.pluralize.parameterize}_td")
-          packaging_material_val = order_content_packaging_materials_column_value unless (order_content_packaging_materials_column_value == "0")
+        if (order_content.has_packaging_materials? == false)
+          order_content_packaging_material_value = order_content.send(column.parameterize)
+          packaging_material_val = order_content.send(column.parameterize)
         end
 
-        if packaging_material_val.nil?
-          order_content_column_parameterized_value = order_content.send(column.parameterize)
-          packaging_material_val = order_content_column_parameterized_value unless order_content_column_parameterized_value.blank?
-        end
-
-        packaging_material_val ||= "0"
+        packaging_material_val = "0" if packaging_material_val.blank?
 
         packaging_material_attrs.delete column
 

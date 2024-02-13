@@ -12,6 +12,8 @@ module Order::Statusable
     delegate :active_statuses, :inactive_statuses, to: :class
     delegate :status_names, :active_status_names, :inactive_status_names, to: :class
 
+    delegate :get_status_group, to: :class
+
     enum status: %i(active partially_delivered delivered hold)
 
     STATUSES = self.statuses
@@ -56,6 +58,12 @@ module Order::Statusable
 
     def statusable_id
       id
+    end
+
+    def self.get_status_group(status)
+      return "active" if status.in?(active_status_names)
+      return "completed" if status.in?(inactive_status_names)
+      return "all"
     end
 
     def statusable_path

@@ -4,7 +4,6 @@ class SearchesController < ApplicationController
   before_action :ensure_frame_response, only: %i[ index ]
 
   def index
-    # Create PORO for searching
     @query_str = params[:query]
     model = Order
 
@@ -17,11 +16,11 @@ class SearchesController < ApplicationController
 
   private
     def search_query_against_model(model, query_str)
-      results = model.search(query_str, misspellings: { below: 3} ).results
-      results_arr = Array.new
-      results.each do |result|
-        results_arr << result.id
-      end
-      return model.where(id: results_arr)
+      results = model.search(query_str,
+        misspellings: { below: 3},
+        fields: Order.searchable_attrs,
+      ).results
+
+      model.where(id: results.pluck(:id)).includes(:order_content)
     end
 end
