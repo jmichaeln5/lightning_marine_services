@@ -3,33 +3,31 @@
     <div class="p-2 m-1 rounded-md hover:bg-gray-50">
       <div class="mb-1">
         <div class="text-sm font-medium text-gray-600">
-          PO/Tracking Number
+          Status
         </div>
         <div class="text-xs font-medium text-gray-500">
-            <%= @order.po_number.blank? ? 'n/a' : @order.po_number %>
+          <%= render partial:"/statuses/status", locals: { statusable: @order, allow_edit_status: false } %>
         </div>
       </div>
     </div>
-    <!--
-    <%# Tracking Number %>
+    <% order_decorator = OrderDecorator.new(@order) %>
     <div class="p-2 m-1 rounded-md hover:bg-gray-50">
       <div class="mb-1">
         <div class="text-sm font-medium text-gray-600">
-          Tracking Number:
+          PO/Tracking Number
         </div>
         <div class="text-xs font-medium text-gray-500">
-            <%= @order.tracking_number.blank? ? 'n/a' : @order.tracking_number %>
+          <%= order_decorator.return_attr_or_str(:po_number, 'n/a') %>
         </div>
       </div>
     </div>
-    -->
     <div class="p-2 m-1 rounded-md hover:bg-gray-50">
       <div class="mb-1">
         <div class="text-sm font-medium text-gray-600">
           Date Recieved:
         </div>
         <div class="text-xs font-medium text-gray-500">
-            <%= @order.try(:date_recieved) ? @order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+          <%= order_decorator.return_attr_or_str(:date_recieved, 'n/a') %>
         </div>
       </div>
     </div>
@@ -39,7 +37,7 @@
           Date Delivered:
         </div>
         <div class="text-xs font-medium text-gray-500">
-            <%= @order.try(:date_delivered) ? @order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a' %>
+          <%= order_decorator.return_attr_or_str(:date_delivered, 'n/a') %>
         </div>
       </div>
     </div>
@@ -49,7 +47,7 @@
           Courrier:
         </div>
         <div class="text-xs font-medium text-gray-500">
-            <%= @order.courrier.blank? ? 'n/a' : @order.courrier %>
+          <%= order_decorator.return_attr_or_str(:courrier, 'n/a') %>
         </div>
       </div>
     </div>
@@ -59,7 +57,7 @@
           Dept:
         </div>
         <div class="text-xs font-medium text-gray-500">
-            <%= @order.dept.blank? ? 'n/a' : @order.dept %>
+          <%= order_decorator.return_attr_or_str(:dept, 'n/a') %>
         </div>
       </div>
     </div>

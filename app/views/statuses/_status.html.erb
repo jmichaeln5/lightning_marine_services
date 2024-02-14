@@ -1,10 +1,13 @@
+<% statusable = local_assigns[:statusable] %>
+<% allow_edit_status = local_assigns[:allow_edit_status] %>
+<% allow_edit_status = (authorized_internal_user? ? true : false) if local_assigns[:allow_edit_status] %>
+<% allow_edit_status = false unless authorized_internal_user? %>
 <%= render partial: "/application/append_flash_notice", locals: { notice: notice} if notice %>
-<% status_badge_css_classes = "" %>
-<% local_assigns[:status_badge_css].nil? ? (status_badge_css_classes << "rounded-full") : (status_badge_css_classes << " #{local_assigns[:status_badge_css]}") %>
+<% status_badge_css = local_assigns[:status_badge_css].nil? ? "rounded-full" : " #{local_assigns[:status_badge_css]} rounded-full" %>
 <%= tag.div id: statusable.statusable_dom_id, class: "inline-block w-full" do %>
   <%= tag.div class: "inline-block" do %>
     <% status = (statusable.status || "missing status") %>
-    <% if authorized_internal_user? %>
+    <% if allow_edit_status %>
       <%= tag.div do %>
         <%= turbo_frame_tag statusable.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
           <%= link_to edit_status_path(
@@ -12,15 +15,15 @@
           params: {
             statusable_id: statusable.id,
             statusable_type: statusable.statusable_type,
-            status_badge_css: local_assigns[:status_badge_css],
+            status_badge_css: status_badge_css,
           },
           ) do %>
-            <%= status_badge status, status_badge_css_classes %>
+            <%= status_badge status, status_badge_css %>
           <% end %>
         <% end %>
       <% end %>
     <% else %>
-      <%= status_badge status, status_badge_css_classes  %>
+      <%= status_badge status, status_badge_css  %>
     <% end %>
   <% end %>
 <% end %>
