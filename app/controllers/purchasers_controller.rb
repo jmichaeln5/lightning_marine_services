@@ -2,12 +2,12 @@ class PurchasersController < ApplicationController
   layout "stacked_shell"
 
   before_action :authorize_internal_user, only: %i[ new create edit update destroy ]
-  before_action :set_page_heading_title, except: %i[ show ]
+  before_action :set_page_heading_title
   before_action :set_purchaser, only: %i[ show edit update destroy export ]
 
   def index
     @purchasers = Purchaser.includes(:orders).left_joins(:orders).group(:id).reorder("COUNT(orders.id) DESC")
-    
+
     sort_purchasers if params[:sort]
     @pagy, @purchasers = pagy @purchasers, items: params.fetch(:count, 10)
   end

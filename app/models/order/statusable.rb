@@ -42,12 +42,16 @@ module Order::Statusable
       statuses.select {|_status| _status unless _status.in?  ACTIVE_STATUS_NAMES.collect {|status| status.to_s } }
     end
 
-    def self.all_inactive
-      where(status: INACTIVE_STATUS_NAMES)
+    def self.active
+      where(status: active_statuses.keys)
     end
 
-    def self.all_active
-      where.not(status: INACTIVE_STATUS_NAMES)
+    def self.inactive
+      where(status: inactive_statuses.keys)
+    end
+
+    def self.completed
+      where(status: "delivered")
     end
 
     def statusable_type

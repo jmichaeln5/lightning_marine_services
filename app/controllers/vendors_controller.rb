@@ -2,8 +2,8 @@ class VendorsController < ApplicationController
   layout "stacked_shell"
 
   before_action :authorize_internal_user
-  before_action :set_page_heading_title, except: %i[ show ]
-  before_action :set_vendor, only: %i[ show edit update destroy ]
+  before_action :set_page_heading_title
+  before_action :set_vendor, only: %i[edit update destroy ]
 
   def index
     @vendors = Vendor.includes(:orders).left_joins(:orders).group(:id).reorder("COUNT(orders.id) DESC")
@@ -46,7 +46,6 @@ class VendorsController < ApplicationController
     respond_to do |format|
       if @vendor.save
         format.html { redirect_to vendor_orders_path(@vendor), notice: "Vendor was successfully created." }
-        format.json { render :show, status: :created, location: @vendor }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @vendor.errors, status: :unprocessable_entity }
@@ -58,7 +57,6 @@ class VendorsController < ApplicationController
     respond_to do |format|
       if @vendor.update(vendor_params)
         format.html { redirect_to vendor_orders_path(@vendor), notice: "Vendor was successfully updated." }
-        format.json { render :show, status: :ok, location: @vendor }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @vendor.errors, status: :unprocessable_entity }

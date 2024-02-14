@@ -13,7 +13,7 @@
     fallback_location_text: "Dashboard",
   } unless authorized_internal_user? %>
 <% end %>
-<%= render partial: 'orders/page_heading_card' %>
+<%= render partial: 'orders/page_heading_card', locals: { scoped_resource: @scoped_resource } %>
 <% table_section_heading_title = "#{scoped_status.humanize}#{scoped_resource? ? " #{@scoped_resource.class.display_name.downcase} " : " "}orders" %>
 <% table_section_heading_description = "orders with the following statuses: #{status_scopes_names(status_scope: scoped_status)}" %>
 <%= render partial: '/data_tables/section_heading', locals: {table_section_heading_title: table_section_heading_title, table_section_heading_description: table_section_heading_description} %>

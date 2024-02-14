@@ -20,7 +20,7 @@ module ResourceOrders # for route - concern :orders_scoped - rename route concer
 
   def order_amount
     return self.order_ids.size unless (self.class.model_name.name == "Purchaser")
-    return self.orders.unarchived.size
+    return self.orders.active.size
   end
 
   private

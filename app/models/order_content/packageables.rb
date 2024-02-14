@@ -74,7 +74,13 @@ module OrderContent::Packageables
       order_content_packaging_materials_size > marked_for_destruction_amount
     end
 
-    def packaging_materials_attributes_pair
+    def with_packaging_materials_attributes
+      _attributes = attributes.dup
+      _attributes[:packaging_materials_attributes] = packaging_materials.map(&:attributes)
+      _attributes
+    end
+
+    def packaging_materials_attributes_pair # same as with_packaging_materials_attributes ??? (worse if so)
       matching_attr_values_hash = Hash.new
       matching_attr_values_hash[:order_content_attributes], matching_attr_values_hash[:packaging_materials_attributes] = Array.new, Array.new
 

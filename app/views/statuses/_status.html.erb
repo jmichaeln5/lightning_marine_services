@@ -1,6 +1,6 @@
 <% statusable = local_assigns[:statusable] %>
 <% allow_edit_status = local_assigns[:allow_edit_status] %>
-<% allow_edit_status = (authorized_internal_user? ? true : false) if local_assigns[:allow_edit_status] %>
+<% allow_edit_status = true if local_assigns[:allow_edit_status].nil? %>
 <% allow_edit_status = false unless authorized_internal_user? %>
 <%= render partial: "/application/append_flash_notice", locals: { notice: notice} if notice %>
 <% status_badge_css = local_assigns[:status_badge_css].nil? ? "rounded-full" : " #{local_assigns[:status_badge_css]} rounded-full" %>
