@@ -9,11 +9,11 @@
         <div class="sm:col-span-1 p-1 sm:-m-1 rounded-md hover:bg-gray-100">
           <div class="cursor-default">
             <div class="text-sm font-medium text-gray-500">
-              Order Sequence
+              Position
             </div>
             <div class="text-sm text-gray-900">
-              <%= render "inline_edit", model: order, attribute: :order_sequence do %>
-                <%= order.order_sequence %>
+              <%= render "inline_edit", model: order, attribute: :position do %>
+                <%= order.position %>
               <% end %>
             </div>
           </div>

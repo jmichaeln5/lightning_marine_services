@@ -20,21 +20,21 @@ module Order::Resourceable
     end
 
     private
-      def set_default_sequence?
-        order_sequence.nil? && purchaser_id?
-      end
-
-      def set_default_sequence
-        ship = Purchaser.find(self.purchaser_id)
-        shipOrders = ship.orders.unarchived
-        seq = 1
-        shipOrders.each do |ord|
-          iSeq = (ord.try(:order_sequence)|| 0)
-          if iSeq >= seq
-            seq = iSeq + 1
-          end
-        end
-        self.order_sequence = seq
-      end
+      # def set_default_sequence?
+      #   order_sequence.nil? && purchaser_id?
+      # end
+      #
+      # def set_default_sequence
+      #   ship = Purchaser.find(self.purchaser_id)
+      #   shipOrders = ship.orders.unarchived
+      #   seq = 1
+      #   shipOrders.each do |ord|
+      #     iSeq = (ord.try(:order_sequence)|| 0)
+      #     if iSeq >= seq
+      #       seq = iSeq + 1
+      #     end
+      #   end
+      #   self.order_sequence = seq
+      # end
   end
 end

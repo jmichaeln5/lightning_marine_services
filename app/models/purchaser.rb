@@ -8,10 +8,11 @@
 #  updated_at :datetime         not null
 #
 class Purchaser < ApplicationRecord
+  include ResourceOrders
+
   alias_attribute :purchaser_name, :name
   alias_attribute :ship_name, :name
 
-  include ResourceOrders
-
+  has_many :orders
   has_many :vendors, through: :orders
 end

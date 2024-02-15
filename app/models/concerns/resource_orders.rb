@@ -2,8 +2,6 @@ module ResourceOrders # for route - concern :orders_scoped - rename route concer
   extend ActiveSupport::Concern
 
   included do
-    has_many :orders
-
     validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 50 }
 
     before_destroy :check_associated_orders # Add Tombstone feature to represent destroyed record data instead of thorwing error?

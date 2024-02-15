@@ -111,7 +111,7 @@ class OrdersController < Orders::BaseController
   private
     def order_params
       params.require(:order).permit(
-        :order_sequence, :status, :dept, :purchaser_id, :vendor_id, :po_number, :date_recieved, :courrier, :date_delivered,
+        :position, :status, :dept, :purchaser_id, :vendor_id, :po_number, :date_recieved, :courrier, :date_delivered,
         images: [],
         order_content_attributes:[
           :id, :box, :crate, :pallet, :other, :other_description,
@@ -128,6 +128,7 @@ class OrdersController < Orders::BaseController
 
     def set_orders
       set_scoped_resource if scoped_resource?
+
       orders = scoped_resource? ? @scoped_resource.orders : Order.all
 
       if purchaser?
