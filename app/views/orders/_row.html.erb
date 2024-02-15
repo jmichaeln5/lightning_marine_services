@@ -1,0 +1,79 @@
+<% order = local_assigns[:record] %>
+<tr class="table-row hover:bg-slate-100 transition ease-in-out delay-150 duration-300" id="<%= dom_id(order) %>">
+  <% css_td = "whitespace-nowrap px-1 py-4 text-sm text-gray-500" %>
+  <% css_td_first = "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-1" %>
+  <% css_td_last = "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-3" %>
+  <% css_td_anchor = "text-indigo-600 hover:text-indigo-900" %>
+  <td data-table-target="td" class="<%= css_td_first %>">
+    <%= link_to order.id, order_path(order.id), target: '_top', class: 'pl-0.5 text-indigo-600 hover:text-indigo-900' %>
+  </td>
+  <td data-table-target="td" class="<%= css_td %> px-3 text-left">
+    <%= tag.div class: "w-full relative" do %>
+      <%= render "inline_edit", model: order, attribute: :order_sequence %>
+    <% end %>
+  </td>
+  <td data-table-target="td" class="<%= css_td %>">
+    <%= tag.div id: order.statusable_dom_id, class: "" do %>
+      <% status_badge_css = "rounded-full px-3 py-1.5" %>
+      <%= tag.div class: "inline-block" do %>
+        <% if authorized_internal_user? %>
+          <%= tag.div do %>
+            <%= turbo_frame_tag order.edit_statusable_dom_id, class: "w-full inline-flex justify-center" do %>
+              <%= link_to edit_status_path(
+              order,
+              params: {
+                statusable_id: order.id,
+                statusable_type: order.statusable_type,
+                status_badge_css: status_badge_css },
+              ) do %>
+                <%= status_badge order.status, status_badge_css %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= status_badge order.status, status_badge_css %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </td>
+  <td data-table-target="td" class="<%= css_td %> pr-3">
+    <%= render "orders/inline_edit_dept", order: order, attribute: :dept %>
+  </td>
+  <% css_td_dup = css_td.dup %>
+  <td data-table-target="td" class="<%= css_td_dup.gsub("whitespace-nowrap", "") %>">
+    <% if !purchaser? %>
+      <%= link_to order.purchaser.name, purchaser_orders_path(order.purchaser, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' %>
+    <% else %>
+      <%= tag.span order.purchaser.name %>
+    <% end %>
+  </td>
+  <% css_td_dup = css_td.dup %>
+  <td data-table-target="td" class="<%= css_td_dup.gsub("whitespace-nowrap", "") %>">
+    <% if !vendor? %>
+      <%= link_to order.vendor.name, vendor_orders_path(order.vendor, status: status_display_name), target: '_top', class: 'text-indigo-600 hover:text-indigo-900' if authorized_internal_user? %>
+      <%= tag.span order.vendor.name if !authorized_internal_user? %>
+    <% else %>
+      <%= tag.span order.vendor.name %>
+    <% end %>
+  </td>
+  <td data-table-target="td" class="<%= css_td %>">
+    <%= render "inline_edit", model: order, attribute: :po_number %>
+  </td>
+  <td data-table-target="td" class="<%= css_td %>">
+    <%= render "inline_edit", model: order, attribute: :date_recieved %>
+  </td>
+  <td data-table-target="td" class="<%= css_td %>">
+    <div class="m-auto">
+      <%= render partial: "/data_tables/table_elements/order_content_td", locals:{ order_content: order.order_content} %>
+    </div>
+  </td>
+  <td class="<%= css_td %>">
+    <%= render "inline_edit", model: order, attribute: :courrier %>
+  </td>
+  <td class="<%= css_td %>">
+    <%= render "inline_edit", model: order, attribute: :date_delivered %>
+  </td>
+  <td class="<%= css_td_last %>">
+    <%= link_to "Edit order", edit_order_path(order), data: {turbo_frame: "modal" }, class: "text-indigo-600 hover:text-indigo-900" if authorized_internal_user? %>
+  </td>
+</tr>

@@ -10,13 +10,19 @@ module PackageablesEligibility
       PACKAGING_MATERIALS_IMPLEMENTATION_DATE
     end
 
+    def recieved_before_packaging_materials_implementation_date?
+      return false unless date_recieved?
+
+      date_recieved < packaging_materials_implementation_date
+    end
+
     def created_before_packaging_materials_implementation_date?
       return false if new_record?
 
       created_at < packaging_materials_implementation_date
     end
 
-    def eligible_for_packaging_materials_validation?
+    def created_after_packaging_materials_implementation_date?
       !created_before_packaging_materials_implementation_date?
     end
 

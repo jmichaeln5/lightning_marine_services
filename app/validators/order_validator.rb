@@ -31,7 +31,10 @@ class OrderValidator < ActiveModel::Validator
   end
 
   def validate_packaging_materials(record)
-    unless !record.eligible_for_packaging_materials_validation?
+    was_created_before = record.created_before_packaging_materials_implementation_date? == true
+    was_recieved_before = record.recieved_before_packaging_materials_implementation_date? == true
+
+    unless [was_created_before, was_recieved_before].include? true
       add_packaging_materials_error(record) if add_packaging_materials_error?(record)
     end
   end

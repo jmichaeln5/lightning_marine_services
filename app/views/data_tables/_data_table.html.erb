@@ -1,96 +1,70 @@
-  <%= tag.div id: "orders",
-    data: {
-    controller: 'table',
-    "table-target": "rootElement",
+<%= tag.div id: data_table.model_name_collection,
+  data: {
+  controller: 'table',
+  "table-target": "rootElement",
 
-    "table-th-class": "px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
-    "table-th-first-class": "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0",
-    "table-th-last-class": "relative py-3.5 pl-3 pr-0",
+  "table-th-class": "px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  "table-th-first-class": "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0",
+  "table-th-last-class": "relative py-3.5 pl-3 pr-0",
 
-    "table-cheveron-active-class": "ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200",
-    "table-cheveron-inactive-class": "invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible",
+  "table-cheveron-active-class": "ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200",
+  "table-cheveron-inactive-class": "invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible",
 
-    "table-td-class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500",
-    "table-td-first-class": "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-0",
-    "table-td-last-class": "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-0",
-  }, class: "flow-root" do %>
-    <%= tag.div class: "-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8" do %>
-      <%= tag.div class: "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8" do %>
-        <table class="min-w-full divide-y divide-gray-300">
-          <thead>
-            <tr>
-              <% css_cheveron_active = %w(ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200) %>
-              <% css_cheveron_not_active = %w(invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible) %>
-              <% css_cheveron_no_sort_link_to = %w(invisible ml-2 flex-none rounded text-gray-400) %>
-
-              <% th_first = DataTableDecorator.table_attrs.first %>
-              <% th_last = DataTableDecorator.table_attrs.last %>
-
-              <% ths = DataTableDecorator.table_attrs %>
-              <% sortable_ths = DataTableDecorator.sortable_table_headers_attrs %>
-
-              <% css_th = "px-3 py-3.5 text-left text-sm text-gray-600 font-normal " %>
-              <% css_th_first = "py-3.5 pl-4 pr-3 text-left text-sm text-gray-600 font-normal" %>
-              <% css_th_last = "relative py-3.5 pl-3 pr-0 text-left text-sm text-gray-600 font-normal" %>
-
-              <% DataTableDecorator.table_attrs.each_with_index do |th, index| %>
-                <% _th_css = css_th_first if (th == DataTableDecorator.table_attrs.first) %>
-                <% _th_css = css_th_last if (th == DataTableDecorator.table_attrs.last) %>
-                <% _th_css ||= css_th %>
-
-                <% th_is_sortable = th.in?(sortable_ths) %>
-
-                <% _th_css << " whitespace-nowrap" if 13 <= th.length %>
-                <% _cheveron_css = th_is_sortable ? css_cheveron_not_active : css_cheveron_no_sort_link_to %>
-                <% content_for :table_header_content, flush: true do %>
-                  <%= tag.span class: "group inline-flex" do %>
-                    <%= tag.span th.to_s.humanize, class: class_names("font-semibold": th_is_sortable) %>
-                    <%= tag.span class: _cheveron_css do %>
-                      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                      </svg>
-                    <% end %>
+  "table-td-class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500",
+  "table-td-first-class": "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-0",
+  "table-td-last-class": "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-0",
+}, class: "flow-root" do %>
+  <%= tag.div class: "-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8" do %>
+    <%= tag.div class: "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8" do %>
+      <table class="min-w-full divide-y divide-gray-300">
+        <thead>
+          <tr>
+            <% css_cheveron_active = %w(ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200) %>
+            <% css_cheveron_not_active = %w(invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible) %>
+            <% css_cheveron_no_sort_link_to = %w(invisible ml-2 flex-none rounded text-gray-400) %>
+            <% css_th = "px-3 py-3.5 text-left text-sm text-gray-600 font-normal " %>
+            <% css_th_first = "py-3.5 pl-4 pr-3 text-left text-sm text-gray-600 font-normal" %>
+            <% css_th_last = "relative py-3.5 pl-3 pr-0 text-left text-sm text-gray-600 font-normal" %>
+            <% data_table.table_headers.each_with_index do |th, index| %>
+              <% _th_css = css_th_first if (th == data_table.table_headers.first) %>
+              <% _th_css = css_th_last if (th == data_table.table_headers.last) %>
+              <% _th_css ||= css_th %>
+              <% _th_css << " whitespace-nowrap" if 9 <= th.length %>
+              <% th_is_sortable = th.in?(data_table.sortable_table_headers) %>
+              <% _cheveron_css = th_is_sortable ? css_cheveron_not_active : css_cheveron_no_sort_link_to %>
+              <% content_for :table_header_content, flush: true do %>
+                <%= tag.span class: "group inline-flex" do %>
+                  <%= tag.span th.to_s.humanize, class: class_names("font-semibold": th_is_sortable) %>
+                  <%= tag.span class: _cheveron_css do %>
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
                   <% end %>
                 <% end %>
-                <th scope="col" class="<%= _th_css %>" data-table-target="th">
-                  <% if th_is_sortable %>
-                    <%# direction = ((params[:direction] == "asc") ? "desc" : "asc") %>
-                    <%# _sort_option_param = {sort: th, direction: direction} %>
-                    <%#= link_to request.params.merge(_sort_option_param), data: {
-                      turbo_frame: "orders",
-                      turbo_action: "advance"
-                    }  do %>
-                    <%# sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
-                    <%# sort_params = { sort_direction: sort_direction, sort_option: th } %>
-                    <%#= button_to request.path,
-                     method: :get,
-                     params: sort_params,
-                     data: {
-                       turbo_frame: "orders",
-                       turbo_action: "advance",
-                    } do %>
-                    <% sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
-                    <% sort_params = { sort_direction: sort_direction, sort_option: th } %>
-                    <%= link_to request.params.merge(sort_params), data: {
-                      turbo_frame: "orders",
-                      turbo_action: "advance"
-                    }  do %>
-                      <%= yield :table_header_content %>
-                    <% end %>
-                  <% else %>
+              <% end %>
+              <th scope="col" class="<%= _th_css %>" data-table-target="th">
+                <% if th_is_sortable %>
+                  <% sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
+                  <% sort_params = { sort_direction: sort_direction, sort_option: th } %>
+                  <%= link_to request.params.merge(sort_params), data: {
+                    turbo_frame: data_table.model_name_collection,
+                    turbo_action: "advance"
+                  }  do %>
                     <%= yield :table_header_content %>
                   <% end %>
-                </th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody id="orders_table" class="divide-y divide-gray-200 bg-white">
-            <%#= render partial: "/data_tables/table_elements/row", collection: orders, as: :order %>
-            <% orders.each do |order| %>
-              <%= render partial: "/data_tables/table_elements/row", locals: {order: order} %>
+                <% else %>
+                  <%= yield :table_header_content %>
+                <% end %>
+              </th>
             <% end %>
-          </tbody>
-        </table>
-      <% end %>
+          </tr>
+        </thead>
+        <tbody id="<%= "#{data_table.model_name_collection}_table" %>" class="divide-y divide-gray-200 bg-white">
+          <% records.each do |record| %>
+            <%= render partial: "/#{data_table.klass.model_name.route_key}/row", locals: {record: record} %>
+          <% end %>
+        </tbody>
+      </table>
     <% end %>
   <% end %>
+<% end %>

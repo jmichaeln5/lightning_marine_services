@@ -16,7 +16,64 @@
 <%= render partial: 'orders/page_heading_card', locals: { scoped_resource: @scoped_resource } %>
 <% table_section_heading_title = "#{scoped_status.humanize}#{scoped_resource? ? " #{@scoped_resource.class.display_name.downcase} " : " "}orders" %>
 <% table_section_heading_description = "orders with the following statuses: #{status_scopes_names(status_scope: scoped_status)}" %>
-<%= render partial: '/data_tables/section_heading', locals: {table_section_heading_title: table_section_heading_title, table_section_heading_description: table_section_heading_description} %>
+<% orders_data_table = DataTable::Orders.new(@orders) %>
+<section>
+  <div data-controller="reveal" data-reveal-hidden-class="hidden">
+    <div class="sm:flex sm:items-center mb-5 sm:mb-7">
+      <div class="sm:flex-auto">
+        <div class="text-center sm:text-left">
+          <h1 class="ml-2 text-2xl font-semibold leading-6 text-gray-900">
+            <%= content_tag(:span, table_section_heading_title, id:"table_section_heading_title" ) %>
+          </h1>
+          <p class="mt-2 ml-2 mb-1 text-md text-gray-700">
+            <%= content_tag(:span, table_section_heading_description, id:"table_section_heading_description" ) %>
+          </p>
+        </div>
+      </div>
+      <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none hover:cursor-pointer">
+        <div data-action="click->reveal#toggle" type="button" class="table-options-button text-center sm:inline-block">
+          <div class="mr-2 relative px-4 py-2 overflow-hidden font-medium text-gray-500 bg-gray-50 ring-1 ring-inset ring-gray-300 rounded-lg shadow-inner whitespace-nowrap group">
+            <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
+            <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
+            <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+            <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+            <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
+            <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
+                <div class="relative -ml-px inline-flex items-center align-middle gap-x-1.5 rounded-md text-base cursor-pointer">
+                  <%= tag.span 'Orders options', class: "whitespace-nowrap " %>
+                  <svg class="-mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-reveal-target="item" class="hidden block z-10 bg-white rounded-md p-3 mb-5 relative">
+      <% if scoped_resource? %>
+        <%= tag.div class: "w-full mb-3 bg-white inline-flex justify-center sm:justify-end" do %>
+          <%= link_to "Deliver active orders", {
+              controller: "orders/bulk",
+              action: "update",
+              resource_id: @scoped_resource.id
+            },
+            data: {
+              turbo_method: :patch,
+              turbo_confirm: "Are you sure?",
+            }, class: "inline-block btn btn_indigo" if authorized_internal_user? && scoped_resource? %>
+        <% end %>
+      <% end %>
+      <% export_columns = orders_data_table.table_headers %>
+      <% export_columns = export_columns - %i(ship_name) if purchaser? %>
+      <% export_columns = export_columns - %i(vendor_name) if vendor? %>
+      <%= render partial: "/exports/form", locals: {
+        scoped_resource: @scoped_resource,
+        export_columns: orders_data_table.table_headers,
+      } %>
+    </div>
+  </div>
+</section>
 <section>
   <% x_axis_padding = "px-4 sm:px-6 lg:px-8" %>
   <div class="rounded-md bg-white">
@@ -52,25 +109,12 @@
           <%= tag.div class: x_axis_padding do %>
             <section>
               <%= turbo_frame_tag "orders" do %>
-                <%= tag.div class: "mb-3 flex justify-end space-x-3" do %>
-                  <% _filename_str = "#{@scoped_resource.name}" if scoped_resource? %>
-                  <% if (scoped_status? && status_param_valid?) %>
-                    <% _filename_str_orders = "#{scoped_status.capitalize} Orders" %>
-                  <% end %>
-                  <% _filename_str_orders ||= "Orders" %>
-                  <% if _filename_str %>
-                    <% _filename_str = "#{_filename_str} #{_filename_str_orders}" %>
-                  <% else %>
-                    <% _filename_str = "#{_filename_str_orders}" %>
-                  <% end %>
-                  <% _filename = "#{_filename_str} #{format_datetime_now_str.parameterize}" %>
-                  <% export_param_format = scoped_status %>
-                  <% export_param_exportable_class = scoped_resource? ? @resource_class_scoped : "Order" %>
-                  <% export_param_exportable_id = scoped_resource? ? @scoped_resource.id : nil %>
-                <% end %>
                 <%= render partial: "/data_tables/pagy_nav", locals: { pagy: @pagy } %>
                 <%= tag.div class: "overflow-x-auto rounded-lg bg-white #{x_axis_padding} shadow border border-slate-50" do %>
-                  <%= render partial: "/data_tables/data_table", locals: { orders: @orders } %>
+                  <%= render partial: "/data_tables/data_table", locals: {
+                    records: @orders,
+                    data_table: orders_data_table,
+                  } %>
                 <% end %>
                 <%= render partial: "/data_tables/pagy_nav", locals: { pagy: @pagy } %>
               <% end %>

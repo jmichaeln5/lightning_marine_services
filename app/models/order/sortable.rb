@@ -3,13 +3,11 @@ module Order::Sortable
 
   included do
     def self.sortable_attrs
-      # %w(id order_sequence status dept courrier ship_name purchaser_name vendor_name date_recieved date_delivered) # NOTE - removed dept due to both nil and "" values that modify sort order (asc- "", "value of str", nil) (desc- nil, "value of str", "")
-      %w(id order_sequence status courrier ship_name purchaser_name vendor_name date_recieved date_delivered)
+      %i(id position status courrier ship_name purchaser_name vendor_name date_recieved date_delivered)
     end
 
-    def self.sort(scope = nil, filters = nil)
-      # Order
-      scope
+    def self.sort_by(filters = nil, direction = 'asc')
+      Order
         .extending(SortableScopes)
         .by_dept(filters[:dept])
         .by_courrier(filters[:courrier])

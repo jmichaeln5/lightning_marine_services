@@ -21,7 +21,7 @@ class OrderContent < ApplicationRecord
     packaging_materials_error_attribute, packaging_materials_error_type = OrderValidator.packaging_materials_error_attribute, OrderValidator.packaging_materials_error_type
 
     !order.errors.where(packaging_materials_error_attribute, packaging_materials_error_type).any?
-  }, if: :eligible_for_packaging_materials_validation?
+  }, if: :created_after_packaging_materials_implementation_date?
 
   def self.all_packaging_materials_attributes_pairs
     _all_packaging_materials_attributes_pair = includes(:packaging_materials).map {|_order_content| _order_content.packaging_materials_attributes_pair }
