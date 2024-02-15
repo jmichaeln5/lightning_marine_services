@@ -22,6 +22,8 @@ class Order < ApplicationRecord
   include Archivable, Exportable, Filterable, Searchable, Sortable, Statusable
   include Paginationable
 
+  alias_attribute :order_sequence, :position
+
   belongs_to :purchaser
   belongs_to :vendor
 
@@ -34,7 +36,7 @@ class Order < ApplicationRecord
 
   before_validation do
     set_default_sequence if set_default_sequence?
-    set_archived_value_from_date_delivered if set_archived_value_from_date_delivered?
+    set_archived_value if set_archived_value?
     set_associated_statuses_from_order if set_associated_statuses_from_order?
   end
 end

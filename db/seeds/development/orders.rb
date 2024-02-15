@@ -2,17 +2,15 @@ rand_vendor_amount_range = (60..100)
 @vendors_to_create = (Vendor.all.size < 1) ? rand(rand_vendor_amount_range) : Vendor.all.size
 @purchasers_to_create = (Purchaser.all.size < 1) ? (@vendors_to_create / 3).round(1) : Purchaser.all.size
 
+# @orders_to_create =  @vendors_to_create * 5
+# @orders_to_create =  @vendors_to_create * 10
 @orders_to_create =  @vendors_to_create * 20
-@orders_before_packageables = (@orders_to_create / 3).round(1)
+
+@orders_before_packageables = (@orders_to_create / 4).round(1)
 @orders_after_packageables = @orders_to_create - @orders_before_packageables
 
-@vendors_to_create.times do
-  Vendor.create name: Faker::Company.unique.name
-end
-
-@purchasers_to_create.times do
-  Purchaser.create name: Faker::Company.unique.name
-end
+@vendors_to_create.times do Vendor.create name: Faker::Company.unique.name end
+@purchasers_to_create.times do Purchaser.create name: Faker::Company.unique.name end
 
 if Order.all.size > 0
   Order.search_index.delete
@@ -71,7 +69,6 @@ def set_order_date_recieved(order, date_recieved = nil)
   return order unless order.date_recieved.nil?
 
   date_delivered_to = PackageablesEligibility::PACKAGING_MATERIALS_IMPLEMENTATION_DATE
-
   before_packageables = @orders_before_packageables >= 1
 
   date_recieved = Faker::Date.between(from: (date_delivered_to - 5.years), to: date_delivered_to) if before_packageables
@@ -82,15 +79,8 @@ end
 
 def set_order_status(order)
   status = "delivered" if order.date_delivered?
+  (status = [true, true, true, false].sample ? "active" : ["partially_delivered", "hold"].sample) if !order.date_delivered?
 
-  if !order.date_delivered?
-    case [true, true, true, false].sample
-    when true
-      status = "active"
-    else
-      status = ["partially_delivered", "hold"].sample
-    end
-  end
   order.status = status
 end
 
