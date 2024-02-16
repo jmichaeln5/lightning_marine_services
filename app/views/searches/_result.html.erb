@@ -23,11 +23,11 @@
           <div class="font-semibold text-gray-900 mb-1 sm:flex sm:space-x-3">
             <div class="text-center sm:text-left">
               Ship:
-              <%= link_to result.purchaser_name, purchaser_orders_path(result.purchaser, status: OrderDecorator.get_valid_status_param(result.status)), target: '_top', class: 'inline-block font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer' %>
+              <%= link_to result.purchaser_name, purchaser_orders_path(result.purchaser, status: OrderDecorator.get_status_display_name(result.status)), target: '_top', class: 'inline-block font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer' %>
             </div>
             <div class="text-center sm:text-left">
               Vendor:
-              <%= link_to result.vendor_name, vendor_orders_path(result.vendor, status: OrderDecorator.get_valid_status_param(result.status)), target: '_top', class: 'inline-block text-sm font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer' if authorized_internal_user? %>
+              <%= link_to result.vendor_name, vendor_orders_path(result.vendor, status: OrderDecorator.get_status_display_name(result.status)), target: '_top', class: 'inline-block text-sm font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer' if authorized_internal_user? %>
               <%= content_tag(:p, result.vendor.name, class:"inline-block text-sm font-normal") if !authorized_internal_user? %>
             </div>
           </div>
@@ -50,11 +50,11 @@
             <div class="">
               <span class="font-semibold text-gray-900 mb-1">
                 Ship:
-                <%= link_to result.purchaser_name, purchaser_orders_path(result.purchaser, status: OrderDecorator.get_valid_status_param(result.status)), method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
+                <%= link_to result.purchaser_name, purchaser_orders_path(result.purchaser, status: OrderDecorator.get_status_display_name(result.status)), method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" %>
               </span>
               <span class="font-semibold text-gray-900 mb-1">
                 Vendor:
-                <%= link_to result.vendor.name, vendor_orders_path(result.vendor, status: OrderDecorator.get_valid_status_param(result.status)), method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" if authorized_internal_user? %>
+                <%= link_to result.vendor.name, vendor_orders_path(result.vendor, status: OrderDecorator.get_status_display_name(result.status)), method: :get, target: '_top', class: "text-md font-normal text-cyan-700 hover:text-cyan-900 hover:cursor-pointer" if authorized_internal_user? %>
                 <%= content_tag(:p, result.vendor.name, class:"text-md font-normal hover:cursor-pointer") if !authorized_internal_user? %>
               </span>
             </div>

@@ -61,7 +61,7 @@
         </thead>
         <tbody id="<%= "#{data_table.model_name_collection}_table" %>" class="divide-y divide-gray-200 bg-white">
           <% records.each do |record| %>
-            <%= render partial: "/#{data_table.klass.model_name.route_key}/row", locals: {record: record} %>
+            <%= render partial: "/#{data_table.klass.model_name.route_key}/row", locals: { record: record } %>
           <% end %>
         </tbody>
       </table>

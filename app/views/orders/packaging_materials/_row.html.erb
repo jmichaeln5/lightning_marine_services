@@ -1,5 +1,5 @@
-<% order_content_decorator = OrderContentDecorator.new(order_content) %>
-<% if order_content.packaging_materials.any? %>
+<% if order.has_packaging_materials? %>
+  <% order_content_decorator = OrderContentDecorator.new(order_content) %>
   <%= tag.div class: "inline-block grid justify-items-stretch gap-x-px grid-cols-2" do %>
     <%= tag.div "Boxes:" %>
     <%= tag.span order_content_decorator.packaging_materials_boxes_td, class: "justify-self-start whitespace-nowrap" %>
@@ -7,8 +7,6 @@
     <%= tag.span order_content_decorator.packaging_materials_crates_td, class: "justify-self-start whitespace-nowrap" %>
     <%= tag.div "Pallets:" %>
     <%= tag.span order_content_decorator.packaging_materials_pallets_td, class: "justify-self-start whitespace-nowrap" %>
-    <%#= tag.span (order_content_decorator.packaging_materials_pallets_td)[0..10] %>
-    <%# ^^^ formatted desc with elipeses should go here %>
     <% if order_content.packaging_materials_others.any? %>
       <%= tag.div "Others:" %>
       <%= tag.span order_content_decorator.packaging_materials_others_td, class: "justify-self-start whitespace-nowrap" %>

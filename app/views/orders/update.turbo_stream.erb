@@ -4,7 +4,9 @@
   <% end %>
 <% else %>
   <%= turbo_stream.replace dom_id(@order) do %>
-    <%= render partial: "/data_tables/table_elements/row", locals: { order: @order } %>
+    <%= render partial: "/orders/row", locals: {
+      record: @order,
+    } %>
   <% end %>
 <% end %>
 <%= render partial: "/application/append_flash_notice", locals: { notice: "Order updated successfully."} %>

@@ -1,7 +1,8 @@
 class Orders::BulkController < Orders::BaseController
+  before_action :set_scoped_resource
+
   def update
-    @orders = get_scoped_resource.orders.where(status: Order::Statusable::ACTIVE_STATUSES.keys)
-    @orders.deliver_active
+    @scoped_resource.orders.active.deliver_active
 
     respond_to do |format|
       format.turbo_stream {
