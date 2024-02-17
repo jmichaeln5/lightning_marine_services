@@ -93,65 +93,82 @@ module Order::Statusable
           set_associated_statuses_from_order_status_active_or_delivered if set_associated_statuses_from_order_status_active_or_delivered?
         end
       end
-
-      def set_associated_statuses_from_order_status_active_or_delivered?
-        return false unless status_changed?
-
-        (should_set_associate_boolean = !status.in?(active_status_names)) if status_was.in?(active_status_names)
-        (should_set_associate_boolean = !status.in?(inactive_status_names)) if status_was.in?(inactive_status_names)
-        should_set_associate_boolean
-      end
-
-      def get_date_delivered_from_status(order_status: status)
-        order_status.in?(active_status_names) ? nil : DateTime.now
-      end
-
-      def get_archived_from_status(order_status: status)
-        order_status.in?(active_status_names) ? false : true
-      end
-
-      def set_associated_statuses_from_order_status_hold
-        order_content_attributes = order_content.packaging_materials_attributes_pair
-        order_content_attributes_dup = order_content_attributes.dup
-        order_content_attributes = order_content_attributes_dup[:order_content_attributes][0]
-
-        order_content_attributes_dup[:packaging_materials_attributes].collect { |packaging_material|
-          (packaging_material["status"] = "hold") unless (packaging_material["status"] == "hold")
-        }
-        order_content_attributes[:packaging_materials_attributes] = order_content_attributes_dup[:packaging_materials_attributes]
-
-        assign_attributes(
-          {
-            status: "hold",
-            date_delivered: get_date_delivered_from_status(order_status: "hold"),
-            archived: get_archived_from_status(order_status: "hold"),
-            order_content_attributes: order_content_attributes,
-          }
-        )
-      end
-
-      def set_associated_statuses_from_order_status_active_or_delivered(order_status: status)
-        order_content_attributes = order_content.packaging_materials_attributes_pair
-        order_content_attributes_dup = order_content_attributes.dup
-        order_content_attributes = order_content_attributes_dup[:order_content_attributes][0]
-
-        valid_packaging_material_status_names = order_status.in?(active_status_names) ? PackagingMaterial.active_status_names : PackagingMaterial.inactive_status_names
-
-        modified_packaging_material_status = order_status.in?(active_status_names) ? "active" : "delivered"
-
-        order_content_attributes_dup[:packaging_materials_attributes].collect { |pm|
-          (pm["status"] = modified_packaging_material_status) unless pm["status"].in?(valid_packaging_material_status_names)
-        }
-        order_content_attributes[:packaging_materials_attributes] = order_content_attributes_dup[:packaging_materials_attributes]
-
-        assign_attributes(
-          {
-            status: order_status,
-            date_delivered: get_date_delivered_from_status(order_status: order_status),
-            archived: get_archived_from_status(order_status: order_status),
-            order_content_attributes: order_content_attributes,
-          }
-        )
-      end
   end
+
+  def became_inactive?
+    status_was.in?(active_statuses) && status.in?(inactive_statuses)
+  end
+
+  def became_active?
+    status_was.in?(inactive_statuses) && status.in?(active_statuses)
+  end
+
+  def previously_became_active?
+    status_previously_was.in?(active_statuses) && status_was.in?(inactive_statuses)
+  end
+
+  def previously_became_inactive?
+    status_previously_was.in?(inactive_statuses) && status_was.in?(active_statuses)
+  end
+
+  protected
+    def set_associated_statuses_from_order_status_active_or_delivered?
+      return false unless status_changed?
+
+      (should_set_associate_boolean = !status.in?(active_status_names)) if status_was.in?(active_status_names)
+      (should_set_associate_boolean = !status.in?(inactive_status_names)) if status_was.in?(inactive_status_names)
+      should_set_associate_boolean
+    end
+
+    def get_date_delivered_from_status(order_status: status)
+      order_status.in?(active_status_names) ? nil : DateTime.now
+    end
+
+    def get_archived_from_status(order_status: status)
+      order_status.in?(active_status_names) ? false : true
+    end
+
+    def set_associated_statuses_from_order_status_hold
+      order_content_attributes = order_content.packaging_materials_attributes_pair
+      order_content_attributes_dup = order_content_attributes.dup
+      order_content_attributes = order_content_attributes_dup[:order_content_attributes][0]
+
+      order_content_attributes_dup[:packaging_materials_attributes].collect { |packaging_material|
+        (packaging_material["status"] = "hold") unless (packaging_material["status"] == "hold")
+      }
+      order_content_attributes[:packaging_materials_attributes] = order_content_attributes_dup[:packaging_materials_attributes]
+
+      assign_attributes(
+        {
+          status: "hold",
+          date_delivered: get_date_delivered_from_status(order_status: "hold"),
+          archived: get_archived_from_status(order_status: "hold"),
+          order_content_attributes: order_content_attributes,
+        }
+      )
+    end
+
+    def set_associated_statuses_from_order_status_active_or_delivered(order_status: status)
+      order_content_attributes = order_content.packaging_materials_attributes_pair
+      order_content_attributes_dup = order_content_attributes.dup
+      order_content_attributes = order_content_attributes_dup[:order_content_attributes][0]
+
+      valid_packaging_material_status_names = order_status.in?(active_status_names) ? PackagingMaterial.active_status_names : PackagingMaterial.inactive_status_names
+
+      modified_packaging_material_status = order_status.in?(active_status_names) ? "active" : "delivered"
+
+      order_content_attributes_dup[:packaging_materials_attributes].collect { |pm|
+        (pm["status"] = modified_packaging_material_status) unless pm["status"].in?(valid_packaging_material_status_names)
+      }
+      order_content_attributes[:packaging_materials_attributes] = order_content_attributes_dup[:packaging_materials_attributes]
+
+      assign_attributes(
+        {
+          status: order_status,
+          date_delivered: get_date_delivered_from_status(order_status: order_status),
+          archived: get_archived_from_status(order_status: order_status),
+          order_content_attributes: order_content_attributes,
+        }
+      )
+    end
 end

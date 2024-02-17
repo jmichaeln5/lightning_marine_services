@@ -13,10 +13,18 @@
     fallback_location_text: "Dashboard",
   } unless authorized_internal_user? %>
 <% end %>
-<%= render partial: 'orders/page_heading_card', locals: { scoped_resource: @scoped_resource } %>
+<% status_param_display_name = scoped_status.humanize %>
+<% page_heading_title = scoped_resource? ? "#{@scoped_resource.display_name}: #{@scoped_resource.name}" : "#{status_param_display_name} orders" %>
+<% card_title = scoped_resource? ? "#{scoped_status.humanize} #{@scoped_resource.class.display_name.downcase} orders" : "#{scoped_status.humanize} orders"  %>
+<%= render partial: 'orders/page_heading_card', locals: {
+  scoped_resource: @scoped_resource,
+  scoped_resource?: scoped_resource?,
+  page_heading_title: page_heading_title,
+  card_title: card_title,
+} %>
 <% table_section_heading_title = "#{scoped_status.humanize}#{scoped_resource? ? " #{@scoped_resource.class.display_name.downcase} " : " "}orders" %>
 <% table_section_heading_description = "orders with the following statuses: #{status_scopes_names(status_scope: scoped_status)}" %>
-<% orders_data_table = DataTable::Orders.new(@orders) %>
+<% orders_data_table = DataTable::Orders.new(records = @orders) %>
 <section>
   <div data-controller="reveal" data-reveal-hidden-class="hidden">
     <div class="sm:flex sm:items-center mb-5 sm:mb-7">
@@ -39,12 +47,12 @@
             <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
             <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
             <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
-                <div class="relative -ml-px inline-flex items-center align-middle gap-x-1.5 rounded-md text-base cursor-pointer">
-                  <%= tag.span 'Orders options', class: "whitespace-nowrap " %>
-                  <svg class="-mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </div>
+              <%= button_tag type: 'button', class: 'relative -ml-px inline-flex items-center align-middle gap-x-1.5 rounded-md text-base' do %>
+                <%= tag.span 'Orders options', class: "whitespace-nowrap select-none" %>
+                <svg class="-mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              <% end %>
             </span>
           </div>
         </div>
@@ -112,7 +120,7 @@
                 <%= render partial: "/data_tables/pagy_nav", locals: { pagy: @pagy } %>
                 <%= tag.div class: "overflow-x-auto rounded-lg bg-white #{x_axis_padding} shadow border border-slate-50" do %>
                   <%= render partial: "/data_tables/data_table", locals: {
-                    records: @orders,
+                    records: orders_data_table.records,
                     data_table: orders_data_table,
                   } %>
                 <% end %>

@@ -28,8 +28,10 @@ module Orders::ResourceScoped
       end
 
       def get_scoped_resource
-        return Purchaser.find(params[:purchaser_id]) if purchaser?
-        return Vendor.find(params[:vendor_id]) if vendor?
+        # return Purchaser.find(params[:purchaser_id]) if purchaser?
+        # return Vendor.find(params[:vendor_id]) if vendor?
+        return Purchaser.includes(:orders).find(params[:purchaser_id]) if purchaser?
+        return Vendor.includes(:orders).find(params[:vendor_id]) if vendor?
       end
 
       def set_scoped_resource
@@ -37,7 +39,7 @@ module Orders::ResourceScoped
       end
 
       def set_scoped_resource_orders
-        @orders = @scoped_resource.orders.where(status: status_scopes).reorder(Order.sequence_position_column_name => :asc) if purchaser?
+        @orders = @scoped_resource.orders.where(status: status_scopes).reorder(order_sequence: :asc) if purchaser?
         @orders = @scoped_resource.orders.where(status: status_scopes).reorder(id: :desc) if vendor?
       end
   end

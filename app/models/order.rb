@@ -19,10 +19,9 @@
 class Order < ApplicationRecord
   include Attachable::Images
   include Resourceable, Packageables, PackageablesEligibility
-  include Archivable, Exportable, Filterable, Positionable, Searchable, Sortable, Statusable
-  include Paginationable
-
-  alias_attribute :order_sequence, :position
+  include Archivable, Positioning, Statusable
+  include Exportable, Filterable, Searchable, Sortable
+  include Paginationable # 👈🏾  NOTE  move Paginationable to OrderDecorator
 
   belongs_to :purchaser
   belongs_to :vendor
@@ -37,9 +36,5 @@ class Order < ApplicationRecord
   before_validation do
     set_archived_value if set_archived_value?
     set_associated_statuses_from_order if set_associated_statuses_from_order?
-  end
-
-  after_create do
-    move_to_top if set_default_position_after_create?
   end
 end

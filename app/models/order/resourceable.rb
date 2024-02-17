@@ -7,6 +7,7 @@ module Order::Resourceable
     delegate :purchaser_name, :ship_name, to: :purchaser
     delegate :vendor_name, to: :vendor
 
+    ### 👇🏾 👇🏾 👇🏾  NOTE - move to Order::Sortable (app/models/order/sortable/scopes.rb)
     # def self.order_by_vendor_name(sort_direction)
     #   includes(:vendor).references(:vendor).order("name" + " " + sort_direction)
     # end

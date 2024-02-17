@@ -22,9 +22,9 @@
             <section id="order-form-fields">
               <fieldset id="main-order-form-fields" class="my-6 grid grid-cols-1 sm:grid-cols-6 gap-y-6 gap-x-4">
                 <%= tag.div class: "sm:col-span-6" do %>
-                  <%= form.label :position, class: css_form_label %>
+                  <%= form.label :order_sequence, class: css_form_label %>
                   <%= tag.div class: "mt-1" do %>
-                    <%= form.text_field :position, class: css_form_text_field %>
+                    <%= form.text_field :order_sequence, class: css_form_text_field %>
                   <% end %>
                 <% end %>
                 <%= tag.div class: "sm:col-span-6" do %>

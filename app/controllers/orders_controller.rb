@@ -81,6 +81,7 @@ class OrdersController < Orders::BaseController
     if !authorized_internal_user?
       veto_unauthorized_request unless authorized_customer? && order_params.keys == ["dept"]
     end
+
     respond_to do |format|
       if @order.update(order_params)
         format.turbo_stream {}
@@ -110,7 +111,15 @@ class OrdersController < Orders::BaseController
   private
     def order_params
       params.require(:order).permit(
-        :position, :status, :dept, :purchaser_id, :vendor_id, :po_number, :date_recieved, :courrier, :date_delivered,
+        :order_sequence,
+        :status,
+        :dept,
+        :purchaser_id,
+        :vendor_id,
+        :po_number,
+        :date_recieved,
+        :courrier,
+        :date_delivered,
         images: [],
         order_content_attributes:[
           :id, :box, :crate, :pallet, :other, :other_description,
@@ -122,7 +131,11 @@ class OrdersController < Orders::BaseController
     end
 
     def set_orders
-      @orders = Order.where(status: status_scopes).reorder(id: :desc)
+      @orders = Order.includes(
+        :order_content,
+        :purchaser,
+        :vendor
+      ).where(status: status_scopes).reorder(id: :desc)
     end
 
     def set_order

@@ -3,16 +3,16 @@
   controller: 'table',
   "table-target": "rootElement",
 
-  "table-th-class": "px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
-  "table-th-first-class": "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0",
-  "table-th-last-class": "relative py-3.5 pl-3 pr-0",
+  "table-table-header-class": "px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  "table-table-header-first-class": "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0",
+  "table-table-header-last-class": "relative py-3.5 pl-3 pr-0",
 
   "table-cheveron-active-class": "ml-2 flex-none rounded bg-gray-100 text-gray-900 group-hover:bg-gray-200",
   "table-cheveron-inactive-class": "invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible",
 
-  "table-td-class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500",
-  "table-td-first-class": "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-0",
-  "table-td-last-class": "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-0",
+  "table-table-data-cell-class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500",
+  "table-table-data-cell-first-class": "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-0",
+  "table-table-data-cell-last-class": "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-0",
 }, class: "flow-root" do %>
   <%= tag.div class: "-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8" do %>
     <%= tag.div class: "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8" do %>
@@ -42,7 +42,7 @@
                   <% end %>
                 <% end %>
               <% end %>
-              <th scope="col" class="<%= _th_css %>" data-table-target="th">
+              <th data-table-target="tableHeader" scope="col" class="<%= _th_css %>">
                 <% if th_is_sortable %>
                   <% sort_direction ||= (((params[:sort_direction] == "asc") ? "desc" : "asc")) %>
                   <% sort_params = { sort_direction: sort_direction, sort_option: th } %>

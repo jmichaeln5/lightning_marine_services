@@ -3,73 +3,92 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="table"
 export default class extends Controller {
   static values = {
-    // url: String,
-    // sortableUrl: String,
-    thAmount: { type: Number, default: 0 },
-    tdAmount: { type: Number, default: 0 },
+    tableHeaderAmount: { type: Number, default: 0 },
+    tableRowAmount: { type: Number, default: 0 },
+    tableDataCellAmount: { type: Number, default: 0 },
   }
 
   static targets = [
     "rootElement",
-    "th",
-    "td"
+    "tableHeader",
+    "tableRow",
+    "tableDataCell",
   ]
 
   static classes = [
-    "th",
-    "thFirst",
-    "thLast",
+    "tableHeader",
+    "tableHeaderFirst",
+    "tableHeaderLast",
     "cheveronActive",
     "cheveronInactive",
-    "td",
-    "tdFirst",
-    "tdLast",
+    "tableDataCell",
+    "tableDataCellFirst",
+    "tableDataCellLast",
   ]
 
+  initialize() {
+    console.clear()
+  }
+
   connect() {
-    // console.log('table#connect')
+    // console.log('this.tableHeaderFirstClasses')
+    // console.log(this.tableHeaderFirstClasses)
     //
-    // console.log('this.thClasses')
-    // console.log(this.thClasses)
+    // console.log('this.tableHeaderClasses')
+    // console.log(this.tableHeaderClasses)
     //
-    // console.log('this.thFirstClasses')
-    // console.log(this.thFirstClasses)
+    // console.log('this.tableHeaderLastClasses')
+    // console.log(this.tableHeaderLastClasses)
     //
-    // console.log('this.thLastClasses')
-    // console.log(this.thLastClasses)
+    // console.log('this.tableDataCellFirstClasses')
+    // console.log(this.tableDataCellFirstClasses)
     //
-    // console.log('this.cheveronActiveClasses')
-    // console.log(this.cheveronActiveClasses)
+    // console.log('this.tableDataCellClasses')
+    // console.log(this.tableDataCellClasses)
     //
-    // console.log('this.cheveronInactiveClasses')
-    // console.log(this.cheveronInactiveClasses)
-    //
-    //
-    // console.log('this.tdClasses')
-    // console.log(this.tdClasses)
-    //
-    // console.log('this.tdFirstClasses')
-    // console.log(this.tdFirstClasses)
-    //
-    // console.log('this.tdLastClasses')
-    // console.log(this.tdLastClasses)
+    // console.log('this.tableDataCellLastClasses')
+    // console.log(this.tableDataCellLastClasses)
   }
 
   rootElementTargetConnected(element) {
-    // console.log('table#rootElement')
+    // console.log('table#rootElementTargetConnected')
     // console.log(element)
   }
 
-  thTargetConnected(element) {
-    // console.log('\n\ntable#th')
+  tableHeaderTargetConnected(element) {
+    // console.log('table#tableHeaderTargetConnected')
     // console.log(element)
-    // console.log(`thTargetConnected\nthis.thTargets.length: ${this.thTargets.length}`);
-    this.thAmountValue += 1
-    // console.log(`\n this.thAmountValue ${this.thAmountValue}`);
+    // this.tableHeaderAmountValue += 1
   }
 
-  tdTargetConnected(element) {
-    this.tdAmountValue += 1
-    // console.log(`\n this.tdAmountValue ${this.tdAmountValue}`);
+  tableHeaderTargetDisconnected(element) {
+    // console.log('table#tableHeaderTargetDisconnected')
+    // console.log(element)
+    // this.tableHeaderAmountValue -= 1
   }
+
+  tableRowTargetConnected(element) {
+    // console.log('table#tableRowTargetConnected')
+    // console.log(element)
+    // this.tableRowAmountValue += 1
+  }
+
+  tableRowTargetDisconnected(element) {
+    // console.log('table#tableRowTargetDisconnected')
+    // console.log(element)
+    // this.tableRowAmountValue -= 1
+  }
+
+  tableDataCellTargetConnected(element) {
+    // console.log('table#tableDataCellTargetConnected')
+    // console.log(element)
+    // this.tableDataCellTargetAmountValue += 1
+  }
+
+  tableDataCellTargetDisconnected(element) {
+    // console.log('table#tableDataCellTargetDisconnected')
+    // console.log(element)
+    // this.tableDataCellTargetAmountValue -= 1
+  }
+
 }
