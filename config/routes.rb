@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   end
   resources :statuses, only: %i(edit update show)
 
-  concern :exportable do
+  concern :exportable do # IN USE????
     get :export, defaults: { format: 'xlsx' }
     post :export, defaults: { format: 'xlsx' }
   end

@@ -1,0 +1,70 @@
+wb = xlsx_package.workbook
+
+sNow = Time.now.strftime("%d/%m/%Y %H:%M")
+
+
+# debugger
+
+#title = wb.styles.add_style(:bg_color => "#00D9DDDC", :fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "FFFF0000"})
+title = wb.styles.add_style(:fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "#FF000000"})
+bold = wb.styles.add_style(:b=>true,:fg_color=>"#FF000000", :sz=>8,  :border=> {:style => :thin, :color => "#FF000000"},:alignment=>{:horizontal => :left})
+ordstyle = wb.styles.add_style(:fg_color=>"#FF000000",:border=>Axlsx::STYLE_THIN_BORDER,:sz=>8, :alignment=>{:horizontal => :left})
+
+
+# table_headers = @orders_data_table.table_headers.dup
+# unless @scoped_resource.nil?
+#   resource_th_sym = "#{@scoped_resource.display_name.downcase}_name".to_sym
+#   table_headers = (table_headers - [resource_th_sym]) if resource_th_sym.in?(table_headers)
+# end
+#
+# @orders_data_table.records.size
+# @orders_data_table.records
+
+
+# @orders.order("order_sequence ASC")
+
+
+
+
+
+wb.add_worksheet(name: "Orders", :page_setup => {:fit_to_width=>1, :orientation => :landscape}) do |sheet|
+  sheet
+  sheet.add_row ["#{@scoped_resource.display_name}", @scoped_resource.name,'','','Printed:',sNow], :style=>title
+
+  sheet.add_row ["#","Department","Vendor","PO #","Tracking #","Received Date","Boxes","Crates","Pallet", "Courrier", "Delivery Date"], :style=>bold
+
+  data_table_records = Order.preload(:order_content, :packaging_materials, :purchaser, :vendor).where(id: @orders_data_table.records)
+  data_table_records = purchaser? ? data_table_records.order(order_sequence: :asc) : data_table_records.order(id: :asc)
+
+  # data_table_records.map {|order| "order.id: #{order.id}   order.order_sequence: #{order.order_sequence}"}
+
+
+
+
+
+  # debugger
+
+
+
+
+  @orders.order("order_sequence ASC").each do |ord|
+    dept = ord.try(:dept) || ''
+    boxes = ord.try(:order_content).box || '0'
+    crates = ord.try(:order_content).crate || '0'
+    pallet = ord.try(:order_content).pallet || '0'
+    rec_date = ord.try(:date_recieved) ? ord.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a'
+    del_date = ord.try(:date_delivered) ? ord.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a'
+
+    sheet.add_row [
+      ord.order_sequence,dept,
+      ord.vendor.name,
+      ord.po_number,
+      ord.tracking_number,
+      rec_date,
+      boxes,
+      crates,
+      pallet,
+      ord.courrier,del_date
+    ], :style=>ordstyle
+  end
+end

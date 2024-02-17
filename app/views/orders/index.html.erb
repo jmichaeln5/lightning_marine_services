@@ -58,9 +58,41 @@
         </div>
       </div>
     </div>
-    <div data-reveal-target="item" class="hidden block z-10 bg-white rounded-md p-3 mb-5 relative">
-      <% if scoped_resource? %>
-        <%= tag.div class: "w-full mb-3 bg-white inline-flex justify-center sm:justify-end" do %>
+    <%# ORDERS OPTIONS REVEAL  %>
+    <!-- <div data-reveal-target="item" class="hidden block z-10 bg-white rounded-md p-3 mb-5 relative">
+      <%# if scoped_resource? %>
+        <%#= tag.div class: "w-full mb-3 bg-white inline-flex justify-center sm:justify-end" do %>
+          <%#= link_to "Deliver active orders", {
+              controller: "orders/bulk",
+              action: "update",
+              resource_id: @scoped_resource.id
+            },
+            data: {
+              turbo_method: :patch,
+              turbo_confirm: "Are you sure?",
+            }, class: "inline-block btn btn_indigo" if authorized_internal_user? && scoped_resource? %>
+        <%# end %>
+      <%# end %>
+      <%# export_columns = orders_data_table.table_headers %>
+      <%# export_columns = export_columns - %i(ship_name) if purchaser? %>
+      <%# export_columns = export_columns - %i(vendor_name) if vendor? %>
+      <%#= render partial: "/exports/form", locals: {
+        scoped_resource: @scoped_resource,
+        export_columns: orders_data_table.table_headers,
+      } %>
+    </div> -->
+    <div data-reveal-target="item" class="hidden block z-10 bg-white rounded-md p-3 mb-5 ">
+      <%= tag.div class: "py-5" do %>
+        <div class="p-3 bg-slate-100 rounded-md flex space-x-3">
+          <% export_btn_text = "Export #{scoped_status}" %>
+          <% export_btn_text << " #{@scoped_resource.display_name.downcase}" if scoped_resource? %>
+          <% export_btn_text = "#{export_btn_text} orders" %>
+          <%= link_to "Export to xls", request.params.slice("status").merge(format: :xls), class: "inline-block btn btn_indigo" %>
+          <%= link_to "Export to xlsx", request.params.slice("status").merge(format: :xlsx), class: "inline-block btn btn_indigo" %>
+        </div>
+      <% end %>
+      <%= tag.div class: "py-5" do %>
+        <div class="p-3 bg-slate-100 rounded-md flex space-x-3">
           <%= link_to "Deliver active orders", {
               controller: "orders/bulk",
               action: "update",
@@ -70,15 +102,8 @@
               turbo_method: :patch,
               turbo_confirm: "Are you sure?",
             }, class: "inline-block btn btn_indigo" if authorized_internal_user? && scoped_resource? %>
-        <% end %>
+        </div>
       <% end %>
-      <% export_columns = orders_data_table.table_headers %>
-      <% export_columns = export_columns - %i(ship_name) if purchaser? %>
-      <% export_columns = export_columns - %i(vendor_name) if vendor? %>
-      <%= render partial: "/exports/form", locals: {
-        scoped_resource: @scoped_resource,
-        export_columns: orders_data_table.table_headers,
-      } %>
     </div>
   </div>
 </section>

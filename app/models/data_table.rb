@@ -2,6 +2,9 @@ class DataTable
   attr_reader :klass, :records
   attr_reader :table_headers, :sortable_table_headers
 
+  attr_accessor :title, :sortable_table_headers
+
+
   delegate_missing_to :klass
 
   def initialize(klass = nil, records = nil)

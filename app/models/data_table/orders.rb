@@ -1,6 +1,8 @@
 class DataTable::Orders < DataTable
   delegate :table_headers, to: :class
 
+  delegate_missing_to :klass
+
   def initialize(records = nil)
     @klass = Order
     @records = records

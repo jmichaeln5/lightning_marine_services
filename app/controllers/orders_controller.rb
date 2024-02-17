@@ -25,15 +25,29 @@ class OrdersController < Orders::BaseController
 
   def index
     scoped_resource? ? set_scoped_resource_orders : set_orders
-
     @orders = resolve_orders_for_data_table(@orders)
+
     @pagy, @orders = pagy(
       @orders,
       link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"',
       items: params.fetch(:count, 10)
-    )
+    ) unless format_export?
 
-    format_export if format_export?
+    respond_to do |format|
+      format.html and return if :html.in?(formats)
+
+      @orders_data_table = DataTable::Orders.new(records = @orders)
+      format.xls {
+        # debugger
+        send_data @orders.to_csv,
+        filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      }
+      format.xlsx { # orders/index.xlsx.axlsx
+        # debugger
+        fName = "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
+        response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
+      }
+    end
   end
 
   def show
