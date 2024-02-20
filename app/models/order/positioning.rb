@@ -2,9 +2,9 @@ module Order::Positioning
   extend ActiveSupport::Concern
 
   included do
-    # before_validation :set_default_order_sequence, on: [:create, :update], if: Proc.new {
-    #   order_sequence.nil? && status.in?(active_statuses)
-    # }
+    before_validation ->(order) {
+      order.order_sequence = 1 if order.order_sequence.blank?
+    }
     before_validation :set_sequencer, :set_purchaser_orders_sequencer
 
     after_save :remember_to_reposition
@@ -17,10 +17,6 @@ module Order::Positioning
 
   def sequencing_attributes(attributes = nil)
     return attributes.slice(*sequencing_attributes_names)
-  end
-
-  def position
-    order_sequence? ? order_sequence : 1
   end
 
   private
@@ -42,6 +38,6 @@ module Order::Positioning
 
     def reposition_sequenceables
       @purchaser_orders_sequencer.reposition_purchaser_orders_order_sequence! if !status.in?(inactive_statuses)
-      @sequencer.reposition_order_sequence!
+      # @sequencer.reposition_order_sequence!
     end
 end

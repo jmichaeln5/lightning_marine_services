@@ -2,7 +2,6 @@ class Order::Positioning::Positioner
   attr_accessor :order
   attr_reader   :was_sequencing_attributes, :previously_was_sequencing_attributes
 
-  delegate :position, to: :order
   delegate :sequencing_attributes, :sequencing_attributes_names, to: :order
 
   delegate_missing_to :order
