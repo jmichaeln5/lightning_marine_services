@@ -2,88 +2,66 @@ module Order::Exportable
   extend ActiveSupport::Concern
 
   included do
+    def self.to_csv
+      data_table = DataTable::Orders.new(all)
+      orders = data_table.records
 
-    def self.to_csv # Also Formats for XLS
-      ############################################################
-      ############################################################
-      ############################################################
-      ### NOTE - FORMATS OrdersController#index XLS
-      ###           app/views/orders/index.xlsx.axlsx
-      ############################################################
-      ############################################################
-      ############################################################
-      csv_header = ['ID', 'Dept', 'Ship', 'Vendor', 'Sequence','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
+      table_headers = data_table.table_headers.dup
+
+      order_content_index = table_headers.find_index(:order_content)
+      remaining_table_headers = table_headers[order_content_index+1 .. -1]
+      table_headers = table_headers - table_headers[order_content_index .. -1]
+      order_content_table_headers = %i(boxes crates pallets others)
+      order_content_table_headers.map {|th| table_headers.push(th) }
+      remaining_table_headers.map {|th| table_headers.push(th) }
+
+      table_headers = table_headers.collect {|th| th.to_s.humanize }.freeze
 
       CSV.generate do |csv|
-        csv << csv_header
-        all.each do |order|
-          dept = order.try(:dept) || 'n/a'
-          boxes = order.try(:order_content).box || '0'
-          crates = order.try(:order_content).crate || '0'
-          pallet = order.try(:order_content).pallet || '0'
-          rec_date = order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a'
-          del_date = order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a'
+        csv << table_headers
+        orders.each do |order|
+          order_decorator = OrderDecorator.new(order)
+
+          id              = order_decorator.return_attr_or_str(:id, '')
+          order_sequence  = order_decorator.return_attr_or_str(:order_sequence, '')
+          status          = order_decorator.return_attr_or_str(:status, '')
+          dept            = order_decorator.return_attr_or_str(:dept, '')
+          purchaser_name  = order_decorator.return_attr_or_str(:purchaser_name, '')
+          vendor_name     = order_decorator.return_attr_or_str(:vendor_name, '')
+          po_number       = order_decorator.return_attr_or_str(:po_number, '')
+          date_recieved   = order_decorator.return_attr_or_str(:date_recieved, '')
+
+          if order.has_packaging_materials?
+            attributes_hash = order.with_packaging_materials_attributes
+            order_content_attributes = attributes_hash.dig(:order_content_attributes)
+            packaging_materials_attributes = order_content_attributes.dig(:packaging_materials_attributes)
+
+            unless packaging_materials_attributes.nil?
+              order_content_decorator = OrderContentDecorator.new(order.order_content)
+              box         = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Box')
+              crate       = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Crate')
+              pallet      = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Pallet')
+              other       = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Other')
+            end
+          else
+            box           = order.try(:order_content).box || '0'
+            crate         = order.try(:order_content).crate || '0'
+            pallet        = order.try(:order_content).pallet || '0'
+            other         = order.try(:order_content).pallet || '0'
+          end
+
+          courrier        = order_decorator.return_attr_or_str(:courrier, '')
+          date_delivered  = order_decorator.return_attr_or_str(:date_delivered, '')
 
           csv << [
-            order.id,
-            dept,
-            order.purchaser.name,
-            order.vendor.name,
-            order.order_sequence,
-            order.po_number,
-            order.tracking_number,
-            rec_date,
-            boxes,
-            crates,
-            pallet,
-            order.courrier,
-            del_date
+            id, order_sequence, status,
+            dept, purchaser_name, vendor_name,
+            po_number, date_recieved,
+            box, crate, pallet,
+            other, courrier, date_delivered,
           ]
         end
       end
     end
   end
-
-
-
-
-
-
-
-    # def self.to_xls # Also Formats for XLS
-    #   csv_header = ['ID', '#', 'Dept', 'Ship', 'Vendor','PO Number', 'Tracking Number', 'Date Received', 'Boxes', 'Crates', 'Pallets', 'Courrier', 'Date Delivered']
-    #
-    #   CSV.generate do |csv|
-    #     csv << csv_header
-    #       all.each do |order|
-    #         dept = order.try(:dept) || 'n/a'
-    #         boxes = order.try(:order_content).box || '0'
-    #         crates = order.try(:order_content).crate || '0'
-    #         pallet = order.try(:order_content).pallet || '0'
-    #         rec_date = order.try(:date_recieved) ? order.date_recieved.try(:strftime,"%m/%d/%Y") : 'n/a'
-    #         del_date = order.try(:date_delivered) ? order.date_delivered.try(:strftime,"%m/%d/%Y") : 'n/a'
-    #
-    #         csv << [
-    #           order.id,
-    #           order.order_sequence,
-    #           dept,
-    #           order.purchaser.name,
-    #           order.vendor.name,
-    #           order.po_number,
-    #           order.tracking_number,
-    #           rec_date,
-    #           boxes,
-    #           crates,
-    #           pallet,
-    #           order.courrier,
-    #           del_date
-    #         ]
-    #       end
-    #   end
-    # end
-
-
-
-
-
 end

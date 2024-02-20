@@ -82,17 +82,20 @@
       } %>
     </div> -->
     <div data-reveal-target="item" class="hidden block z-10 bg-white rounded-md p-3 mb-5 ">
-      <%= tag.div class: "py-5" do %>
-        <div class="p-3 bg-slate-100 rounded-md flex space-x-3">
+      <%= tag.div class: "py-1.5" do %>
+        <div class="p-3 bg-slate-50 rounded-md flex space-x-3 justify-end">
+
           <% export_btn_text = "Export #{scoped_status}" %>
           <% export_btn_text << " #{@scoped_resource.display_name.downcase}" if scoped_resource? %>
           <% export_btn_text = "#{export_btn_text} orders" %>
-          <%= link_to "Export to xls", request.params.slice("status").merge(format: :xls), class: "inline-block btn btn_indigo" %>
-          <%= link_to "Export to xlsx", request.params.slice("status").merge(format: :xlsx), class: "inline-block btn btn_indigo" %>
+
+          <%= link_to "Export to CSV", request.params.slice("status").merge(format: :csv), class: "inline-block btn btn_indigo" %>
+          <%= link_to "Export to XLS", request.params.slice("status").merge(format: :xls), class: "inline-block btn btn_indigo" %>
+          <%= link_to "Export to XLXS", request.params.slice("status").merge(format: :xlsx), class: "inline-block btn btn_indigo" %>
         </div>
       <% end %>
-      <%= tag.div class: "py-5" do %>
-        <div class="p-3 bg-slate-100 rounded-md flex space-x-3">
+      <%= tag.div class: "py-1.5" do %>
+        <div class="p-3 bg-slate-50 rounded-md flex space-x-3 justify-end">
           <%= link_to "Deliver active orders", {
               controller: "orders/bulk",
               action: "update",

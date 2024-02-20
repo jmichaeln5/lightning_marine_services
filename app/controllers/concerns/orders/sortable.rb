@@ -37,7 +37,10 @@ module Orders::Sortable
       parent_model_name = :purchaser if ((sort_option == 'ship_name') || (sort_option == 'purchaser_name'))
       parent_model_name = :vendor if (sort_option == 'vendor_name')
 
-      Order.where(id: orders.ids).includes(parent_model_name).references(parent_model_name).order("LOWER(name)" + " " + sort_direction)
+      Order.where(id: orders.ids)
+       .includes(parent_model_name)
+       .references(parent_model_name)
+       .order("LOWER(name)" + " " + sort_direction)
     end
 
     def sort_orders(orders)

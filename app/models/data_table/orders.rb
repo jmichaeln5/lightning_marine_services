@@ -4,25 +4,17 @@ class DataTable::Orders < DataTable
   delegate_missing_to :klass
 
   def initialize(records = nil)
-    @klass = Order
-    @records = records
+    @klass, @records = Order, records
+    @records ||= Order.includes(:order_content, :packaging_materials, :purchaser, :vendor)
     @sortable_table_headers = Order.sortable_attrs
   end
 
-  def sortable_table_headers
-    return @sortable_table_headers unless @sortable_table_headers.nil?
+  def order_attribute_names
+    Order.attribute_names
+  end
 
-    @sortable_table_headers ||= %i(
-      id
-      order_sequence
-      status
-      courrier
-      ship_name
-      purchaser_name
-      vendor_name
-      date_recieved
-      date_delivered
-    )
+  def order_non_attribute_names
+    %w(boxes crates pallets others)
   end
 
   def self.table_headers

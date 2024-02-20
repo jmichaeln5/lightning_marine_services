@@ -36,16 +36,28 @@ class OrdersController < Orders::BaseController
     respond_to do |format|
       format.html and return if :html.in?(formats)
 
-      @orders_data_table = DataTable::Orders.new(records = @orders)
-      format.xls {
-        # debugger
-        send_data @orders.to_csv,
-        filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
+      @data_table = DataTable::Orders.new(records = @orders)
+
+      timestamp = "#{(DateTime.now).try(:strftime,"%m/%d/%Y") }"; timestamp = timestamp.gsub("/", "-")
+      filename = "#{@scoped_resource.name} #{scoped_status} orders #{timestamp}" if scoped_resource?
+      filename ||= "#{scoped_status} orders #{timestamp}"
+
+      filename = filename.gsub("-", "_"); filename = filename.gsub(" ", "_")
+      filename_ext = request.format.symbol.to_s
+
+      @filename = filename
+
+      format.csv {
+        send_data @data_table.records.to_csv,
+        filename: "#{@filename}.#{filename_ext}"
       }
-      format.xlsx { # orders/index.xlsx.axlsx
-        # debugger
-        fName = "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
-        response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
+      format.xls {
+        send_data @data_table.records.to_csv,
+        filename: "#{@filename}.#{filename_ext}"
+      }
+      format.xlsx {
+        filename = "#{@filename}.xlsx"
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '"'
       }
     end
   end

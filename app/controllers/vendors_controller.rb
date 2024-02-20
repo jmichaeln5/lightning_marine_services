@@ -7,30 +7,20 @@ class VendorsController < ApplicationController
 
   def index
     @vendors = Vendor.includes(:orders).left_joins(:orders).group(:id).reorder("COUNT(orders.id) DESC")
-
-    sort_vendors if params[:sort]
+    @vendors = sort_resource if params[:sort]
     @pagy, @vendors = pagy @vendors, items: params.fetch(:count, 10)
   end
 
-  def sort_column
-    %w{ id name order_amount }.include?(params[:sort]) ? params[:sort] : "name"
-  end
+  def sort_resource
+    sortable_scope = controller_name.classify
+    controller_resource_klass = controller_name.classify.safe_constantize
 
-  def sort_direction
-    %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
-  end
+    if controller_resource_klass.try(:sortable?) && controller_resource_klass.send(:sortable?)
+      sort_column = controller_resource_klass.send(:sortable_attribute_names).include?(params[:sort]) ? params[:sort] : 'id'
+      sort_direction = %w(asc desc).include?(params[:direction]) ? params[:direction] : 'asc'
 
-  def sort_vendors
-    if params[:sort] == "order_amount"
-      Vendor.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
-      @vendors = nil
-      vendors = Vendor.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
-    else
-      vendors = @vendors.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
-      @vendors = nil
+      return controller_resource_klass.send(:order_by_sortable_attribute_name, sort_column, sort_direction)
     end
-    clear_active_record_query_cache
-    @vendors = vendors
   end
 
   def new

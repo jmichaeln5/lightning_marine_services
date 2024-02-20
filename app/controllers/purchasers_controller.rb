@@ -3,34 +3,27 @@ class PurchasersController < ApplicationController
 
   before_action :authorize_internal_user, only: %i[ new create edit update destroy ]
   before_action :set_page_heading_title
-  before_action :set_purchaser, only: %i[ show edit update destroy export ]
+  before_action :set_purchaser, only: %i[ show edit update destroy]
 
   def index
-    @purchasers = Purchaser.includes(:orders).left_joins(:orders).group(:id).reorder("COUNT(orders.id) DESC")
-
-    sort_purchasers if params[:sort]
+    @purchasers = Purchaser.includes(:orders)
+     .left_joins(:orders)
+     .group(:id)
+     .reorder("COUNT(orders.id) DESC")
+    @purchasers = sort_resource if params[:sort]
     @pagy, @purchasers = pagy @purchasers, items: params.fetch(:count, 10)
   end
 
-  def sort_column
-    %w{ id name order_amount }.include?(params[:sort]) ? params[:sort] : "name"
-  end
+  def sort_resource
+    sortable_scope = controller_name.classify
+    controller_resource_klass = controller_name.classify.safe_constantize
 
-  def sort_direction
-    %w{ asc desc }.include?(params[:direction]) ? params[:direction] : "asc"
-  end
+    if controller_resource_klass.try(:sortable?) && controller_resource_klass.send(:sortable?)
+      sort_column = controller_resource_klass.send(:sortable_attribute_names).include?(params[:sort]) ? params[:sort] : 'id'
+      sort_direction = %w(asc desc).include?(params[:direction]) ? params[:direction] : 'asc'
 
-  def sort_purchasers
-    if params[:sort] == "order_amount"
-      Purchaser.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
-      @purchasers = nil
-      purchasers = Purchaser.left_joins(:orders).group(:id).reorder("COUNT(orders.id) #{sort_direction}")
-    else
-      purchasers = @purchasers.reorder(sort_column => sort_direction) if %w{ id name order_amount }.include?(params[:sort])
-      @purchasers = nil
+      return controller_resource_klass.send(:order_by_sortable_attribute_name, sort_column, sort_direction)
     end
-    clear_active_record_query_cache
-    @purchasers = purchasers
   end
 
   def new
