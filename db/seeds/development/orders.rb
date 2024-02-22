@@ -25,7 +25,55 @@ def odds_boolean(truthy_odds = 1, falsey_odds = 3)
 end
 
 def set_order_courrier(order, courrier = nil)
-  courrier = ['Fedex', 'UPS', 'USPS', 'DHL'].sample
+  courrier = %w(
+    Fedex
+    UPS
+    USPS
+    DHL
+    viking
+    Express_Worldwide
+    Graybar
+    SEKO
+    SALA
+    CRANE
+    Delta
+    Wilhelmsen
+    Mainfreight
+    Graybar
+    Crowley
+    Saia
+    TNT
+    office_depot
+    staples
+    W&O
+    tropic_oil
+    ODP
+    Xpo
+    t_force
+    Mainfreight
+    southeastern_freight
+    Woojung
+    global_tranz
+    Integrity_Marine
+    best_way
+    FEC
+    Zephyrhills
+    west_marine
+    Horizon_Air
+    forward_air
+    heat
+    roadrunner
+    proteus
+    Bellgrove
+    ambufreight_inc
+    Wilhemsen
+    Brenlia_&_son_transport_Inc
+    Brenntag
+    Van_Ingen
+  ).sample
+
+  courrier = courrier.humanize
+  courrier = [true, true, true, false, false].sample ? courrier.upcase : courrier.downcase
   order.courrier = courrier
 end
 
