@@ -81,31 +81,62 @@
         export_columns: orders_data_table.table_headers,
       } %>
     </div> -->
+
     <div data-reveal-target="item" class="hidden block z-10 bg-white rounded-md p-3 mb-5 ">
-      <%= tag.div class: "py-1.5" do %>
-        <div class="p-3 bg-slate-50 rounded-md flex space-x-3 justify-end">
-
-          <% export_btn_text = "Export #{scoped_status}" %>
-          <% export_btn_text << " #{@scoped_resource.display_name.downcase}" if scoped_resource? %>
-          <% export_btn_text = "#{export_btn_text} orders" %>
-
-          <%= link_to "Export to CSV", request.params.slice("status").merge(format: :csv), class: "inline-block btn btn_indigo" %>
-          <%= link_to "Export to XLS", request.params.slice("status").merge(format: :xls), class: "inline-block btn btn_indigo" %>
-          <%= link_to "Export to XLXS", request.params.slice("status").merge(format: :xlsx), class: "inline-block btn btn_indigo" %>
-        </div>
+      <%= tag.div class: "mx-auto my-3" do %>
+        <%= tag.div class: "block w-full h-full bg-slate-50 rounded-md p-3" do %>
+          <%= tag.div class: "pr-3 sm:pr-0 sm:flex sm:justify-end sm:space-x-3" do %>
+            <% %i(csv xls xlsx).each do |_format| %>
+              <%= tag.div class: "my-3 sm:my-0 sm:px-1.5" do %>
+                <%= link_to request.params.slice("status").merge(format: _format) do %>
+                  <%= tag.span "Export to #{_format.to_s.upcase}", type: 'button', class: "h-8 w-full sm:w-auto rounded-md bg-indigo-600 px-2.5 py-1.5 text-nowrap text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-center" %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
       <% end %>
-      <%= tag.div class: "py-1.5" do %>
-        <div class="p-3 bg-slate-50 rounded-md flex space-x-3 justify-end">
-          <%= link_to "Deliver active orders", {
-              controller: "orders/bulk",
-              action: "update",
-              resource_id: @scoped_resource.id
-            },
-            data: {
-              turbo_method: :patch,
-              turbo_confirm: "Are you sure?",
-            }, class: "inline-block btn btn_indigo" if authorized_internal_user? && scoped_resource? %>
-        </div>
+      <% if (authorized_internal_user? && scoped_resource? && current_page?(controller: 'orders', action: 'index', params: { status: 'active' })) %>
+        <%= tag.div class: "mx-auto my-3" do %>
+          <%= tag.div class: "block w-full h-full bg-slate-50 rounded-md p-3" do %>
+            <%= tag.div class: "flex justify-between sm:justify-end space-x-3" do %>
+            <%#= button_to "params", {
+                controller: "orders/bulk",
+                action: "update",
+                # attribute: to_form_params(attribute: :order, status: :active),
+                # attribute: to_form_params(order: { status: :active}),
+                # params: {attribute: {status: 'active'}},
+                attribute: :status,
+              },
+              # params: to_form_params(order: { status: :active}),
+              method: :patch,
+              data: {
+                turbo_method: :patch,
+                turbo_confirm: "Are you sure?",
+              }, class: "inline-block btn btn_indigo" %>
+            <%= link_to "Deliver active orders", {
+                controller: "orders/bulk",
+                action: "update",
+                attribute: :status,
+                status: scoped_status,
+              },
+              data: {
+                turbo_method: :patch,
+                turbo_confirm: "Are you sure?",
+              }, class: "w-full sm:w-auto rounded-md bg-indigo-600 px-2.5 py-1.5 text-nowrap text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-center" %>
+            <%#= link_to "Set order sequences", {
+                controller: "orders/bulk",
+                action: "update",
+                attribute: :order_sequence,
+                status: scoped_status,
+              },
+              data: {
+                turbo_method: :patch,
+                turbo_confirm: "Are you sure?",
+              }, class: "w-full sm:w-auto rounded-md bg-indigo-600 px-2.5 py-1.5 text-nowrap text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-center" %>
+            <% end %>
+          <% end %>
+        <% end %>
       <% end %>
     </div>
   </div>

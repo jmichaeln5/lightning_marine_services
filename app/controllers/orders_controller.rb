@@ -30,6 +30,7 @@ class OrdersController < Orders::BaseController
     @pagy, @orders = pagy(
       @orders,
       link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"',
+      # items: params.fetch(:count, 24)
       items: params.fetch(:count, 10)
     ) unless format_export?
 
@@ -37,28 +38,9 @@ class OrdersController < Orders::BaseController
       format.html and return if :html.in?(formats)
 
       @data_table = DataTable::Orders.new(records = @orders)
+      @filename = get_filename(status: scoped_status, scoped_resource: @scoped_resource)
 
-      timestamp = "#{(DateTime.now).try(:strftime,"%m/%d/%Y") }"; timestamp = timestamp.gsub("/", "-")
-      filename = "#{@scoped_resource.name} #{scoped_status} orders #{timestamp}" if scoped_resource?
-      filename ||= "#{scoped_status} orders #{timestamp}"
-
-      filename = filename.gsub("-", "_"); filename = filename.gsub(" ", "_")
-      filename_ext = request.format.symbol.to_s
-
-      @filename = filename
-
-      format.csv {
-        send_data @data_table.records.to_csv,
-        filename: "#{@filename}.#{filename_ext}"
-      }
-      format.xls {
-        send_data @data_table.records.to_csv,
-        filename: "#{@filename}.#{filename_ext}"
-      }
-      format.xlsx {
-        filename = "#{@filename}.xlsx"
-        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '"'
-      }
+      respond_to_export_format(format, data_table: @data_table, filename: @filename)
     end
   end
 
