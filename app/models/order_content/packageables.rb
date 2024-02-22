@@ -74,26 +74,37 @@ module OrderContent::Packageables
       order_content_packaging_materials_size > marked_for_destruction_amount
     end
 
-    def packaging_materials_attributes_pair
-      matching_attr_values_hash = Hash.new
-      matching_attr_values_hash[:order_content_attributes], matching_attr_values_hash[:packaging_materials_attributes] = Array.new, Array.new
+    # def packaging_materials_attributes_pair # same as with_packaging_materials_attributes ??? (worse if so)
+    #   matching_attr_values_hash = Hash.new
+    #   matching_attr_values_hash[:order_content_attributes], matching_attr_values_hash[:packaging_materials_attributes] = Array.new, Array.new
+    #
+    #   order_content_packaging_materials_attribute_names.map {|attr_name|
+    #     _attrs = self.attributes
+    #     matching_attr_values_hash[:order_content_attributes].push(_attrs) unless _attrs.in?(matching_attr_values_hash[:order_content_attributes])
+    #
+    #     matching_packaging_materials = packaging_materials.where(type: "PackagingMaterial::#{attr_name.classify}")
+    #     packaging_materials_attributes_hash = Hash.new
+    #
+    #     if matching_packaging_materials.any?
+    #       matching_packaging_materials.map {|_pm|
+    #         matching_attr_values_hash[:packaging_materials_attributes].push _pm.attributes
+    #       }
+    #     else
+    #       packaging_materials_attributes_hash["packaging_materials_#{attr_name.downcase.pluralize}".to_sym] = nil
+    #     end
+    #   }
+    #   matching_attr_values_hash
+    # end
 
-      order_content_packaging_materials_attribute_names.map {|attr_name|
-        _attrs = self.attributes
-        matching_attr_values_hash[:order_content_attributes].push(_attrs) unless _attrs.in?(matching_attr_values_hash[:order_content_attributes])
-
-        matching_packaging_materials = packaging_materials.where(type: "PackagingMaterial::#{attr_name.classify}")
-        packaging_materials_attributes_hash = Hash.new
-
-        if matching_packaging_materials.any?
-          matching_packaging_materials.map {|_pm|
-            matching_attr_values_hash[:packaging_materials_attributes].push _pm.attributes
-          }
-        else
-          packaging_materials_attributes_hash["packaging_materials_#{attr_name.downcase.pluralize}".to_sym] = nil
-        end
-      }
-      matching_attr_values_hash
+    def with_packaging_materials_attributes
+      _attributes = attributes.dup
+      _attributes[:packaging_materials_attributes] = packaging_materials.map(&:attributes)
+      _attributes
     end
+
+    def packaging_materials_attributes_pair
+      with_packaging_materials_attributes
+    end
+
   end
 end

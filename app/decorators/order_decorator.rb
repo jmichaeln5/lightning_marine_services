@@ -1,28 +1,33 @@
 class OrderDecorator
-  delegate_missing_to :@order
+  delegate_missing_to :order
 
-  def initialize(order, view_context)
-    @order, @view_context = order, view_context
+  attr_reader :order
+
+  def initialize(order = nil)
+    @order = order
   end
 
-  def purchaser_name
-    @order.purchaser.name
+  def return_attr_or_str(attr, str)
+    attr_val = format_attr(attr)
+
+    return str if attr_val.blank?
+    return attr_val
   end
 
-  def vendor_name
-    @order.vendor.name
+  def self.get_status_display_name(status = nil)
+    status ||= order.status
+
+    return "active" if status.in?(Order.active_statuses.keys)
+    return "completed" if status.in?(Order.inactive_statuses.keys)
+    return "all"
   end
 
-  def eager_load_parent
-    @order.includes(:purchaser, :vendor)
-  end
+  private
+    def formattable_attrs
+      Order.attribute_names.collect {|attr| attr if Order.type_for_attribute(attr).type == :datetime }.compact_blank
+    end
 
-  # private
-  #
-  #   def order_policy
-  #     @order_policy ||= OrderPolicy.new(current_user: current_user, resource: @order)
-  #   end
-  #   # helper_method :order_policy
-
-
+    def format_attr(attr)
+      attr.to_s.in?(formattable_attrs) ? order.send(attr.to_sym).try(:strftime, "%m/%d/%Y") : order.send(attr.to_sym)
+    end
 end

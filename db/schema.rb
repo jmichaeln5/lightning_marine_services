@@ -76,8 +76,8 @@ ActiveRecord::Schema.define(version: 2024_01_18_063652) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "tracking_number"
-    t.integer "order_sequence"
     t.integer "status", default: 0
+    t.integer "order_sequence"
     t.index ["purchaser_id"], name: "index_orders_on_purchaser_id"
     t.index ["status"], name: "index_orders_on_status"
     t.index ["vendor_id"], name: "index_orders_on_vendor_id"

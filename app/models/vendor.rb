@@ -8,9 +8,10 @@
 #  updated_at :datetime         not null
 #
 class Vendor < ApplicationRecord
+  include ResourceOrders, ResourceOrders::Sortable
+
   alias_attribute :vendor_name, :name
 
-  include ResourceOrders
-
+  has_many :orders
   has_many :purchasers, through: :orders
 end

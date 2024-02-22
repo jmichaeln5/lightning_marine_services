@@ -1,0 +1,96 @@
+wb = xlsx_package.workbook
+
+title_styles = wb.styles.add_style(
+  fg_color: "#FF000000",
+  sz: 8,
+  border: {
+    style: :thin, color: "#FF000000"
+  }
+)
+
+bold_styles = wb.styles.add_style(
+  b: true,
+  fg_color:"#FF000000",
+  sz: 8,
+  border: {
+    style: :thin, color: "#FF000000"}, alignment: {horizontal: :left
+  }
+)
+
+row_styles = wb.styles.add_style(
+  fg_color: "#FF000000",
+  border: Axlsx::STYLE_THIN_BORDER,
+  sz: 8,
+  alignment: {
+    horizontal: :left
+  }
+)
+
+table_headers = @data_table.table_headers.dup
+order_content_table_headers_index = table_headers.find_index(:order_content)
+remaining_table_headers = table_headers[order_content_table_headers_index+1 .. -1]
+
+table_headers = table_headers - table_headers[order_content_table_headers_index .. -1]
+
+order_content_table_headers = %i(boxes crates pallets others)
+order_content_table_headers.map {|th| table_headers.push(th) }
+remaining_table_headers.map {|th| table_headers.push(th) }
+
+table_headers = table_headers.collect {|th| th.to_s.humanize }.freeze
+
+timestamp = "#{(DateTime.now).try(:strftime,"%m/%d/%Y") }"; timestamp = timestamp.gsub("/","-")
+file_title = "#{@scoped_resource.name} #{scoped_status} orders #{timestamp}" if scoped_resource?
+file_title ||= "#{scoped_status} orders #{timestamp}"
+@file_title = file_title
+
+if @file_title.length >= 31
+  @file_title = scoped_resource? ? "#{@scoped_resource.name} #{scoped_status} orders" : "#{scoped_status} orders"
+  @file_title = "#{scoped_status} orders" if @file_title.length >= 31
+end
+
+wb.add_worksheet(name: @file_title, page_setup: { fit_to_width: 1, orientation: :landscape} ) do |sheet|
+  sheet.add_row [@file_title], style: title_styles
+  sheet.add_row table_headers, style: bold_styles
+
+  @data_table.records.each do |order|
+    order_decorator = OrderDecorator.new(order)
+
+    id              = order_decorator.return_attr_or_str(:id, '')
+    order_sequence  = order_decorator.return_attr_or_str(:order_sequence, '')
+    status          = order_decorator.return_attr_or_str(:status, '')
+    dept            = order_decorator.return_attr_or_str(:dept, '')
+    purchaser_name  = order_decorator.return_attr_or_str(:purchaser_name, '')
+    vendor_name     = order_decorator.return_attr_or_str(:vendor_name, '')
+    po_number       = order_decorator.return_attr_or_str(:po_number, '')
+    date_recieved   = order_decorator.return_attr_or_str(:date_recieved, '')
+
+    if order.has_packaging_materials?
+      attributes_hash = order.with_packaging_materials_attributes
+      order_content_attributes = attributes_hash.dig(:order_content_attributes)
+      packaging_materials_attributes = order_content_attributes.dig(:packaging_materials_attributes)
+
+      unless packaging_materials_attributes.nil?
+        order_content_decorator = OrderContentDecorator.new(order.order_content)
+        box         = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Box')
+        crate       = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Crate')
+        pallet      = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Pallet')
+        other       = order_content_decorator.format_packaging_material_td(type: 'PackagingMaterial::Other')
+      end
+    else
+      box           = order.try(:order_content).box || '0'
+      crate         = order.try(:order_content).crate || '0'
+      pallet        = order.try(:order_content).pallet || '0'
+      other         = order.try(:order_content).pallet || '0'
+    end
+
+    courrier        = order_decorator.return_attr_or_str(:courrier, '')
+    date_delivered  = order_decorator.return_attr_or_str(:date_delivered, '')
+
+    sheet.add_row [
+      id, order_sequence, status,
+      dept, purchaser_name, vendor_name,
+      po_number, date_recieved,
+      box, crate, pallet,
+      other, courrier, date_delivered], style: row_styles
+  end
+end

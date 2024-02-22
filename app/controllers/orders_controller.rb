@@ -1,8 +1,9 @@
 class OrdersController < Orders::BaseController
+  before_action :authorize_internal_user, only: %i(index), if: :vendor?
   before_action :authorize_internal_user, only: %i(new create edit destroy)
-  before_action :set_order, only: %i(show hovercard update destroy)
-  before_action :invoke_scoped_resource_methods, if: :scoped_resource?
-  before_action :set_page_heading_title, only: %i(index show new edit)
+
+  before_action :set_scoped_resource, if: :scoped_resource?
+  before_action :set_order, only: %i(show hovercard edit update destroy)
 
   # ⚠️ 👇🏾  wayyyy too many status helper methods, using for link+button_to.., refactor said fuckery
   helper_method %i(
@@ -23,17 +24,23 @@ class OrdersController < Orders::BaseController
   )
 
   def index
-    authorize_internal_user if vendor?
-
-    set_orders
+    scoped_resource? ? set_scoped_resource_orders : set_orders
     @orders = resolve_orders_for_data_table(@orders)
+
     @pagy, @orders = pagy(
       @orders,
       link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"',
       items: params.fetch(:count, 10)
-    )
+    ) unless format_export?
 
-    format_export if format_export?
+    respond_to do |format|
+      format.html and return if :html.in?(formats)
+
+      @data_table = DataTable::Orders.new(records = @orders)
+      @filename = get_filename(status: scoped_status, scoped_resource: @scoped_resource)
+
+      respond_to_export_format(format, data_table: @data_table, filename: @filename)
+    end
   end
 
   def show
@@ -43,13 +50,12 @@ class OrdersController < Orders::BaseController
   end
 
   def new
-    @order = set_scoped_resource? ? set_new_scoped_resource_order : Order.new
+    @order = scoped_resource? ? @scoped_resource.orders.build : Order.new
     @order_content = @order.build_order_content
     @packaging_material = @order.order_content.packaging_materials.build
   end
 
   def edit
-    @order = Order.find(params[:id])
     @order_content = (@order.order_content.nil?) ? @order.build_order_content : @order.order_content
   end
 
@@ -82,6 +88,7 @@ class OrdersController < Orders::BaseController
     if !authorized_internal_user?
       veto_unauthorized_request unless authorized_customer? && order_params.keys == ["dept"]
     end
+
     respond_to do |format|
       if @order.update(order_params)
         format.turbo_stream {}
@@ -111,7 +118,15 @@ class OrdersController < Orders::BaseController
   private
     def order_params
       params.require(:order).permit(
-        :order_sequence, :status, :dept, :purchaser_id, :vendor_id, :po_number, :date_recieved, :courrier, :date_delivered,
+        :order_sequence,
+        :status,
+        :dept,
+        :purchaser_id,
+        :vendor_id,
+        :po_number,
+        :date_recieved,
+        :courrier,
+        :date_delivered,
         images: [],
         order_content_attributes:[
           :id, :box, :crate, :pallet, :other, :other_description,
@@ -122,27 +137,19 @@ class OrdersController < Orders::BaseController
       )
     end
 
+    def set_orders
+      @orders = Order.includes(
+        :order_content,
+        :purchaser,
+        :vendor
+      ).where(status: status_scopes).reorder(id: :desc)
+    end
+
     def set_order
       @order = Order.find(params[:id])
     end
 
-    def set_orders
-      set_scoped_resource if scoped_resource?
-      orders = scoped_resource? ? @scoped_resource.orders : Order.all
-
-      if purchaser?
-        @orders = orders.where(status: status_scopes).order(order_sequence: :asc, id: :asc)
-      else
-        @orders = orders.where(status: status_scopes).order(id: :desc)
-      end
-    end
-
     def set_page_heading_title
-      if scoped_resource? and !@scoped_resource.nil?
-        page_heading_title = "#{@scoped_resource.name}"
-      else
-        page_heading_title = "Orders"
-      end
-      @page_heading_title = page_heading_title if @page_heading_title != page_heading_title
+      @page_heading_title = scoped_resource? ? @scoped_resource.display_name : "Orders"
     end
 end

@@ -2,10 +2,8 @@
   <%= turbo_stream.update "card_content" do %>
     <% card_link_to_css_classes = "font-medium text-cyan-700 hover:text-cyan-900" %>
     <%= tag.div class: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" do %>
-
       <% orders_status = "all" %>
       <% orders_text = "#{orders_status} orders" %>
-
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: false,
         card_title: orders_text.capitalize,
@@ -13,25 +11,21 @@
         card_link: (link_to orders_text, { controller: "orders", status: orders_status }, class: card_link_to_css_classes),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/order"),
       } %>
-
       <% orders_status = "active" %>
       <% orders_text = "#{orders_status} orders" %>
-
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: false,
         card_title: orders_text.capitalize,
-        card_description: Order.all_active.size,
+        card_description: Order.active.size,
         card_link: (link_to orders_text, { controller: "orders", status: orders_status }, class: card_link_to_css_classes),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/box_truck"),
       } %>
-
       <% orders_status = "completed" %>
       <% orders_text = "#{orders_status} orders" %>
-
       <%= render partial: "/application/data_display/stats/overview_card", locals: {
         is_active_card: false,
         card_title: orders_text.capitalize,
-        card_description: Order.all_inactive.size,
+        card_description: Order.inactive.size,
         card_link: (link_to orders_text, { controller: "orders", status: orders_status }, class: card_link_to_css_classes),
         card_icon: (render partial: "/layouts/stacked_shell/headings/icons/lightning"),
       } %>

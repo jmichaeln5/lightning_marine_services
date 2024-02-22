@@ -14,14 +14,33 @@ module Orders::Sortable
       params[:sort_direction]
     end
 
+    def valid_sort_param?
+      sort_option.to_sym.downcase.in?(Order.sortable_attrs)
+    end
+
+    def valid_sort_direction?
+      sort_direction.to_s.downcase.in?(['asc', 'desc'])
+    end
+
     def sort?
-      return false if params[:sort_option].nil?
-      return false if params[:sort_direction].nil?
+      return false if params[:sort_direction].blank?
+      return false if params[:sort_option].blank?
 
-      return false unless sort_option.to_s.downcase.in?(Order.sortable_attrs)
-      return false unless sort_direction.to_s.downcase.in?(['asc', 'desc'])
+      valid_sort_param? && valid_sort_direction?
+    end
 
-      return true
+    def sort_orders_by_order_attribute(orders, attribute, direction)
+      orders.reorder(attribute => direction)
+    end
+
+    def sort_orders_by_order_parent_name(orders, direction)
+      parent_model_name = :purchaser if ((sort_option == 'ship_name') || (sort_option == 'purchaser_name'))
+      parent_model_name = :vendor if (sort_option == 'vendor_name')
+
+      Order.where(id: orders.ids)
+       .includes(parent_model_name)
+       .references(parent_model_name)
+       .order("LOWER(name)" + " " + sort_direction)
     end
 
     def sort_orders(orders)
@@ -33,15 +52,13 @@ module Orders::Sortable
       ### "foo" string value will appear in between empty string and nil values
       ### nil values will appear last
 
-      return orders.reorder(sort_option => sort_direction) unless sort_option.in?(Order.sortable_attrs - Order.attribute_names)
+      sort_option_sym = sort_option.to_sym
 
-      _sort_option = (sort_option == 'ship_name') ? 'purchaser_name' : sort_option
-      _sort_option = _sort_option.downcase.gsub("_name", "")
-
-      return Order.where(id: orders.ids)
-        .includes(_sort_option.to_sym)
-        .references(_sort_option.to_sym)
-        .order("LOWER(name)" + " " + sort_direction)
+      if sort_option_sym.in? Order.attribute_names.map(&:to_sym)
+        return sort_orders_by_order_attribute(orders, sort_option_sym, sort_direction)
+      else
+        return sort_orders_by_order_parent_name(orders, sort_direction)
+      end
     end
   end
 end

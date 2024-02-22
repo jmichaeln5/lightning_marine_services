@@ -19,8 +19,9 @@
 class Order < ApplicationRecord
   include Attachable::Images
   include Resourceable, Packageables, PackageablesEligibility
-  include Archivable, Exportable, Filterable, Searchable, Sortable, Statusable
-  include Paginationable
+  include Archivable, Positioning, Statusable
+  include Exportable, Filterable, Searchable, Sortable
+  include Paginationable # 👈🏾  NOTE  move Paginationable to OrderDecorator
 
   belongs_to :purchaser
   belongs_to :vendor
@@ -33,8 +34,7 @@ class Order < ApplicationRecord
   validates_with OrderValidator
 
   before_validation do
-    set_default_sequence if set_default_sequence?
-    set_archived_value_from_date_delivered if set_archived_value_from_date_delivered?
+    self.archived = date_delivered?
     set_associated_statuses_from_order if set_associated_statuses_from_order?
   end
 end

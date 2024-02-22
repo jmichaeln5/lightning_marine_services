@@ -44,11 +44,6 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :searchable do
-    scope module: 'searches' do
-      get 'search'
-    end
-  end
   resources :searches, only: %i(index)
 
   concern :destroy_attachable do
@@ -61,13 +56,12 @@ Rails.application.routes.draw do
   resources :statuses, only: %i(edit update show)
 
   concern :exportable do
-    get :export, defaults: { format: 'xlsx' }
-    post :export, defaults: { format: 'xlsx' }
+    get :export
+    post :export
   end
 
   resources :orders, concerns: %i(hovercardable statusable) do
     collection do
-      concerns :searchable
       concerns :exportable
     end
     member do

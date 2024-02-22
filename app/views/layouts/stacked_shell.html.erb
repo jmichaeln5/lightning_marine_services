@@ -14,6 +14,7 @@
     <%= javascript_include_tag "application", defer: true %>
   </head>
   <body class="h-full">
+    <%= tag.div Rails.env, class: "block w-full py-3 bg-teal-200 text-center font-semibold" unless Rails.env.production? %>
     <div class="min-h-full">
       <div class="bg-gray-800 pb-32">
         <nav class="bg-gray-800">

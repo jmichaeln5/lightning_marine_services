@@ -1,8 +1,6 @@
 <% export_orders_form_default_filename = "" %>
-<%# export_orders_form_default_filename << " " %>
 <% (export_orders_form_default_filename << scoped_resource.name) if scoped_resource? %>
 <% export_orders_form_default_filename << " " if scoped_resource? %>
-<%# (export_orders_form_default_filename << (scoped_resource? ? scoped_status.humanize : scoped_status.humanize)) if scoped_status?  %>
 <% export_orders_form_default_filename << scoped_status.humanize  %>
 <% export_orders_form_default_filename << " " if scoped_status? %>
 <% export_orders_form_default_filename << "Orders" %>
@@ -10,30 +8,22 @@
 <% export_orders_form_default_filename = export_orders_form_default_filename.gsub("-", "_") %>
 <% export_orders_form_default_filename << format_datetime_now_str.gsub("/", "-") %>
 <% export_orders_form_default_filename = export_orders_form_default_filename.gsub(" ", "_") %>
-
-<% export_cols = DataTableDecorator.ths - %i(ship_name) if purchaser? %>
-<% export_cols = DataTableDecorator.ths - %i(vendor_name) if vendor? %>
-<% export_cols ||= DataTableDecorator.ths %>
-<% export_cols = DataTableDecorator.ths - %i(vendor_name) if vendor? %>
-
-<% modified_export_cols = Array.new %>
+<% modified_export_columns = Array.new %>
 <% invalid_ths = Array.new %>
-<% export_cols.each do |th| %>
+<% export_columns.each do |th| %>
   <% if th == :order_content %>
-    <% modified_export_cols.push(:box) %>
-    <% modified_export_cols.push(:crate) %>
-    <% modified_export_cols.push(:pallet) %>
-    <% modified_export_cols.push(:other) %>
+    <% modified_export_columns.push(:box) %>
+    <% modified_export_columns.push(:crate) %>
+    <% modified_export_columns.push(:pallet) %>
+    <% modified_export_columns.push(:other) %>
   <% else %>
-    <% modified_export_cols.push(th) %>
+    <% modified_export_columns.push(th) %>
   <% end %>
 <% end %>
-
 <% _format = "xls" %>
 <% export_orders_form_url = export_orders_path(format: _format) %>
 <% export_orders_form_url = export_purchaser_orders_path(format: _format) if purchaser? %>
 <% export_orders_form_url = export_vendor_orders_path(format: _format) if vendor? %>
-
 <div class="flex justify-center sm:justify-end">
   <div data-controller="reveal" data-reveal-hidden-class="hidden">
     <div class="sm:flex sm:items-center sm:justify-between">
@@ -67,15 +57,11 @@
                   <%= tag.p "Exporting #{scoped_status.humanize.downcase} orders to excel", class: "max-w-4xl text-sm text-gray-500" %>
                 <% end %>
                 <dl class="mt-6 px-6 flex flex-wrap">
-                  <% if scoped_resource? %>
-                    <%= tag.div class: "w-full mb-6" do %>
-                      <%= tag.div class: "w-full px-6 border-b border-gray-900/5 pb-6" do %>
-                        <%= tag.div "Filename", class: "text-sm leading-6 text-gray-500" %>
-                        <%= export_form.text_field :filename, value: export_orders_form_default_filename, class: "w-full cursor-pointer rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-                      <% end %>
+                  <%= tag.div class: "w-full mb-6" do %>
+                    <%= tag.div class: "w-full px-6 border-b border-gray-900/5 pb-6" do %>
+                      <%= tag.div "Filename", class: "text-sm leading-6 text-gray-500" %>
+                      <%= export_form.text_field :filename, value: export_orders_form_default_filename, class: "w-full cursor-pointer rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
                     <% end %>
-                  <% else %>
-                    <%= export_form.hidden_field :filename, value: export_orders_form_default_filename %>
                   <% end %>
                   <%= tag.div do %>
                     <div class="flex w-full flex-none gap-x-4 px-6">
@@ -89,7 +75,7 @@
                     </div>
                     <%= tag.div class: "flex w-auto gap-x-4 sm:px-6" do %>
                       <%= tag.div class: "sm:ml-3 mt-1 w-full flex space-3 flex-wrap" do %>
-                        <%= export_form.collection_check_boxes(:columns, modified_export_cols, :itself, :itself) do |th| %>
+                        <%= export_form.collection_check_boxes(:columns, modified_export_columns, :itself, :itself) do |th| %>
                           <%= tag.div class: "whitespace-nowrap w-1/2 sm:w-1/3" do %>
                             <%= tag.div class: "m-1" do %>
                               <%= th.label class: "cursor-pointer px-5 py-2 rounded-md hover:bg-slate-100 text-md leading-6 text-gray-600" do %>
