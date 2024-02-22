@@ -37,16 +37,20 @@
     @apply cursor-pointer rounded-md py-1.5 px-3 text-center text-sm font-semibold leading-6;
   }
 
+  .btn_lg {
+    @apply py-2 px-3.5 text-base font-medium;
+  }
+
   .btn_indigo {
     @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 text-white shadow-sm hover:bg-indigo-500;
   }
 
-  .btn_outline_indigo {
-    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-500 hover:text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300;
+  .btn_indigo_active {
+    @apply m-1 active:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-offset-2;
   }
 
-  .btn_indigo_active {
-    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 text-white shadow-sm hover:bg-indigo-500;
+  .btn_outline_indigo {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-500 hover:text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300;
   }
 
   /* .disabled_link {

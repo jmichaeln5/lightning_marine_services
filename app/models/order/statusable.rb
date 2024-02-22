@@ -51,7 +51,7 @@ module Order::Statusable
     end
 
     def self.completed
-      where(status: "delivered")
+      inactive
     end
 
     def statusable_type

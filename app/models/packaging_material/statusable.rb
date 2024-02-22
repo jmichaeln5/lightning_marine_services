@@ -1,8 +1,8 @@
 module PackagingMaterial::Statusable
   extend ActiveSupport::Concern
 
-  STATUS_NAMES = Order::Statusable::STATUS_NAMES - ["partially_delivered"]
-  ACTIVE_STATUS_NAMES = Order::Statusable::ACTIVE_STATUS_NAMES - ["partially_delivered"]
+  STATUS_NAMES          = Order::Statusable::STATUS_NAMES - ["partially_delivered"]
+  ACTIVE_STATUS_NAMES   = Order::Statusable::ACTIVE_STATUS_NAMES - ["partially_delivered"]
   INACTIVE_STATUS_NAMES = STATUS_NAMES - ACTIVE_STATUS_NAMES
 
   included do

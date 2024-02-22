@@ -29,6 +29,19 @@ class OrderContentDecorator
     packaging_material_summary_by_type('PackagingMaterial::Pallet')
   end
 
+  def format_packaging_material_td(type:)
+    case type
+    when 'PackagingMaterial::Box'
+      packaging_material_summary_by_type('PackagingMaterial::Box')
+    when 'PackagingMaterial::Crate'
+      packaging_material_summary_by_type('PackagingMaterial::Crate')
+    when 'PackagingMaterial::Pallet'
+      packaging_material_summary_by_type('PackagingMaterial::Pallet')
+    else
+      packaging_material_summary_by_type('PackagingMaterial::Other')
+    end
+  end
+
   private
     def packaging_material_summary_by_type(type) # ⚠️  # Refactor
       return '0' unless (type.in? PackagingMaterial::Packageable::TYPES)

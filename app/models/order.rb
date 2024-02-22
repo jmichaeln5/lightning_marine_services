@@ -34,7 +34,7 @@ class Order < ApplicationRecord
   validates_with OrderValidator
 
   before_validation do
-    set_archived_value if set_archived_value?
+    self.archived = date_delivered?
     set_associated_statuses_from_order if set_associated_statuses_from_order?
   end
 end

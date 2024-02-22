@@ -16,7 +16,7 @@ class OrderDecorator
 
   def self.get_status_display_name(status = nil)
     status ||= order.status
-    
+
     return "active" if status.in?(Order.active_statuses.keys)
     return "completed" if status.in?(Order.inactive_statuses.keys)
     return "all"

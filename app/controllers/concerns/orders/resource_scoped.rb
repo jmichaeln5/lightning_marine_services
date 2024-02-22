@@ -28,8 +28,6 @@ module Orders::ResourceScoped
       end
 
       def get_scoped_resource
-        # return Purchaser.find(params[:purchaser_id]) if purchaser?
-        # return Vendor.find(params[:vendor_id]) if vendor?
         return Purchaser.includes(:orders).find(params[:purchaser_id]) if purchaser?
         return Vendor.includes(:orders).find(params[:vendor_id]) if vendor?
       end

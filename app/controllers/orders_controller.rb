@@ -30,23 +30,17 @@ class OrdersController < Orders::BaseController
     @pagy, @orders = pagy(
       @orders,
       link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"',
+      # items: params.fetch(:count, 24)
       items: params.fetch(:count, 10)
     ) unless format_export?
 
     respond_to do |format|
       format.html and return if :html.in?(formats)
 
-      @orders_data_table = DataTable::Orders.new(records = @orders)
-      format.xls {
-        # debugger
-        send_data @orders.to_csv,
-        filename: "Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xls"
-      }
-      format.xlsx { # orders/index.xlsx.axlsx
-        # debugger
-        fName = "_Orders-#{(DateTime.now).try(:strftime,"%m/%d/%Y") }.xlsx"
-        response.headers['Content-Disposition'] = 'attachment; filename="' + fName + '"'
-      }
+      @data_table = DataTable::Orders.new(records = @orders)
+      @filename = get_filename(status: scoped_status, scoped_resource: @scoped_resource)
+
+      respond_to_export_format(format, data_table: @data_table, filename: @filename)
     end
   end
 

@@ -8,7 +8,7 @@
 #  updated_at :datetime         not null
 #
 class Purchaser < ApplicationRecord
-  include ResourceOrders
+  include ResourceOrders, ResourceOrders::Sortable
 
   alias_attribute :purchaser_name, :name
   alias_attribute :ship_name, :name
