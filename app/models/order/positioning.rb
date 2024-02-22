@@ -2,12 +2,9 @@ module Order::Positioning
   extend ActiveSupport::Concern
 
   included do
-<<<<<<< HEAD
     before_validation ->(order) {
       order.order_sequence = 1 if order.order_sequence.blank?
     }
-=======
->>>>>>> 1c3479e976eb5c63e5e85296677ff5fb28a415f6
     before_validation :set_sequencer, :set_purchaser_orders_sequencer
 
     after_save :remember_to_reposition
