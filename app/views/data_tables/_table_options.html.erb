@@ -47,7 +47,7 @@
                           <%= tag.div class: "sm:ml-3 mt-1 w-full flex space-3 flex-wrap" do %>
                             <% checkbox_status_index = 0  %>
                             <%= filter_form.collection_check_boxes(:status, Order.status_names, :itself, :itself) do |status_field_checkbox| %>
-                              <%= tag.div class: "whitespace-nowrap w-1/2 sm:w-1/3" do %>
+                              <%= tag.div class: "whitespace-nowrap w-full sm:w-1/2" do %>
                                 <%= tag.div class: "m-1" do %>
                                   <%= status_field_checkbox.label for:"filter_checkbox_checkbox_#{checkbox_status_index}", class: "cursor-pointer px-5 py-2 rounded-md hover:bg-slate-100 text-md leading-6 text-gray-600" do %>
                                      <%= status_field_checkbox.check_box checked: Order.statuses[status_field_checkbox.value].in?(status_scopes), id:"filter_checkbox_checkbox_#{checkbox_status_index}" %>
@@ -72,21 +72,25 @@
                           </dt>
                           <dd class="text-sm leading-6 text-gray-500">Filter orders by courrier </dd>
                         </div>
-                        <%= tag.div class: "flex w-auto gap-x-4 sm:px-6" do %>
-                          <%= tag.div class: "sm:ml-3 mt-1 w-full flex space-3 flex-wrap" do %>
-                            <% courrier_arr = Order.select([:courrier]).distinct %>
-                            <% courrier_checkbox_index = 0  %>
-                            <%= filter_form.collection_check_boxes(:courrier, courrier_arr.collect { |order| order.courrier }, :itself, :itself) do |courrier_field| %>
-                              <%= tag.div class: "whitespace-nowrap w-1/2 sm:w-1/3" do %>
-                                <%= tag.div class: "m-1" do %>
-                                  <%= courrier_field.label for:"filter_courrier_checkbox_#{courrier_checkbox_index}", class: "cursor-pointer px-5 py-2 rounded-md hover:bg-slate-100 text-md leading-6 text-gray-600" do %>
-                                     <%= courrier_field.check_box id:"filter_courrier_checkbox_#{courrier_checkbox_index}" %>
-                                      <%= courrier_field.text %>
-                                     <% end %>
+                        <%= tag.div class: "mt-1 rounded-md bg-gray-100 h-48 overflow-y-auto shadow-inner" do %>
+                          <%= tag.div class: "flex w-auto gap-x-4 sm:px-6" do %>
+                            <%= tag.div class: "sm:ml-3 mt-1 w-full flex space-3 flex-wrap" do %>
+                              <% courrier_arr = Order.select([:courrier]).distinct %>
+                              <% courrier_checkbox_index = 0  %>
+                              <%#= filter_form.collection_check_boxes(:courrier, courrier_arr.collect { |order| order.courrier }, :itself, :itself) do |courrier_field| %>
+                              <%= filter_form.collection_check_boxes(:courrier, courrier_arr.collect { |order| order.courrier.upcase }.reverse.sort { |a, b| a <=> b }, :itself, :itself) do |courrier_field| %>
+                                <%= tag.div class: "whitespace-nowrap w-full md:w-1/2 lg:w-1/3" do %>
+                                  <%= tag.div class: "m-1" do %>
+                                    <%= courrier_field.label for:"filter_courrier_checkbox_#{courrier_checkbox_index}", class: "cursor-pointer px-5 py-2 rounded-md hover:bg-slate-100 text-md leading-6 text-gray-600" do %>
+                                       <%= courrier_field.check_box id:"filter_courrier_checkbox_#{courrier_checkbox_index}" %>
+                                        <%= courrier_field.text %>
+                                       <% end %>
+                                    <% end %>
+                                    <% courrier_checkbox_index += 1 %>
                                   <% end %>
-                                  <% courrier_checkbox_index += 1 %>
                                 <% end %>
                               <% end %>
+
                           <% end %>
                         <% end %>
                       <% end %>
