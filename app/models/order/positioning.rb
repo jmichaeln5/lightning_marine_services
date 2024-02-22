@@ -31,17 +31,13 @@ module Order::Positioning
 
     def remember_to_reposition
       @sequencing = persisted? || previously_new_record?
-      # @sequencing = persisted? || previously_new_record? && purchaser.orders.active.reload
-      # @sequencing = persisted? || previously_new_record? && purchaser.orders.active.reorder(updated_at: :asc)
     end
 
     def sequencing?
-      @sequencing && purchaser.orders.active.exists? && @sequencer.repositionable?
-      # @sequencing && purchaser.orders.active.exists? && !@sequencer.nil? && @sequencer.repositionable?
+      @sequencing && purchaser.orders.active.exists? && !@sequencer.nil? && @sequencer.repositionable?
     end
 
     def reposition_sequenceables
       @sequencer.reposition_order_sequence!
-      @purchaser_orders_sequencer.reposition_purchaser_orders_order_sequence! if !status.in?(inactive_statuses)
     end
 end

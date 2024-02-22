@@ -30,7 +30,6 @@ class OrdersController < Orders::BaseController
     @pagy, @orders = pagy(
       @orders,
       link_extra: 'data-turbo-frame="orders" data-turbo-action="advance"',
-      # items: params.fetch(:count, 24)
       items: params.fetch(:count, 10)
     ) unless format_export?
 

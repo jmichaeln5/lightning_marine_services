@@ -9,6 +9,7 @@
 #
 class Purchaser < ApplicationRecord
   include ResourceOrders, ResourceOrders::Sortable
+  include Positioner
 
   alias_attribute :purchaser_name, :name
   alias_attribute :ship_name, :name

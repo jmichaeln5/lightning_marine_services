@@ -131,7 +131,7 @@ module Order::Statusable
     def set_associated_statuses_from_order_status_hold
       order_content_attributes = order_content.packaging_materials_attributes_pair
       order_content_attributes_dup = order_content_attributes.dup
-      order_content_attributes = order_content_attributes_dup[:order_content_attributes][0]
+      order_content_attributes = order_content_attributes_dup
 
       order_content_attributes_dup[:packaging_materials_attributes].collect { |packaging_material|
         (packaging_material["status"] = "hold") unless (packaging_material["status"] == "hold")
@@ -151,7 +151,7 @@ module Order::Statusable
     def set_associated_statuses_from_order_status_active_or_delivered(order_status: status)
       order_content_attributes = order_content.packaging_materials_attributes_pair
       order_content_attributes_dup = order_content_attributes.dup
-      order_content_attributes = order_content_attributes_dup[:order_content_attributes][0]
+      order_content_attributes = order_content_attributes_dup
 
       valid_packaging_material_status_names = order_status.in?(active_status_names) ? PackagingMaterial.active_status_names : PackagingMaterial.inactive_status_names
 
