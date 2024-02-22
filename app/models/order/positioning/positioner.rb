@@ -14,6 +14,8 @@ class Order::Positioning::Positioner
   end
 
   def repositionable?
+    return false if purchaser.orders.active.excluding(order).count == 0
+
     @was_sequencing_attributes = sequencing_attributes(order.attributes)
 
     (order_sequence_changed? || order_sequence_previously_changed?) || repositionable_by_sequencing_attribute?
@@ -40,6 +42,7 @@ class Order::Positioning::Positioner
       }
     }
     repositioned_order_sequence_attrs = grouped_orders.keys
+
     all_purchaser_orders_active.upsert_all(repositioned_order_sequence_attrs)
   end
 
@@ -89,6 +92,7 @@ class Order::Positioning::Positioner
         end
       end
     }
+
     repositioned_order_sequence_attrs = grouped_orders.keys
     all_purchaser_orders_active.upsert_all(repositioned_order_sequence_attrs)
   end

@@ -1,9 +1,6 @@
 module Purchaser::Positioner
   extend ActiveSupport::Concern
 
-  included do
-  end
-
   private
     def positioner
       @positioner ||= Purchaser::Orders::Positioner.new(purchaser)
