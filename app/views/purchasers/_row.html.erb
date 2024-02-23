@@ -10,11 +10,11 @@
   <div class="<%= primary_col_css_classes %>">
     <div class="-ml-12">
       <div class="grid grid-cols-2 grid-rows-2">
-        <%= content_tag :div, purchaser.orders.count, class: 'justify-self-end' %>
+        <%= content_tag :div, purchaser.orders.size, class: 'justify-self-end' %>
         <%= content_tag :div, "Orders", class: "ml-3 justify-self-start" %>
-        <%= content_tag :div, purchaser.orders.where(archived: false).count, class: 'justify-self-end text-gray-400' %>
+        <%= content_tag :div, purchaser.orders.active.size, class: 'justify-self-end text-gray-400' %>
         <%= content_tag :div, "Active", class: "ml-3 justify-self-start text-gray-400" %>
-        <%= content_tag :div, purchaser.orders.where(archived: true).count, class: 'justify-self-end text-gray-400' %>
+        <%= content_tag :div, purchaser.orders.inactive.size, class: 'justify-self-end text-gray-400' %>
         <%= content_tag :div, "Completed", class: "ml-3 justify-self-start text-gray-400" %>
       </div>
     </div>
