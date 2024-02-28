@@ -1,12 +1,12 @@
 module Purchaser::Positioner
   extend ActiveSupport::Concern
 
+  def call_positioner
+    positioner
+  end
+
   private
     def positioner
-      @positioner ||= Purchaser::Orders::Positioner.new(purchaser)
-    end
-
-    def reposition_sequenceables
-      positioner.reposition_orders_order_sequence!
+      @positioner ||= Purchaser::Orders::Positioner.new(self)
     end
 end
