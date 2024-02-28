@@ -5,8 +5,8 @@ module Order::Positioning
     before_validation :set_sequencer
 
     before_validation ->(order) {
-      order.order_sequence = 1 unless order.purchaser.orders.active.exists?
       set_order_sequence_from_purchaser_positioner(order) if (order.order_sequence.blank? || order.became_active?)
+      order.order_sequence = 1 if order.order_sequence.blank?
     }
 
     after_save :remember_to_reposition

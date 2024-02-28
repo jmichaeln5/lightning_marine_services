@@ -20,8 +20,6 @@ class Order::Positioning::Positioner
     return true if  (order_sequence > purchaser.orders.active.count)
     return true if order_sharing_sequence_position?
     return false if !order_sharing_sequence_position? && !attribute_differences.any?
-
-    return true
   end
 
   def reposition_order_sequence!
