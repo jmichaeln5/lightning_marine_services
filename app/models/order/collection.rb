@@ -29,9 +29,13 @@ class Order::Collection
     end
 
     def update_status(attribute = nil)
+      delivery_date = Time.now
+
       orders.each_with_index do |order, index|
-        order.delivered!
-        order.save
+        order.status = "delivered"
+        order.date_delivered = delivery_date
+        order.archived = true
+        order.save(validate: false)
       end
     end
 end
