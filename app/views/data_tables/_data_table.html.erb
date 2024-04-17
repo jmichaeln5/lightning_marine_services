@@ -25,7 +25,10 @@
             <% css_th = "px-3 py-3.5 text-left text-sm text-gray-600 font-normal " %>
             <% css_th_first = "py-3.5 pl-4 pr-3 text-left text-sm text-gray-600 font-normal" %>
             <% css_th_last = "relative py-3.5 pl-3 pr-0 text-left text-sm text-gray-600 font-normal" %>
-            <% data_table.table_headers.each_with_index do |th, index| %>
+
+            <% table_headers = %i(id order_sequence status dept ship_name vendor_name po_number date_recieved order_content courrier date_delivered) %>
+
+            <% table_headers.each_with_index do |th, index| %>
               <% _th_css = css_th_first if (th == data_table.table_headers.first) %>
               <% _th_css = css_th_last if (th == data_table.table_headers.last) %>
               <% _th_css ||= css_th %>
